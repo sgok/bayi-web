@@ -68,7 +68,8 @@
   .emopanel { border-top: 1px solid var(--line); background: var(--panel); padding: 6px 8px; } .emopanel[hidden] { display: none; }
   .emotabs { display: flex; gap: 6px; margin-bottom: 6px; } .emotabs button { padding: 4px 10px; font-size: 13px; border-radius: 10px; } .emotabs button.on { background: #f59e0b; color: #111; border-color: #f59e0b; }
   .emogrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; max-height: 210px; overflow-y: auto; } .emogrid button { padding: 3px; border: 0; background: none; border-radius: 8px; }
-  .m[data-mid] { cursor: pointer; -webkit-touch-callout: none; } .m.sel { outline: 2px solid #f59e0b; }
+  .m[data-mid] { cursor: pointer; -webkit-touch-callout: none; touch-action: pan-y; } .m.sel { outline: 2px solid #f59e0b; }
+  .m.swiping { transition: none; } .m.swback { transition: transform .2s ease; }
   #pinBar { border-bottom: 1px solid var(--line); background: var(--panel); max-height: 96px; overflow-y: auto; }
   #pinBar .pin { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
   #pinBar .pin + .pin { border-top: 1px solid var(--line); }
@@ -466,6 +467,18 @@ function emoChips(m) {
   const g = new Map(); for (const [u, e] of m.em) { const x = g.get(e) || { n: 0, me: false }; x.n++; if (String(u) === bayiMe() || (!bayiMe() && !m.m && String(u) !== cur)) x.me = true; g.set(e, x); }
   return `<div class="emochips">${[...g.entries()].map(([e, x]) => `<button class="${x.me ? "me" : ""}" onclick="event.stopPropagation();msgAct('react','${esc(m.id)}','${x.me ? "" : esc(e)}')">${emoSpan(e, 18)}${x.n > 1 ? x.n : ""}</button>`).join("")}</div>`;
 }
+// Yana kaydırma: mesaj sağa çekilince "Sabitlensin mi?" (sabitliyse "kaldırılsın mı?")
+let sw = null;
+document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
+  sw = b && !e.target.closest("video,audio,.vplay,button,a,.emochips") ? { b, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+document.addEventListener("touchmove", (e) => { if (!sw) return; const dx = e.touches[0].clientX - sw.x, dy = e.touches[0].clientY - sw.y;
+  if (!sw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; } if (dx > 12 && dx > Math.abs(dy)) { sw.on = true; clearTimeout(lpT); sw.b.classList.add("swiping"); } }
+  if (sw && sw.on) { sw.dx = dx; sw.b.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
+document.addEventListener("touchend", () => { if (!sw) return; const s = sw; sw = null; if (!s.on) return;
+  s.b.classList.remove("swiping"); s.b.classList.add("swback"); s.b.style.transform = ""; setTimeout(() => s.b.classList.remove("swback"), 250);
+  lpFired = true; // kaydırma sonrası tıklama menü açmasın
+  if (s.dx < 70) return; const mid = s.b.dataset.mid, on = !pins.some((p) => String(p.id) === String(mid));
+  setTimeout(() => { if (confirm(on ? "📌 Bu mesaj sabitlensin mi?" : "Sabitleme kaldırılsın mı?")) msgPin(mid, on); }, 220); }, { passive: true });
 // Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
 let lpT = 0, lpFired = false;
 document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
@@ -588,6 +601,7 @@ function renderChat(scroll) {
     const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ gönderiliyor…";
     items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.kind === "image" ? "📷 Resim" : esc(o.body || "")}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
   }
+  for (const p of rpend) if (p.c === cur && Date.now() - p.at < 60_000) items.push({ at: p.at, html: `<div class="m me ${p.fail ? "fail" : "pend"}">${emo(esc(p.t || ""))}<div class="tm">${p.fail ? "❌ gitmedi: " + esc(p.fail) : "⏳ gönderiliyor…"}</div></div>` });
   items.sort((a, b) => a.at - b.at);
   let lastDay = "", h = "";
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day">${d}</div>`; lastDay = d; } h += it.html; }
@@ -852,7 +866,15 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
 // Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
 function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
   Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
-function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (!c || !it || !it.id) return;
+// Diğer ekranın (tablet / başka telefon) gönderdiği mesaj: Sugo onaylayana kadar soluk "gönderiliyor"
+let rpend = [];
+function onPending(pl) { const c = String(pl.c || ""); if (!c || !pl.oid) return;
+  const txt = String(pl.t || "").trim(), now = Date.now();
+  const own = outbox.some((o) => o.status === "pending" && now - Date.parse(o.created_at) < 30_000 && (pl.k === "text" ? String(o.body || "").trim() === txt : o.kind === "image"));
+  if (own) return; // bu ekranın kendi gönderimi: zaten kendi bekleyen balonu var
+  rpend = rpend.filter((p) => now - p.at < 60_000 && p.oid !== String(pl.oid)); rpend.push({ oid: String(pl.oid), c, k: pl.k, t: txt, at: now });
+  if (cur === c) renderChat(true); ownRow(c, txt); }
+function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) rpend = rpend.filter((p) => p.oid !== String(pl.oid)); if (!c || !it || !it.id) return;
   if (cur === c && !hist.some((m) => String(m.id) === String(it.id))) {
     hist = applyOpt([...hist, it].sort((a, b) => Date.parse(a.at) - Date.parse(b.at)));
     if (it.m) outbox = outbox.filter((o) => !(o.kind === "text" && String(o.body || "").trim() === String(it.t || "").trim()));
@@ -867,6 +889,8 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     hb = setInterval(() => { try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(ref++) })); } catch (e) {} }, 25_000); };
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
     if (ev === "live") { liveMsg(d.payload.payload || {}); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
+    if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
+    if (ev === "pendfail") { const pl = d.payload.payload || {}; const p = rpend.find((x) => x.oid === String(pl.oid)); if (p) { p.fail = pl.err || "gitmedi"; if (cur === p.c) renderChat(); } return; }
     if (cur && (ev === "outbox" || ev === "msg")) loadChat(); if (ev === "inbox" || ev === "msg") loadInbox(); };
   ws.onclose = () => { clearInterval(hb); if (rt === ws) { rt = null; setTimeout(connectRt, 4000); } }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
 }
