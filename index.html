@@ -86,17 +86,20 @@
 </head>
 <body>
 <div id="toast"></div>
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;align-items:flex-end;justify-content:center">
+  <div id="modalBox" style="background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 0 0;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom))"></div>
+</div>
 
 <section class="screen" id="login">
   <div style="font-size:42px">🏪</div>
   <h2 style="margin:0">Sugo Bayi</h2>
-  <div class="s">Size verilen PIN ile girin</div>
-  <input id="pin" class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="one-time-code">
+  <div class="s">Şifrenizle girin</div>
+  <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
   <button class="go" style="min-width:200px" onclick="doLogin()">Giriş</button>
 </section>
 
 <section class="screen" id="inbox">
-  <header><div style="font-size:24px">🏪</div><h1 id="hTitle">Sugo Bayi</h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="logout()">Çıkış</button></header>
+  <header><div style="font-size:24px">🏪</div><h1 id="hTitle">Sugo Bayi</h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -111,7 +114,7 @@
 </section>
 
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="av" id="chAv"></div><h1 id="chName"></h1></header>
+  <header><button onclick="back()">‹</button><div class="av" id="chAv"></div><h1 id="chName"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px">🪙 Yükle</button></header>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
   <div class="msgs" id="msgs"></div>
@@ -150,11 +153,12 @@ function rel(ms) { if (!ms) return ""; const d = new Date(ms), now = new Date();
   if (d.toDateString() === now.toDateString()) return hm; const y = new Date(now - 864e5); if (d.toDateString() === y.toDateString()) return "Dün " + hm; return d.toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" }); }
 
 // ---------- giriş
-async function doLogin() { const pin = $("pin").value.trim(); if (!pin) return;
-  const d = await api("login", { pin }); if (d.error || !d.token) { toast(d.error || "Giriş olmadı", true); return; }
-  tok = d.token; localStorage.setItem("bw_tok", tok); $("pin").value = ""; start(); }
+async function doLogin() { const pw = $("pin").value; if (!pw) return;
+  const d = await api("login", { password: pw }); if (d.error || !d.token) { toast(d.error || "Giriş olmadı", true); return; }
+  tok = d.token; localStorage.setItem("bw_tok", tok); $("pin").value = "";
+  if (d.must_change) { await start(); pwChange(pw, true); return; } start(); }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-async function logout() { if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; localStorage.removeItem("bw_tok"); show("login"); }
+async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; localStorage.removeItem("bw_tok"); show("login"); }
 
 async function start() {
   const d = await api("me"); if (d.error) { show("login"); return; }
@@ -191,7 +195,7 @@ function openById() { const v = ($("idIn").value.match(/\d{5,12}/) || [])[0]; if
 async function openChat(id) {
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || {}; const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy;
+  $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat"); await loadChat(true);
@@ -233,8 +237,10 @@ function renderChat(scroll) {
   box.innerHTML = h || `<div class="day">Mesaj yok</div>`;
   if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
-async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return;
-  const d = await api("bayi_coin_paid", { tx, paid }); if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); loadChat(); } }
+async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
+  const pin = await askPin(paid ? "Ödendi işaretlemek için işlem PIN'iniz" : "Geri almak için işlem PIN'iniz"); if (!pin) return;
+  const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) loadChat(); loadDm(); } }
 
 // ---------- gönderme (mesajları tablet Sugo'ya gönderir)
 function grow(t) { t.style.height = "auto"; t.style.height = Math.min(120, t.scrollHeight) + "px"; }
@@ -330,6 +336,61 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
   if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
   if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
   $("ajBody").innerHTML = h; }
+
+// ---------- pencere, ayarlar, şifre / PIN, coin gönderme
+function openModal(h) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; }
+function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
+$("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
+  <div style="display:grid;gap:8px"><button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
+  <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
+function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
+  ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
+  <div style="display:grid;gap:8px">${old ? `<input type="hidden" id="pwOld" value="${esc(old)}">` : `<input id="pwOld" type="password" placeholder="Mevcut şifre" autocomplete="current-password">`}
+  <input id="pwNew" type="password" placeholder="Yeni şifre (en az 6 karakter)" autocomplete="new-password"><input id="pwNew2" type="password" placeholder="Yeni şifre (tekrar)" autocomplete="new-password">
+  <button class="go" onclick="pwSave(${forced ? "true" : "false"})">Kaydet</button>${forced ? "" : `<button onclick="closeModal()">Vazgeç</button>`}</div>`); }
+async function pwSave(forced) { const o = $("pwOld").value, n = $("pwNew").value, n2 = $("pwNew2").value;
+  if (n.length < 6) { toast("Şifre en az 6 karakter olmalı", true); return; } if (n !== n2) { toast("Yeni şifreler aynı değil", true); return; }
+  const d = await api("change_password", { old: o, new: n }); if (d.error) { toast(d.error, true); return; } toast("✅ Şifre değiştirildi"); closeModal();
+  if (forced && me && !me.has_pin) toast("İşlem PIN'iniz yok – yöneticinize söyleyin", true); }
+function pinChange() { openModal(`<h3 style="margin:0 0 8px">🔢 İşlem PIN'i değiştir</h3><div class="s" style="margin-bottom:8px">Coin gönderme ve "ödendi" işaretlemede sorulur. 4 rakam.</div>
+  <div style="display:grid;gap:8px"><input id="pcPw" type="password" placeholder="Giriş şifreniz" autocomplete="current-password">
+  <input id="pcNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (4 rakam)"><input id="pcNew2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (tekrar)">
+  <button class="go" onclick="pinSave()">Kaydet</button><button onclick="closeModal()">Vazgeç</button></div>`); }
+async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.test(n)) { toast("PIN 4 rakam olmalı", true); return; } if (n !== $("pcNew2").value.trim()) { toast("PIN'ler aynı değil", true); return; }
+  const d = await api("change_pin", { password: $("pcPw").value, new_pin: n }); if (d.error) { toast(d.error, true); return; } pinCache = null; if (me) me.has_pin = true; toast("✅ PIN değiştirildi"); closeModal(); }
+// İşlem PIN'i: 5 dakika hatırlanır (tablet gibi)
+let pinCache = null;
+function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
+  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
+    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3><input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`);
+    setTimeout(() => { const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); } }, 50); }); }
+// 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
+let cn = null;
+function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
+  openModal(`<h3 style="margin:0 0 4px">🪙 Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
+    <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
+    <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); }
+let cnT = 0;
+function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $("cnIn").value = c ? String(c) : ""; $("cnGo").disabled = true;
+  $("cnInfo").innerHTML = c >= 1000 ? `⏳ kontrol ediliyor…` : "En az 1.000 coin"; clearTimeout(cnT); if (c < 1000) return;
+  cnT = setTimeout(async () => { const d = await api("coin_check", { uid: cn.uid, coins: c }); if (!cn || cn.coins !== c) return; const k = d.report && d.report.coin;
+    if (d.error || !k) { $("cnInfo").innerHTML = `❌ ${esc(d.error || "kontrol edilemedi")}`; return; } cn.chk = k;
+    const azn = k.azn != null ? Number(k.azn) : c / 1000; cn.azn = azn; const ok = k.ok && (!k.max || c <= k.max) && (!k.daily || (k.today || 0) + c <= k.daily);
+    $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br>🪙 <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
+      (k.ok ? "" : `<br>❌ Panel izin vermiyor: ${esc(k.prompt || "")}`) + (k.max && c > k.max ? `<br>❌ Tek seferde en fazla ${Number(k.max).toLocaleString("tr-TR")}` : "") +
+      (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "");
+    $("cnGo").disabled = !ok; }, 400); }
+async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
+  if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
+  const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
+  openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…</div>`);
+  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, again: !!again }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) { closeModal(); if (/2 dakika içinde/.test(d.error) && confirm(d.error + "\n\nYine de gönderilsin mi?")) { coinSend(true); return; } toast("❌ " + d.error, true); return; }
+  closeModal(); toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); cn = null; }
 
 // ---------- telefon bildirimi + ses
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
