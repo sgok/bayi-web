@@ -44,7 +44,7 @@
   .m { max-width: 82%; padding: 7px 10px 5px; border-radius: 12px; background: var(--peer); align-self: flex-start; overflow-wrap: anywhere; white-space: pre-wrap; }
   .m.me { background: var(--me); align-self: flex-end; }
   .m.pend { opacity: .6; } .m.fail { border: 1px solid var(--bad); }
-  .m img { max-width: 100%; border-radius: 8px; display: block; }
+  .m img { max-width: 100%; max-height: 360px; min-height: 120px; object-fit: cover; border-radius: 8px; display: block; background: #0f1a16; }
   .m .tm { font-size: 11px; color: #b6c8be; text-align: right; margin-top: 2px; }
   .day { align-self: center; font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 10px; border-radius: 999px; margin: 6px 0; }
   .coin { align-self: stretch; background: #2a2210; border: 1px solid #a16207; border-radius: 12px; padding: 10px; font-size: 14px; }
@@ -166,8 +166,9 @@ async function start() {
 
 // ---------- tablet durumu (mesajları tablet gönderir)
 async function loadTablet() { const d = await api("tablet"); const age = Date.now() - (d.at || 0);
-  const ok = d.bayi_on !== false && d.linked && age < 120_000; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
-  const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez." : age > 120_000 ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
+  const LIM = 8 * 60_000; // tablet liste değişmese de en geç 5 dk'da bir yazar
+  const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
+  const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez." : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
   ["tabWarn", "tabWarn2"].forEach((id) => { $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
 
 // ---------- sohbet listesi
@@ -207,8 +208,14 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
 function bubbleBody(m) { const t = String(m.t || "");
   if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<a href="${esc(t)}" target="_blank"><img src="${esc(t)}" loading="lazy"></a>`;
   return esc(t || "[" + (m.k || "mesaj") + "]"); }
+// En alta yapışma: sohbet açılınca ve kullanıcı en alttayken yeni içerik/resim yüklenince en alta iner; yukarı kaydırınca bırakır
+let stick = true;
+function toBottom() { const b = $("msgs"); b.scrollTop = b.scrollHeight; }
+$("msgs").addEventListener("scroll", () => { const b = $("msgs"); stick = b.scrollHeight - b.scrollTop - b.clientHeight < 120; }, { passive: true });
+$("msgs").addEventListener("load", (e) => { if (e.target.tagName === "IMG" && stick) toBottom(); }, true);
+if (window.ResizeObserver) new ResizeObserver(() => { if (stick && cur) toBottom(); }).observe($("msgs"));
 function renderChat(scroll) {
-  const box = $("msgs"), atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick;
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: `<div class="m ${m.m ? "me" : ""}">${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}</div></div>` }));
   for (const c of coins) items.push({ at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 ${c.other ? `<b>Başka hesaptan:</b> ${esc(c.nickname || "")} (UID ${esc(c.uid || "")})<br>` : ""}<b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
       ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
@@ -224,7 +231,7 @@ function renderChat(scroll) {
   let lastDay = "", h = "";
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day">${d}</div>`; lastDay = d; } h += it.html; }
   box.innerHTML = h || `<div class="day">Mesaj yok</div>`;
-  if (scroll || atBottom) box.scrollTop = box.scrollHeight;
+  if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
 async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return;
   const d = await api("bayi_coin_paid", { tx, paid }); if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); loadChat(); } }
