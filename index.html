@@ -57,6 +57,7 @@
   .emotabs { display: flex; gap: 6px; margin-bottom: 6px; } .emotabs button { padding: 4px 10px; font-size: 13px; border-radius: 10px; } .emotabs button.on { background: #f59e0b; color: #111; border-color: #f59e0b; }
   .emogrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; max-height: 210px; overflow-y: auto; } .emogrid button { padding: 3px; border: 0; background: none; border-radius: 8px; }
   .m[data-mid] { cursor: pointer; } .m.sel { outline: 2px solid #f59e0b; }
+  .m.wdmine { opacity: .55; background: #3f4a55; color: #cbd5e1; font-style: italic; }
   .m.wd { background: #64748b22; border: 1px solid #64748b66; color: #cbd5e1; font-style: italic; } .m.wd .orig { font-style: normal; margin-top: 4px; color: #e2e8f0; }
   .coingrp { align-self: stretch; background: #1e1b4b; border: 2px solid #818cf8; border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
   .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
@@ -153,7 +154,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><div style="font-size:24px">🏪</div><h1 id="hTitle">Sugo Bayi</h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><div style="font-size:24px">🏪</div><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins">🪙 <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -164,8 +165,9 @@
   </div>
   <div class="pane" id="p-dm"><div id="dmBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-card"><div id="cardBody"><div class="row s">Yükleniyor…</div></div></div>
+  <div class="pane" id="p-coin"><div id="coinBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-aj"><div id="ajBody"><div class="row s">Yükleniyor…</div></div></div>
-  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button></nav>
+  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b>🪙</b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button></nav>
 </section>
 
 <section class="screen" id="prof">
@@ -228,7 +230,7 @@ async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?"
 
 async function start() {
   const d = await api("me"); if (d.error) { show("login"); return; }
-  me = d; show("inbox"); tab(curTab); loadInbox(); loadDm(); connectRt(); notifSetup();
+  me = d; show("inbox"); tab(curTab); loadInbox(); loadDm(); loadCoins(); connectRt(); notifSetup();
   const qp = new URLSearchParams(location.search); if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
   if (location.search) history.replaceState(null, "", location.pathname);
   api("bayi_templates").then((r) => { tpls = (r.report && r.report.templates) || []; renderTpls(); });
@@ -440,7 +442,8 @@ if (window.ResizeObserver) new ResizeObserver(() => { if (stick && cur) toBottom
 function renderChat(scroll) {
   const box = $("msgs"); if (scroll) stick = true; const atBottom = stick;
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
-    ? `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
+    ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
+    : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
     : `<div class="m ${m.m ? "me" : ""}" data-mid="${esc(m.id)}">${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}</div>${emoChips(m)}</div>` }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
@@ -509,9 +512,29 @@ let curTab = localStorage.getItem("bw_tab") || "msg";
 function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (e) {}
   document.querySelectorAll("nav.bn button").forEach((b) => b.classList.toggle("on", b.dataset.p === k));
   document.querySelectorAll("#inbox .pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + k));
-  $("hTitle").textContent = { msg: "Bayi sohbetleri", dm: "💎 Elmas Bozumları", card: "💳 Kartlar", aj: "🏢 Ajans" }[k];
   refreshTab(); }
-function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") loadAj(); loadTablet(); }
+function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") loadAj(); else if (curTab === "coin") loadCoins(); loadTablet(); }
+
+// 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
+let coinLimit = 40, coinData = null;
+const OST = { open: ["⏳", "ödeme eşleşmedi", "#fbbf24"], complete: ["✅", "ödendi", "#4ade80"], short: ["⚠️", "eksik ödeme", "#f87171"], over: ["➕", "fazla ödeme", "#38bdf8"], recalled: ["↩️", "geri çekildi", "#94a3b8"] };
+async function loadCoins(more) { if (more) coinLimit += 40;
+  const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
+  if (c.stock != null) $("hStock").textContent = nf(c.stock);
+  if (curTab === "coin") renderCoins(); }
+function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {};
+  $("coinBody").innerHTML = `<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k">🪙 Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
+      <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
+      <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div></div>
+    <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
+    ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
+      return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
+        <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
+          <div class="s">🪙 <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
+          <div class="s"><span style="color:${st[2]}">${st[0]} ${st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}</div></div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
+    ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
+    <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`; }
+setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(); }, 120_000); // üstteki bakiye 2 dk'da bir
 
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
 let dmLimit = 10, dmData = null;
