@@ -252,7 +252,9 @@ const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
   const unread = inbox.reduce((s, x) => s + (Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread;
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
-  $("convs").innerHTML = teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
+  const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
+  const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
+  $("convs").innerHTML = readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
     <div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>
     <div class="b"><div class="t"><b>${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
@@ -260,6 +262,11 @@ function renderInbox() {
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = inbox.slice(0, 80).map((x) => String(x.id));
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
+// Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
+async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own); if (!list.length) return;
+  if (!confirm(`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`)) return;
+  for (const x of list) { await api("read", { conv: String(x.id) }); x.u = ""; }
+  renderInbox(); toast(`✓ ${list.length} sohbet okundu yapıldı`); }
 function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
   if (!v) { const first = document.querySelector("#srchRes .row[data-uid]"); if (first) { pick(first.dataset.uid); return; } toast("İsim ya da UID yazın", true); return; }
   pick(v); }
