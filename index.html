@@ -337,7 +337,7 @@ async function loadBuyers(uids, force) {
 
 // ---------- sohbet
 const synced = {};
-async function openChat(id) {
+async function openChat(id) { stopMedia();
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
@@ -349,12 +349,13 @@ async function openChat(id) {
   await loadChat(true);
   if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; renderInbox(); }
 }
-function back() { cur = null; show("inbox"); loadInbox(); loadDm(); }
+function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
+function back() { stopMedia(); cur = null; show("inbox"); loadInbox(); loadDm(); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
 window.addEventListener("popstate", () => {
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
-  if (cur) { cur = null; show("inbox"); loadInbox(); }
+  if (cur) { stopMedia(); cur = null; show("inbox"); loadInbox(); }
 });
 // Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
 const optMsg = {};
@@ -446,7 +447,7 @@ function emoChips(m) {
 }
 document.addEventListener("click", (e) => {
   const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
-  if (!b || e.target.closest(".emochips") || e.target.closest("[data-img]") || e.target.closest(".uidl")) return;
+  if (!b || e.target.closest(".emochips") || e.target.closest("[data-img]") || e.target.closest(".uidl") || e.target.closest("video,audio,.vplay,button,a")) return; // oynatıcıya basınca menü açılmaz
   msgMenuOpen(b.dataset.mid, b);
 });
 function msgMenuOpen(mid, el) {
