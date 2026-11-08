@@ -258,11 +258,11 @@ function renderInbox() {
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
-  $("convs").innerHTML = readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
+  morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
     <div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>
     <div class="b"><div class="t"><b>${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
-    : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`);
+    : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = inbox.slice(0, 80).map((x) => String(x.id));
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
@@ -476,6 +476,24 @@ function toBottom() { const b = $("msgs"); b.scrollTop = b.scrollHeight; }
 $("msgs").addEventListener("scroll", () => { const b = $("msgs"); stick = b.scrollHeight - b.scrollTop - b.clientHeight < 120; }, { passive: true });
 $("msgs").addEventListener("load", (e) => { if (e.target.tagName === "IMG" && stick) toBottom(); }, true);
 if (window.ResizeObserver) new ResizeObserver(() => { if (stick && cur) toBottom(); }).observe($("msgs"));
+// Yerinde güncelleme: aynı kalan öğelere (resim, video, avatar) dokunulmaz, sadece değişen yazı/öznitelik değişir.
+// innerHTML ile baştan çizmek her yenilemede resimleri silip yeniden yüklüyordu (iPhone'da göz kırpma, oynayan video duruyordu)
+function morph(box, html) {
+  const tpl = document.createElement("div"); tpl.innerHTML = html; patchKids(box, tpl); }
+function patchKids(o, n) {
+  const on = [...o.childNodes], nn = [...n.childNodes];
+  for (let i = 0; i < nn.length; i++) { const a = on[i], b = nn[i];
+    if (!a) o.appendChild(b); else patchNode(a, b); }
+  for (let i = nn.length; i < on.length; i++) on[i].remove(); }
+function patchNode(a, b) {
+  if (a.nodeType !== b.nodeType || a.nodeName !== b.nodeName) { a.replaceWith(b); return; }
+  if (a.nodeType !== 1) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
+  if (a.nodeName === "IMG" || a.nodeName === "VIDEO") { if (a.getAttribute("src") !== b.getAttribute("src")) a.replaceWith(b); else syncAttrs(a, b, ["src"]); return; }
+  if (a.outerHTML === b.outerHTML) return;
+  syncAttrs(a, b, []); patchKids(a, b); }
+function syncAttrs(a, b, keep) {
+  for (const at of [...a.attributes]) if (!keep.includes(at.name) && !b.hasAttribute(at.name)) a.removeAttribute(at.name);
+  for (const at of [...b.attributes]) if (!keep.includes(at.name) && a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
 function renderChat(scroll) {
   const box = $("msgs"); if (scroll) stick = true; const atBottom = stick;
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
@@ -498,7 +516,7 @@ function renderChat(scroll) {
   items.sort((a, b) => a.at - b.at);
   let lastDay = "", h = "";
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day">${d}</div>`; lastDay = d; } h += it.html; }
-  box.innerHTML = h || `<div class="day">Mesaj yok</div>`;
+  morph(box, h || `<div class="day">Mesaj yok</div>`);
   if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
 async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
