@@ -34,6 +34,9 @@
   .avw { position: relative; flex: none; display: flex; }
   .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
   .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
+  #chRoom { display: inline-block; margin-left: 6px; vertical-align: middle; font-size: 12px; font-weight: 500; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 38vw; }
+  #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
+  @keyframes notebob { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-3px) rotate(8deg); } }
   .list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .row { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
   .row .b { flex: 1; min-width: 0; }
@@ -183,7 +186,7 @@
 </section>
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chRoom" hidden></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
   <div id="chTrust"></div>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
@@ -341,7 +344,7 @@ async function openChat(id) { stopMedia();
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  chOnUpd(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
+  chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; older = []; histMore = false; $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
@@ -349,13 +352,21 @@ async function openChat(id) { stopMedia();
   await loadChat(true);
   if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; renderInbox(); }
 }
+// Kişi şu an bir odadaysa başlıkta: oda adı (küçük, mavi) + oynayan nota. Sadece açık sohbet için, açıkken dakikada bir sorulur
+let roomTimer = 0;
+async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
+  if (!c || isSys(c) || document.hidden) { el.hidden = true; return; }
+  const d = await api("room_now", { uid: c }); if (c !== cur) return;
+  const r = d.report && d.report.room;
+  el.hidden = !r; if (r) el.innerHTML = `${esc(r.title || "Odada")}<span class="note">🎵</span>`; }
+function roomWatch() { clearInterval(roomTimer); $("chRoom").hidden = true; roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
 function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
-function back() { stopMedia(); cur = null; show("inbox"); loadInbox(); loadDm(); }
+function back() { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
 window.addEventListener("popstate", () => {
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
-  if (cur) { stopMedia(); cur = null; show("inbox"); loadInbox(); }
+  if (cur) { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); }
 });
 // Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
 const optMsg = {};
