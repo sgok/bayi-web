@@ -47,6 +47,10 @@
   #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
   .row .av.tap { cursor: pointer; outline: 2px solid transparent; } .row .av.tap:active { outline-color: #38bdf8; }
   /* Sugo emojileri, tepkiler, mesaj menüsü (tabletteki gibi) */
+  .gc { display: inline-block; width: 1em; height: 1em; border-radius: 50%; vertical-align: -0.14em; position: relative; flex: none;
+    background: radial-gradient(circle at 35% 30%, #fff7c2 0 10%, #fde047 11% 42%, #f59e0b 43% 72%, #b45309 73%); box-shadow: inset 0 0 0 .07em #92400e; }
+  .gc::after { content: ""; position: absolute; inset: .2em; border-radius: 50%; border: .07em solid #b4530988; }
+  #hStock { color: #fbbf24; font-weight: 800; }
   .semo { display: inline-block; vertical-align: -0.3em; background-repeat: no-repeat; }
   .emochips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; white-space: normal; } .emochips button { padding: 1px 6px; border-radius: 12px; font-size: 12px; background: #00000033; border: 1px solid #ffffff22; display: inline-flex; align-items: center; gap: 3px; } .emochips button.me { border-color: #f59e0b; }
   .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: #1b2530; border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
@@ -154,7 +158,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><div style="font-size:24px">🏪</div><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins">🪙 <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><div style="font-size:24px">🏪</div><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -167,7 +171,7 @@
   <div class="pane" id="p-card"><div id="cardBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-coin"><div id="coinBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-aj"><div id="ajBody"><div class="row s">Yükleniyor…</div></div></div>
-  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b>🪙</b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button></nav>
+  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button></nav>
 </section>
 
 <section class="screen" id="prof">
@@ -176,7 +180,7 @@
 </section>
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px">🪙 Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
   <div id="chTrust"></div>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
@@ -530,14 +534,14 @@ async function loadCoins(more) { if (more) coinLimit += 40;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
   if (curTab === "coin") renderCoins(); }
 function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {};
-  $("coinBody").innerHTML = `<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k">🪙 Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
+  $("coinBody").innerHTML = `<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
       <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
       <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div></div>
     <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
     ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
       return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
         <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
-          <div class="s">🪙 <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
+          <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
           <div class="s"><span style="color:${st[2]}">${st[0]} ${st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}</div></div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
     ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
     <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`; }
@@ -568,7 +572,7 @@ function dmListHtml(rows) {
 // 🪙 Tüm coin hareketleri (elmas bozumları + gönderdiğimiz / aldığımız coinler) — tablettteki "Coin kayıtları"
 let crLimit = 20;
 async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
-  if (!more) openModal(`<h3 style="margin:0 0 8px">🪙 Coin hareketleri <span class="s" id="crSum"></span></h3><div id="crList"><div class="row s">Okunuyor…</div></div>`);
+  if (!more) openModal(`<h3 style="margin:0 0 8px"><span class="gc"></span> Coin hareketleri <span class="s" id="crSum"></span></h3><div id="crList"><div class="row s">Okunuyor…</div></div>`);
   const d = await api("bayi_coins_get", { all: true, limit: crLimit }); const rep = d.report || {}, rows = rep.coins || [], u = rep.unpaid || {};
   if (!$("crList")) return;
   $("crSum").textContent = `(${rows.length}/${rep.total || 0}${u.n ? ` · ${u.n} ödenmemiş elmas, ${azn(u.pay)}` : ""})`;
@@ -580,7 +584,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
   $("dmStrip").innerHTML = open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "";
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
     <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div></div></div>
-    <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()">🪙 Tüm coin hareketleri (gönderilen / alınan)</button></div>
+    <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
     ${open.length ? `<h3>⏳ Ödenmemişler</h3>${dmListHtml(open)}` : ""}
     <h3>🕘 Son bozumlar <span class="s">(${nf(d.total)} kayıt)</span></h3>${dmListHtml(d.coins || [])}
     ${(d.coins || []).length < d.total ? `<div style="padding:12px;text-align:center"><button onclick="dmLimit+=10;loadDm()">Daha fazla</button></div>` : ""}
@@ -650,7 +654,7 @@ function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Pro
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
 function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
-  openModal(`<h3 style="margin:0 0 4px">🪙 Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
+  openModal(`<h3 style="margin:0 0 4px"><span class="gc"></span> Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
     <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
     <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
@@ -661,7 +665,7 @@ function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $
   cnT = setTimeout(async () => { const d = await api("coin_check", { uid: cn.uid, coins: c }); if (!cn || cn.coins !== c) return; const k = d.report && d.report.coin;
     if (d.error || !k) { $("cnInfo").innerHTML = `❌ ${esc(d.error || "kontrol edilemedi")}`; return; } cn.chk = k;
     const azn = k.azn != null ? Number(k.azn) : c / 1000; cn.azn = azn; const ok = k.ok && (!k.max || c <= k.max) && (!k.daily || (k.today || 0) + c <= k.daily);
-    $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br>🪙 <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
+    $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br><span class="gc"></span> <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
       (k.ok ? "" : `<br>❌ Panel izin vermiyor: ${esc(k.prompt || "")}`) + (k.max && c > k.max ? `<br>❌ Tek seferde en fazla ${Number(k.max).toLocaleString("tr-TR")}` : "") +
       (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "");
     $("cnGo").disabled = !ok; }, 400); }
