@@ -799,11 +799,22 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
   if (m.kind === "open" && m.url) { const u = new URL(m.url); const c = u.searchParams.get("c"), tt = u.searchParams.get("t"); if (c) openChat(c); else if (tt) { back(); tab(tt); } } });
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
+// Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
+function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (!c || !it || !it.id) return;
+  if (cur === c && !hist.some((m) => String(m.id) === String(it.id))) {
+    hist = applyOpt([...hist, it].sort((a, b) => Date.parse(a.at) - Date.parse(b.at)));
+    if (it.m) outbox = outbox.filter((o) => !(o.kind === "text" && String(o.body || "").trim() === String(it.t || "").trim()));
+    renderChat(); if (!it.m) ding(); }
+  const r = pl.row, x = inbox.find((i) => String(i.id) === c);
+  if (x && r) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0 });
+    inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
+  else if (!x) loadInbox(); }
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
   const ws = new WebSocket(me.rt.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(me.rt.anon) + "&vsn=1.0.0"); rt = ws; let ref = 1, hb = 0;
   ws.onopen = () => { ws.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: String(ref++) }));
     hb = setInterval(() => { try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(ref++) })); } catch (e) {} }, 25_000); };
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
+    if (ev === "live") { liveMsg(d.payload.payload || {}); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (cur && (ev === "outbox" || ev === "msg")) loadChat(); if (ev === "inbox" || ev === "msg") loadInbox(); };
   ws.onclose = () => { clearInterval(hb); if (rt === ws) { rt = null; setTimeout(connectRt, 4000); } }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
 }
