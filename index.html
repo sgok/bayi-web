@@ -34,7 +34,8 @@
   .avw { position: relative; flex: none; display: flex; }
   .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
   .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
-  #chRoom { display: inline-block; margin-left: 6px; vertical-align: middle; font-size: 12px; font-weight: 500; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 38vw; }
+  #chRoom { display: block; font-size: 12px; line-height: 15px; font-weight: 500; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* ismin altında: uzun isimde kesilmesin */
+  #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
   #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
   @keyframes notebob { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-3px) rotate(8deg); } }
   .list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -66,7 +67,13 @@
   .emopanel { border-top: 1px solid var(--line); background: var(--panel); padding: 6px 8px; } .emopanel[hidden] { display: none; }
   .emotabs { display: flex; gap: 6px; margin-bottom: 6px; } .emotabs button { padding: 4px 10px; font-size: 13px; border-radius: 10px; } .emotabs button.on { background: #f59e0b; color: #111; border-color: #f59e0b; }
   .emogrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; max-height: 210px; overflow-y: auto; } .emogrid button { padding: 3px; border: 0; background: none; border-radius: 8px; }
-  .m[data-mid] { cursor: pointer; } .m.sel { outline: 2px solid #f59e0b; }
+  .m[data-mid] { cursor: pointer; -webkit-touch-callout: none; } .m.sel { outline: 2px solid #f59e0b; }
+  #pinBar { border-bottom: 1px solid var(--line); background: var(--panel); max-height: 96px; overflow-y: auto; }
+  #pinBar .pin { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+  #pinBar .pin + .pin { border-top: 1px solid var(--line); }
+  #pinBar .pt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #pinBar .px { border: 0; background: none; color: var(--muted); font-size: 15px; padding: 0 4px; }
+  .m.flash { animation: pinflash 1.4s ease; } @keyframes pinflash { 0%, 60% { box-shadow: 0 0 0 3px #f59e0b; } 100% { box-shadow: none; } }
   .m.wdmine { opacity: .55; background: #3f4a55; color: #cbd5e1; font-style: italic; }
   .m.wd { background: #64748b22; border: 1px solid #64748b66; color: #cbd5e1; font-style: italic; } .m.wd .orig { font-style: normal; margin-top: 4px; color: #e2e8f0; }
   .coingrp { align-self: stretch; background: #1e1b4b; border: 2px solid #818cf8; border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
@@ -190,6 +197,7 @@
   <div id="chTrust"></div>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
+  <div id="pinBar" hidden></div>
   <div class="msgs" id="msgs"></div>
   <div class="ro" id="roBar" hidden>🔒 Sistem mesajları – salt okunur</div>
   <div class="cards" id="cards"></div>
@@ -346,7 +354,7 @@ async function openChat(id) { stopMedia();
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
-  hist = []; coins = []; outbox = []; older = []; histMore = false; $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
+  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
   if (!sy && !synced[cur]) { synced[cur] = 1; api("chat_sync", { conv: cur }); } // eski mesajlar Sugo'dan (arka planda; gelince sohbet yenilenir)
   await loadChat(true);
@@ -372,7 +380,7 @@ window.addEventListener("popstate", () => {
 const optMsg = {};
 const applyOpt = (list) => Object.keys(optMsg).length ? list.filter((m) => !(optMsg[m.id] && optMsg[m.id].del)).map((m) => { const o = optMsg[m.id]; return !o ? m : o.em ? { ...m, em: o.em } : o.wd ? { ...m, ...o.wd } : m; }) : list;
 // Sohbet son 25 mesajla açılır; "Daha eski mesajlar" ile 25'er geriye yüklenir (sorgu ve veri yükü azalır)
-let older = [], histMore = false, olderBusy = false;
+let older = [], histMore = false, olderBusy = false, pins = [];
 async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
   const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
   const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 25 }); olderBusy = false;
@@ -388,6 +396,7 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
     if (!older.length) histMore = !!h.report.more; // eski sayfa yüklenmediyse "devamı var" bilgisi son sayfadan
     const seenIds = new Set(latest.map((m) => String(m.id)));
     hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || [];
+    if (Array.isArray(h.report.pins)) { pins = h.report.pins; renderPins(); }
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
@@ -456,7 +465,14 @@ function emoChips(m) {
   const g = new Map(); for (const [u, e] of m.em) { const x = g.get(e) || { n: 0, me: false }; x.n++; if (String(u) === bayiMe() || (!bayiMe() && !m.m && String(u) !== cur)) x.me = true; g.set(e, x); }
   return `<div class="emochips">${[...g.entries()].map(([e, x]) => `<button class="${x.me ? "me" : ""}" onclick="event.stopPropagation();msgAct('react','${esc(m.id)}','${x.me ? "" : esc(e)}')">${emoSpan(e, 18)}${x.n > 1 ? x.n : ""}</button>`).join("")}</div>`;
 }
+// Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
+let lpT = 0, lpFired = false;
+document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
+  if (!b || e.target.closest("video,audio,.vplay,button,a,[data-img],.emochips,.uidl")) return;
+  lpFired = false; clearTimeout(lpT); lpT = setTimeout(() => { lpFired = true; msgMenuOpen(b.dataset.mid, b); try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} }, 450); }, { passive: true });
+["touchend", "touchmove", "touchcancel"].forEach((ev) => document.addEventListener(ev, () => clearTimeout(lpT), { passive: true }));
 document.addEventListener("click", (e) => {
+  if (lpFired) { lpFired = false; return; } // uzun basmanın ardından gelen tıklama menüyü kapatmasın
   const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
   if (!b || e.target.closest(".emochips") || e.target.closest("[data-img]") || e.target.closest(".uidl") || e.target.closest("video,audio,.vplay,button,a")) return; // oynatıcıya basınca menü açılmaz
   msgMenuOpen(b.dataset.mid, b);
@@ -468,9 +484,19 @@ function msgMenuOpen(mid, el) {
   const prev = m.k === "image" ? "📷 Fotoğraf" : String(m.t || "").slice(0, 60);
   $("msgMenu").innerHTML = `<div class="mp">${emo(esc(prev))}</div>
     <div class="mq">${QUICK_REACT.map((c) => `<button class="${c === myE ? "on" : ""}" onclick="msgAct('react','${esc(mid)}','${c === myE ? "" : c}')">${emoSpan(c, 34)}</button>`).join("")}<button onclick="reactMore('${esc(mid)}')" style="font-size:22px;width:42px">➕</button></div>
-    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
+    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
   $("msgMenu").hidden = false;
 }
+// 📌 Sabitlenen mesajlar: sohbetin üstünde şerit (en yeni sabitlenen üstte); dokununca mesaja gider, ✕ kaldırır
+function renderPins() { const el = $("pinBar"); if (!el) return; const list = cur ? pins : [];
+  el.hidden = !list.length;
+  el.innerHTML = list.map((p) => `<div class="pin" onclick="pinGo('${esc(p.id)}')"><span>📌</span><span class="pt">${p.k === "image" ? "📷 Fotoğraf" : p.k === "voice" ? "🎤 Sesli mesaj" : p.k === "video" ? "🎬 Video" : emo(esc(String(p.t || "").slice(0, 120)))}</span><span class="s">${esc(p.by || "")}</span><button class="px" onclick="event.stopPropagation();msgPin('${esc(p.id)}',false)" title="Sabitlemeyi kaldır">✕</button></div>`).join(""); }
+async function msgPin(mid, on) { msgMenuClose(); const c = cur; if (!c) return;
+  const d = await api("chat_pin", { conv: "b" + c, mid: String(mid), on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  if (c === cur) { pins = (d.report && d.report.pins) || []; renderPins(); } toast(d.ok || (on ? "📌 Sabitlendi" : "Kaldırıldı")); }
+function pinGo(mid) { const el = document.querySelector(`#msgs .m[data-mid="${CSS.escape(String(mid))}"]`);
+  if (!el) { toast("Bu mesaj ekrandaki son mesajlardan daha eski — ⬆️ Daha eski mesajlar ile yükleyin"); return; }
+  stick = false; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
 function msgMenuClose() { $("msgMenu").hidden = true; document.querySelectorAll("#msgs .m.sel").forEach((x) => x.classList.remove("sel")); }
 function reactMore(mid) { reactFor = mid; msgMenuClose(); emoToggle(true); toast("Tepki olarak eklemek istediğiniz emojiye dokunun"); }
 function msgCopy(mid) { const m = findMsg(mid); msgMenuClose(); if (!m) return;
