@@ -31,6 +31,9 @@
   .dot.ok { background: #22c55e; } .dot.bad { background: var(--bad); }
   .av { width: 44px; height: 44px; border-radius: 50%; flex: none; background: #334155; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 800; }
   .av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .avw { position: relative; flex: none; display: flex; }
+  .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
+  .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
   .list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .row { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
   .row .b { flex: 1; min-width: 0; }
@@ -180,7 +183,7 @@
 </section>
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
   <div id="chTrust"></div>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
@@ -220,6 +223,10 @@ async function api(action, body = {}) {
 const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
 const initial = (n) => esc(((n || "?").normalize("NFKC").replace(/[^\p{L}\p{N}]/gu, "").match(/./u) || ["?"])[0].toUpperCase());
 const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-process=image/resize,m_fill,h_120,w_120";
+// Çevrimiçi: yeşil = çevrimiçi, kırmızı = çevrimdışı (sunucu 5 dk'da bir Sugo'dan tazeler; bilgi yoksa nokta yok)
+const onDot = (x) => x && "on" in x && !isSys(x.id) ? `<i class="ondot ${x.on ? "on" : "off"}" title="${x.on ? "Çevrimiçi" : "Çevrimdışı"}"></i>` : "";
+function chOnUpd() { const el = $("chOn"); if (!el) return; const x = cur && !isSys(cur) ? inbox.find((i) => String(i.id) === cur) : null;
+  el.hidden = !(x && "on" in x); if (x) { el.className = "ondot " + (x.on ? "on" : "off"); el.title = x.on ? "Çevrimiçi" : "Çevrimdışı"; } }
 const avHtml = (n, a) => initial(n) + (a ? `<img src="${esc(avUrl(a))}" loading="lazy" onerror="this.remove()">` : "");
 function rel(ms) { if (!ms) return ""; const d = new Date(ms), now = new Date(); const hm = d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
   if (d.toDateString() === now.toDateString()) return hm; const y = new Date(now - 864e5); if (d.toDateString() === y.toDateString()) return "Dün " + hm; return d.toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" }); }
@@ -250,7 +257,7 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
 // ---------- sohbet listesi
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); }
+  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); chOnUpd(); }
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
@@ -259,7 +266,7 @@ function renderInbox() {
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
   morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
-    <div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>
+    <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
     : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`));
@@ -326,7 +333,7 @@ async function openChat(id) {
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
+  chOnUpd(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
@@ -540,7 +547,12 @@ function grow(t) { t.style.height = "auto"; t.style.height = Math.min(120, t.scr
 async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
   outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
-  const d = await api("send", { conv: cur, text: t }); if (d.error) toast("❌ " + d.error, true); loadChat(); }
+  const c = cur, d = await api("send", { conv: c, text: t }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  await outboxWait(d.id, c); }
+async function outboxWait(id, c) { if (!id) { loadChat(); return; }
+  for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
+    if (ob && (ob.status === "sent" || ob.status === "failed")) { if (ob.status === "failed") toast("❌ Gitmedi: " + (ob.error || ""), true); break; } }
+  if (cur === c) loadChat(); }
 function renderTpls() { $("tpls").innerHTML = `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>` +
   tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join(""); }
 function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(t); }
@@ -548,7 +560,8 @@ function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
   const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
   outbox.unshift({ id: "tmp" + Date.now(), kind: "image", status: "pending", created_at: new Date().toISOString() }); renderChat(true);
-  const d = await api("send_image", { conv: cur, data: url }); if (d.error) toast("❌ " + d.error, true); loadChat(); }
+  const c = cur, d = await api("send_image", { conv: c, data: url }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  await outboxWait(d.id, c); }
 function shrink(file) { return new Promise((res) => { const img = new Image(); const u = URL.createObjectURL(file);
   img.onload = () => { const k = Math.min(1, 1280 / Math.max(img.width, img.height)); const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
     c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL("image/jpeg", 0.85)); };
