@@ -349,7 +349,7 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
   if (m.k === "voice" && /^https?:/.test(t)) return voiceBtn(t, Number(m.dur) || 0);
-  if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}" style="max-width:100%;max-height:320px;border-radius:8px;display:block"></video>`;
+  if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}"${m.thumb ? ` poster="${esc(m.thumb)}"` : ""} style="max-width:100%;max-height:320px;border-radius:8px;display:block;background:#000"></video>`;
   if (m.k === "system" || m.k === "call") return `<i>${emo(esc(t || (m.k === "call" ? "📞 Arama" : "Sistem mesajı")))}</i>`;
   if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<img src="${esc(t)}" data-img="${esc(t)}" loading="lazy">`;
   return emo(uidBare(esc(t || "[" + (m.k || "mesaj") + "]")), true); }
