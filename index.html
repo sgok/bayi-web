@@ -348,11 +348,28 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
-  if (m.k === "voice" && /^https?:/.test(t)) return `🎤 <audio controls preload="none" src="${esc(t)}" style="height:36px;max-width:230px;vertical-align:middle"></audio>`;
+  if (m.k === "voice" && /^https?:/.test(t)) return voiceBtn(t, Number(m.dur) || 0);
   if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}" style="max-width:100%;max-height:320px;border-radius:8px;display:block"></video>`;
   if (m.k === "system" || m.k === "call") return `<i>${emo(esc(t || (m.k === "call" ? "📞 Arama" : "Sistem mesajı")))}</i>`;
   if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<img src="${esc(t)}" data-img="${esc(t)}" loading="lazy">`;
   return emo(uidBare(esc(t || "[" + (m.k || "mesaj") + "]")), true); }
+// 🎤 Sesli mesaj: Sugo AMR (tarayıcılar çalamaz) → recorder-core ile WAV'a çevrilip çalınır (Sugo'nun kendi sitesi de böyle yapar); MP3 doğrudan
+const AMR_LIBS = ["recorder-core.js", "engine/wav.js", "engine/beta-amr.js", "engine/beta-amr-engine.js"].map((f) => "https://cdn.jsdelivr.net/npm/recorder-core@1.3.25011100/src/" + f);
+let amrReady = null;
+function amrLoad() { if (amrReady) return amrReady;
+  amrReady = AMR_LIBS.reduce((p, u) => p.then(() => new Promise((res, rej) => { const s = document.createElement("script"); s.src = u; s.onload = res; s.onerror = () => rej(new Error("ses çözücü yüklenemedi")); document.head.appendChild(s); })), Promise.resolve());
+  amrReady.catch(() => { amrReady = null; }); return amrReady; }
+async function voiceSrc(url) {
+  const r = await fetch(url); if (!r.ok) throw new Error("HTTP " + r.status); const buf = await r.arrayBuffer();
+  if (new TextDecoder().decode(new Uint8Array(buf.slice(0, 5))) === "#!AMR") { await amrLoad();
+    return await new Promise((res, rej) => window.Recorder.amr2wav(new Blob([buf]), (wav, ms) => res({ src: URL.createObjectURL(wav), ms }), (e) => rej(new Error(String(e))))); }
+  return { src: URL.createObjectURL(new Blob([buf], { type: r.headers.get("content-type") || "audio/mpeg" })) };
+}
+window.voicePlay = async (btn) => { if (btn.disabled) return; btn.disabled = true; const label = btn.textContent; btn.textContent = "⏳ yükleniyor…";
+  try { const v = await voiceSrc(btn.dataset.v); const a = document.createElement("audio"); a.controls = true; a.src = v.src; a.style.cssText = "height:36px;max-width:230px;vertical-align:middle";
+    btn.replaceWith(a); a.play().catch(() => {}); }
+  catch (e) { btn.disabled = false; btn.textContent = label; (window.toast || alert)("🎤 Ses çalınamadı: " + e.message, true); } };
+const voiceBtn = (url, dur) => `🎤 <button class="vplay" data-v="${String(url).replace(/"/g, "&quot;")}" onclick="event.stopPropagation();voicePlay(this)" style="padding:6px 12px;border-radius:999px">▶️ Sesli mesaj${dur ? " · " + (dur >= 60 ? Math.floor(dur / 60) + ":" + String(dur % 60).padStart(2, "0") : dur + " sn") : ""}</button>`;
 // ---------- Sugo emojileri: metindeki [beg_you] gibi kodlar Sugo'nun emoji resmine çevrilir (tabletle aynı tablo)
 const EMO = (() => { const m = new Map(), E = window.SUGO_EMOJI || {};
   for (const atlas of ["legacy", "modern"]) { const a = E[atlas]; if (!a) continue; for (const [k, v] of Object.entries(a.items)) m.set(k.toLowerCase(), { atlas, col: v[0], row: v[1], cols: a.cols, rows: a.rows }); } return m; })();
