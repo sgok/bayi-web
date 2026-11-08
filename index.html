@@ -569,6 +569,7 @@ function grow(t) { t.style.height = "auto"; t.style.height = Math.min(120, t.scr
 async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
   outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
+  ownRow(cur, t);
   const c = cur, d = await api("send", { conv: c, text: t }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
   await outboxWait(d.id, c); }
 async function outboxWait(id, c) { if (!id) { loadChat(); return; }
@@ -582,6 +583,7 @@ function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
   const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
   outbox.unshift({ id: "tmp" + Date.now(), kind: "image", status: "pending", created_at: new Date().toISOString() }); renderChat(true);
+  ownRow(cur, "📷 Fotoğraf");
   const c = cur, d = await api("send_image", { conv: c, data: url }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
   await outboxWait(d.id, c); }
 function shrink(file) { return new Promise((res) => { const img = new Image(); const u = URL.createObjectURL(file);
@@ -808,6 +810,9 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
+// Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
+function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
+  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
 function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (!c || !it || !it.id) return;
   if (cur === c && !hist.some((m) => String(m.id) === String(it.id))) {
     hist = applyOpt([...hist, it].sort((a, b) => Date.parse(a.at) - Date.parse(b.at)));
