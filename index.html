@@ -492,7 +492,7 @@ function renderChat(scroll) {
   const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
   for (const o of outbox) {
     if (o.status === "sent" && (o.kind === "image" || sentTexts.has(String(o.body || "").trim()))) continue;
-    const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ tablet gönderiyor…";
+    const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ gönderiliyor…";
     items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.kind === "image" ? "📷 Resim" : esc(o.body || "")}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
   }
   items.sort((a, b) => a.at - b.at);
