@@ -142,6 +142,7 @@ async function api(action, body = {}) {
   if (r.status === 401) { tok = ""; localStorage.removeItem("bw_tok"); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
+const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
 const initial = (n) => esc(((n || "?").normalize("NFKC").replace(/[^\p{L}\p{N}]/gu, "").match(/./u) || ["?"])[0].toUpperCase());
 const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-process=image/resize,m_fill,h_120,w_120";
 const avHtml = (n, a) => initial(n) + (a ? `<img src="${esc(avUrl(a))}" loading="lazy" onerror="this.remove()">` : "");
@@ -208,16 +209,16 @@ function bubbleBody(m) { const t = String(m.t || "");
   return esc(t || "[" + (m.k || "mesaj") + "]"); }
 function renderChat(scroll) {
   const box = $("msgs"), atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
-  const items = hist.map((m) => ({ at: Date.parse(m.at), html: `<div class="m ${m.m ? "me" : ""}">${bubbleBody(m)}<div class="tm">${rel(Date.parse(m.at))}</div></div>` }));
+  const items = hist.map((m) => ({ at: Date.parse(m.at), html: `<div class="m ${m.m ? "me" : ""}">${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}</div></div>` }));
   for (const c of coins) items.push({ at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 ${c.other ? `<b>Başka hesaptan:</b> ${esc(c.nickname || "")} (UID ${esc(c.uid || "")})<br>` : ""}<b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
-      ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼ <button style="padding:4px 10px;font-size:13px" onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
+      ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
       <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div></div>` });
   // Sayfadan gönderilenler: tablet gönderene kadar soluk, hata olursa kırmızı (gönderilen mesaj Sugo'dan gelince listede asıl hâli görünür)
   const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
   for (const o of outbox) {
     if (o.status === "sent" && (o.kind === "image" || sentTexts.has(String(o.body || "").trim()))) continue;
     const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ tablet gönderiyor…";
-    items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.kind === "image" ? "📷 Resim" : esc(o.body || "")}<div class="tm">${st}</div></div>` });
+    items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.kind === "image" ? "📷 Resim" : esc(o.body || "")}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
   }
   items.sort((a, b) => a.at - b.at);
   let lastDay = "", h = "";
@@ -232,7 +233,7 @@ async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi o
 function grow(t) { t.style.height = "auto"; t.style.height = Math.min(120, t.scrollHeight) + "px"; }
 async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
-  outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, status: "pending", created_at: new Date().toISOString() }); renderChat(true);
+  outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
   const d = await api("send", { conv: cur, text: t }); if (d.error) toast("❌ " + d.error, true); loadChat(); }
 function renderTpls() { $("tpls").innerHTML = `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>` +
   tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join(""); }
@@ -279,7 +280,7 @@ async function loadDm() { const d = await api("bayi_coins_get", { limit: dmLimit
 function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
   <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
-  <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><button style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
+  <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
     : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
 function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = d.unpaid || {}, td = d.today || {};
   $("nDm").hidden = !u.n; $("nDm").textContent = u.n || "";
