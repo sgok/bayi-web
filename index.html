@@ -365,8 +365,11 @@ async function voiceSrc(url) {
     return await new Promise((res, rej) => window.Recorder.amr2wav(new Blob([buf]), (wav, ms) => res({ src: URL.createObjectURL(wav), ms }), (e) => rej(new Error(String(e))))); }
   return { src: URL.createObjectURL(new Blob([buf], { type: r.headers.get("content-type") || "audio/mpeg" })) };
 }
+// Kısa sessiz ses: dokunma anında oynatıcının "kilidi açılır" (iPhone/Android, çözme bitince aynı oynatıcı çalabilsin)
+const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
 window.voicePlay = async (btn) => { if (btn.disabled) return; btn.disabled = true; const label = btn.textContent; btn.textContent = "⏳ yükleniyor…";
-  try { const v = await voiceSrc(btn.dataset.v); const a = document.createElement("audio"); a.controls = true; a.src = v.src; a.style.cssText = "height:36px;max-width:230px;vertical-align:middle";
+  const a = document.createElement("audio"); a.src = SILENT_WAV; a.play().catch(() => {}); // dokunuşun içinde
+  try { const v = await voiceSrc(btn.dataset.v); a.controls = true; a.src = v.src; a.style.cssText = "height:36px;max-width:230px;vertical-align:middle";
     btn.replaceWith(a); a.play().catch(() => {}); }
   catch (e) { btn.disabled = false; btn.textContent = label; (window.toast || alert)("🎤 Ses çalınamadı: " + e.message, true); } };
 const voiceBtn = (url, dur) => `🎤 <button class="vplay" data-v="${String(url).replace(/"/g, "&quot;")}" onclick="event.stopPropagation();voicePlay(this)" style="padding:6px 12px;border-radius:999px">▶️ Sesli mesaj${dur ? " · " + (dur >= 60 ? Math.floor(dur / 60) + ":" + String(dur % 60).padStart(2, "0") : dur + " sn") : ""}</button>`;
