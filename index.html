@@ -40,6 +40,16 @@
   .badge { background: var(--go); color: #fff; border-radius: 999px; padding: 0 7px; font-size: 12px; font-weight: 700; min-width: 20px; text-align: center; }
   .un { color: #4ade80; font-weight: 700; }
   .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
+  .trust { font-size: 12.5px; margin-top: 3px; color: var(--muted); white-space: normal; } .trust b { color: var(--text); }
+  .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
+  #chTrust .trust { font-size: 13.5px; padding: 6px 14px; margin: 0; border-bottom: 1px solid var(--line); }
+  #srchRes:empty { display: none; } #srchRes { border-bottom: 2px solid var(--line); max-height: 60vh; overflow-y: auto; }
+  #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
+  .row .av.tap { cursor: pointer; outline: 2px solid transparent; } .row .av.tap:active { outline-color: #38bdf8; }
+  .pf-top { display: flex; gap: 14px; align-items: center; } .pf-av { width: 84px; height: 84px; }
+  .pf-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 12px 0; } .pf-kv div { background: rgba(148,163,184,.08); border-radius: 10px; padding: 8px 10px; font-size: 13px; } .pf-kv b { display: block; font-size: 15px; }
+  .pf-ph { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .pf-ph img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
+  .pf-sec { margin-top: 14px; font-weight: 800; font-size: 14px; }
   .msgs { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
   .m { max-width: 82%; padding: 7px 10px 5px; border-radius: 12px; background: var(--peer); align-self: flex-start; overflow-wrap: anywhere; white-space: pre-wrap; }
   .m.me { background: var(--me); align-self: flex-end; }
@@ -104,7 +114,8 @@
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
     <div id="dmStrip"></div>
-    <div class="search"><input id="idIn" inputmode="numeric" placeholder="UID ile sohbet aç" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
+    <div class="search"><input id="idIn" type="search" autocomplete="off" placeholder="🔎 İsim ya da UID ile ara / sohbet aç" oninput="srch()" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
+    <div id="srchRes"></div>
     <div id="convs"><div class="row s">Yükleniyor…</div></div>
   </div>
   <div class="pane" id="p-dm"><div id="dmBody"><div class="row s">Yükleniyor…</div></div></div>
@@ -114,7 +125,8 @@
 </section>
 
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="av" id="chAv"></div><h1 id="chName"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px">🪙 Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><h1 id="chName" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px">🪙 Yükle</button></header>
+  <div id="chTrust"></div>
   <div class="warnbar" id="tabWarn2"></div>
   <div class="systabs" id="sysTabs" hidden></div>
   <div class="msgs" id="msgs"></div>
@@ -185,15 +197,90 @@ function renderInbox() {
   const unread = inbox.reduce((s, x) => s + (Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread;
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   $("convs").innerHTML = teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
-    <div class="av">${avHtml(x.n, x.av)}</div>
+    <div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>
     <div class="b"><div class="t"><b>${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
-      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${esc(x.p || "—")}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div></div></div>`).join("")
-    : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`); }
-function openById() { const v = ($("idIn").value.match(/\d{5,12}/) || [])[0]; if (!v) { toast("Geçerli bir UID yazın", true); return; } $("idIn").value = ""; openChat(v); }
+      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${esc(x.p || "—")}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${trust(x.id)}</div></div>`).join("")
+    : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`);
+  // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
+  const ids = inbox.slice(0, 80).map((x) => String(x.id));
+  loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
+function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
+  if (!v) { const first = document.querySelector("#srchRes .row[data-uid]"); if (first) { pick(first.dataset.uid); return; } toast("İsim ya da UID yazın", true); return; }
+  pick(v); }
+function pick(uid) { $("idIn").value = ""; $("srchRes").innerHTML = ""; openChat(uid); }
+
+// ---------- kişi arama (isim / UID / biyografi): önce kendi sohbetlerimiz, sonra kayıtlı herkes
+const people = {}; // uid → {n, av} (aramadan/profilden: sohbet başlığı için)
+let srchT = 0, srchQ = "";
+function srch() { clearTimeout(srchT); const q = $("idIn").value.trim(); srchQ = q;
+  if (!q) { $("srchRes").innerHTML = ""; return; }
+  srchT = setTimeout(() => runSrch(q), 350); }
+const pRow = (uid, n, av, sub) => `<div class="row" data-uid="${esc(uid)}" onclick="pick('${esc(uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(uid)}')" title="Profili aç">${avHtml(n, av)}</div>
+  <div class="b"><div class="t"><b>${esc(n || uid)}</b><span class="s">${esc(uid)}</span></div>${sub ? `<div class="p"><span>${sub}</span></div>` : ""}${trust(uid)}</div></div>`;
+async function runSrch(q) {
+  const low = q.toLocaleLowerCase("tr"), digits = /^\d{5,12}$/.test(q);
+  const mine = inbox.filter((x) => String(x.id).includes(q) || String(x.n || "").toLocaleLowerCase("tr").includes(low)).slice(0, 8);
+  const draw = (rows) => { if (srchQ !== q) return;
+    $("srchRes").innerHTML = (digits && !mine.some((x) => String(x.id) === q) && !rows.some((r) => String(r.uid) === q) ? `<div class="row" data-uid="${esc(q)}" onclick="pick('${esc(q)}')"><div class="av">💬</div><div class="b"><b>UID ${esc(q)} ile sohbet aç</b></div></div>` : "")
+      + (mine.length ? `<div class="hd">Sohbetlerimiz</div>` + mine.map((x) => pRow(String(x.id), x.n, x.av, esc(x.p || ""))).join("") : "")
+      + (rows.length ? `<div class="hd">Kayıtlı kişiler</div>` + rows.map((r) => pRow(String(r.uid), r.nickname, r.avatar_url || r.avatar, [r.verified ? "✔️ onaylı" : "", r.online ? "🟢 çevrimiçi" : "", r.wealth_level ? "💰 " + r.wealth_level : ""].filter(Boolean).join(" · "))).join("") : "")
+      || `<div class="row s">Bulunamadı</div>`; };
+  draw([]);
+  if (q.length < 2) return;
+  const d = await api("profiles_search", { q, flt: "", off: 0 });
+  const rows = ((d.report && d.report.rows) || []).filter((r) => !mine.some((x) => String(x.id) === String(r.uid))).slice(0, 20);
+  rows.forEach((r) => { people[r.uid] = { n: r.nickname, av: r.avatar_url || r.avatar }; });
+  draw(rows);
+  if (await loadBuyers([...mine.map((x) => String(x.id)), ...rows.map((r) => String(r.uid))])) draw(rows);
+}
+
+// ---------- güven bilgisi: bizden daha önce coin aldı mı (satış kayıtları) + açık borç — tabletle aynı
+const buyers = {}; let buyersAt = 0;
+const relIso = (s) => s ? rel(Date.parse(s)) : "";
+function trust(uid) {
+  if (!(uid in buyers) || isSys(uid)) return "";
+  const x = buyers[uid];
+  if (!x) return `<div class="trust new">🆕 Bizden daha önce coin almadı</div>`;
+  const good = x.n >= 3 && !x.debt;
+  return `<div class="trust ${x.debt ? "debt" : good ? "good" : "some"}">${good ? "✅" : "🛒"} <b>${x.n} kez</b> aldı · ${nf(x.coins)} coin · ${x.azn} ₼${x.last ? " · son " + esc(relIso(x.last)) : ""}${x.debt ? ` · <b>⚠️ borcu ${x.debt} ₼</b>` : ""}</div>`;
+}
+async function loadBuyers(uids, force) {
+  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 80);
+  if (!need.length) return false;
+  const d = await api("buyer_stats", { uids: need }); if (d.error) return false;
+  const b = (d.report && d.report.buyers) || {};
+  need.forEach((u) => { buyers[u] = b[u] || null; }); buyersAt = Date.now(); return true;
+}
+
+// ---------- profil (tabletteki gibi; sadece okuma)
+const mins = (m) => { m = Math.round(Number(m) || 0); return m >= 60 ? Math.floor(m / 60) + " sa " + (m % 60) + " dk" : m + " dk"; };
+async function prof(uid) {
+  uid = String(uid); const k = inbox.find((x) => String(x.id) === uid) || people[uid] || {};
+  openModal(`<div class="pf-top"><div class="av pf-av">${avHtml(k.n, k.av)}</div><div><h3 style="margin:0">${esc(k.n || uid)}</h3><div class="s">UID ${esc(uid)}</div></div></div><div class="row s">Profil yükleniyor…</div>`);
+  const [d] = await Promise.all([api("profile", { uid }), loadBuyers([uid])]);
+  const p = d.report && d.report.profile; if (!p) { $("modalBox").innerHTML += `<div class="row s">❌ ${esc(d.error || "Profil okunamadı")}</div>`; return; }
+  people[uid] = { n: p.name, av: p.avatar }; const r = p.room || {}, g = p.gifts || {}, bu = p.buys || {};
+  const lv = [p.wealth ? "💰 Zenginlik " + p.wealth : "", p.charm ? "✨ Çekicilik " + p.charm : "", p.vip ? "VIP " + p.vip : "", p.svip ? "SVIP " + p.svip : ""].filter(Boolean).join(" · ");
+  const big = p.avatar_full || p.avatar;
+  $("modalBox").innerHTML = `<div class="pf-top"><div class="av pf-av" ${big ? `onclick="window.open('${esc(avUrl(big).split("?")[0])}','_blank')" style="cursor:zoom-in"` : ""}>${avHtml(p.name, big)}</div>
+      <div style="min-width:0"><h3 style="margin:0;word-break:break-word">${esc(p.name || uid)} ${p.verified ? "✔️" : ""}</h3><div class="s">UID ${esc(uid)}${p.gender === 2 ? " · 👩" : p.gender === 1 ? " · 👨" : ""}${p.country ? " · " + esc(p.country) : ""}</div>${lv ? `<div class="s" style="margin-top:3px">${esc(lv)}</div>` : ""}${p.role ? `<div class="s" style="color:#38bdf8">⭐ ${esc(p.role)}</div>` : ""}</div></div>
+    ${trust(uid).replace('class="trust', 'style="font-size:14px;margin-top:10px" class="trust')}
+    ${p.bio ? `<div style="margin-top:10px;white-space:pre-wrap;word-break:break-word">${esc(p.bio)}</div>` : ""}
+    <div class="pf-kv">
+      <div>🛒 Bizden aldığı<b>${nf(bu.coins)} coin</b>${bu.count ? bu.count + " kez" + (bu.last ? " · son " + esc(relIso(bu.last)) : "") : "hiç"}</div>
+      <div>💳 Açık borç<b>${(p.debts || []).length ? (p.debts || []).reduce((s, x) => s + Number(x.remaining || 0), 0).toFixed(2) + " ₼" : "yok"}</b></div>
+      <div>🎁 Odamıza hediye<b>${nf(g.all)}</b>son 30 gün ${nf(g.d30)}</div>
+      <div>🪑 Odamızda (30 gün)<b>${mins(r.seat_30)}</b>${r.days_30 || 0} gün${r.last ? " · son " + esc(relIso(r.last)) : ""}</div>
+    </div>
+    ${(bu.recent || []).length ? `<div class="pf-sec">Son alımları</div>` + bu.recent.map((o) => `<div class="s">• ${esc(relIso(o.at))} — ${nf(o.coins)} coin</div>`).join("") : ""}
+    ${(p.photos || []).filter((x) => x.url && !x.removed).length ? `<div class="pf-sec">Fotoğraflar</div><div class="pf-ph">` + p.photos.filter((x) => x.url && !x.removed).slice(0, 12).map((x) => `<img src="${esc(x.url)}" loading="lazy" onclick="window.open(this.src,'_blank')">`).join("") + `</div>` : ""}
+    <div style="display:flex;gap:8px;margin-top:16px"><button class="go" style="flex:1" onclick="closeModal();pick('${esc(uid)}')">💬 Sohbeti aç</button><button onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(uid)}').then(()=>toast('UID kopyalandı'))">📋 UID</button><button onclick="closeModal()">Kapat</button></div>`;
+}
 
 // ---------- sohbet
 async function openChat(id) {
-  cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || {}; const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
