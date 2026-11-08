@@ -34,7 +34,8 @@
   .avw { position: relative; flex: none; display: flex; }
   .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
   .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
-  #chRoom { display: block; font-size: 12px; line-height: 15px; font-weight: 500; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* ismin altında: uzun isimde kesilmesin */
+  #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
+  #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
   #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
   @keyframes notebob { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-3px) rotate(8deg); } }
@@ -366,7 +367,7 @@ async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
   if (!c || isSys(c) || document.hidden) { el.hidden = true; return; }
   const d = await api("room_now", { uid: c }); if (c !== cur) return;
   const r = d.report && d.report.room;
-  el.hidden = !r; if (r) el.innerHTML = `${esc(r.title || "Odada")}<span class="note">🎵</span>`; }
+  el.hidden = !r; if (r) el.innerHTML = `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>`; } // profildeki gibi, "Şu an" yazısı olmadan
 function roomWatch() { clearInterval(roomTimer); $("chRoom").hidden = true; roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
 function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
 function back() { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
