@@ -716,10 +716,18 @@ function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $
 async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
   if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
   const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
-  openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…</div>`);
-  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, again: !!again }); if (d.pin === "wrong") pinCache = null;
-  if (d.error) { closeModal(); if (/2 dakika içinde/.test(d.error) && confirm(d.error + "\n\nYine de gönderilsin mi?")) { coinSend(true); return; } toast("❌ " + d.error, true); return; }
-  closeModal(); toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); cn = null; }
+  openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…<div class="s" style="margin-top:6px">Kesinleşmesi bekleniyor (en fazla 10 sn)</div></div>`);
+  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) {
+    // 3 dakika kuralı: kalan süre canlı geri sayılır (mükerrer gönderim olmasın)
+    if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
+      openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><button onclick="closeModal()">Tamam</button></div>`);
+      const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
+    closeModal(); toast("❌ " + d.error, true); return; }
+  closeModal();
+  if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); } // teşekkür sadece kesin gönderimde
+  else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
+  cn = null; }
 
 // ---------- telefon bildirimi + ses
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
