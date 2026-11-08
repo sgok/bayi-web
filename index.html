@@ -217,7 +217,7 @@ function show(id) { document.querySelectorAll(".screen").forEach((s) => s.classL
 async function api(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
-  if (r.status === 401) { tok = ""; localStorage.removeItem("bw_tok"); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
 const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
@@ -237,11 +237,17 @@ async function doLogin() { const pw = $("pin").value; if (!pw) return;
   tok = d.token; localStorage.setItem("bw_tok", tok); $("pin").value = "";
   if (d.must_change) { await start(); pwChange(pw, true); return; } start(); }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; localStorage.removeItem("bw_tok"); show("login"); }
+async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); }
 
 async function start() {
+  // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
+  let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
+  const fast = !!(cm && Array.isArray(ci) && ci.length);
+  if (fast) { me = cm; show("inbox"); tab(curTab); inbox = ci; renderInbox(); }
+  const pInbox = loadInbox();
   const d = await api("me"); if (d.error) { show("login"); return; }
-  me = d; show("inbox"); tab(curTab); loadInbox(); loadDm(); loadCoins(); connectRt(); notifSetup();
+  me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
+  if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
   const qp = new URLSearchParams(location.search); if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
   if (location.search) history.replaceState(null, "", location.pathname);
   api("bayi_templates").then((r) => { tpls = (r.report && r.report.templates) || []; renderTpls(); });
@@ -257,7 +263,8 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
 // ---------- sohbet listesi
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); chOnUpd(); }
+  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); chOnUpd();
+  try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
