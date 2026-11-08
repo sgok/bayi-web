@@ -341,10 +341,13 @@ window.addEventListener("popstate", () => {
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
   if (cur) { cur = null; show("inbox"); loadInbox(); }
 });
+// Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
+const optMsg = {};
+const applyOpt = (list) => Object.keys(optMsg).length ? list.filter((m) => !(optMsg[m.id] && optMsg[m.id].del)).map((m) => { const o = optMsg[m.id]; return !o ? m : o.em ? { ...m, em: o.em } : o.wd ? { ...m, ...o.wd } : m; }) : list;
 async function loadChat(scroll) { if (!cur) return; const c = cur;
   const [h, o] = await Promise.all([api("chat_history", { conv: "b" + c }), isSys(c) ? Promise.resolve({ outbox: [] }) : api("outbox", { conv: c })]);
   if (c !== cur) return;
-  if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; hist = h.report.chat || []; coins = h.report.coins || [];
+  if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; hist = applyOpt(h.report.chat || []); coins = h.report.coins || [];
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
@@ -438,15 +441,20 @@ async function msgAct(kind, mid, e) {
   if (kind === "withdraw" && !confirm("Bu mesaj geri alınsın mı? Karşı tarafta 'mesaj geri çekildi' görünür.")) return;
   if (kind === "delete" && !confirm("Bu mesaj sohbetten silinsin mi? (Sugo'da bizim tarafta silinir; karşı taraf görmeye devam edebilir)")) return;
   const c = cur;
-  if (kind === "react") { const others = (m.em || []).filter(([u]) => String(u) !== bayiMe()); m.em = e ? [...others, [bayiMe() || "me", e]] : others; renderChat(); } // ekranda hemen
+  // Sonuç ekranda HEMEN; sunucu bitirene kadar ara yenilemeler bunu ezmez (optMsg), biterse gerçek hâl yüklenir
+  const key = String(mid);
+  if (kind === "react") { const others = (m.em || []).filter(([u]) => String(u) !== bayiMe()); optMsg[key] = { em: e ? [...others, [bayiMe() || "me", e]] : others }; }
+  else if (kind === "withdraw") optMsg[key] = { wd: { k: "withdraw", orig: m.t, origK: m.k, by: (me && me.name) || "" } };
+  else optMsg[key] = { del: true };
+  hist = applyOpt(hist); renderChat();
+  const done = () => { delete optMsg[key]; if (cur === c) loadChat(); };
   const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m });
-  if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
-  toast(kind === "react" ? "⏳ Tepki gönderiliyor…" : kind === "withdraw" ? "⏳ Geri alınıyor…" : "⏳ Siliniyor…");
-  for (let i = 0; i < 20 && d.id; i++) { await new Promise((r) => setTimeout(r, i < 4 ? 1000 : 2500));
+  if (d.error) { toast("❌ " + d.error, true); done(); return; }
+  for (let i = 0; i < 30 && d.id; i++) { await new Promise((r) => setTimeout(r, i < 12 ? 400 : 2000));
     const g = await api("outbox_get", { id: d.id }), ob = g.ob;
-    if (ob && ob.status === "sent") { toast(kind === "react" ? (e ? "✅ Tepki gönderildi" : "Tepki kaldırıldı") : kind === "withdraw" ? "↩️ Mesaj geri alındı" : "🗑️ Mesaj silindi"); if (cur === c) loadChat(); return; }
-    if (ob && ob.status === "failed") { toast("❌ Yapılamadı: " + (ob.error || ""), true); if (cur === c) loadChat(); return; } }
-  if (cur === c) loadChat();
+    if (ob && ob.status === "sent") { toast(kind === "react" ? (e ? "✅ Tepki gönderildi" : "Tepki kaldırıldı") : kind === "withdraw" ? "↩️ Mesaj geri alındı" : "🗑️ Mesaj silindi"); done(); return; }
+    if (ob && ob.status === "failed") { toast("❌ Yapılamadı: " + (ob.error || ""), true); done(); return; } }
+  done();
 }
 
 // ---------- 💎 parça parça elmas bozumu: aynı kişinin aralarında en fazla 2 dk olan bozumları tek grup (toplam + ödenecek) — tabletle aynı
@@ -721,7 +729,7 @@ async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins,
   if (d.error) {
     // 3 dakika kuralı: kalan süre canlı geri sayılır (mükerrer gönderim olmasın)
     if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
-      openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><button onclick="closeModal()">Tamam</button></div>`);
+      openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><p class="s" style="color:#fbbf24">⚠️ Gönderim çok acilse Selçuk Bey ile iletişime geçin.</p><button onclick="closeModal()">Tamam</button></div>`);
       const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
     closeModal(); toast("❌ " + d.error, true); return; }
   closeModal();
