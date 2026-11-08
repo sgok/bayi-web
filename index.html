@@ -10,6 +10,8 @@
 <meta name="theme-color" content="#0b1512">
 <meta name="robots" content="noindex, nofollow">
 <title>Sugo Bayi</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏪%3C/text%3E%3C/svg%3E">
 <style>
   :root { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --me: #075e54; --peer: #1d2c25; --bad: #f87171; --warn: #fbbf24; }
@@ -96,6 +98,7 @@
 <section class="screen" id="inbox">
   <header><div style="font-size:24px">🏪</div><h1 id="hTitle">Sugo Bayi</h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="logout()">Çıkış</button></header>
   <div class="warnbar" id="tabWarn"></div>
+  <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
     <div id="dmStrip"></div>
     <div class="search"><input id="idIn" inputmode="numeric" placeholder="UID ile sohbet aç" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
@@ -154,7 +157,9 @@ async function logout() { if (!confirm("Çıkış yapılsın mı?")) return; awa
 
 async function start() {
   const d = await api("me"); if (d.error) { show("login"); return; }
-  me = d; show("inbox"); tab(curTab); loadInbox(); loadDm(); connectRt();
+  me = d; show("inbox"); tab(curTab); loadInbox(); loadDm(); connectRt(); notifSetup();
+  const qp = new URLSearchParams(location.search); if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
+  if (location.search) history.replaceState(null, "", location.pathname);
   api("bayi_templates").then((r) => { tpls = (r.report && r.report.templates) || []; renderTpls(); });
 }
 
@@ -167,7 +172,7 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
 // ---------- sohbet listesi
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
+  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); }
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
@@ -195,7 +200,8 @@ window.addEventListener("popstate", () => { if (cur) { cur = null; show("inbox")
 async function loadChat(scroll) { if (!cur) return; const c = cur;
   const [h, o] = await Promise.all([api("chat_history", { conv: "b" + c }), isSys(c) ? Promise.resolve({ outbox: [] }) : api("outbox", { conv: c })]);
   if (c !== cur) return;
-  if (h.report) { hist = h.report.chat || []; coins = h.report.coins || []; }
+  if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; hist = h.report.chat || []; coins = h.report.coins || [];
+    const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
   if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<a href="${esc(t)}" target="_blank"><img src="${esc(t)}" loading="lazy"></a>`;
@@ -316,6 +322,40 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
   if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
   if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
   $("ajBody").innerHTML = h; }
+
+// ---------- telefon bildirimi + ses
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
+let swReg = null;
+async function notifSetup() {
+  const bar = $("notifBar"); const showBar = (h) => { bar.innerHTML = h; bar.style.display = h ? "block" : "none"; };
+  if (!("serviceWorker" in navigator)) { showBar(""); return; }
+  try { swReg = await navigator.serviceWorker.register("sw.js"); } catch (e) {}
+  if (isIOS && !standalone) { showBar(`🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Bayi</b> simgesinden açın.`); return; }
+  if (!("Notification" in window) || !("PushManager" in window)) { showBar("ℹ️ Bu tarayıcı bildirim desteklemiyor (iPhone'da iOS 16.4 ve üstü gerekir)."); return; }
+  if (Notification.permission === "denied") { showBar("🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Bayi › İzin Ver."); return; }
+  if (Notification.permission === "default") { showBar(`🔔 Yeni mesaj ve elmas bozumlarında telefona bildirim gelsin mi? <button class="go" style="margin-left:6px;padding:6px 12px" onclick="notifAsk()">Bildirimleri aç</button>`); return; }
+  showBar(""); await pushSubscribe(false);
+}
+async function notifAsk() { unlockAudio(); const p = await Notification.requestPermission(); if (p === "granted") { await pushSubscribe(true); } notifSetup(); }
+function b64uToU8(s) { const p = "=".repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, (c) => c.charCodeAt(0)); }
+async function pushSubscribe(first) {
+  try { const reg = swReg || await navigator.serviceWorker.ready; if (!me || !me.vapid) return;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uToU8(me.vapid) });
+    const d = await api("push_sub", { sub: sub.toJSON() }); if (first) toast(d.error ? "❌ " + d.error : "🔔 Bildirimler açıldı"); } catch (e) { if (first) toast("Bildirim açılamadı: " + (e && e.message || e), true); } }
+// Ses: sayfa açıkken yeni mesaj gelince kısa bir "ding" (telefon sessizdeyse iPhone kendisi susturur)
+let actx = null;
+function unlockAudio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+document.addEventListener("touchstart", unlockAudio, { once: true, passive: true }); document.addEventListener("click", unlockAudio, { once: true });
+function ding() { try { unlockAudio(); if (!actx) return; const t0 = actx.currentTime;
+  [[880, 0], [1320, 0.12]].forEach(([f, dt]) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
+    g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(0.35, t0 + dt + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.25); o.start(t0 + dt); o.stop(t0 + dt + 0.3); }); } catch (e) {} }
+let lastIncoming = Number(localStorage.getItem("bw_last") || 0);
+function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.u) > 0 && !x.own).map((x) => Number(x.at) || 0));
+  if (mx > lastIncoming) { if (lastIncoming) ding(); lastIncoming = mx; try { localStorage.setItem("bw_last", String(mx)); } catch (e) {} } }
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", (e) => { const m = e.data || {};
+  if (m.kind === "push") { ding(); if (cur) loadChat(); else { loadInbox(); loadDm(); } }
+  if (m.kind === "open" && m.url) { const u = new URL(m.url); const c = u.searchParams.get("c"), tt = u.searchParams.get("t"); if (c) openChat(c); else if (tt) { back(); tab(tt); } } });
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
