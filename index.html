@@ -387,7 +387,7 @@ function renderInbox() {
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
-    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : "<span class="gc"></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = inbox.slice(0, 80).map((x) => String(x.id));
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
