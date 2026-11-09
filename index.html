@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.4">
+<meta name="build" content="2.1.5">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -277,7 +277,7 @@
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
-let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null };
+let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null }, tagx = []; // tagx: son 120 sohbette olmayan etiketli kişiler (etiket sekmelerinde görünür)
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad ? 5000 : 2500); }
@@ -376,12 +376,15 @@ let ctags = {}, lf = "all"; try { ctags = JSON.parse(localStorage.getItem("bw_ct
 const hasTag = (id, t) => (ctags[String(id)] || []).includes(t);
 const tagIcons = (id) => (hasTag(id, "debtor") ? '<span class="tagic" title="Borçlu">🧾</span>' : "") + (hasTag(id, "opera") ? '<span class="tagic" title="Opera ekibi">🎭</span>' : "") + (hasTag(id, "boss") ? '<span class="tagic" title="Patron">👑</span>' : "") + (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı"><span class="gc"></span></span>' : "");
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
+function setTagx(r) { if (r && Array.isArray(r.tagx)) tagx = r.tagx; }
+// Etiket sekmesi: listedeki (son 120 sohbet) etiketliler + listede olmayan etiketliler (son mesaj saatine göre)
+function tagRows(k) { const ids = new Set(inbox.map((x) => String(x.id))); return inbox.filter((x) => hasTag(x.id, k)).concat(tagx.filter((x) => !ids.has(String(x.id)) && hasTag(x.id, k)).sort((a, b) => (b.at || 0) - (a.at || 0))); }
 function setLf(k) { lf = k; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
 function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur) || !can("duzen")) { el.innerHTML = ""; return; }
   el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button><button class="${hasTag(cur, "boss") ? "on" : ""}" onclick="tagToggle('boss')">👑 Patron</button><button class="${hasTag(cur, "opera") ? "on" : ""}" onclick="tagToggle('opera')">🎭 Opera</button><button class="${hasTag(cur, "debtor") ? "on" : ""}" onclick="tagToggle('debtor')">🧾 Borçlu</button>`; }
 async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
   const d = await api("conv_tag", { conv: c, tag, on }); if (d.error) { toast("❌ " + d.error, true); return; }
-  setCtags(d.report && d.report.ctags); renderChTags(); renderInbox(); toast(d.ok || (on ? "Etiketlendi" : "Etiket kaldırıldı")); }
+  setCtags(d.report && d.report.ctags); setTagx(d.report); renderChTags(); renderInbox(); toast(d.ok || (on ? "Etiketlendi" : "Etiket kaldırıldı")); }
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
@@ -390,7 +393,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  setCpins(d.report); if (d.report) setCtags(d.report.ctags);
+  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
@@ -401,9 +404,9 @@ function renderInbox() {
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
-  const shown = lf === "all" ? inbox : inbox.filter((x) => hasTag(x.id, lf)), nSel = inbox.filter((x) => hasTag(x.id, "seller")).length, nBuy = inbox.filter((x) => hasTag(x.id, "buyer")).length, nBoss = inbox.filter((x) => hasTag(x.id, "boss")).length, nOpera = inbox.filter((x) => hasTag(x.id, "opera")).length, nDebt = inbox.filter((x) => hasTag(x.id, "debtor")).length;
+  const shown = lf === "all" ? inbox : tagRows(lf), nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
   const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button></div>`;
-  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, 120).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, lf === "all" ? 120 : 400).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
@@ -1186,7 +1189,7 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
-    if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); renderInbox(); renderChTags(); } return; }
+    if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); setTagx(d.payload.payload); renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
