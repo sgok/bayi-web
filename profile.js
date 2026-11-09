@@ -129,14 +129,15 @@
 
   // ➕ Bayi hesabından takip: durum Sugo'daki takip listesinden (p.following: true/false, null = liste henüz okunmadı)
   const folState = {};
+  function folCls(p) { const st = folState[p.uid] ?? p.following; return "pffol" + (st === true ? " on" : st === "wait" ? " wait" : ""); }
   function folTxt(p) { const st = folState[p.uid] ?? p.following; return st === "wait" ? "⏳ Bekleyin…" : st ? "✓ Takip ediliyor" : "➕ Takip et"; }
   window.pfFollow = async (uid) => { const cur = folState[uid] ?? (pfCache.get(uid) ? JSON.parse(pfCache.get(uid)).following : null); if (cur === "wait") return;
     const on = !cur; if (!on && !confirm("Bayi hesabı bu kişiyi takipten çıkarsın mı?")) return;
-    const b = $("pfFol"); folState[uid] = "wait"; if (b && pfUid === uid) b.textContent = folTxt({ uid });
+    const b = $("pfFol"); folState[uid] = "wait"; if (b && pfUid === uid) { b.textContent = folTxt({ uid }); b.className = folCls({ uid }); }
     const d = await api("follow", { uid, on }); let ok = !d.error, err = d.error;
     if (ok && d.id) for (let i = 0; i < 20; i++) { await new Promise((r) => setTimeout(r, i < 10 ? 500 : 1500)); const g = await api("outbox_get", { id: d.id }), ob = g.ob;
       if (ob && (ob.status === "sent" || ob.status === "failed")) { ok = ob.status === "sent"; err = ob.error; break; } }
-    folState[uid] = ok ? on : !on; if ($("pfFol") && pfUid === uid) $("pfFol").textContent = folTxt({ uid });
+    folState[uid] = ok ? on : !on; if ($("pfFol") && pfUid === uid) { $("pfFol").textContent = folTxt({ uid }); $("pfFol").className = folCls({ uid }); }
     toast(ok ? (on ? "➕ Takip edildi (bayi hesabı)" : "Takipten çıkarıldı") : "❌ " + (err || "olmadı"), !ok); };
   function render(p) {
     $("pfTitle").textContent = "👤 " + (p.name || p.uid);
@@ -156,17 +157,21 @@
     $("pfBody").innerHTML = `<div class="pfh"><div class="wav" style="background:#059669">${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
         <div style="flex:1;min-width:0"><div class="pn">${esc(p.name || "(isimsiz)")}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
-          <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')">📋 Kopyala</button> · <span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div>
-          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}<div class="pftags">${tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
-      ${trust(p.uid).replace('class="trust', 'style="font-size:14px;margin:0 0 10px" class="trust')}
-      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : `<button class="pffol" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`}</div>
-      <div class="pfjump"><button onclick="pfJump('pfAlbum')">📷 Albüm (${(p.photos || []).length})</button><button onclick="pfJump('pfOldAv')">🖼️ Eski resimler (${(p.old_avatars || []).length})</button>
-        <button onclick="pfJump('pfNames')">🕘 Geçmiş (${(p.history || []).length})</button><button onclick="pfJump('pfAll')">📋 Tüm bilgiler</button>${p.video && p.video.count ? `<button onclick="pfJump('pfVideo')">📹 Görüntüler (${p.video.count})</button>` : ""}</div>
+          <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
+          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
+      ${trust(p.uid).replace('class="trust', 'style="font-size:14px;margin:0 0 12px" class="trust')}
+      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`}</div>
+      <div class="pgrid">
+        ${card("💸 Bizden aldığı coin", coin(b.coins), `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "#fbbf24")}
+        ${card("🧾 Açık borç", debtSum > 0.009 ? az(debtSum) : "yok", (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
+      </div>
+      ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
+      ${(p.debts || []).length ? `<div class="pfsec">Açık borçlar</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
+      <details class="pfmore"><summary>Diğer bilgiler <span class="s">· oda, hediyeler, albüm, eski resimler, geçmiş, tüm Sugo bilgileri</span></summary>
       ${p.bio ? `<div class="pfbio">${esc(p.bio)}</div>` : ""}
       ${facts.length ? `<div class="pftags" style="margin:2px 0 10px">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
+      <div class="s" style="margin:0 0 8px"><span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}
       <div class="pgrid">
-        ${card("💸 Bizden coin", coin(b.coins), `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "#fbbf24")}
-        ${card("🧾 Açık borç", debtSum > 0.009 ? az(debtSum) : "yok", (p.debts || []).length ? (p.debts || []).length + " kayıt" : "", debtSum > 0.009 ? "#f87171" : "")}
         ${ours ? card("🪑 Odamızda (30 gün)", durm(r.seat_30), `🎤 mikrofon ${durm(r.mic_30)} · 📹 kamera ${durm(r.cam_30)} · ${r.days_30 || 0} gün`) : ""}
         ${card("💝 Aldığı hediyeler", rv ? coin(rv.total) + " coin" : "—", recvSub, "#fbbf24")}
         ${card("🎁 Odamıza atış", coin(g.d30) + " coin", `30 gün · toplam ${coin(g.all)}${g.last ? " · son " + tm(g.last) : ""}`, "#10b981")}
@@ -174,8 +179,6 @@
       </div>
       ${ours ? `<div class="pfsec">Son 14 gün – odamızda koltuk süresi</div><div class="pfbars">${days.map((x) => `<i style="height:${Math.round(100 * x[1] / mx)}%" title="${x[0]}: ${x[1]} dk"></i>`).join("")}</div>
         <div class="s" style="display:flex;justify-content:space-between"><span>${days[0][0].slice(5).split("-").reverse().join(".")}</span><span>bugün</span></div>` : ""}
-      ${(b.recent || []).length ? `<div class="pfsec">💸 Son coin alımları (bizden)</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
-      ${(p.debts || []).length ? `<div class="pfsec">🧾 Açık borç</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
       ${p.video && p.video.count ? `<div class="pfsec" id="pfVideo">📹 Görüntüye çıktı <span class="s">(${p.video.count} kez · son ${tm(p.video.last)})</span></div>
         <div class="frames">${p.video.shots.map((f) => `<div><img src="${escA(f.url)}" loading="lazy" data-img="${escA(f.full || f.url)}">${esc(tm(f.at))}${f.room ? " · " + esc(f.room) : ""}</div>`).join("")}</div>` : ""}
       ${rv && rv.top && rv.top.length ? `<div class="pfsec">💝 Hediye duvarı <span class="s">(Sugo · aldığı en değerli hediyeler)</span></div>` + tbl([["Hediye"], ["Adet", "n"], ["Değer", "n"]], rv.top.map((x) => `<tr><td>${esc(x.name)}</td><td class="n">${x.count}</td><td class="n">${coin(x.price * x.count)}</td></tr>`), "") : ""}
@@ -190,6 +193,7 @@
       ${(p.history || []).length ? `<div class="hist">${p.history.map((h) => histRow(h, p)).join("")}</div>` : '<div class="card empty">Henüz değişiklik yok. İsim, biyografi, profil resmi gibi bilgiler değişince eski hâli tarihiyle burada birikir.</div>'}
       <div class="pfsec">Tüm zamanlar</div>
       <div class="s">${ours ? `Odamızda koltukta toplam ${durm(r.seat_all)} · mikrofon ${durm(r.mic_all)} · kamera ${durm(r.cam_all)} · ${r.days_all || 0} aktif gün · ` : ""}odamıza ${g.times || 0} kez atış${rv ? ` · aldığı hediyeler ${coin(rv.total)} coin` : ""}</div>
+      </details>
       <div style="height:30px"></div>`;
   }
   window.profMsg = (uid) => { pfUid = null; history.back(); setTimeout(() => (typeof pick === "function" ? pick(uid) : openChat(uid)), 60); };
