@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="d9275d0e67ef">
+<meta name="build" content="12afaac0c975">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -69,6 +69,8 @@
   .tagic { margin-left: 5px; font-size: 13px; }
   .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; }
   .chtags button { flex: none; padding: 4px 10px; font-size: 13px; border-radius: 999px; opacity: .75; } .chtags button.on { opacity: 1; background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  nav.bn { flex-wrap: wrap; } .infol { flex-basis: 100%; text-align: center; font-size: 10px; line-height: 13px; color: var(--muted); opacity: .75; padding: 0 6px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+  #compWrap .infol { background: var(--panel); padding-bottom: calc(3px + env(safe-area-inset-bottom)); } html.kb #compWrap .infol { display: none; }
   #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
@@ -230,7 +232,7 @@
   <div class="pane" id="p-card"><div id="cardBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-coin"><div id="coinBody"><div class="row s">Yükleniyor…</div></div></div>
   <div class="pane" id="p-aj"><div id="ajBody"><div class="row s">Yükleniyor…</div></div></div>
-  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button></nav>
+  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button><div class="infol"></div></nav>
 </section>
 
 <section class="screen" id="prof">
@@ -261,6 +263,7 @@
       <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this)"></textarea>
       <button class="go" onclick="send()">Gönder</button>
     </div>
+    <div class="infol"></div>
   </div>
 </section>
 
@@ -292,7 +295,14 @@ function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); l
     stick = false; const el = a.mid && box.querySelector(`.m[data-mid="${CSS.escape(String(a.mid))}"]`);
     if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - a.off; else if (a.top != null) box.scrollTop = a.top; };
   go(); requestAnimationFrame(go); setTimeout(go, 250); setTimeout(go, 900); } // resimler yüklenip yükseklik değişirse yeniden
-async function api(action, body = {}) {
+// ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
+const STAT = { api: [], rt: null, rtOn: false, live: null, link: "" };
+function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
+  const bits = [`sürüm ${BUILD && BUILD !== "12afaac0c975" ? BUILD.slice(0, 7) : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
+    `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
+  document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
+async function api(action, body = {}) { const t0 = performance.now(); try { return await api0(action, body); } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
+async function api0(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
   if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
@@ -371,7 +381,7 @@ const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 9
 function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (b.at || 0) - (a.at || 0)); } // sabitlenenler üstte, sonra son mesaj saatine göre (okunmamış öne alınmaz)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
-async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
+async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
   setCpins(d.report); if (d.report) setCtags(d.report.ctags);
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
@@ -994,7 +1004,7 @@ function pauseShow(until) { let el = $("pauseBar"); if (!el) { el = document.cre
 // Yazı yazılırken / PIN, pencere ya da resim açıkken beklenir; yenilemeden sonra açık sohbet, sekme ve kaydırma yeri geri gelir.
 const BUILD = (document.querySelector('meta[name="build"]') || {}).content || "";
 let updT = 0, updChecking = false;
-async function checkUpdate() { if (!BUILD || BUILD === "d9275d0e67ef" || updChecking || document.hidden) return; updChecking = true;
+async function checkUpdate() { if (!BUILD || BUILD === "12afaac0c975" || updChecking || document.hidden) return; updChecking = true;
   try { const r = await fetch("version.json?ts=" + Date.now(), { cache: "no-store" }); const v = r.ok ? (await r.json()).v : null; if (v && v !== BUILD) safeReload(); } catch (e) {} finally { updChecking = false; } }
 function updBusy() { const a = document.activeElement, typing = a && a.matches && a.matches("input, textarea, [contenteditable]") && String(a.value || a.textContent || "").trim();
   return !!(typing || ($("txt") && $("txt").value.trim()) || ($("modal") && $("modal").style.display === "flex") || ($("lb") && !$("lb").hidden) || loginBusy || (typeof replyTo !== "undefined" && replyTo)); }
@@ -1002,7 +1012,7 @@ function safeReload() { clearTimeout(updT); if (updBusy()) { updT = setTimeout(s
   try { localStorage.setItem("bw_resume", JSON.stringify({ at: Date.now(), cur: cur && $("chat").classList.contains("on") ? cur : null, tab: curTab, a: cur ? msgAnchor() : null })); } catch (e) {}
   location.reload(); }
 function takeResume() { try { const r = JSON.parse(localStorage.getItem("bw_resume") || "null"); localStorage.removeItem("bw_resume"); return r && Date.now() - r.at < 120_000 ? r : null; } catch (e) { return null; } }
-setInterval(checkUpdate, 45_000); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); }); setTimeout(checkUpdate, 8000);
+setTimeout(statLine, 0); setInterval(checkUpdate, 45_000); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); }); setTimeout(checkUpdate, 8000);
 function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
@@ -1124,17 +1134,20 @@ function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) r
     sortInbox(); renderInbox(); }
   else if (!x) loadInbox(); }
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
-  const ws = new WebSocket(me.rt.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(me.rt.anon) + "&vsn=1.0.0"); rt = ws; let ref = 1, hb = 0;
+  const ws = new WebSocket(me.rt.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(me.rt.anon) + "&vsn=1.0.0"); rt = ws; let ref = 1, hb = 0; const hbAt = {};
   ws.onopen = () => { ws.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: String(ref++) }));
-    hb = setInterval(() => { try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(ref++) })); } catch (e) {} }, 25_000); };
-  ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
+    STAT.rtOn = true; statLine(); const beat = () => { try { const r = String(ref++); hbAt[r] = performance.now(); ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: r })); } catch (e) {} };
+    beat(); hb = setInterval(beat, 25_000); };
+  ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
+    if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
+    if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
-    if (ev === "live") { liveMsg(d.payload.payload || {}); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
+    if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
     if (ev === "pendfail") { const pl = d.payload.payload || {}; const p = rpend.find((x) => x.oid === String(pl.oid)); if (p) { p.fail = pl.err || "gitmedi"; if (cur === p.c) renderChat(); } return; }
     if (cur && (ev === "outbox" || ev === "msg")) loadChat(); if (ev === "inbox" || ev === "msg") loadInbox(); };
-  ws.onclose = () => { clearInterval(hb); if (rt === ws) { rt = null; setTimeout(connectRt, 4000); } }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
+  ws.onclose = () => { clearInterval(hb); STAT.rtOn = false; statLine(); if (rt === ws) { rt = null; setTimeout(connectRt, 4000); } }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
 }
 setInterval(() => { if (!tok || document.hidden) return; if (cur) loadChat(); else if (curTab === "msg") { loadInbox(); loadDm(); } }, 20_000);
 setInterval(() => { if (tok && !document.hidden) loadTablet(); }, 60_000);
