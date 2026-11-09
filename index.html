@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.21">
+<meta name="build" content="2.1.22">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -1148,7 +1148,8 @@ async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) {
     <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_on" ${c.on ? "checked" : ""} style="width:22px;height:22px"> Karşılama / meşgul mesajı açık</label>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><label class="s">Sessizlik (dk) sonra karşıla<input id="am_gap" inputmode="numeric" value="${Number(c.gapMin) || 60}"></label>
       <label class="s">Meşgul<select id="am_busyMode" style="width:100%;height:40px"><option value="auto" ${c.busyMode === "auto" ? "selected" : ""}>Kimse çevrimiçi değilse</option><option value="always" ${c.busyMode === "always" ? "selected" : ""}>Hep meşgul</option><option value="off" ${c.busyMode === "off" ? "selected" : ""}>Kapalı</option></select></label></div>
-    ${ta("greet", 5, "👋 Karşılama ({durum} yerine aşağıdaki iki satırdan biri gelir)")}${ta("online", 2, "🟢 Ekip çevrimiçiyken")}${ta("busy", 2, "🔴 Meşgulken (aynı kişiye 30 dk'da bir)")}
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_dmOn" ${c.dmOn !== false ? "checked" : ""} style="width:22px;height:22px"> 💎 Elmas alıyoruz <span class="s">(kapalıysa karşılamada "şu an almıyoruz" gider)</span></label>
+    ${ta("greet", 5, "👋 Karşılama ({durum}: çevrimiçi / meşgul satırı · {almaz}: elmas satırı)")}${ta("online", 2, "🟢 Ekip çevrimiçiyken")}${ta("busy", 2, "🔴 Meşgulken (aynı kişiye 30 dk'da bir)")}${ta("almazOn", 2, "💎 Elmas alıyorken")}${ta("almazOff", 3, "💎 Elmas almıyorken")}
     <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_cardOn" ${c.cardOn ? "checked" : ""} style="width:22px;height:22px"> Kart verince ardından mesaj gönder</label>${ta("card", 2, "💳 Karttan sonra")}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="autoMsgsSave()">💾 Kaydet</button></div>`, true); }
 // 📊 Ekip raporu (Bayi Yetkilisi): gün gün kişi başına mesaj, resim, coin yükleme, ilk cevap süresi
@@ -1163,7 +1164,7 @@ async function teamReport(day) { const d = await api("team_report", day ? { day 
     <div class="s" style="margin-top:8px">💬 mesaj · 📷 resim · 🪙 coin yükleme (adet · coin) · ⏱ müşteri yazdıktan sonra ilk cevaba kadar geçen ortalama süre (6 saatten uzunlar sayılmaz).</div>
     <button style="width:100%;margin-top:10px" onclick="closeModal()">Kapat</button>`); }
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
-  const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card") }; // boş metin → varsayılan
+  const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card"), dmOn: $("am_dmOn").checked, almazOn: v("almazOn"), almazOff: v("almazOff") }; // boş metin → varsayılan
   const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
 async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
 
