@@ -435,11 +435,11 @@ window.addEventListener("popstate", () => {
 // Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
 const optMsg = {};
 const applyOpt = (list) => Object.keys(optMsg).length ? list.filter((m) => !(optMsg[m.id] && optMsg[m.id].del)).map((m) => { const o = optMsg[m.id]; return !o ? m : o.em ? { ...m, em: o.em } : o.wd ? { ...m, ...o.wd } : m; }) : list;
-// Sohbet son 50 mesajla açılır; "Daha eski mesajlar" ile 50'er geriye yüklenir (sorgu ve veri yükü azalır)
+// Sohbet son 75 mesajla açılır; "Daha eski mesajlar" ile 75'er geriye yüklenir (sorgu ve veri yükü azalır)
 let older = [], histMore = false, olderBusy = false, pins = [];
 async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
   const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
-  const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 50 }); olderBusy = false;
+  const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 75 }); olderBusy = false;
   if (c !== cur) return; if (d.error) { toast("❌ " + d.error, true); renderChat(); return; }
   const page = (d.report && d.report.chat) || []; const have = new Set(hist.map((m) => String(m.id)));
   older = [...page.filter((m) => !have.has(String(m.id))), ...older]; histMore = !!(d.report && d.report.more);
