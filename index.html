@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.20">
+<meta name="build" content="2.1.21">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -58,6 +58,10 @@
   .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: #7dd3fc; background: rgba(56,189,248,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
   .wt { font-weight: 700; color: var(--mut, #a1a1aa); } .wt.y { color: #fbbf24; } .wt.r { color: #f87171; } /* ⏱ müşteri ne kadar süredir cevap bekliyor (saatin yerinde) */
   .typ { color: #4ade80; font-style: italic; }
+  .xinfo { margin: 6px 10px; padding: 8px 12px; border-radius: 12px; background: rgba(56,189,248,.10); border: 1px solid rgba(56,189,248,.25); font-size: 14px; line-height: 1.45; }
+  .xinfo.ok { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.35); } .xinfo.note { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.3); } .xinfo.rem { background: rgba(244,114,182,.10); border-color: rgba(244,114,182,.3); }
+  .xinfo button { padding: 4px 10px; font-size: 13px; margin-left: 6px; vertical-align: middle; } .xinfo .s { font-size: 12px; }
+  .xinfo.note, .xinfo.rem { display: flex; align-items: center; gap: 6px; } .xinfo .xt { flex: 1; min-width: 0; overflow-wrap: anywhere; } .xinfo.note button, .xinfo.rem button { flex: none; margin-left: 0; }
   #compWrap { position: relative; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
@@ -397,6 +401,42 @@ const tagIcons = (id) => (hasTag(id, "debtor") ? '<span class="tagic" title="Bor
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
 // 🔕 Sessize alınanlar ({ id: { u: bitiş ms (0 = süresiz), at: başlangıç ms } }) ve 🚫 bloklular: yeni mesajları üste çıkmaz, bildirim/ses yok; bloklular yalnız "Bloklu" sekmesinde
 let cmutes = (() => { try { return JSON.parse(localStorage.getItem("bw_cmutes") || "{}") || {}; } catch (e) { return {}; } })();
+// 💳 ödeme şeridi, 📝 notlar, ⏰ hatırlatmalar: sohbetle aynı istekte gelir (chat_history), sohbetin en altında
+let chX = { pay: null, notes: [], rems: [] }, rems = {};
+const hm = (t) => { try { return new Date(t).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p = chX.pay;
+  if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span><br>${p.ev
+    ? `✅ <b>${esc(String(p.ev.azn))} ₼</b> geldi · ${hm(p.ev.at)}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${can("coin") && p.ev.azn > 0 ? `<button class="go" onclick="coinSuggest(${Math.round(p.ev.azn * 1000)})">⚡ ${nf(Math.round(p.ev.azn * 1000))} coin yükle</button>` : ""}`
+    : p.result === "unused" ? "❌ 15 dk içinde bu karta para gelmedi" : p.result === "undone" ? "↩️ Kart verme geri alındı" : "⏳ Para bekleniyor…"}</div>`;
+  for (const n of (chX.notes || []).slice(0, 3)) h += `<div class="xinfo note" data-k="xn${n.id}"><span class="xt">📝 ${emo(esc(n.body))} <span class="s">· ${esc(n.by_user || "")} · ${rel(Date.parse(n.at))}</span></span><button onclick="noteHide(${n.id})" aria-label="Notu kaldır">✕</button></div>`;
+  for (const r of chX.rems || []) { const due = Date.parse(r.due_at), late = due <= Date.now();
+    h += `<div class="xinfo rem" data-k="xr${r.id}"><span class="xt">⏰ ${late ? "<b>Zamanı geldi</b>" : "Hatırlatma"} · ${hm(r.due_at)}${r.note ? " · " + emo(esc(r.note)) : ""} <span class="s">· ${esc(r.by_user || "")}</span></span><button onclick="remDone(${r.id})">✅ Kapat</button></div>`; }
+  return h; }
+function coinSuggest(c) { coinOpen(); if (cn) coinAmt(c); }
+// ⚡ Müşteri "10k", "10 000", "10.000 coin" yazdıysa (bizim son mesajımızdan sonra) yükleme kısayolu; elmas bozdurma mesajları sayılmaz
+function parseCoins(t) { t = String(t || "").toLowerCase(); if (/almaz|elmas|💎|diamond|bozdur|алмаз/.test(t)) return 0;
+  t = t.replace(/\d{4}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4}/g, " ").replace(/\d{7,}/g, " "); // kart, UID, telefon numarası tutar değildir
+  const re = /(\d{1,3}(?:[ .]\d{3})+|\d+(?:[.,]\d+)?)\s*(k|к|min|bin)?(?![\d.,])/g; let m;
+  while ((m = re.exec(t))) { const raw = m[1], k = !!m[2]; const n = /^\d{1,3}([ .]\d{3})+$/.test(raw) ? Number(raw.replace(/[ .]/g, "")) : Number(raw.replace(",", "."));
+    const v = Math.round(k ? n * 1000 : n); if (v >= 1000 && v <= 10_000_000 && (k || (Number.isInteger(n) && v % 1000 === 0))) return v; } // "k"sız yazılan tam bin olmalı (10000, 10.000)
+  return 0; }
+function askedCoins() { if (!can("coin") || !cur || isSys(cur)) return 0; let i = hist.length - 1; const tail = [];
+  for (; i >= 0 && tail.length < 3; i--) { const m = hist[i]; if (m.m) break; if (m.k === "text") tail.push(m); }
+  for (const m of tail) { const v = parseCoins(m.t); if (v) return v; } return 0; }
+function noteAdd() { if (!cur) return; openModal(`<h3 style="margin:0 0 8px">📝 Müşteri notu</h3><div class="s" style="margin-bottom:8px">Ekipteki herkes görür. Ör: "Her zaman Günel kartına öder", "Borcu var, 50 ₼".</div>
+  <textarea id="noteIn" rows="3" style="width:100%" maxlength="1000"></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="noteSave()">💾 Kaydet</button></div>`, true); }
+async function noteSave() { const c = cur, t = ($("noteIn").value || "").trim(); if (!t) { toast("Not boş", true); return; }
+  const d = await api("conv_note_add", { conv: c, body: t }); if (d.error) { toast(d.error, true); return; } closeModal(); toast(d.ok || "Not eklendi"); if (cur === c && d.report) { chX = { ...chX, ...d.report }; renderChat(); } }
+async function noteHide(id) { if (!confirm("Bu not kaldırılsın mı? (kayıtta durur)")) return; const c = cur; const d = await api("conv_note_hide", { id }); if (d.error) { toast(d.error, true); return; } if (cur === c && d.report) { chX = { ...chX, ...d.report }; renderChat(); } }
+function remAdd() { if (!cur) return; const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(11, 0, 0, 0); const tm = Math.round((t - Date.now()) / 60000);
+  openModal(`<h3 style="margin:0 0 8px">⏰ Hatırlat</h3><input id="remIn" placeholder="Not (isteğe bağlı) – ör. borcu sor" maxlength="300">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">${[[30, "30 dk"], [60, "1 saat"], [120, "2 saat"], [tm, "Yarın 11:00"]].map(([m, l]) => `<button onclick="remSave(${m})">${l}</button>`).join("")}</div>
+  <button style="width:100%;margin-top:8px" onclick="closeModal()">Vazgeç</button>`, true); }
+async function remSave(mins) { const c = cur; const d = await api("reminder_add", { conv: c, mins, note: ($("remIn").value || "").trim() }); if (d.error) { toast(d.error, true); return; } closeModal(); toast(d.ok || "Kuruldu");
+  if (d.report) { if (d.report.rem) { rems = d.report.rem; renderInbox(); } if (cur === c) { chX = { ...chX, pay: d.report.pay, notes: d.report.notes, rems: d.report.rems }; renderChat(); } } }
+async function remDone(id) { const c = cur; const d = await api("reminder_done", { id }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kapandı");
+  if (d.report) { if (d.report.rem) { rems = d.report.rem; renderInbox(); } if (cur === c) { chX = { ...chX, pay: d.report.pay, notes: d.report.notes, rems: d.report.rems }; renderChat(); } } }
+const remIcon = (id) => { const due = rems[String(id)]; return due ? `<span class="tagic" title="Hatırlatma ${hm(due)}"${due <= Date.now() ? ' style="filter:drop-shadow(0 0 3px #f43f5e)"' : ""}>⏰</span>` : ""; };
 // 🙋 Üstlenme (sunucu: conv_assign, 30 dk) ve ✍️ yazıyor (anlık kanal, sunucuya uğramaz: ek çağrı yok)
 let assigns = {}, typing = {}, typT = 0;
 const asg = (id) => assigns[String(id)] || null, typingBy = (id) => { const t = typing[String(id)]; return t && t.until > Date.now() ? t.by : ""; };
@@ -451,7 +491,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
-  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; setTagx(d.report); }
+  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
@@ -468,7 +508,7 @@ function renderInbox() {
   if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
   morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
       <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
@@ -536,7 +576,7 @@ async function loadBuyers(uids, force) {
 // ---------- sohbet
 const synced = {};
 async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
-  cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  if (String(id) !== cur) chX = { pay: null, notes: [], rems: [] }; cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
@@ -601,7 +641,7 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
   if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
     if (!older.length) histMore = !!h.report.more; // eski sayfa yüklenmediyse "devamı var" bilgisi son sayfadan
     const seenIds = new Set(latest.map((m) => String(m.id)));
-    hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || [];
+    hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || []; chX = { pay: h.report.pay || null, notes: h.report.notes || [], rems: h.report.rems || [] };
     if (Array.isArray(h.report.pins)) { pins = h.report.pins; chPinsSet(c, pins); renderPins(); }
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
@@ -874,6 +914,7 @@ function renderChat(scroll) {
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day" data-k="d${d}">${d}</div>`; lastDay = d; }
     h += it.k ? it.html.replace(/^\s*<div/, `<div data-k="${esc(String(it.k))}"`) : it.html; }
   if (histMore && h) h = `<div class="day" data-k="older"><button id="olderBtn" onclick="loadOlder()" style="font-size:13px;padding:6px 14px">⬆️ Daha eski mesajlar</button></div>` + h;
+  h += chatInfoHtml(); renderTpls(); // en altta: ödeme / not / hatırlatma; alt çubukta ⚡ yükleme önerisi
   morphKeyed(box, h || `<div class="day">Mesaj yok</div>`);
   if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
@@ -904,8 +945,11 @@ async function outboxWait(id, c) { if (!id) { loadChat(); return; }
   for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
     if (ob && (ob.status === "sent" || ob.status === "failed")) { if (ob.status === "failed") toast("❌ Gitmedi: " + (ob.error || ""), true); break; } }
   if (cur === c) loadChat(); }
-function renderTpls() { $("tpls").innerHTML = (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
-  tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join(""); }
+function renderTpls() { const ac = askedCoins();
+  const h = (ac ? `<button class="go" onclick="coinSuggest(${ac})">⚡ ${nf(ac)} coin yükle</button>` : "") + (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
+    (cur && !isSys(cur) ? `<button onclick="noteAdd()">📝 Not</button><button onclick="remAdd()">⏰ Hatırlat</button>` : "") +
+  tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join("");
+  if ($("tpls").innerHTML !== h) $("tpls").innerHTML = h; } // değişmediyse yeniden çizilmez
 function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(t); }
 function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
@@ -1086,16 +1130,16 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
 async function loadCards() { if (!can("kart")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
-    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardLimit(${x.id},${x.max_uses - 1})" ${x.max_uses <= 0 ? "disabled" : ""} aria-label="Hakkı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardLimit(${x.id},${x.max_uses + 1})" ${x.max_uses >= 20 ? "disabled" : ""} aria-label="Hakkı artır">+</button></div>` : ""}</div>`).join("")}
-    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; hakkı − / + ile değiştirebilirsiniz (işlem PIN'i)" : "; hakkı Bayi Yetkilisi değiştirir"}.</div>
+    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}</div>`).join("")}
+    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
     <div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
     <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`; }
 const isYetkili = () => !!(me && me.role === "yetkili");
-async function cardLimit(id, mx) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
-  if (!confirm(`${x.owner} ···${String(x.number).slice(-4)} kartının hakkı ${x.max_uses} → ${mx} olsun mu?`)) return;
-  const pin = await askPin("Kart hakkını değiştirmek için işlem PIN'iniz"); if (!pin) return;
-  const d = await api("pcard_limit", { id, max_uses: mx, pin }); if (d.pin === "wrong") pinCache = null;
+async function cardUses(id, nu) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
+  if (!confirm(`${x.owner} ···${String(x.number).slice(-4)}: kullanılan hak ${x.uses}/${x.max_uses} → ${nu}/${x.max_uses} olsun mu?`)) return;
+  const pin = await askPin("Kart hakkını düzeltmek için işlem PIN'iniz"); if (!pin) return;
+  const d = await api("pcard_uses", { id, uses: nu, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) { toast(d.error, true); return; } toast(d.ok || "Tamam"); loadCards(); }
 // 🤖 Otomatik mesajlar (yalnız Bayi Yetkilisi): karşılama, meşgul, karttan sonra "çeki gönderin"
 async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) { toast(d.error, true); return; } const c = (d.report && d.report.auto) || {}, df = (d.report && d.report.def) || {};
@@ -1358,6 +1402,7 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     if (ev === "cmutes") { const m = (d.payload.payload || {}).cmutes; if (m) { setCmutes(m); sortInbox(); renderInbox(); } return; }
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); setTagx(d.payload.payload); renderInbox(); renderChTags(); } return; }
     if (ev === "typing") { onTyping(d.payload.payload || {}); return; } // ✍️ başka ekip üyesi yazıyor
+    if (ev === "rem") { const m = (d.payload.payload || {}).rem; if (m) { rems = m; renderInbox(); } else loadInbox(); if (cur) loadChat(); return; } // ⏰ hatırlatma kuruldu / zamanı geldi
     if (ev === "assign") { const m = (d.payload.payload || {}).assign; if (m) { assigns = m; renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
