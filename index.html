@@ -60,6 +60,8 @@
   .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+  #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
+  #pauseBar[hidden] { display: none; } #pauseBar button { margin-left: 6px; padding: 4px 10px; font-size: 13px; background: #2b1700; color: #ffd84d; border: 0; }
   #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
@@ -955,9 +957,20 @@ function screenInfo() { const r = document.documentElement, p = document.createE
     ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
   openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
     <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
+// 📱 Sugo uygulamasından bayi hesabına girilecek (ör. yeni kızları onaylamak): sunucu 2 dk bağlanmaz, uygulamayı atmaz; süre bitince ya da "Bitti" ile geri bağlanır
+let pauseT = 0;
+async function linkPause(min) { closeModal(); const d = await api("link_pause", { minutes: min }); if (d.error) { toast("❌ " + d.error, true); return; }
+  const until = Number(d.report && d.report.pauseUntil) || 0; toast(d.ok || "Tamam"); pauseShow(until); }
+function pauseShow(until) { let el = $("pauseBar"); if (!el) { el = document.createElement("div"); el.id = "pauseBar"; document.body.appendChild(el); }
+  clearInterval(pauseT); if (!until || until <= Date.now()) { el.hidden = true; return; }
+  const tick = () => { const s = Math.max(0, Math.round((until - Date.now()) / 1000));
+    if (!s) { clearInterval(pauseT); el.hidden = true; toast("🔌 Sunucu yeniden bağlanıyor — Sugo uygulamasından çıkış yapın"); return; }
+    el.hidden = false; el.innerHTML = `📱 Sunucu bekliyor <b>${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}</b> · Sugo uygulamasını kullanabilirsiniz, bitince çıkış yapın <button onclick="linkPause(0)">✅ Bitti</button>`; };
+  tick(); pauseT = setInterval(tick, 1000); }
 function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
+  <button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>
   <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
