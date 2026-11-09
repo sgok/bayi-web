@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.17">
+<meta name="build" content="2.1.18">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -392,7 +392,11 @@ const tagIcons = (id) => (hasTag(id, "debtor") ? '<span class="tagic" title="Bor
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
 // 🔕 Sessize alınanlar ({ id: { u: bitiş ms (0 = süresiz), at: başlangıç ms } }) ve 🚫 bloklular: yeni mesajları üste çıkmaz, bildirim/ses yok; bloklular yalnız "Bloklu" sekmesinde
 let cmutes = (() => { try { return JSON.parse(localStorage.getItem("bw_cmutes") || "{}") || {}; } catch (e) { return {}; } })();
-function setCmutes(m) { if (!m || typeof m !== "object") return; cmutes = m; try { localStorage.setItem("bw_cmutes", JSON.stringify(m)); } catch (e) {} }
+// Sessize alınan sohbet listede, sessize alındığı andaki son mesaj saatinde (çapa) kalır; yeni mesaj gelse de yukarı çıkmaz
+let manchor = (() => { try { return JSON.parse(localStorage.getItem("bw_manchor") || "{}") || {}; } catch (e) { return {}; } })();
+function setCmutes(m) { if (!m || typeof m !== "object") return; cmutes = m; const a = {};
+  for (const id of Object.keys(m)) { const r = inbox.find((x) => String(x.id) === id); a[id] = manchor[id] != null ? manchor[id] : Math.min((r && r.at) || Infinity, m[id].at || Infinity); if (!Number.isFinite(a[id])) a[id] = 0; }
+  manchor = a; try { localStorage.setItem("bw_cmutes", JSON.stringify(m)); localStorage.setItem("bw_manchor", JSON.stringify(a)); } catch (e) {} }
 const isMuted = (id) => { const m = cmutes[String(id)]; return !!m && (!m.u || m.u > Date.now()); };
 const isBlocked = (id) => hasTag(id, "blocked");
 const isQuiet = (id) => isMuted(id) || isBlocked(id);
@@ -412,7 +416,7 @@ async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTa
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
-function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) => (Number(x.u) && !isQuiet(x.id) ? 1 : 0), eat = (x) => (isMuted(x.id) ? Math.min(x.at || 0, (cmutes[String(x.id)] || {}).at || 0) : (x.at || 0)); // sessizdeki: sessize alındığı andaki yerinde kalır
+function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) => (Number(x.u) && !isQuiet(x.id) ? 1 : 0), eat = (x) => (isMuted(x.id) ? (manchor[String(x.id)] != null ? manchor[String(x.id)] : Math.min(x.at || 0, (cmutes[String(x.id)] || {}).at || 0)) : (x.at || 0)); // sessizdeki: sessize alındığı andaki yerinde kalır
   inbox.sort((a, b) => pg(a) - pg(b) || un(b) - un(a) || eat(b) - eat(a)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
@@ -553,13 +557,15 @@ const chPins = (() => { try { return JSON.parse(localStorage.getItem("bw_pinc") 
 function chPinsSet(c, list) { if (!c) return; const had = !!chPins[c]; if (list && list.length) chPins[c] = list; else delete chPins[c]; if (!had && !chPins[c]) return;
   try { const ks = Object.keys(chPins); if (ks.length > 60) delete chPins[ks[0]]; localStorage.setItem("bw_pinc", JSON.stringify(chPins)); } catch (e) {} }
 async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
+  const bt = box.getBoundingClientRect().top, a = [...box.querySelectorAll(".m[data-mid]")].find((m) => m.getBoundingClientRect().bottom > bt), aId = a && a.dataset.mid, aY = a && a.getBoundingClientRect().top; // okunan mesaj (çapa)
   const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
   const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 40 }); olderBusy = false;
   if (c !== cur) return; if (d.error) { toast("❌ " + d.error, true); renderChat(); return; }
   const page = (d.report && d.report.chat) || []; const have = new Set(hist.map((m) => String(m.id)));
   older = [...page.filter((m) => !have.has(String(m.id))), ...older]; histMore = !!(d.report && d.report.more);
   hist = applyOpt([...page.filter((m) => !have.has(String(m.id))), ...hist]); stick = false; renderChat();
-  box.scrollTop += box.scrollHeight - h0; } // okunan yer kaymasın
+  const a2 = aId && box.querySelector(`.m[data-mid="${CSS.escape(aId)}"]`); // okunan yer kaymasın: çapa mesajı eski yerine (tarayıcının kendi kaydırma sabitlemesi de devreye girse çift kaydırmaz)
+  if (a2) box.scrollTop += a2.getBoundingClientRect().top - aY; else box.scrollTop += box.scrollHeight - h0; }
 async function loadChat(scroll) { if (!cur) return; const c = cur;
   const [h, o] = await Promise.all([api("chat_history", { conv: "b" + c }), isSys(c) ? Promise.resolve({ outbox: [] }) : api("outbox", { conv: c })]);
   if (c !== cur) return;
@@ -1081,11 +1087,17 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
   $("ajBody").innerHTML = h; }
 
 // ---------- pencere, ayarlar, şifre / PIN, coin gönderme
-function openModal(h, top) { $("modalBox").innerHTML = h; const m = $("modal"); m.style.display = "flex";
-  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + 24px)" : "";
-  const b = $("modalBox"); b.style.borderRadius = top ? "18px" : "18px 18px 0 0"; b.style.width = top ? "calc(100% - 24px)" : "100%"; b.style.paddingBottom = top ? "16px" : "calc(16px + env(safe-area-inset-bottom))"; } // top: klavyeli pencere ekranın üstünde (klavye örtmesin)
+function openModal(h, top) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; modalLayout(!!top); }
+// top: klavyeli pencere ekranın üstünde, yüksekliği klavyenin üstünde kalan alana sığar (düğmeler kaydırılarak görünür)
+function modalLayout(top) { const m = $("modal"), b = $("modalBox"); m.dataset.top = top ? "1" : "";
+  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + 12px)" : "";
+  b.style.borderRadius = top ? "18px" : "18px 18px 0 0"; b.style.width = top ? "calc(100% - 24px)" : "100%"; b.style.paddingBottom = top ? "16px" : "calc(16px + env(safe-area-inset-bottom))";
+  b.style.maxHeight = top ? "calc(var(--vvh, 100dvh) - env(safe-area-inset-top) - 24px)" : "90vh"; }
+// Pencerede bir yazı kutusuna dokunulunca (ör. Yükleme Yap · coin miktarı) pencere üste taşınır: klavye kutuyu örtmesin
+document.addEventListener("focusin", (e) => { const t = e.target; if (!t || !t.matches || !t.matches("#modal input, #modal textarea")) return;
+  if ($("modal").dataset.top !== "1") { window.__modalMoved = Date.now(); modalLayout(true); } setTimeout(() => { try { t.scrollIntoView({ block: "nearest" }); } catch (x) {} }, 300); });
 function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
-$("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+$("modal").addEventListener("click", (e) => { if (e.target.id === "modal" && Date.now() - (window.__modalMoved || 0) > 600) closeModal(); }); // pencere klavye için üste taşındıysa aynı dokunuşun tıklaması kapatmasın
 const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
 function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
   try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#12201b" : "#1e1236"; // alt menü rengi
