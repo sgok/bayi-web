@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.26">
+<meta name="build" content="2.1.27">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -427,16 +427,6 @@ function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p
 function payRound(azn, orig) { const a = Number(azn) || 0, r = Math.round(a); const fx = /[A-Z]{3}/.test(String(orig || "")) && !/AZN|₼/i.test(String(orig || ""));
   return fx && r > 0 && Math.abs(r - a) / r <= 0.02 ? r : a; }
 function coinSuggest(c) { coinOpen(); if (cn) coinAmt(c); }
-// ⚡ Müşteri "10k", "10 000", "10.000 coin" yazdıysa (bizim son mesajımızdan sonra) yükleme kısayolu; elmas bozdurma mesajları sayılmaz
-function parseCoins(t) { t = String(t || "").toLowerCase(); if (/almaz|elmas|💎|diamond|bozdur|алмаз/.test(t)) return 0;
-  t = t.replace(/\d{4}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4}/g, " ").replace(/\d{7,}/g, " "); // kart, UID, telefon numarası tutar değildir
-  const re = /(\d{1,3}(?:[ .]\d{3})+|\d+(?:[.,]\d+)?)\s*(k|к|min|bin)?(?![\d.,])/g; let m;
-  while ((m = re.exec(t))) { const raw = m[1], k = !!m[2]; const n = /^\d{1,3}([ .]\d{3})+$/.test(raw) ? Number(raw.replace(/[ .]/g, "")) : Number(raw.replace(",", "."));
-    const v = Math.round(k ? n * 1000 : n); if (v >= 1000 && v <= 10_000_000 && (k || (Number.isInteger(n) && v % 1000 === 0))) return v; } // "k"sız yazılan tam bin olmalı (10000, 10.000)
-  return 0; }
-function askedCoins() { if (!can("coin") || !cur || isSys(cur)) return 0; let i = hist.length - 1; const tail = [];
-  for (; i >= 0 && tail.length < 3; i--) { const m = hist[i]; if (m.m) break; if (m.k === "text") tail.push(m); }
-  for (const m of tail) { const v = parseCoins(m.t); if (v) return sentAfter(m.at) ? 0 : v; } return 0; } // istenen yüklendiyse öneri kaybolur
 function noteAdd() { if (!cur) return; openModal(`<h3 style="margin:0 0 8px">📝 Müşteri notu</h3><div class="s" style="margin-bottom:8px">Ekipteki herkes görür. Ör: "Her zaman Günel kartına öder", "Borcu var, 50 ₼".</div>
   <textarea id="noteIn" rows="3" style="width:100%" maxlength="1000"></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="noteSave()">💾 Kaydet</button></div>`, true); }
 async function noteSave() { const c = cur, t = ($("noteIn").value || "").trim(); if (!t) { toast("Not boş", true); return; }
@@ -970,8 +960,9 @@ async function outboxWait(id, c) { if (!id) { loadChat(); return; }
   for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
     if (ob && (ob.status === "sent" || ob.status === "failed")) { if (ob.status === "failed") toast("❌ Gitmedi: " + (ob.error || ""), true); break; } }
   if (cur === c) loadChat(); }
-function renderTpls() { const ac = askedCoins();
-  const h = (ac ? `<button class="go" onclick="coinSuggest(${ac})">⚡ ${nf(ac)} coin yükle</button>` : "") + (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
+// Mesaj metnindeki tutardan ("180k", "10.000") coin önerisi YOK: müşteriler çoğu zaman bozduracakları elmas miktarını yazıyor (kullanıcı isteği, 2026-11-09). Öneri yalnız ödeme şeridinde, karta gelen paraya göre.
+function renderTpls() {
+  const h = (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
     (cur && !isSys(cur) ? `<button onclick="noteAdd()">📝 Not</button><button onclick="remAdd()">⏰ Hatırlat</button>` : "") +
   tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join("");
   if ($("tpls").innerHTML !== h) $("tpls").innerHTML = h; } // değişmediyse yeniden çizilmez
