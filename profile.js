@@ -154,15 +154,15 @@
     const lv = pfLive[p.uid], on = lv && !lv.error ? !!(lv.online || lv.room) : null;
     const o = oldName(p);
     const debtSum = (p.debts || []).reduce((t, x) => t + Number(x.remaining || 0), 0);
-    $("pfBody").innerHTML = `<div class="pfh"><div class="wav" style="background:#059669">${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
+    $("pfBody").innerHTML = `<div class="pfhero"><div class="pfh"><div class="wav" style="background:#059669">${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
         <div style="flex:1;min-width:0"><div class="pn">${esc(p.name || "(isimsiz)")}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
           <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
-      ${trust(p.uid).replace('class="trust', 'style="font-size:14px;margin:0 0 12px" class="trust')}
+      ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
       <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`}</div>
       <div class="pgrid">
-        ${card("💸 Bizden aldığı coin", coin(b.coins), `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "#fbbf24")}
+        ${card("💸 Bizden aldığı coin", coin(b.coins), `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "var(--accent)")}
         ${card("🧾 Açık borç", debtSum > 0.009 ? az(debtSum) : "yok", (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
       </div>
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}

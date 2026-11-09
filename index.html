@@ -10,18 +10,19 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.31">
+<meta name="build" content="2.1.32">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.31">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.31">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.31">
+<link rel="manifest" href="manifest.json?v=2.1.32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.32">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.32">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
   /* 🎨 Tema: varsayılan "Sugo" (koyu mor + altın sarısı); "Karanlık" = eski yeşil-siyah görünüm (⚙️ Ayarlar'dan) */
   :root { --bg: #140b25; --panel: #1e1236; --panel2: #2a1a4a; --line: #3b2766; --text: #f4effd; --muted: #ab9fcc; --go: #f5b40b; --go2: #ffd84d; --gofg: #2b1700; --me: #6d28d9; --peer: #2b1c4c; --bad: #f87171; --warn: #fbbf24; --accent: #fbbf24; --img: #1b1030;
-    --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%); }
-  html[data-theme="dark"] { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
+    --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%);
+    --brand: #a855f7; --brand2: #7c3aed; --brand3: #d8b4fe; --hero: linear-gradient(155deg, #4c1d95 0%, #2e1065 45%, #1e1236 100%); --tint: linear-gradient(180deg, #2a1650 0%, #1e1236 100%); }
+  html[data-theme="dark"] { --brand: #14b8a6; --brand2: #0d9488; --brand3: #99f6e4; --hero: linear-gradient(155deg, #14532d 0%, #12201b 100%); --tint: var(--panel); --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   /* Sayfa arka planı = alt menü rengi: iPhone'un küçülttüğü alanın altındaki şerit bu renkle boyanır → alt menünün devamı gibi görünür; ekranlar kendi zeminini çizer */
   html, body { margin: 0; height: 100%; background: var(--panel); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -56,10 +57,10 @@
   #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
   /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
   .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
-  .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: #7dd3fc; background: rgba(56,189,248,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
+  .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: var(--brand3); background: color-mix(in srgb, var(--brand) 22%, transparent); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
   .wt { font-weight: 700; color: var(--mut, #a1a1aa); } .wt.y { color: #fbbf24; } .wt.r { color: #f87171; } /* ⏱ müşteri ne kadar süredir cevap bekliyor (saatin yerinde) */
-  .typ { color: #4ade80; font-style: italic; }
-  .xinfo { margin: 6px 10px; padding: 8px 12px; border-radius: 12px; background: rgba(56,189,248,.10); border: 1px solid rgba(56,189,248,.25); font-size: 14px; line-height: 1.45; }
+  .typ { color: var(--brand3); font-style: italic; }
+  .xinfo { margin: 6px 10px; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent); font-size: 14px; line-height: 1.45; }
   .xinfo.ok { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.35); } .xinfo.note { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.3); } .xinfo.rem { background: rgba(244,114,182,.10); border-color: rgba(244,114,182,.3); }
   .xinfo button { padding: 4px 10px; font-size: 13px; margin-left: 6px; vertical-align: middle; } .xinfo .s { font-size: 12px; }
   .xinfo.note, .xinfo.rem { display: flex; align-items: center; gap: 6px; } .xinfo .xt { flex: 1; min-width: 0; overflow-wrap: anywhere; } .xinfo.note button, .xinfo.rem button { flex: none; margin-left: 0; }
@@ -71,7 +72,7 @@
   .reltabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; } .reltabs button { padding: 8px 4px; font-size: 13px; line-height: 1.25; } .reltabs button b { display: block; font-size: 16px; }
   .rellist { min-height: 50vh; } .rellist .row { cursor: pointer; } /* liste yüklenirken pencere boyu oynamasın */
   .slash { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 6px); z-index: 4; max-height: 40vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 24px #0008; }
-  .slash button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 12px; font-size: 14px; white-space: normal; } .slash .s { padding: 8px 12px; display: block; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
+  .slash button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 12px; font-size: 14px; white-space: normal; } .slash .s { padding: 8px 12px; display: block; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: color-mix(in srgb, var(--brand2) 88%, #000); color: #fff; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
@@ -150,7 +151,7 @@
   .m.flash { animation: pinflash 1.4s ease; } @keyframes pinflash { 0%, 60% { box-shadow: 0 0 0 3px #f59e0b; } 100% { box-shadow: none; } }
   .m.wdmine { opacity: .55; background: #3f4a55; color: #cbd5e1; font-style: italic; }
   .m.wd { background: #64748b22; border: 1px solid #64748b66; color: #cbd5e1; font-style: italic; } .m.wd .orig { font-style: normal; margin-top: 4px; color: #e2e8f0; }
-  .coingrp { align-self: stretch; background: #1e1b4b; border: 2px solid #818cf8; border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
+  .coingrp { align-self: stretch; background: color-mix(in srgb, var(--brand) 14%, var(--panel)); border: 2px solid color-mix(in srgb, var(--brand) 55%, transparent); border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
   .dmbox { margin: 8px 10px 12px; border: 2px solid var(--warn); border-radius: 14px; overflow: hidden; background: rgba(251,191,36,.05); }
   .dmhd { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(251,191,36,.12); border-bottom: 1px solid var(--line); }
   .dmhd .b { flex: 1; min-width: 0; } .dmhd .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -178,9 +179,35 @@
   .pftags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; } .pftags span { background: #ffffff14; border-radius: 999px; padding: 2px 9px; font-size: 13px; }
   .pfacts { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: 0 0 12px; } .pfacts .pfmsg { margin: 0; }
   .pffol { min-width: 160px; padding: 13px 12px; font-size: 16px; font-weight: 700; border-radius: 14px; background: #2563eb; border-color: #2563eb; color: #fff; } /* ➕ Takip et: mavi, dolu */
-  .pffol.on { background: transparent; border: 1.5px solid #22c55e; color: #4ade80; } /* ✓ Takip ediliyor: yeşil çerçeve, sade */
+  .pffol.on { background: transparent; border: 1.5px solid var(--brand); color: var(--brand3); } /* ✓ Takip ediliyor: tema çerçevesi, sade (Takip et dolu) */
   .pffol.wait { background: transparent; color: var(--muted, #a1a1aa); } /* aynı genişlik: metin/renk değişince kaymaz */
   .pfmore { margin: 18px 0 0; border-top: 1px solid var(--line); padding-top: 4px; } .pfmore > summary { cursor: pointer; padding: 12px 2px; font-weight: 700; list-style: none; } .pfmore > summary::-webkit-details-marker { display: none; } .pfmore > summary .s { font-weight: 400; }
+  /* 👤 Profil (Sugo moru): üst kart, halkalı resim, hap UID, mor tonlu kartlar */
+  .pfhero { background: var(--hero); border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent); border-radius: 20px; padding: 16px 14px 12px; margin: 0 0 12px; box-shadow: 0 10px 30px -18px var(--brand); }
+  .pfhero .pfh { margin-bottom: 8px; } .pfhero .wav { width: 80px; height: 80px; box-shadow: 0 0 0 3px var(--brand), 0 0 0 7px color-mix(in srgb, var(--brand) 22%, transparent); }
+  .pfhero .pn { font-size: 21px; letter-spacing: .2px; } .pfhero .pfuid { font-variant-numeric: tabular-nums; }
+  .pfhero .s:has(.pfuid) { display: inline-flex; align-items: center; gap: 6px; background: #ffffff12; border-radius: 999px; padding: 2px 4px 2px 10px; margin: 4px 0 2px; color: var(--text); }
+  .pfhero .pfcopy { padding: 2px 8px; border-radius: 999px; background: #ffffff14; border: 0; font-size: 13px; }
+  .pfhero .pftags span { background: color-mix(in srgb, var(--brand) 22%, transparent); color: var(--brand3); }
+  .pfhero .trust { margin: 6px 0 0 !important; padding-top: 10px; border-top: 1px solid #ffffff14; }
+  #pfBody .pfmsg { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); }
+  .pffol { background: linear-gradient(135deg, var(--brand), var(--brand2)) !important; border-color: var(--brand) !important; } /* ➕ Takip et: dolu mor */
+  .pffol.on { background: transparent !important; border: 1.5px solid var(--brand) !important; color: var(--brand3); } .pffol.wait { background: transparent !important; border-color: var(--line) !important; }
+  #pfBody .pgrid .card { background: var(--tint); border-color: color-mix(in srgb, var(--brand) 25%, var(--line)); border-radius: 16px; padding: 14px; }
+  #pfBody .pgrid .card .v { font-size: 24px; } #pfBody .pfsec { text-transform: uppercase; letter-spacing: .6px; font-size: 12px; color: var(--brand3); margin: 18px 2px 8px; }
+  .pfmore > summary { background: var(--tint); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; } .pfmore { border-top: 0; }
+  /* ⚙️ Ayarlar: kişi kartı + gruplu satırlar (iOS ayarları gibi) */
+  .sethead { display: flex; gap: 12px; align-items: center; background: var(--hero); border-radius: 18px; padding: 14px; margin: 0 0 14px; }
+  .sethead .sav { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; flex: none; }
+  .sethead b { font-size: 18px; display: block; } .setlbl { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--brand3); margin: 14px 4px 6px; }
+  .setlist { background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .setrow { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: transparent; border: 0; border-radius: 0; padding: 11px 12px; border-bottom: 1px solid var(--line); min-height: 52px; }
+  .setrow:last-child { border-bottom: 0; } .setrow:active { background: #ffffff0d; }
+  .setrow .si { width: 32px; height: 32px; border-radius: 9px; background: color-mix(in srgb, var(--brand) 26%, transparent); display: flex; align-items: center; justify-content: center; font-size: 17px; flex: none; }
+  .setrow .st { flex: 1; min-width: 0; } .setrow .st small { display: block; color: var(--muted); font-size: 12.5px; } .setrow .chev { color: var(--muted); font-size: 22px; line-height: 1; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--panel2); border: 1px solid var(--line); border-radius: 14px; padding: 4px; }
+  .seg button { border: 0; border-radius: 10px; background: transparent; padding: 9px; } .seg button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); font-weight: 700; }
+  .setout { width: 100%; margin-top: 16px; color: var(--bad); background: var(--panel2); font-weight: 700; } .setclose { width: 100%; margin-top: 8px; background: transparent; }
   .pfmore > summary::before { content: "›"; display: inline-block; margin-right: 8px; transition: transform .2s; } .pfmore[open] > summary::before { transform: rotate(90deg); }
   .pfmsg { display: block; width: 100%; margin: 0 0 12px; padding: 13px; font-size: 17px; font-weight: 700; border-radius: 14px; background: #059669; border-color: #059669; color: #fff; }
   .pfjump { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 12px; } .pfjump button { flex: 1 1 auto; font-size: 14px; padding: 8px 10px; }
@@ -249,7 +276,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.31" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.32" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -258,7 +285,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.31" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.32" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -309,7 +336,7 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.31"></script>
+<script src="emoji.js?v=2.1.32"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -507,7 +534,7 @@ async function loadInbox() { const d = await api("bayi_inbox_get"); try { const 
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
-const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
+const SYS = [["30000", "SUGO TEAM", "📢", ""], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", ""], ["30006", "Yayıncı Asistanı", "🎙", ""], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
   try { if (!window.__listMark) { window.__listMark = 1; setTimeout(() => performance.mark("liste-ekranda"), 0); } } catch (e) {} // açılış ölçümü
@@ -1341,14 +1368,17 @@ function applyPerms() {
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
 }
-function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")} <span class="s">· ${esc((me && me.role_label) || "")}</span></h3>
-  <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
-  ${can("uygulama") && !(me && me.role === "yardimci") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
-  ${can("mesaj") ? `<button onclick="relOpen()">👥 Takip ve arkadaşlar (bayi hesabı)</button>` : ""}
-  ${isYetkili() ? `<button onclick="autoMsgs()">🤖 Otomatik mesajlar</button><button onclick="teamReport()">📊 Ekip raporu</button>` : ""}
-  <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button>${me && me.role === "yardimci" ? "" : `<button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>`}
-  <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
+function menu() { const row = (ic, bg, t, sub, fn) => `<button class="setrow" onclick="${fn}"><span class="si">${ic}</span><span class="st">${t}${sub ? `<small>${sub}</small>` : ""}</span><span class="chev">›</span></button>`;
+  const grp = (lbl, rows) => rows.filter(Boolean).length ? `<div class="setlbl">${lbl}</div><div class="setlist">${rows.filter(Boolean).join("")}</div>` : "";
+  const nm = (me && me.name) || "";
+  openModal(`<div class="sethead"><div class="sav">${esc(nm.slice(0, 1).toLocaleUpperCase("tr") || "?")}</div><div style="min-width:0"><b>${esc(nm)}</b><span class="s">${esc((me && me.role_label) || "")}</span></div></div>
+  <div class="setlbl" style="margin-top:0">Görünüm</div><div class="seg"><button class="${themeNow() === "sugo" ? "on" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "on" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
+  ${grp("Bayi hesabı", [can("mesaj") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
+    can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucu 2 dk bağlanmaz, uygulama atılmaz", "linkPause(2)") : ""])}
+  ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
+  ${grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
+  ${grp("Diğer", [row("📐", "", "Ekran ölçüsü", "", "screenInfo()")])}
+  <button class="setout" onclick="logout()">🚪 Çıkış yap</button><button class="setclose" onclick="closeModal()">Kapat</button>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
   ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
   <div style="display:grid;gap:8px">${old ? `<input type="hidden" id="pwOld" value="${esc(old)}">` : `<input id="pwOld" type="password" placeholder="Mevcut şifre" autocomplete="current-password">`}
@@ -1504,6 +1534,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.31"></script>
+<script src="profile.js?v=2.1.32"></script>
 </body>
 </html>
