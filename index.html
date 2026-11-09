@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.18">
+<meta name="build" content="2.1.19">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -864,12 +864,12 @@ function grow(t) { if (!growTwin) { growTwin = document.createElement("textarea"
   // Yazıda Sugo emojisi varsa, gideceği hâli (emoji resimleriyle) yazı kutusunun üstünde gösterilir
   const pv = $("txtPrev"); if (pv && t.id === "txt") { const has = /\[[^\]]+\]/.test(t.value) && [...t.value.matchAll(/\[[^\]]+\]/g)].some((x) => EMO.has(x[0].toLowerCase()));
     pv.hidden = !has; if (has) pv.innerHTML = `<span class="s">Gidecek hâli: </span>` + emo(esc(t.value)); } }
-async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
+async function send(textArg, extra) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
   const rq = replyTo; replyTo = null; renderReply();
   outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, ...(rq ? { q: rq } : {}), status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
   ownRow(cur, t);
-  const c = cur, d = await api("send", { conv: c, text: t, ...(rq ? { reply: rq.seq } : {}) }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  const c = cur, d = await api("send", { conv: c, text: t, ...(rq ? { reply: rq.seq } : {}), ...(extra || {}) }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
   await outboxWait(d.id, c); }
 async function outboxWait(id, c) { if (!id) { loadChat(); return; }
   for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
@@ -908,8 +908,8 @@ async function toggleCards() { const el = $("cards"), low = stick, keep = () => 
   el.innerHTML = list.length ? list.map((x) => `<button class="${cu && x.id === cu.id ? "next" : ""} ${pcCan(x) ? "" : "full"}" ${pcCan(x) ? `onclick="giveCard(${x.id})"` : "disabled"}>💳 ${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}<div class="s">${x.uses}/${x.max_uses} hak${cu && x.id === cu.id ? " · ⭐ sıradaki" : pcCan(x) ? "" : " · ⛔ hakkı doldu"}</div></button>`).join("")
     : `<div class="s">Kart yok</div>`; keep(); }
 async function giveCard(id) { const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
-  const d = await api("pcard_give", { id }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
-  send(pcTxt(c)); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); }
+  const d = await api("pcard_give", { id, conv: cur }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
+  send(pcTxt(c), { card_after: 1 }); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); } // card_after: ardından sunucu "çeki gönderin" mesajını kuyruğa ekler (Ayarlar › 🤖 Otomatik mesajlar)
 
 // ---------- alt sekmeler (tabletteki Sugo Bayi bölümüyle aynı)
 let curTab = localStorage.getItem("bw_tab") || "msg";
@@ -1057,11 +1057,30 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
 async function loadCards() { if (!can("kart")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
-    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><div class="av">💳</div><div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div></div>`).join("")}
-    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme / hak artırma tabletten yapılır.</div>
+    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardLimit(${x.id},${x.max_uses - 1})" ${x.max_uses <= 0 ? "disabled" : ""} aria-label="Hakkı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardLimit(${x.id},${x.max_uses + 1})" ${x.max_uses >= 20 ? "disabled" : ""} aria-label="Hakkı artır">+</button></div>` : ""}</div>`).join("")}
+    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; hakkı − / + ile değiştirebilirsiniz (işlem PIN'i)" : "; hakkı Bayi Yetkilisi değiştirir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
     <div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
     <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`; }
+const isYetkili = () => !!(me && me.role === "yetkili");
+async function cardLimit(id, mx) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
+  if (!confirm(`${x.owner} ···${String(x.number).slice(-4)} kartının hakkı ${x.max_uses} → ${mx} olsun mu?`)) return;
+  const pin = await askPin("Kart hakkını değiştirmek için işlem PIN'iniz"); if (!pin) return;
+  const d = await api("pcard_limit", { id, max_uses: mx, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) { toast(d.error, true); return; } toast(d.ok || "Tamam"); loadCards(); }
+// 🤖 Otomatik mesajlar (yalnız Bayi Yetkilisi): karşılama, meşgul, karttan sonra "çeki gönderin"
+async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) { toast(d.error, true); return; } const c = (d.report && d.report.auto) || {}, df = (d.report && d.report.def) || {};
+  const ta = (k, rows, label) => `<div class="s" style="margin-top:8px">${label}</div><textarea id="am_${k}" rows="${rows}" style="width:100%" placeholder="${esc(df[k] || "")}">${esc(c[k] || "")}</textarea>`;
+  openModal(`<h3 style="margin:0 0 4px">🤖 Otomatik mesajlar</h3><div class="s">Sessiz, bloklu, 🎭 Opera ve 👑 Patron sohbetlerine gitmez. Sohbette "Otomatik" adıyla görünür.</div>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_on" ${c.on ? "checked" : ""} style="width:22px;height:22px"> Karşılama / meşgul mesajı açık</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><label class="s">Sessizlik (dk) sonra karşıla<input id="am_gap" inputmode="numeric" value="${Number(c.gapMin) || 60}"></label>
+      <label class="s">Meşgul<select id="am_busyMode" style="width:100%;height:40px"><option value="auto" ${c.busyMode === "auto" ? "selected" : ""}>Kimse çevrimiçi değilse</option><option value="always" ${c.busyMode === "always" ? "selected" : ""}>Hep meşgul</option><option value="off" ${c.busyMode === "off" ? "selected" : ""}>Kapalı</option></select></label></div>
+    ${ta("greet", 5, "👋 Karşılama ({durum} yerine aşağıdaki iki satırdan biri gelir)")}${ta("online", 2, "🟢 Ekip çevrimiçiyken")}${ta("busy", 2, "🔴 Meşgulken (aynı kişiye 30 dk'da bir)")}
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_cardOn" ${c.cardOn ? "checked" : ""} style="width:22px;height:22px"> Kart verince ardından mesaj gönder</label>${ta("card", 2, "💳 Karttan sonra")}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="autoMsgsSave()">💾 Kaydet</button></div>`, true); }
+async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
+  const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card") }; // boş metin → varsayılan
+  const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
 async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
 
 // 🏢 Ajans (sadece okuma)
@@ -1157,6 +1176,7 @@ function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.n
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
   ${can("uygulama") && !(me && me.role === "yardimci") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
+  ${isYetkili() ? `<button onclick="autoMsgs()">🤖 Otomatik mesajlar</button>` : ""}
   <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button>${me && me.role === "yardimci" ? "" : `<button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>`}
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
