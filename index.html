@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="ef4309773744">
+<meta name="build" content="149380286eef">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -59,6 +59,8 @@
   .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
   #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
   .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
+  .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; }
+  .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
   #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
@@ -212,7 +214,8 @@
 
 <section class="screen" id="login">
   <img src="icon-192.png?v=2" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
-  <div class="s">Şifrenizle girin</div>
+  <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
+  <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
   <button class="go" id="loginBtn" style="min-width:200px" onclick="doLogin()">Giriş</button>
   <div id="loginMsg" class="lmsg" role="status" aria-live="polite"></div>
@@ -301,7 +304,8 @@ function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((
   const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD.slice(0, 7) : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
-async function api(action, body = {}) { const t0 = performance.now(); try { return await api0(action, body); } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
+async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} applyPerms(); renderInbox(); if (cur) renderChat(); } }
+async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
 async function api0(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
@@ -326,7 +330,7 @@ let loginBusy = false;
 async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $("loginBtn"), pw = inp.value;
   if (!pw) { loginMsg("Lütfen şifrenizi yazın", "err"); inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); return; }
   loginBusy = true; btn.disabled = true; btn.textContent = "⏳ Giriş yapılıyor…"; loginMsg("Şifre kontrol ediliyor…", "wait");
-  const d = await api("login", { password: pw });
+  const d = await api("login", { password: pw, role: loginRole });
   if (d.error || !d.token) { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş";
     const e = String(d.error || ""); loginMsg("❌ " + (e === "Bağlantı yok" ? "İnternet bağlantısı yok, tekrar deneyin" : e || "Giriş yapılamadı, tekrar deneyin"), "err");
     inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); inp.select(); return; }
@@ -341,12 +345,12 @@ async function start() {
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
   let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
   const fast = !!(cm && Array.isArray(ci) && ci.length);
-  if (fast) { me = cm; show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
+  if (fast) { me = cm; applyPerms(); show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
   const pInbox = loadInbox();
-  api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
+  if (can("kart")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
-  if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
+  applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
   const qp = new URLSearchParams(location.search), rs = takeResume();
   if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
   else if (rs) { if (rs.tab) tab(rs.tab); if (rs.cur) { await openChat(rs.cur); if (rs.a) msgRestore(rs.a); } toast("✨ Sayfa güncellendi"); }
@@ -370,7 +374,7 @@ const hasTag = (id, t) => (ctags[String(id)] || []).includes(t);
 const tagIcons = (id) => (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı"><span class="gc"></span></span>' : "");
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
 function setLf(k) { lf = k; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
-function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur)) { el.innerHTML = ""; return; }
+function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur) || !can("duzen")) { el.innerHTML = ""; return; }
   el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button>`; }
 async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
   const d = await api("conv_tag", { conv: c, tag, on }); if (d.error) { toast("❌ " + d.error, true); return; }
@@ -464,7 +468,7 @@ async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderRep
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy;
+  chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; older = []; histMore = false; pins = []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
@@ -489,7 +493,7 @@ function back() { if (chatStack.length) { history.back(); return; } stopMedia();
 let chatStack = [];
 function uidMenu(uid) { const k = inbox.find((x) => String(x.id) === String(uid)) || (people[uid] || {});
   openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + uid)}</div><div class="s" style="margin-bottom:12px">UID ${esc(uid)}</div>
-    <div style="display:flex;flex-direction:column;gap:8px"><button onclick="closeModal();prof('${esc(uid)}')">👤 Profili aç</button><button class="go" onclick="chatJump('${esc(uid)}')">💬 Mesaj at</button><button onclick="closeModal()">Vazgeç</button></div>`); }
+    <div style="display:flex;flex-direction:column;gap:8px">${can("profil") ? `<button onclick="closeModal();prof('${esc(uid)}')">👤 Profili aç</button>` : ""}<button class="go" onclick="chatJump('${esc(uid)}')">💬 Mesaj at</button><button onclick="closeModal()">Vazgeç</button></div>`); }
 async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid) return;
   if (cur) chatStack.push({ c: cur, a: msgAnchor(), hist, older, histMore, coins, outbox, pins });
   history.pushState({ c: uid }, ""); await openChat(uid); }
@@ -611,7 +615,7 @@ document.addEventListener("touchmove", (e) => { if (!lsw) return; const dx = e.t
 document.addEventListener("touchend", () => { if (!lsw) return; const s = lsw; lsw = null; if (!s.on) return;
   s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => s.r.classList.remove("swback"), 250);
   const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 400); // kaydırma sohbeti açmasın
-  if (s.dx < 60) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
+  if (s.dx < 60 || !can("duzen")) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
   setTimeout(() => { if (confirm(on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`)) convPin(id, on); }, 220); }, { passive: true });
 // Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
 let lpT = 0, lpFired = false;
@@ -632,7 +636,7 @@ function msgMenuOpen(mid, el) {
   const prev = m.k === "image" ? "📷 Fotoğraf" : String(m.t || "").slice(0, 60);
   $("msgMenu").innerHTML = `<div class="mp">${emo(esc(prev))}</div>
     <div class="mq">${QUICK_REACT.map((c) => `<button class="${c === myE ? "on" : ""}" onclick="msgAct('react','${esc(mid)}','${c === myE ? "" : c}')">${emoSpan(c, 34)}</button>`).join("")}<button onclick="reactMore('${esc(mid)}')" style="font-size:22px;width:42px">➕</button></div>
-    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
+    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
   $("msgMenu").hidden = false;
 }
 // ↩️ Yanıt: alıntı kutusu (mesaj balonunda) + yazı kutusunun üstündeki "yanıtlanıyor" şeridi
@@ -781,7 +785,7 @@ async function outboxWait(id, c) { if (!id) { loadChat(); return; }
   for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
     if (ob && (ob.status === "sent" || ob.status === "failed")) { if (ob.status === "failed") toast("❌ Gitmedi: " + (ob.error || ""), true); break; } }
   if (cur === c) loadChat(); }
-function renderTpls() { $("tpls").innerHTML = `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>` +
+function renderTpls() { $("tpls").innerHTML = (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
   tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join(""); }
 function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(t); }
 function pickImg() { $("file").click(); }
@@ -865,7 +869,7 @@ function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if
 // 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
 let coinLimit = 40, coinData = null;
 const OST = { open: ["⏳", "ödeme eşleşmedi", "#fbbf24"], complete: ["✅", "ödendi", "#4ade80"], short: ["⚠️", "eksik ödeme", "#f87171"], over: ["➕", "fazla ödeme", "#38bdf8"], recalled: ["↩️", "geri çekildi", "#94a3b8"] };
-async function loadCoins(more) { if (more) coinLimit += 40;
+async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit += 40;
   const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
   if (curTab === "coin") renderCoins(); }
@@ -886,7 +890,7 @@ setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
 let dmLimit = 10, dmData = null;
 const nf = (n) => Number(n || 0).toLocaleString("tr-TR"), azn = (x) => { const n = Number(x); return (Number.isInteger(n) ? String(n) : n.toFixed(2)).replace(".", ",") + " ₼"; };
-async function loadDm() { const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report; renderDm(); }
+async function loadDm() { if (!can("elmas")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report; renderDm(); }
 function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
   <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
@@ -938,7 +942,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
     <div class="s" style="padding:10px 12px">100.000 elmas = 36.000 coin = 33 ₼ · bayi hesabının coin kayıtlarından</div>`; }
 
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
-async function loadCards() { const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
+async function loadCards() { if (!can("kart")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
     <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><div class="av">💳</div><div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div></div>`).join("")}
     <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme / hak artırma tabletten yapılır.</div>
@@ -949,7 +953,7 @@ async function saveTpls() { const d = await api("bayi_templates_save", { templat
 
 // 🏢 Ajans (sadece okuma)
 let ajData = null, ajSub = localStorage.getItem("bw_aj") || "ozet";
-async function loadAj() { const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
+async function loadAj() { if (!can("ajans")) return; const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
 const ajDay = (d) => { try { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { day: "numeric", month: "short", weekday: "short" }); } catch (e) { return d; } };
 const hrs = (s) => { s = Number(s) || 0; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h} sa ${m} dk` : `${m} dk`; };
 function ajTab(k) { ajSub = k; try { localStorage.setItem("bw_aj", k); } catch (e) {} renderAj(); }
@@ -1013,10 +1017,25 @@ function safeReload() { clearTimeout(updT); if (updBusy()) { updT = setTimeout(s
   location.reload(); }
 function takeResume() { try { const r = JSON.parse(localStorage.getItem("bw_resume") || "null"); localStorage.removeItem("bw_resume"); return r && Date.now() - r.at < 120_000 ? r : null; } catch (e) { return null; } }
 setTimeout(statLine, 0); setInterval(checkUpdate, 45_000); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); }); setTimeout(checkUpdate, 8000);
-function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
+// 👥 Rol ve izinler: sunucu her işlemde kontrol eder; burada sadece yetkisi olmayan düğme / sekmeler gizlenir
+let loginRole = (() => { try { return localStorage.getItem("bw_role") || "yetkili"; } catch (e) { return "yetkili"; } })();
+function pickRole(r) { loginRole = r; try { localStorage.setItem("bw_role", r); } catch (e) {} document.querySelectorAll("#rolePick button").forEach((b) => b.classList.toggle("on", b.dataset.r === r)); }
+setTimeout(() => pickRole(loginRole), 0);
+const can = (p) => !me || !Array.isArray(me.perms) || me.perms.includes(p);
+const TAB_PERM = { dm: "elmas", card: "kart", coin: "coins", aj: "ajans" };
+function applyPerms() {
+  document.querySelectorAll("nav.bn button[data-p]").forEach((b) => { const need = TAB_PERM[b.dataset.p]; b.hidden = !!need && !can(need); });
+  if (TAB_PERM[curTab] && !can(TAB_PERM[curTab])) tab("msg");
+  if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
+  if (!can("elmas") && $("dmStrip")) $("dmStrip").innerHTML = "";
+  if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
+  try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
+  if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
+}
+function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")} <span class="s">· ${esc((me && me.role_label) || "")}</span></h3>
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
-  <button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>
+  ${can("uygulama") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
   <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
@@ -1141,6 +1160,7 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
+    if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
