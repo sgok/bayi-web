@@ -34,6 +34,7 @@
   .avw { position: relative; flex: none; display: flex; }
   .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
   .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
+  #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
   #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
   #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
