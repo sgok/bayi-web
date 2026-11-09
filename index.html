@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.7">
+<meta name="build" content="2.1.8">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -388,7 +388,7 @@ async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTa
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
-function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (Number(b.u) ? 1 : 0) - (Number(a.u) ? 1 : 0) || (b.at || 0) - (a.at || 0)); } // 📌 sabitlenenler, sonra okunmamışlar (en son gelen önce), sonra herkes son mesaj saatine göre
+function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1); inbox.sort((a, b) => pg(a) - pg(b) || (Number(b.u) ? 1 : 0) - (Number(a.u) ? 1 : 0) || (b.at || 0) - (a.at || 0)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
