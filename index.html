@@ -24,7 +24,9 @@
   button:disabled { opacity: .45; }
   input, textarea { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%; }
   .s { color: var(--muted); font-size: 13px; }
-  .screen { position: fixed; inset: env(safe-area-inset-top) 0 0 0; display: none; flex-direction: column; }
+  /* Ekran = görünen alan (klavye açıkken klavyenin üstü): iPhone sayfayı kaydırıp başlığı gizlemesin */
+  .screen { position: fixed; left: 0; right: 0; top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); display: none; flex-direction: column; }
+  html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
   .screen.on { display: flex; }
   header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--panel); min-height: 58px; }
   header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -35,6 +37,16 @@
   .avw { position: relative; flex: none; display: flex; }
   .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
   .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
+  .m .qt { border-left: 3px solid #38bdf8; background: #0006; border-radius: 8px; padding: 4px 8px; margin: 0 0 6px; font-size: 13px; color: var(--muted); cursor: pointer; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .m .qt b { color: #7dd3fc; font-weight: 700; display: block; font-size: 12px; }
+  #replyBar { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 14px; }
+  #replyBar[hidden] { display: none; } #replyBar .rq { flex: 1; min-width: 0; border-left: 3px solid #38bdf8; padding-left: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
+  #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
+  .row.pinned { background: #ffffff08; } .pinic { font-size: 13px; margin-right: 4px; }
+  #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
+  #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
+  #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
+  #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
   #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
   #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
   #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -128,7 +140,7 @@
   .tpl { display: flex; gap: 6px; overflow-x: auto; padding: 6px 10px; border-top: 1px solid var(--line); -webkit-overflow-scrolling: touch; }
   .tpl button { white-space: nowrap; font-size: 14px; padding: 8px 12px; flex: none; }
   .comp { display: flex; gap: 8px; align-items: flex-end; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--panel); }
-  .comp textarea { resize: none; max-height: 120px; min-height: 44px; }
+  .comp textarea { resize: none; max-height: 120px; min-height: 44px; flex: 1; min-width: 0; font-size: 16px; }
   .comp button { flex: none; min-height: 44px; }
   .cards { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 10px; max-height: 40vh; overflow-y: auto; border-top: 1px solid var(--line); }
   .cards.on { display: grid; }
@@ -210,6 +222,7 @@
     <div id="emoPanel" class="emopanel" hidden></div>
     <div id="txtPrev" hidden style="padding:6px 12px;border-top:1px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere"></div>
     <div class="tpl" id="tpls"></div>
+    <div id="replyBar" hidden></div>
     <div class="comp">
       <button onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
       <button onclick="pickImg()" title="Resim">📎</button>
@@ -258,7 +271,7 @@ async function start() {
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
   let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
   const fast = !!(cm && Array.isArray(ci) && ci.length);
-  if (fast) { me = cm; show("inbox"); tab(curTab); inbox = ci; renderInbox(); }
+  if (fast) { me = cm; show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
   const pInbox = loadInbox();
   const d = await api("me"); if (d.error) { show("login"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
@@ -276,9 +289,16 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
   ["tabWarn", "tabWarn2"].forEach((id) => { $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
 
 // ---------- sohbet listesi
+// 📌 Sabitlenen kişiler (Ülker + tablet ortak): listenin en üstünde, en son sabitlenen en üstte; sonra okunmamışlar, sonra en yeni
+let cpins = []; try { cpins = JSON.parse(localStorage.getItem("bw_cpins") || "[]"); } catch (e) {}
+const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
+function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); }
+async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  cpins = ((d.report && d.report.cpins) || []).map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); checkNew(inbox); renderInbox(); chOnUpd();
+  if (d.report && Array.isArray(d.report.cpins)) { cpins = d.report.cpins.map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} }
+  sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
@@ -288,9 +308,9 @@ function renderInbox() {
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
-  morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row" onclick="openChat('${esc(x.id)}')">
+  morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
-    <div class="b"><div class="t"><b>${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
     : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
@@ -352,7 +372,7 @@ async function loadBuyers(uids, force) {
 
 // ---------- sohbet
 const synced = {};
-async function openChat(id) { stopMedia();
+async function openChat(id) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {}
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
@@ -469,7 +489,7 @@ function emoChips(m) {
   const g = new Map(); for (const [u, e] of m.em) { const x = g.get(e) || { n: 0, me: false }; x.n++; if (String(u) === bayiMe() || (!bayiMe() && !m.m && String(u) !== cur)) x.me = true; g.set(e, x); }
   return `<div class="emochips">${[...g.entries()].map(([e, x]) => `<button class="${x.me ? "me" : ""}" onclick="event.stopPropagation();msgAct('react','${esc(m.id)}','${x.me ? "" : esc(e)}')">${emoSpan(e, 18)}${x.n > 1 ? x.n : ""}</button>`).join("")}</div>`;
 }
-// Yana kaydırma: mesaj sağa çekilince "Sabitlensin mi?" (sabitliyse "kaldırılsın mı?")
+// Yana kaydırma: mesaj sağa çekilince o mesaja yanıt (Sugo'daki "yanıtla" ile aynı; karşı taraf alıntılı görür). Sabitleme: dokununca açılan menüde
 let sw = null;
 document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
   sw = b && !e.target.closest("video,audio,.vplay,button,a,.emochips") ? { b, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
@@ -479,8 +499,19 @@ document.addEventListener("touchmove", (e) => { if (!sw) return; const dx = e.to
 document.addEventListener("touchend", () => { if (!sw) return; const s = sw; sw = null; if (!s.on) return;
   s.b.classList.remove("swiping"); s.b.classList.add("swback"); s.b.style.transform = ""; setTimeout(() => s.b.classList.remove("swback"), 250);
   lpFired = true; // kaydırma sonrası tıklama menü açmasın
-  if (s.dx < 70) return; const mid = s.b.dataset.mid, on = !pins.some((p) => String(p.id) === String(mid));
-  setTimeout(() => { if (confirm(on ? "📌 Bu mesaj sabitlensin mi?" : "Sabitleme kaldırılsın mı?")) msgPin(mid, on); }, 220); }, { passive: true });
+  if (s.dx < 60) return; replyStart(s.b.dataset.mid); try { navigator.vibrate && navigator.vibrate(10); } catch (x) {} }, { passive: true });
+// Listede kişiyi sağa kaydırınca: "en üste sabitlensin mi?" (sabitliyse "kaldırılsın mı?")
+let lsw = null;
+document.addEventListener("touchstart", (e) => { const r = e.target.closest && e.target.closest("#convs .row[data-cid]");
+  lsw = r && !e.target.closest(".tap,button") ? { r, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+document.addEventListener("touchmove", (e) => { if (!lsw) return; const dx = e.touches[0].clientX - lsw.x, dy = e.touches[0].clientY - lsw.y;
+  if (!lsw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { lsw = null; return; } if (dx > 12 && dx > Math.abs(dy)) lsw.on = true; }
+  if (lsw && lsw.on) { lsw.dx = dx; lsw.r.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
+document.addEventListener("touchend", () => { if (!lsw) return; const s = lsw; lsw = null; if (!s.on) return;
+  s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => s.r.classList.remove("swback"), 250);
+  const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 400); // kaydırma sohbeti açmasın
+  if (s.dx < 60) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
+  setTimeout(() => { if (confirm(on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`)) convPin(id, on); }, 220); }, { passive: true });
 // Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
 let lpT = 0, lpFired = false;
 document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
@@ -503,6 +534,17 @@ function msgMenuOpen(mid, el) {
     <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
   $("msgMenu").hidden = false;
 }
+// ↩️ Yanıt: alıntı kutusu (mesaj balonunda) + yazı kutusunun üstündeki "yanıtlanıyor" şeridi
+let replyTo = null;
+const obText = (o) => { if (o.kind !== "reply") return String(o.body || ""); try { return String(JSON.parse(o.body).t || ""); } catch (e) { return String(o.body || ""); } };
+const qPrev = (q) => q.k === "image" ? "📷 Fotoğraf" : q.k === "voice" ? "🎤 Sesli mesaj" : q.k === "video" ? "🎬 Video" : emo(esc(String(q.t || "").slice(0, 160)));
+const qWho = (q) => String(q.m || "") === bayiMe() || q.mine ? "Siz" : esc((inbox.find((x) => String(x.id) === String(cur)) || {}).n || "Karşı taraf");
+function quoteHtml(q) { if (!q || !q.seq) return ""; return `<div class="qt" onclick="event.stopPropagation();pinGo('${esc(q.seq)}')"><b>↩️ ${qWho(q)}</b>${qPrev(q)}</div>`; }
+function replyStart(mid) { const m = findMsg(mid); if (!m || isSys(cur) || m.k === "withdraw") return;
+  replyTo = { seq: String(m.id), t: String(m.t || ""), k: m.k || "text", m: m.m ? bayiMe() : String(cur), mine: !!m.m }; renderReply(); try { $("txt").focus(); } catch (e) {} }
+function replyCancel() { replyTo = null; renderReply(); }
+function renderReply() { const el = $("replyBar"); if (!el) return; el.hidden = !replyTo;
+  el.innerHTML = replyTo ? `<span style="font-size:18px">↩️</span><div class="rq"><b>${replyTo.mine ? "Kendi mesajınıza yanıt" : "Yanıtlanıyor · " + qWho(replyTo)}</b>${qPrev(replyTo)}</div><button onclick="replyCancel()" title="Yanıtı kaldır">✕</button>` : ""; }
 // 📌 Sabitlenen mesajlar: sohbetin üstünde şerit (en yeni sabitlenen üstte); dokununca mesaja gider, ✕ kaldırır
 function renderPins() { const el = $("pinBar"); if (!el) return; const list = cur ? pins : [];
   el.hidden = !list.length;
@@ -589,7 +631,7 @@ function renderChat(scroll) {
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
     ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
     : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
-    : `<div class="m ${m.m ? "me" : ""}" data-mid="${esc(m.id)}">${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
+    : `<div class="m ${m.m ? "me" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
     items.push({ at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
@@ -599,9 +641,9 @@ function renderChat(scroll) {
   // Sayfadan gönderilenler: tablet gönderene kadar soluk, hata olursa kırmızı (gönderilen mesaj Sugo'dan gelince listede asıl hâli görünür)
   const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
   for (const o of outbox) {
-    if (o.status === "sent" && (o.kind === "image" || sentTexts.has(String(o.body || "").trim()))) continue;
+    if (o.status === "sent" && (o.kind === "image" || sentTexts.has(obText(o).trim()))) continue;
     const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ gönderiliyor…";
-    items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.kind === "image" ? "📷 Resim" : esc(o.body || "")}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
+    items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? "📷 Resim" : emo(esc(obText(o)))}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
   }
   for (const p of rpend) if (p.c === cur && Date.now() - p.at < 60_000) items.push({ at: p.at, html: `<div class="m me ${p.fail ? "fail" : "pend"}">${emo(esc(p.t || ""))}<div class="tm">${p.fail ? "❌ gitmedi: " + esc(p.fail) : "⏳ gönderiliyor…"}</div></div>` });
   items.sort((a, b) => a.at - b.at);
@@ -617,15 +659,22 @@ async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi o
   if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) loadChat(); loadDm(); } }
 
 // ---------- gönderme (mesajları tablet Sugo'ya gönderir)
-function grow(t) { t.style.height = "auto"; t.style.height = Math.min(120, t.scrollHeight) + "px";
+// Yazı kutusu yüksekliği: kutuyu küçültmeden (gizli kopyada) ölçülür — küçülüp büyümesi iPhone'da sayfayı zıplatıyordu
+let growTwin = null;
+function grow(t) { if (!growTwin) { growTwin = document.createElement("textarea"); growTwin.setAttribute("aria-hidden", "true"); growTwin.tabIndex = -1;
+    growTwin.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;height:0;min-height:0;overflow:hidden"; document.body.appendChild(growTwin); }
+  const cs = getComputedStyle(t); growTwin.style.width = t.clientWidth + "px"; growTwin.style.font = cs.font; growTwin.style.padding = cs.padding; growTwin.style.border = cs.border; growTwin.style.boxSizing = cs.boxSizing; growTwin.style.letterSpacing = cs.letterSpacing;
+  growTwin.value = t.value; const h = Math.min(120, Math.max(44, growTwin.scrollHeight + (cs.boxSizing === "border-box" ? parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth) : 0))) + "px";
+  if (t.style.height !== h) t.style.height = h;
   // Yazıda Sugo emojisi varsa, gideceği hâli (emoji resimleriyle) yazı kutusunun üstünde gösterilir
   const pv = $("txtPrev"); if (pv && t.id === "txt") { const has = /\[[^\]]+\]/.test(t.value) && [...t.value.matchAll(/\[[^\]]+\]/g)].some((x) => EMO.has(x[0].toLowerCase()));
     pv.hidden = !has; if (has) pv.innerHTML = `<span class="s">Gidecek hâli: </span>` + emo(esc(t.value)); } }
 async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
-  outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
+  const rq = replyTo; replyTo = null; renderReply();
+  outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, ...(rq ? { q: rq } : {}), status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
   ownRow(cur, t);
-  const c = cur, d = await api("send", { conv: c, text: t }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  const c = cur, d = await api("send", { conv: c, text: t, ...(rq ? { reply: rq.seq } : {}) }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
   await outboxWait(d.id, c); }
 async function outboxWait(id, c) { if (!id) { loadChat(); return; }
   for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
@@ -668,6 +717,28 @@ function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (
   document.querySelectorAll("nav.bn button").forEach((b) => b.classList.toggle("on", b.dataset.p === k));
   document.querySelectorAll("#inbox .pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + k));
   refreshTab(); }
+// Klavye: ekranı görünen alana sığdır (iPhone'da sabit ekran klavyeyle kayıyordu)
+(() => { const vv = window.visualViewport; if (!vv) return; const r = document.documentElement;
+  const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px"); r.classList.toggle("kb", window.innerHeight - vv.height > 120);
+    if (window.scrollY) window.scrollTo(0, 0); };
+  vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
+// Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
+(() => { const el = document.createElement("div"); el.id = "ptr"; el.innerHTML = '<span class="ar">⬇️</span> <span class="tx">Yenilemek için çekin</span>'; document.body.appendChild(el);
+  let st = null, busy = false; const TH = 70;
+  const scroller = (tg) => tg.closest && tg.closest(".pane.on, #pfBody, #msgs");
+  const set = (d, txt) => { el.style.transform = `translate(-50%, ${Math.min(d, 90) - 70}px)`; el.style.opacity = d > 8 ? 1 : 0; if (txt) el.querySelector(".tx").textContent = txt; };
+  document.addEventListener("touchstart", (e) => { if (busy || e.touches.length > 1) { st = null; return; } const sc = scroller(e.target);
+    st = sc && sc.scrollTop <= 0 && !e.target.closest("input,textarea,.msgmenu,.emopanel,#lb") ? { sc, y: e.touches[0].clientY, x: e.touches[0].clientX, d: 0 } : null; }, { passive: true });
+  document.addEventListener("touchmove", (e) => { if (!st) return; const dy = e.touches[0].clientY - st.y, dx = e.touches[0].clientX - st.x;
+    if (st.sc.scrollTop > 0 || (st.d === 0 && Math.abs(dx) > Math.abs(dy)) || dy <= 0) { if (st.d) set(0); st = null; return; }
+    st.d = dy * 0.5; el.classList.remove("back"); el.classList.toggle("ready", st.d >= TH); set(st.d, st.d >= TH ? "Bırakın, yenilensin" : "Yenilemek için çekin"); }, { passive: true });
+  document.addEventListener("touchend", async () => { if (!st) return; const s = st; st = null; el.classList.add("back");
+    if (s.d < TH) { set(0); return; } busy = true; el.classList.remove("ready"); el.classList.add("spin"); set(TH, "Yenileniyor…");
+    const t0 = Date.now();
+    try { if (s.sc.id === "msgs") await loadChat(); else if (s.sc.id === "pfBody") { if (typeof prof === "function" && window.__pfUid) await prof(window.__pfUid); } else { refreshTab(); await new Promise((z) => setTimeout(z, 500)); } } catch (x) {}
+    await new Promise((z) => setTimeout(z, Math.max(0, 600 - (Date.now() - t0))));
+    el.classList.remove("spin"); set(0); busy = false; }, { passive: true });
+})();
 function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") loadAj(); else if (curTab === "coin") loadCoins(); loadTablet(); }
 
 // 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
@@ -867,7 +938,7 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
 // Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
 function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
-  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
+  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); sortInbox(); renderInbox(); }
 // Diğer ekranın (tablet / başka telefon) gönderdiği mesaj: Sugo onaylayana kadar soluk "gönderiliyor"
 let rpend = [];
 function onPending(pl) { const c = String(pl.c || ""); if (!c || !pl.oid) return;
@@ -883,13 +954,14 @@ function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) r
     renderChat(); if (!it.m) ding(); }
   const r = pl.row, x = inbox.find((i) => String(i.id) === c);
   if (x && r) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0 });
-    inbox.sort((a, b) => (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); renderInbox(); }
+    sortInbox(); renderInbox(); }
   else if (!x) loadInbox(); }
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
   const ws = new WebSocket(me.rt.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(me.rt.anon) + "&vsn=1.0.0"); rt = ws; let ref = 1, hb = 0;
   ws.onopen = () => { ws.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: String(ref++) }));
     hb = setInterval(() => { try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(ref++) })); } catch (e) {} }, 25_000); };
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
+    if (ev === "cpins") { const l = (d.payload.payload || {}).cpins; if (Array.isArray(l)) { cpins = l.map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} sortInbox(); renderInbox(); } return; }
     if (ev === "live") { liveMsg(d.payload.payload || {}); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
     if (ev === "pendfail") { const pl = d.payload.payload || {}; const p = rpend.find((x) => x.oid === String(pl.oid)); if (p) { p.fail = pl.err || "gitmedi"; if (cur === p.c) renderChat(); } return; }

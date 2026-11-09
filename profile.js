@@ -23,7 +23,7 @@
   const sync = (on) => { const el = $("pfSync"); if (el) el.hidden = !on; };
 
   window.prof = async (uid) => {
-    uid = String(uid); pfUid = uid;
+    uid = String(uid); pfUid = uid; window.__pfUid = uid;
     const k = (typeof inbox !== "undefined" && inbox.find((x) => String(x.id) === uid)) || (typeof people !== "undefined" && people[uid]) || {};
     $("pfTitle").textContent = "👤 " + (k.n || uid);
     if (!$("prof").classList.contains("on")) history.pushState({ p: uid }, "");
