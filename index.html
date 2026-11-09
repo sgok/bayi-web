@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.10">
+<meta name="build" content="2.1.11">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -95,7 +95,7 @@
   .un { color: var(--accent); font-weight: 700; }
   .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
   .trust { font-size: 12.5px; margin-top: 3px; color: var(--muted); white-space: normal; } .trust b { color: var(--text); }
-  .trust.ph { visibility: hidden; } .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
+  .row.more { justify-content: center; color: var(--accent); cursor: pointer; font-size: 15px; } .trust.ph { visibility: hidden; } .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
   #chTrust .trust { font-size: 13.5px; padding: 6px 14px; margin: 0; border-bottom: 1px solid var(--line); }
   #srchRes:empty { display: none; } #srchRes { border-bottom: 2px solid var(--line); max-height: 60vh; overflow-y: auto; }
   #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
@@ -384,7 +384,10 @@ function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try {
 function setTagx(r) { if (r && Array.isArray(r.tagx)) tagx = r.tagx; }
 // Etiket sekmesi: listedeki (son 120 sohbet) etiketliler + listede olmayan etiketliler (son mesaj saatine göre)
 function tagRows(k) { const ids = new Set(inbox.map((x) => String(x.id))); return inbox.filter((x) => hasTag(x.id, k)).concat(tagx.filter((x) => !ids.has(String(x.id)) && hasTag(x.id, k)).sort((a, b) => (b.at || 0) - (a.at || 0))); }
-function setLf(k) { lf = k; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
+// Liste 100 kişiyle açılır; "Daha fazla göster" her basışta 100 kişi daha ekler (Supabase'e daha az yük)
+let listLim = 100;
+function moreRows() { listLim += 100; renderInbox(); }
+function setLf(k) { lf = k; listLim = 100; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
 function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur) || !can("duzen")) { el.innerHTML = ""; return; }
   el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button><button class="${hasTag(cur, "boss") ? "on" : ""}" onclick="tagToggle('boss')">👑 Patron</button><button class="${hasTag(cur, "opera") ? "on" : ""}" onclick="tagToggle('opera')">🎭 Opera</button><button class="${hasTag(cur, "debtor") ? "on" : ""}" onclick="tagToggle('debtor')">🧾 Borçlu</button>`; }
 async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
@@ -411,13 +414,13 @@ function renderInbox() {
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
   const shown = lf === "all" ? inbox : tagRows(lf), nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
   const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button></div>`;
-  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, lf === "all" ? 120 : 400).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
-      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
+      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
-  const ids = [...inbox, ...(lf === "all" ? [] : tagRows(lf))].map((x) => String(x.id)); // etiket sekmesindeki (listede olmayan) kişiler de
+  const ids = (lf === "all" ? inbox : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
 async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own); if (!list.length) return;
@@ -468,7 +471,7 @@ function trust(uid) {
   return `<div class="trust ${x.debt ? "debt" : good ? "good" : "some"}">${good ? "✅" : "🛒"} <b>${x.n} kez</b> aldı · ${nf(x.coins)} coin · ${x.azn} ₼${x.last ? " · son " + esc(relIso(x.last)) : ""}${x.debt ? ` · <b>⚠️ borcu ${x.debt} ₼</b>` : ""}</div>`;
 }
 async function loadBuyers(uids, force) {
-  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 250);
+  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 100);
   if (!need.length) return false;
   const d = await api("buyer_stats", { uids: need }); if (d.error) return false;
   const b = (d.report && d.report.buyers) || {};
