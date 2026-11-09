@@ -6,13 +6,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Sugo Bayi">
+<meta name="apple-mobile-web-app-title" content="Sugo Coins Bayi">
 <meta name="theme-color" content="#0b1512">
 <meta name="robots" content="noindex, nofollow">
-<title>Sugo Bayi</title>
+<title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏪%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="icon" type="image/png" href="icon-192.png?v=2">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
   :root { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --me: #075e54; --peer: #1d2c25; --bad: #f87171; --warn: #fbbf24; }
@@ -184,7 +184,7 @@
 
 <section class="screen" id="login">
   <div style="font-size:42px">🏪</div>
-  <h2 style="margin:0">Sugo Bayi</h2>
+  <img src="icon-192.png?v=2" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="s">Şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
   <button class="go" style="min-width:200px" onclick="doLogin()">Giriş</button>
@@ -943,9 +943,9 @@ async function notifSetup() {
   const bar = $("notifBar"); const showBar = (h) => { bar.innerHTML = h; bar.style.display = h ? "block" : "none"; };
   if (!("serviceWorker" in navigator)) { showBar(""); return; }
   try { swReg = await navigator.serviceWorker.register("sw.js"); } catch (e) {}
-  if (isIOS && !standalone) { showBar(`🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Bayi</b> simgesinden açın.`); return; }
+  if (isIOS && !standalone) { showBar(`🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Coins Bayi</b> simgesinden açın.`); return; }
   if (!("Notification" in window) || !("PushManager" in window)) { showBar("ℹ️ Bu tarayıcı bildirim desteklemiyor (iPhone'da iOS 16.4 ve üstü gerekir)."); return; }
-  if (Notification.permission === "denied") { showBar("🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Bayi › İzin Ver."); return; }
+  if (Notification.permission === "denied") { showBar("🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Coins Bayi › İzin Ver."); return; }
   if (Notification.permission === "default") { showBar(`🔔 Yeni mesaj ve elmas bozumlarında telefona bildirim gelsin mi? <button class="go" style="margin-left:6px;padding:6px 12px" onclick="notifAsk()">Bildirimleri aç</button>`); return; }
   showBar(""); await pushSubscribe(false);
 }
