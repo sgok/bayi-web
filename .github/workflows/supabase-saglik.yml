@@ -1,5 +1,5 @@
 # Supabase sağlık kontrolü (15 dakikada bir). Sağlıksızsa 3 dk sonra tekrar bakar; hâlâ sağlıksızsa projeyi yeniden başlatır.
-# Gerekli sır (repo → Settings → Secrets and variables → Actions): SUPABASE_YONETIM_TOKEN
+# Gerekli sır (repo → Settings → Secrets and variables → Actions): CLAUDE_SUPABASE_SECRET_KEY (Supabase yönetim anahtarı)
 # Elle deneme: Actions → "Supabase sağlık kontrolü" → Run workflow ("sadece kontrol" işaretliyse yeniden başlatmaz)
 # Kaynak: SugoBayiYonetim/github-actions/supabase-saglik.yml → bayi-web/.github/workflows/ (aynı dosya)
 name: Supabase sağlık kontrolü
@@ -22,14 +22,14 @@ jobs:
     timeout-minutes: 25
     env:
       REF: pspgaetjwmejfgouacbx
-      TOKEN: ${{ secrets.SUPABASE_YONETIM_TOKEN }}
+      TOKEN: ${{ secrets.CLAUDE_SUPABASE_SECRET_KEY }}
       SADECE_KONTROL: ${{ github.event_name == 'workflow_dispatch' && inputs.sadece_kontrol || false }}
     steps:
       - name: Kontrol et, gerekirse yeniden başlat
         shell: bash
         run: |
           set -u
-          if [ -z "$TOKEN" ]; then echo "::warning::SUPABASE_YONETIM_TOKEN sırrı eklenmemiş; kontrol atlandı"; exit 0; fi # sır eklenene kadar hata e-postası yağmasın
+          if [ -z "$TOKEN" ]; then echo "::warning::CLAUDE_SUPABASE_SECRET_KEY sırrı eklenmemiş; kontrol atlandı"; exit 0; fi # sır eklenene kadar hata e-postası yağmasın
           API="https://api.supabase.com/v1/projects/$REF"
           # 1) Veri yolu: sağlık fonksiyonu anahtarsız istekte veritabanına sorar → çalışıyorsa hemen 403, veritabanı/REST donmuşsa 503 ya da zaman aşımı
           # 2) Supabase yönetim API'si: db, rest, auth servislerinin sağlık bayrağı
