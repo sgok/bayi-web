@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.5">
+<meta name="build" content="2.1.6">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -412,7 +412,7 @@ function renderInbox() {
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
-  const ids = inbox.slice(0, 80).map((x) => String(x.id));
+  const ids = [...inbox, ...(lf === "all" ? [] : tagRows(lf))].map((x) => String(x.id)); // etiket sekmesindeki (listede olmayan) kişiler de
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
 async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own); if (!list.length) return;
@@ -456,11 +456,12 @@ function trust(uid) {
   if (!(uid in buyers) || isSys(uid)) return "";
   const x = buyers[uid];
   if (!x) return `<div class="trust new">🆕 Bizden daha önce coin almadı</div>`;
+  if (!x.n && x.debt) return `<div class="trust debt"><b>⚠️ borcu ${x.debt} ₼</b></div>`; // satış kaydı yok ama borç kaydı var
   const good = x.n >= 3 && !x.debt;
   return `<div class="trust ${x.debt ? "debt" : good ? "good" : "some"}">${good ? "✅" : "🛒"} <b>${x.n} kez</b> aldı · ${nf(x.coins)} coin · ${x.azn} ₼${x.last ? " · son " + esc(relIso(x.last)) : ""}${x.debt ? ` · <b>⚠️ borcu ${x.debt} ₼</b>` : ""}</div>`;
 }
 async function loadBuyers(uids, force) {
-  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 80);
+  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 250);
   if (!need.length) return false;
   const d = await api("buyer_stats", { uids: need }); if (d.error) return false;
   const b = (d.report && d.report.buyers) || {};
@@ -472,7 +473,7 @@ async function loadBuyers(uids, force) {
 const synced = {};
 async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
-  $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
+  $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
