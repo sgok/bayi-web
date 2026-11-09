@@ -7,8 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sugo Coins Bayi">
-<meta name="theme-color" content="#1a0f2e">
-<script>try { if (localStorage.getItem("bw_theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}</script>
+<meta name="theme-color" content="#1e1236">
+<script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
@@ -21,7 +21,8 @@
     --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%); }
   html[data-theme="dark"] { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  /* Sayfa arka planı = alt menü rengi: iPhone'un küçülttüğü alanın altındaki şerit bu renkle boyanır → alt menünün devamı gibi görünür; ekranlar kendi zeminini çizer */
+  html, body { margin: 0; height: 100%; background: var(--panel); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); overflow: hidden; }
   button { font: inherit; color: inherit; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; cursor: pointer; }
   button.go { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); font-weight: 700; }
@@ -34,7 +35,7 @@
   .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
   html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
   html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
-  .screen.on { display: flex; }
+  .screen.on { display: flex; } .screen { background: var(--bg); }
   header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--hdr); min-height: 58px; }
   header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
@@ -342,7 +343,7 @@ let cpins = [], cpinsBy = {}; try { cpins = JSON.parse(localStorage.getItem("bw_
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
-function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); }
+function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (b.at || 0) - (a.at || 0)); } // sabitlenenler üstte, sonra son mesaj saatine göre (okunmamış öne alınmaz)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
@@ -933,7 +934,7 @@ function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHT
 $("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
 const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
 function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
-  try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#0b1512" : "#1a0f2e";
+  try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#12201b" : "#1e1236"; // alt menü rengi
   menu(); toast(k === "dark" ? "🌑 Karanlık tema" : "💜 Sugo teması"); }
 // Ekran ölçüsü (iPhone alt boşluk sorununu görmek için): uygulamanın gerçek boyutları
 function screenInfo() { const r = document.documentElement, p = document.createElement("div");
