@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.12">
+<meta name="build" content="2.1.13">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -60,6 +60,10 @@
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
   .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
   #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
+  #convs { position: relative; } #convs .row[data-cid] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; } #convs .row.lpsel { filter: brightness(1.35); } /* sağa kaydırarak sabitleme: satırın arkasındaki kırmızı şerit */
+  .swbg { position: absolute; left: 0; right: 0; z-index: 0; display: flex; align-items: center; padding-left: 16px; background: linear-gradient(90deg, #7f1d1d, #b91c1c); color: #fecaca; font-weight: 700; font-size: 15px; pointer-events: none; }
+  .swbg.ready { background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff; }
+  #convs .row.lswiping { position: relative; z-index: 1; background: var(--bg); } #convs .row.pinned.lswiping { background: linear-gradient(rgba(245,158,11,.10), rgba(245,158,11,.10)), var(--bg); }
   .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
   .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; }
   .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
@@ -506,7 +510,7 @@ async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
   el.hidden = !r; if (r) el.innerHTML = `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>`; } // profildeki gibi, "Şu an" yazısı olmadan
 function roomWatch() { clearInterval(roomTimer); $("chRoom").hidden = true; roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
 function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
-function back() { if (chatStack.length) { history.back(); return; } stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
+function back() { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} if (chatStack.length) { history.back(); return; } stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
 // Mesajdaki UID'ye dokununca: profil mi, mesaj mı? "Mesaj at" o kişinin sohbetini açar; geri gelince önceki sohbete, kaldığı yere döner
 let chatStack = [];
 function uidMenu(uid) { const k = inbox.find((x) => String(x.id) === String(uid)) || (people[uid] || {});
@@ -517,7 +521,7 @@ async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid)
   history.pushState({ c: uid }, ""); await openChat(uid); }
 async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c, p); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
-window.addEventListener("popstate", () => {
+window.addEventListener("popstate", () => { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} // geri hareketinde klavye açılmasın
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
   if (cur && chatStack.length) { stopMedia(); clearInterval(roomTimer); chatReturn(); return; } // UID'den açılan sohbetten önceki sohbete
@@ -619,26 +623,46 @@ function emoChips(m) {
 // Yana kaydırma: mesaj sağa çekilince o mesaja yanıt (Sugo'daki "yanıtla" ile aynı; karşı taraf alıntılı görür). Sabitleme: dokununca açılan menüde
 let sw = null;
 document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
-  sw = b && !e.target.closest("video,audio,.vplay,button,a,.emochips") ? { b, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+  sw = b && e.touches[0].clientX > 30 && !e.target.closest("video,audio,.vplay,button,a,.emochips") ? { b, c: cur, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true }); // sol kenar (30 px) = iPhone'un geri hareketi: yanıt başlatmaz (klavye açılıp kapanıyordu)
 document.addEventListener("touchmove", (e) => { if (!sw) return; const dx = e.touches[0].clientX - sw.x, dy = e.touches[0].clientY - sw.y;
   if (!sw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; } if (dx > 12 && dx > Math.abs(dy)) { sw.on = true; clearTimeout(lpT); sw.b.classList.add("swiping"); } }
   if (sw && sw.on) { sw.dx = dx; sw.b.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
 document.addEventListener("touchend", () => { if (!sw) return; const s = sw; sw = null; if (!s.on) return;
   s.b.classList.remove("swiping"); s.b.classList.add("swback"); s.b.style.transform = ""; setTimeout(() => s.b.classList.remove("swback"), 250);
   lpFired = true; // kaydırma sonrası tıklama menü açmasın
-  if (s.dx < 60) return; replyStart(s.b.dataset.mid); try { navigator.vibrate && navigator.vibrate(10); } catch (x) {} }, { passive: true });
+  if (s.dx < 60) return; const mid = s.b.dataset.mid;
+  setTimeout(() => { if (cur !== s.c || !$("chat").classList.contains("on")) return; replyStart(mid); try { navigator.vibrate && navigator.vibrate(10); } catch (x) {} }, 150); }, { passive: true }); // bu arada sohbet kapandıysa (geri hareketi) yanıt/klavye yok
 // Listede kişiyi sağa kaydırınca: "en üste sabitlensin mi?" (sabitliyse "kaldırılsın mı?")
 let lsw = null;
 document.addEventListener("touchstart", (e) => { const r = e.target.closest && e.target.closest("#convs .row[data-cid]");
-  lsw = r && !e.target.closest(".tap,button") ? { r, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+  lsw = r && e.touches[0].clientX > 30 && !e.target.closest(".tap,button") ? { r, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+// Sabitleme şeridi: satır kayarken arkasında (solda) kırmızı zemin; eşik geçilince "bırakınca sabitlenir"
+const LSW_MIN = () => Math.max(160, Math.round((($("convs") && $("convs").clientWidth) || 390) * 0.55));
+function lswBg(s) { if (s.bg) return s.bg; const bg = document.createElement("div"); bg.className = "swbg"; const pinned = cpins.includes(String(s.r.dataset.cid));
+  bg.dataset.t0 = pinned ? "📌 Sabitleme kaldırılıyor…" : "📌 Sabitleniyor…"; bg.dataset.t1 = pinned ? "✓ Bırakınca sabitleme kalkar" : "✓ Bırakınca sabitlenir";
+  bg.textContent = bg.dataset.t0; bg.style.top = s.r.offsetTop + "px"; bg.style.height = s.r.offsetHeight + "px"; s.r.parentNode.insertBefore(bg, s.r); s.r.classList.add("lswiping"); s.bg = bg; return bg; }
 document.addEventListener("touchmove", (e) => { if (!lsw) return; const dx = e.touches[0].clientX - lsw.x, dy = e.touches[0].clientY - lsw.y;
-  if (!lsw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { lsw = null; return; } if (dx > 12 && dx > Math.abs(dy)) lsw.on = true; }
-  if (lsw && lsw.on) { lsw.dx = dx; lsw.r.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
+  if (!lsw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { lsw = null; return; } if (dx > 12 && dx > Math.abs(dy) && can("duzen")) lsw.on = true; }
+  if (lsw && lsw.on) { lsw.dx = dx; const max = lsw.r.clientWidth || 390, x = Math.max(0, Math.min(dx, max)); lsw.r.style.transform = `translateX(${x}px)`;
+    const bg = lswBg(lsw), ready = dx >= LSW_MIN(); if (ready !== bg.classList.contains("ready")) { bg.classList.toggle("ready", ready); bg.textContent = ready ? bg.dataset.t1 : bg.dataset.t0; try { ready && navigator.vibrate && navigator.vibrate(8); } catch (x2) {} } } }, { passive: true });
 document.addEventListener("touchend", () => { if (!lsw) return; const s = lsw; lsw = null; if (!s.on) return;
-  s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => s.r.classList.remove("swback"), 250);
+  s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => { s.r.classList.remove("swback"); s.r.classList.remove("lswiping"); if (s.bg) s.bg.remove(); }, 220);
   const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 400); // kaydırma sohbeti açmasın
-  if (s.dx < 60 || !can("duzen")) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
+  if (s.dx < LSW_MIN() || !can("duzen")) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
   setTimeout(() => { if (confirm(on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`)) convPin(id, on); }, 220); }, { passive: true });
+// Listede kişiye uzun basma (yarım saniye): sabitle / kaldır, profil, sohbet (kaydırmaya gerek kalmadan)
+let rowLpT = 0, rowLp = null;
+document.addEventListener("touchstart", (e) => { const r = e.target.closest && e.target.closest("#convs .row[data-cid]"); clearTimeout(rowLpT); rowLp = null;
+  if (!r || e.target.closest(".tap,button")) return; rowLp = { r, x: e.touches[0].clientX, y: e.touches[0].clientY };
+  rowLpT = setTimeout(() => { if (!rowLp || (lsw && lsw.on)) return; rowLp.fired = true; r.classList.add("lpsel"); try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} rowMenu(r.dataset.cid);
+    const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 500); }, 500); }, { passive: true });
+document.addEventListener("touchmove", (e) => { if (rowLp && (Math.abs(e.touches[0].clientX - rowLp.x) > 10 || Math.abs(e.touches[0].clientY - rowLp.y) > 10)) { clearTimeout(rowLpT); rowLp = null; } }, { passive: true });
+["touchend", "touchcancel"].forEach((ev) => document.addEventListener(ev, () => { clearTimeout(rowLpT); }, { passive: true }));
+function rowMenu(id) { id = String(id); const k = inbox.find((x) => String(x.id) === id) || (tagx.find((x) => String(x.id) === id)) || {}; const pinned = cpins.includes(id);
+  openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + id)}</div><div class="s" style="margin-bottom:12px">UID ${esc(id)}</div>
+    <div style="display:flex;flex-direction:column;gap:8px">${can("duzen") ? `<button class="go" onclick="closeModal();convPin('${esc(id)}',${!pinned})">📌 ${pinned ? "Sabitlemeyi kaldır" : "En üste sabitle"}</button>` : ""}
+    <button onclick="closeModal();openChat('${esc(id)}')">💬 Sohbeti aç</button>${can("profil") ? `<button onclick="closeModal();prof('${esc(id)}')">👤 Profili aç</button>` : ""}<button onclick="closeModal()">Vazgeç</button></div>`);
+  setTimeout(() => document.querySelectorAll("#convs .row.lpsel").forEach((x) => x.classList.remove("lpsel")), 400); }
 // Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
 let lpT = 0, lpFired = false;
 document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
