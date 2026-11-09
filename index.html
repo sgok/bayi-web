@@ -924,10 +924,21 @@ const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dar
 function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
   try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#0b1512" : "#1a0f2e";
   menu(); toast(k === "dark" ? "🌑 Karanlık tema" : "💜 Sugo teması"); }
+// Ekran ölçüsü (iPhone alt boşluk sorununu görmek için): uygulamanın gerçek boyutları
+function screenInfo() { const r = document.documentElement, p = document.createElement("div");
+  p.style.cssText = "position:fixed;top:0;bottom:0;left:0;width:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(p);
+  const cs = getComputedStyle(p), fh = Math.round(p.getBoundingClientRect().height); p.remove();
+  const sc = document.querySelector(".screen.on"), s = sc ? sc.getBoundingClientRect() : {}, nav = document.querySelector(".screen.on nav.bn"), n = nav ? nav.getBoundingClientRect() : null;
+  const L = [["Ana ekran uygulaması", r.classList.contains("app") ? "evet" : "hayır"], ["standalone", String(navigator.standalone)], ["klavye sınıfı", r.classList.contains("kb") ? "var" : "yok"],
+    ["innerH", innerHeight], ["vvH", window.visualViewport ? Math.round(visualViewport.height) : "-"], ["screenH", screen.height], ["docH", r.clientHeight], ["bodyH", document.body.clientHeight],
+    ["--apph", getComputedStyle(r).getPropertyValue("--apph") || "-"], ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
+    ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
+  openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
+    <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
 function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
-  <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
+  <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
   ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
