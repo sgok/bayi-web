@@ -32,6 +32,8 @@
   /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
      Klavye açık: görünen alana sığar (başlık kaybolmasın) */
   .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
+  /* Ana ekran uygulaması (iPhone): sayfa yüksekliği durum çubuğu kadar kısa bildiriliyor → yükseklik telefonun gerçek ekranından (--apph) */
+  html.app .screen { bottom: auto; height: calc(var(--apph, 100dvh) - env(safe-area-inset-top)); }
   html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
   html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
   .screen.on { display: flex; }
@@ -777,7 +779,10 @@ function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (
   refreshTab(); }
 // Klavye: ekranı görünen alana sığdır (iPhone'da sabit ekran klavyeyle kayıyordu)
 (() => { const vv = window.visualViewport; if (!vv) return; const r = document.documentElement;
-  const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px"); r.classList.toggle("kb", window.innerHeight - vv.height > 120);
+  const app = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; r.classList.toggle("app", app);
+  const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px");
+    const full = app ? Math.max(window.innerHeight, matchMedia("(orientation: portrait)").matches ? screen.height : screen.width) : window.innerHeight; // ana ekran uygulamasında gerçek ekran yüksekliği (pt)
+    r.style.setProperty("--apph", full + "px"); r.classList.toggle("kb", full - vv.height > 120);
     if (window.scrollY) window.scrollTo(0, 0); };
   vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
 // Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
