@@ -127,6 +127,17 @@
   }
   window.pfJump = (id) => { const el = $(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
 
+  // ➕ Bayi hesabından takip: durum Sugo'daki takip listesinden (p.following: true/false, null = liste henüz okunmadı)
+  const folState = {};
+  function folTxt(p) { const st = folState[p.uid] ?? p.following; return st === "wait" ? "⏳ Bekleyin…" : st ? "✓ Takip ediliyor" : "➕ Takip et"; }
+  window.pfFollow = async (uid) => { const cur = folState[uid] ?? (pfCache.get(uid) ? JSON.parse(pfCache.get(uid)).following : null); if (cur === "wait") return;
+    const on = !cur; if (!on && !confirm("Bayi hesabı bu kişiyi takipten çıkarsın mı?")) return;
+    const b = $("pfFol"); folState[uid] = "wait"; if (b && pfUid === uid) b.textContent = folTxt({ uid });
+    const d = await api("follow", { uid, on }); let ok = !d.error, err = d.error;
+    if (ok && d.id) for (let i = 0; i < 20; i++) { await new Promise((r) => setTimeout(r, i < 10 ? 500 : 1500)); const g = await api("outbox_get", { id: d.id }), ob = g.ob;
+      if (ob && (ob.status === "sent" || ob.status === "failed")) { ok = ob.status === "sent"; err = ob.error; break; } }
+    folState[uid] = ok ? on : !on; if ($("pfFol") && pfUid === uid) $("pfFol").textContent = folTxt({ uid });
+    toast(ok ? (on ? "➕ Takip edildi (bayi hesabı)" : "Takipten çıkarıldı") : "❌ " + (err || "olmadı"), !ok); };
   function render(p) {
     $("pfTitle").textContent = "👤 " + (p.name || p.uid);
     const role = p.role, r = p.room || {}, g = p.gifts || {}, b = p.buys || { recent: [] }, rv = p.recv;
@@ -148,7 +159,7 @@
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')">📋 Kopyala</button> · <span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div>
           <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}<div class="pftags">${tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px;margin:0 0 10px" class="trust')}
-      <button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at (bayi hesabından)</button>
+      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : `<button class="pffol" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`}</div>
       <div class="pfjump"><button onclick="pfJump('pfAlbum')">📷 Albüm (${(p.photos || []).length})</button><button onclick="pfJump('pfOldAv')">🖼️ Eski resimler (${(p.old_avatars || []).length})</button>
         <button onclick="pfJump('pfNames')">🕘 Geçmiş (${(p.history || []).length})</button><button onclick="pfJump('pfAll')">📋 Tüm bilgiler</button>${p.video && p.video.count ? `<button onclick="pfJump('pfVideo')">📹 Görüntüler (${p.video.count})</button>` : ""}</div>
       ${p.bio ? `<div class="pfbio">${esc(p.bio)}</div>` : ""}

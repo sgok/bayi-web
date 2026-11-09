@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.27">
+<meta name="build" content="2.1.28">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -68,6 +68,8 @@
   .recbar { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--panel); }
   .recbar .rt { flex: 1; font-weight: 700; color: #f87171; font-variant-numeric: tabular-nums; } .recbar .rt::before { content: "🔴 "; animation: recb 1s steps(2) infinite; } @keyframes recb { 50% { opacity: .3; } }
   .recbar button { min-height: 44px; }
+  .reltabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; } .reltabs button { padding: 8px 4px; font-size: 13px; line-height: 1.25; } .reltabs button b { display: block; font-size: 16px; }
+  .rellist { min-height: 50vh; } .rellist .row { cursor: pointer; } /* liste yüklenirken pencere boyu oynamasın */
   .slash { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 6px); z-index: 4; max-height: 40vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 24px #0008; }
   .slash button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 12px; font-size: 14px; white-space: normal; } .slash .s { padding: 8px 12px; display: block; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
@@ -174,6 +176,8 @@
   .pfrel { margin-top: 6px; } .relc { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 13px; color: var(--muted); } .relc.on { color: #10b981; border-color: #10b981; font-weight: 700; }
   .pflinks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; } .pflinks span { background: #2e1a4f; border: 1px solid #7c3aed55; border-radius: 10px; padding: 3px 9px; font-size: 13px; }
   .pftags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; } .pftags span { background: #ffffff14; border-radius: 999px; padding: 2px 9px; font-size: 13px; }
+  .pfacts { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: 0 0 12px; } .pfacts .pfmsg { margin: 0; }
+  .pffol { min-width: 150px; padding: 13px 12px; font-size: 16px; font-weight: 700; border-radius: 14px; } /* ➕ takip / ✓ takip ediliyor (aynı genişlik: metin değişince kaymasın) */
   .pfmsg { display: block; width: 100%; margin: 0 0 12px; padding: 13px; font-size: 17px; font-weight: 700; border-radius: 14px; background: #059669; border-color: #059669; color: #fff; }
   .pfjump { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 12px; } .pfjump button { flex: 1 1 auto; font-size: 14px; padding: 8px 10px; }
   .pfbio { white-space: pre-wrap; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin: 0 0 8px; overflow-wrap: anywhere; }
@@ -1214,6 +1218,28 @@ async function teamReport(day) { const d = await api("team_report", day ? { day 
       : `<div class="s" style="padding:16px 0">Bu gün kayıt yok.</div>`}
     <div class="s" style="margin-top:8px">💬 mesaj · 📷 resim · 🪙 coin yükleme (adet · coin) · ⏱ müşteri yazdıktan sonra ilk cevaba kadar geçen ortalama süre (6 saatten uzunlar sayılmaz).</div>
     <button style="width:100%;margin-top:10px" onclick="closeModal()">Kapat</button>`); }
+// 👥 Bayi hesabının Sugo'daki takip ettikleri / takipçileri / arkadaşları (sunucu 6 saatte bir ve "Tazele" ile Sugo'dan okur)
+const REL = [["following", "➕ Takip ettiklerimiz"], ["followers", "👀 Takipçiler"], ["friends", "🤝 Arkadaşlar"]];
+let relK = "following", relRows = [], relT = 0, relSeq = 0;
+function relOpen(k) { relK = k || relK; relRows = [];
+  openModal(`<h3 style="margin:0 0 2px">👥 Bayi hesabı · takip ve arkadaşlar</h3><div class="reltabs" id="relTabs">${REL.map(([k2, l]) => `<button data-k="${k2}" class="${k2 === relK ? "go" : ""}" onclick="relTab('${k2}')">${l}<b>…</b></button>`).join("")}</div>
+    <input id="relQ" placeholder="🔎 Ad ya da UID ile ara" oninput="clearTimeout(relT);relT=setTimeout(()=>relLoad(0),300)" autocomplete="off">
+    <div class="s" id="relInfo" style="margin:6px 0">yükleniyor…</div><div id="relList" class="rellist"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button onclick="relRefresh()">🔄 Sugo'dan tazele</button><button onclick="closeModal()">Kapat</button></div>`, true);
+  relLoad(0); }
+function relTab(k) { relK = k; document.querySelectorAll("#relTabs button").forEach((b) => b.classList.toggle("go", b.dataset.k === k)); relLoad(0); }
+async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || {}).value || "").trim();
+  const d = await api("relations_list", { kind: relK, q, offset: off, ...(refresh ? { refresh: true } : {}) }); if (seq !== relSeq || !$("relList")) return;
+  if (d.error) { $("relInfo").textContent = "❌ " + d.error; return; } const r = d.report || {};
+  relRows = off ? relRows.concat(r.rows || []) : r.rows || [];
+  document.querySelectorAll("#relTabs button").forEach((b) => { const n = (r.counts || {})[b.dataset.k]; const bb = b.querySelector("b"); if (bb) bb.textContent = n == null ? "…" : nf(n); });
+  $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
+  const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
+  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="closeModal();prof('${esc(x.uid)}')"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>
+      <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span></div></div></div>`).join("")
+    + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
+    : `<div class="row s">${q ? "Bulunamadı." : "Liste boş."}</div>`; }
+function relRefresh() { relLoad(0, true); toast("🔄 Sugo'dan okunuyor (1 dk kadar sürebilir)"); setTimeout(() => { if ($("relList")) relLoad(0); }, 30_000); }
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
   const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card"), dmOn: $("am_dmOn").checked, almazOn: v("almazOn"), almazOff: v("almazOff") }; // boş metin → varsayılan
   const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
@@ -1314,6 +1340,7 @@ function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.n
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
   ${can("uygulama") && !(me && me.role === "yardimci") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
+  ${can("mesaj") ? `<button onclick="relOpen()">👥 Takip ve arkadaşlar (bayi hesabı)</button>` : ""}
   ${isYetkili() ? `<button onclick="autoMsgs()">🤖 Otomatik mesajlar</button><button onclick="teamReport()">📊 Ekip raporu</button>` : ""}
   <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button>${me && me.role === "yardimci" ? "" : `<button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>`}
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
