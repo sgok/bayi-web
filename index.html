@@ -7,7 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sugo Coins Bayi">
-<meta name="theme-color" content="#0b1512">
+<meta name="theme-color" content="#1a0f2e">
+<script>try { if (localStorage.getItem("bw_theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
@@ -15,20 +16,26 @@
 <link rel="icon" type="image/png" href="icon-192.png?v=2">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
-  :root { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --me: #075e54; --peer: #1d2c25; --bad: #f87171; --warn: #fbbf24; }
+  /* 🎨 Tema: varsayılan "Sugo" (koyu mor + altın sarısı); "Karanlık" = eski yeşil-siyah görünüm (⚙️ Ayarlar'dan) */
+  :root { --bg: #140b25; --panel: #1e1236; --panel2: #2a1a4a; --line: #3b2766; --text: #f4effd; --muted: #ab9fcc; --go: #f5b40b; --go2: #ffd84d; --gofg: #2b1700; --me: #6d28d9; --peer: #2b1c4c; --bad: #f87171; --warn: #fbbf24; --accent: #fbbf24; --img: #1b1030;
+    --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%); }
+  html[data-theme="dark"] { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); overflow: hidden; }
   button { font: inherit; color: inherit; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; cursor: pointer; }
-  button.go { background: var(--go); border-color: var(--go); color: #fff; font-weight: 700; }
+  button.go { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); font-weight: 700; }
   button:disabled { opacity: .45; }
   input, textarea { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%; }
   .s { color: var(--muted); font-size: 13px; }
   /* Ekran = görünen alan (klavye açıkken klavyenin üstü): iPhone sayfayı kaydırıp başlığı gizlemesin */
-  .screen { position: fixed; left: 0; right: 0; top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); display: none; flex-direction: column; }
+  /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
+     Klavye açık: görünen alana sığar (başlık kaybolmasın) */
+  .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
+  html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
   html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
   .screen.on { display: flex; }
-  header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--panel); min-height: 58px; }
+  header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--hdr); min-height: 58px; }
   header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
   .dot.ok { background: #22c55e; } .dot.bad { background: var(--bad); }
@@ -67,7 +74,7 @@
   .row .t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .row .p { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; gap: 6px; justify-content: space-between; }
   .badge { background: var(--go); color: #fff; border-radius: 999px; padding: 0 7px; font-size: 12px; font-weight: 700; min-width: 20px; text-align: center; }
-  .un { color: #4ade80; font-weight: 700; }
+  .un { color: var(--accent); font-weight: 700; }
   .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
   .trust { font-size: 12.5px; margin-top: 3px; color: var(--muted); white-space: normal; } .trust b { color: var(--text); }
   .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
@@ -82,7 +89,7 @@
   #hStock { color: #fbbf24; font-weight: 800; }
   .semo { display: inline-block; vertical-align: -0.3em; background-repeat: no-repeat; }
   .emochips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; white-space: normal; } .emochips button { padding: 1px 6px; border-radius: 12px; font-size: 12px; background: #00000033; border: 1px solid #ffffff22; display: inline-flex; align-items: center; gap: 3px; } .emochips button.me { border-color: #f59e0b; }
-  .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: #1b2530; border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
+  .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
   .msgmenu .mq { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; } .msgmenu .mq button { background: none; border: 0; padding: 4px; border-radius: 10px; } .msgmenu .mq button.on { background: #f59e0b44; }
   .msgmenu .ma { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; } .msgmenu .ma button { padding: 8px 12px; font-size: 15px; }
   .msgmenu .mp { font-size: 13px; color: var(--muted); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -139,7 +146,7 @@
   .m { max-width: 82%; padding: 7px 10px 5px; border-radius: 12px; background: var(--peer); align-self: flex-start; overflow-wrap: anywhere; white-space: pre-wrap; }
   .m.me { background: var(--me); align-self: flex-end; }
   .m.pend { opacity: .6; } .m.fail { border: 1px solid var(--bad); }
-  .m img { max-width: 100%; max-height: 360px; min-height: 120px; object-fit: cover; border-radius: 8px; display: block; background: #0f1a16; }
+  .m img { max-width: 100%; max-height: 360px; min-height: 120px; object-fit: cover; border-radius: 8px; display: block; background: var(--img); }
   .m .tm { font-size: 11px; color: #b6c8be; text-align: right; margin-top: 2px; }
   .day { align-self: center; font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 10px; border-radius: 999px; margin: 6px 0; }
   .coin { align-self: stretch; background: #2a2210; border: 1px solid #a16207; border-radius: 12px; padding: 10px; font-size: 14px; }
@@ -161,7 +168,7 @@
   .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
   nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: env(safe-area-inset-bottom); }
   nav.bn button { flex: 1; border: 0; border-radius: 0; background: none; padding: 8px 2px 10px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
-  nav.bn button b { font-size: 20px; } nav.bn button.on { color: #4ade80; }
+  nav.bn button b { font-size: 20px; } nav.bn button.on { color: var(--accent); }
   nav.bn i { position: absolute; top: 2px; right: 22%; background: var(--bad); color: #fff; font-style: normal; font-size: 11px; border-radius: 999px; padding: 0 5px; }
   .pane { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; }
   .pane.on { display: block; }
@@ -892,8 +899,14 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
 function openModal(h) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; }
 function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
 $("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
+function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
+  try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#0b1512" : "#1a0f2e";
+  menu(); toast(k === "dark" ? "🌑 Karanlık tema" : "💜 Sugo teması"); }
 function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")}</h3>
-  <div style="display:grid;gap:8px"><button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
+  <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
+  <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
   ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
