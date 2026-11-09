@@ -109,6 +109,11 @@
   .m.wdmine { opacity: .55; background: #3f4a55; color: #cbd5e1; font-style: italic; }
   .m.wd { background: #64748b22; border: 1px solid #64748b66; color: #cbd5e1; font-style: italic; } .m.wd .orig { font-style: normal; margin-top: 4px; color: #e2e8f0; }
   .coingrp { align-self: stretch; background: #1e1b4b; border: 2px solid #818cf8; border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
+  .dmbox { margin: 8px 10px 12px; border: 2px solid var(--warn); border-radius: 14px; overflow: hidden; background: rgba(251,191,36,.05); }
+  .dmhd { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(251,191,36,.12); border-bottom: 1px solid var(--line); }
+  .dmhd .b { flex: 1; min-width: 0; } .dmhd .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dmtot { text-align: right; flex: none; } .dmtot .v { font-size: 20px; font-weight: 800; color: var(--warn); line-height: 1.2; } .dmtot button { margin-top: 4px; padding: 6px 12px; font-size: 14px; }
+  .dmbox .row:last-child { border-bottom: 0; }
   .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
   .bxdm { display: inline-block; margin-top: 3px; font-size: 12.5px; color: #c4b5fd; }
   .uidl { color: #5aa9e6; text-decoration: underline dotted; cursor: pointer; }
@@ -842,6 +847,16 @@ function dmBadge(uid) {
   const g = dmGroups(mine).sort((a, b) => Date.parse(b.last) - Date.parse(a.last))[0];
   return `<div class="bxdm">💎 ${nf(g.diamonds)} elmas geldi${g.rows.length > 1 ? ` (${g.rows.length} parça)` : ""} · ${g.paid ? "✅ ödendi" : "ödenecek " + azn(g.pay)}</div>`;
 }
+/** Ödenmemişler kişi kişi: her kişinin bozumları bir çerçevede; sağ üstte toplam borç + hepsini ödendi yap */
+function dmPeople(rows) { const m = new Map(); for (const r of rows) { const k = String(r.uid || r.nickname || r.tx); if (!m.has(k)) m.set(k, []); m.get(k).push(r); }
+  return [...m.values()].map((rs) => { const gs = dmGroups(rs), pay = gs.reduce((s, g) => s + g.pay, 0), last = rs.reduce((a, r) => Math.max(a, Date.parse(r.at)), 0);
+    return { rows: rs.slice().sort((a, b) => Date.parse(b.at) - Date.parse(a.at)), pay, last, name: rs[0].nickname || "UID " + rs[0].uid, uid: rs[0].uid, av: rs[0].avatar, conv: rs[0].conv }; })
+    .sort((a, b) => b.last - a.last); }
+function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
+  return `<div class="dmbox"><div class="dmhd"><div class="av" ${p.conv || p.uid ? `onclick="openChat('${esc(p.conv || p.uid)}')"` : ""}>${avHtml(p.name, p.av)}</div>
+    <div class="b"><b>${esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
+    <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
+    ${dmListHtml(p.rows)}</div>`; }).join(""); }
 /** Liste: satırlar yeni→eski; grubun toplamı parçalarının altında */
 function dmListHtml(rows) {
   const groups = dmGroups(rows).filter((g) => g.rows.length > 1), byFirst = new Map(groups.map((g) => [g.rows[0].tx, g]));
@@ -863,7 +878,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
     <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div></div></div>
     <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
-    ${open.length ? `<h3>⏳ Ödenmemişler</h3>${dmListHtml(open)}` : ""}
+    ${open.length ? `<h3>⏳ Ödenmemişler <span class="s">(${dmPeople(open).length} kişi)</span></h3>${dmPersonBoxes(open)}` : ""}
     <h3>🕘 Son bozumlar <span class="s">(${nf(d.total)} kayıt)</span></h3>${dmListHtml(d.coins || [])}
     ${(d.coins || []).length < d.total ? `<div style="padding:12px;text-align:center"><button onclick="dmLimit+=10;loadDm()">Daha fazla</button></div>` : ""}
     <div class="s" style="padding:10px 12px">100.000 elmas = 36.000 coin = 33 ₼ · bayi hesabının coin kayıtlarından</div>`; }
