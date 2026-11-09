@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.22">
+<meta name="build" content="2.1.23">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -62,7 +62,9 @@
   .xinfo.ok { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.35); } .xinfo.note { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.3); } .xinfo.rem { background: rgba(244,114,182,.10); border-color: rgba(244,114,182,.3); }
   .xinfo button { padding: 4px 10px; font-size: 13px; margin-left: 6px; vertical-align: middle; } .xinfo .s { font-size: 12px; }
   .xinfo.note, .xinfo.rem { display: flex; align-items: center; gap: 6px; } .xinfo .xt { flex: 1; min-width: 0; overflow-wrap: anywhere; } .xinfo.note button, .xinfo.rem button { flex: none; margin-left: 0; }
-  #compWrap { position: relative; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
+  #compWrap { position: relative; }
+  .slash { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 6px); z-index: 4; max-height: 40vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 24px #0008; }
+  .slash button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 12px; font-size: 14px; white-space: normal; } .slash .s { padding: 8px 12px; display: block; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
@@ -277,6 +279,7 @@
   <div id="msgMenu" class="msgmenu" hidden></div>
   <div id="compWrap">
     <div id="chTyping" class="typpill" hidden></div>
+    <div id="slashList" class="slash" hidden></div>
     <div id="emoPanel" class="emopanel" hidden></div>
     <div id="txtPrev" hidden style="padding:6px 12px;border-top:1px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere"></div>
     <div class="tpl" id="tpls"></div>
@@ -285,7 +288,7 @@
       <button onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
       <button onclick="pickImg()" title="Resim">📎</button>
       <input type="file" id="file" accept="image/*" hidden onchange="sendImg(this)">
-      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput()"></textarea>
+      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput();slashUpd()"></textarea>
       <button class="go" onclick="send()">Gönder</button>
     </div>
     <div class="infol"></div>
@@ -406,12 +409,16 @@ let chX = { pay: null, notes: [], rems: [] }, rems = {};
 const hm = (t) => { try { return new Date(t).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p = chX.pay;
   if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span><br>${p.ev
-    ? `✅ <b>${esc(String(p.ev.azn))} ₼</b> geldi · ${hm(p.ev.at)}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${can("coin") && p.ev.azn > 0 ? `<button class="go" onclick="coinSuggest(${Math.round(p.ev.azn * 1000)})">⚡ ${nf(Math.round(p.ev.azn * 1000))} coin yükle</button>` : ""}`
+    ? (() => { const r = payRound(p.ev.azn, p.ev.orig), co = Math.round(r * 1000), fark = r !== p.ev.azn;
+      return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${hm(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
     : p.result === "unused" ? "❌ 15 dk içinde bu karta para gelmedi" : p.result === "undone" ? "↩️ Kart verme geri alındı" : "⏳ Para bekleniyor…"}</div>`;
   for (const n of (chX.notes || []).slice(0, 3)) h += `<div class="xinfo note" data-k="xn${n.id}"><span class="xt">📝 ${emo(esc(n.body))} <span class="s">· ${esc(n.by_user || "")} · ${rel(Date.parse(n.at))}</span></span><button onclick="noteHide(${n.id})" aria-label="Notu kaldır">✕</button></div>`;
   for (const r of chX.rems || []) { const due = Date.parse(r.due_at), late = due <= Date.now();
     h += `<div class="xinfo rem" data-k="xr${r.id}"><span class="xt">⏰ ${late ? "<b>Zamanı geldi</b>" : "Hatırlatma"} · ${hm(r.due_at)}${r.note ? " · " + emo(esc(r.note)) : ""} <span class="s">· ${esc(r.by_user || "")}</span></span><button onclick="remDone(${r.id})">✅ Kapat</button></div>`; }
   return h; }
+// 💱 USD hesabına gelen para AZN'ye çevrilince küsurlu görünür (19,77 ₼ = 11,63 USD): yalnız dövizden çevrilmişse ve tam sayıya fark %2'den azsa yuvarlanır (çevirme farkı bizden)
+function payRound(azn, orig) { const a = Number(azn) || 0, r = Math.round(a); const fx = /[A-Z]{3}/.test(String(orig || "")) && !/AZN|₼/i.test(String(orig || ""));
+  return fx && r > 0 && Math.abs(r - a) / r <= 0.02 ? r : a; }
 function coinSuggest(c) { coinOpen(); if (cn) coinAmt(c); }
 // ⚡ Müşteri "10k", "10 000", "10.000 coin" yazdıysa (bizim son mesajımızdan sonra) yükleme kısayolu; elmas bozdurma mesajları sayılmaz
 function parseCoins(t) { t = String(t || "").toLowerCase(); if (/almaz|elmas|💎|diamond|bozdur|алмаз/.test(t)) return 0;
@@ -523,6 +530,11 @@ async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.ow
 function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
   if (!v) { const first = document.querySelector("#srchRes .row[data-uid]"); if (first) { pick(first.dataset.uid); return; } toast("İsim ya da UID yazın", true); return; }
   pick(v); }
+function hitMark(t, q) { const i = t.toLocaleLowerCase("tr").indexOf(q.toLocaleLowerCase("tr")); const a = Math.max(0, i - 30), part = t.slice(a, a + 120);
+  if (i < 0) return emo(esc(part)); const j = i - a; return (a ? "…" : "") + emo(esc(part.slice(0, j))) + `<b style="color:#fbbf24">${esc(part.slice(j, j + q.length))}</b>` + emo(esc(part.slice(j + q.length))); }
+async function msgHit(c, mid) { pick(c); for (let i = 0; i < 40; i++) { await new Promise((r) => setTimeout(r, 150)); if (cur !== c) return; if (document.querySelector(`#msgs .m[data-mid="${CSS.escape(mid)}"]`)) break; if (hist.length && i > 10) break; }
+  for (let k = 0; k < 8 && cur === c && !document.querySelector(`#msgs .m[data-mid="${CSS.escape(mid)}"]`) && histMore; k++) await loadOlder(); // eski mesajsa sayfa sayfa geriye
+  if (cur === c) pinGo(mid); }
 function pick(uid) { $("idIn").value = ""; $("srchRes").innerHTML = ""; openChat(uid); }
 
 // ---------- kişi arama (isim / UID / biyografi): önce kendi sohbetlerimiz, sonra kayıtlı herkes
@@ -536,10 +548,12 @@ const pRow = (uid, n, av, sub) => `<div class="row" data-uid="${esc(uid)}" oncli
 async function runSrch(q) {
   const low = q.toLocaleLowerCase("tr"), digits = /^\d{5,12}$/.test(q);
   const mine = inbox.filter((x) => String(x.id).includes(q) || String(x.n || "").toLocaleLowerCase("tr").includes(low)).slice(0, 8);
+  let hits = [];
   const draw = (rows) => { if (srchQ !== q) return;
     $("srchRes").innerHTML = (digits && !mine.some((x) => String(x.id) === q) && !rows.some((r) => String(r.uid) === q) ? `<div class="row" data-uid="${esc(q)}" onclick="pick('${esc(q)}')"><div class="av">💬</div><div class="b"><b>UID ${esc(q)} ile sohbet aç</b></div></div>` : "")
       + (mine.length ? `<div class="hd">Sohbetlerimiz</div>` + mine.map((x) => pRow(String(x.id), x.n, x.av, esc(x.p || ""))).join("") : "")
       + (rows.length ? `<div class="hd">Kayıtlı kişiler</div>` + rows.map((r) => pRow(String(r.uid), r.nickname, r.avatar_url || r.avatar, [r.verified ? "✔️ onaylı" : "", r.online ? "🟢 çevrimiçi" : "", r.wealth_level ? "💰 " + r.wealth_level : ""].filter(Boolean).join(" · "))).join("") : "")
+      + (hits.length ? `<div class="hd">💬 Mesajlarda (${hits.length})</div>` + hits.map((m) => `<div class="row" onclick="msgHit('${esc(m.c)}','${esc(m.mid)}')"><div class="av">${avHtml(m.n || m.c, m.av)}</div><div class="b"><div class="t"><b>${esc(m.n || m.c)}</b><span class="s">${esc(rel(Date.parse(m.at)))}</span></div><div class="p"><span>${m.own ? "Siz: " : ""}${hitMark(m.t, q)}</span></div></div></div>`).join("") : "")
       || `<div class="row s">Bulunamadı</div>`; };
   draw([]);
   if (q.length < 2) return;
@@ -548,6 +562,7 @@ async function runSrch(q) {
   rows.forEach((r) => { people[r.uid] = { n: r.nickname, av: r.avatar_url || r.avatar }; });
   draw(rows);
   if (await loadBuyers([...mine.map((x) => String(x.id)), ...rows.map((r) => String(r.uid))])) draw(rows);
+  if (q.length >= 3 && !digits && can("mesaj")) { const h = await api("msg_search", { q }); hits = (h.report && h.report.hits) || []; draw(rows); } // 🔎 mesaj içinde
 }
 
 // ---------- güven bilgisi: bizden daha önce coin aldı mı (satış kayıtları) + açık borç — tabletle aynı
@@ -935,7 +950,7 @@ function grow(t) { if (!growTwin) { growTwin = document.createElement("textarea"
   const pv = $("txtPrev"); if (pv && t.id === "txt") { const has = /\[[^\]]+\]/.test(t.value) && [...t.value.matchAll(/\[[^\]]+\]/g)].some((x) => EMO.has(x[0].toLowerCase()));
     pv.hidden = !has; if (has) pv.innerHTML = `<span class="s">Gidecek hâli: </span>` + emo(esc(t.value)); } }
 async function send(textArg, extra) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
-  if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
+  if (textArg === undefined) { $("txt").value = ""; grow($("txt")); } if ($("slashList")) $("slashList").hidden = true;
   const rq = replyTo; replyTo = null; renderReply();
   outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, ...(rq ? { q: rq } : {}), status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
   ownRow(cur, t);
@@ -950,7 +965,13 @@ function renderTpls() { const ac = askedCoins();
     (cur && !isSys(cur) ? `<button onclick="noteAdd()">📝 Not</button><button onclick="remAdd()">⏰ Hatırlat</button>` : "") +
   tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join("");
   if ($("tpls").innerHTML !== h) $("tpls").innerHTML = h; } // değişmediyse yeniden çizilmez
-function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(t); }
+// "/" kısayolu: yazı kutusu "/" ile başlayınca hazır mesajlar süzülür (üstte açılır, sayfayı itmez); {ad} = müşterinin adı, {kart} = sıradaki kart
+function tplFill(t) { const c = pcs && pcs.current; return String(t).replace(/\{ad\}/g, String(curName || "").split(/\s+/)[0] || "").replace(/\{kart\}/g, c && c.number ? pcTxt(c) : "{kart}"); }
+function slashUpd() { const el = $("slashList"), v = $("txt").value; if (!el) return; const m = /^\/(\S*)$/.exec(v);
+  if (!m) { if (!el.hidden) el.hidden = true; return; } const q = m[1].toLocaleLowerCase("tr"), list = tpls.filter((t) => t && t.trim() && (!q || t.toLocaleLowerCase("tr").includes(q))).slice(0, 12);
+  el.innerHTML = list.length ? list.map((t) => `<button data-t="${esc(t)}" onclick="slashPick(this.dataset.t)">⚡ ${emo(esc(t.length > 120 ? t.slice(0, 119) + "…" : t))}</button>`).join("") : `<span class="s">Hazır mesaj yok${q ? ` ("${esc(q)}")` : ""}. Kartlar sekmesinden eklenir.</span>`; el.hidden = false; }
+function slashPick(t) { const x = $("txt"); x.value = tplFill(t); grow(x); $("slashList").hidden = true; try { x.focus(); x.setSelectionRange(x.value.length, x.value.length); } catch (e) {} }
+function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(tplFill(t)); }
 function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
   const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
@@ -1056,10 +1077,14 @@ async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit 
   const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
   if (curTab === "coin") renderCoins(); }
-function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {};
-  $("coinBody").innerHTML = `<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
+function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {}, du = c.dm_unpaid || {}, db = c.debt || {}, low = c.stock != null && c.low_coin > 0 && c.stock < c.low_coin;
+  if ($("hStock")) $("hStock").style.color = low ? "#f87171" : "";
+  $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
       <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
-      <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div></div>
+      <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div>
+      <div class="card" onclick="tab('dm')" style="cursor:pointer"><div class="k">💎 Ödenmemiş elmas</div><div class="v">${azn(du.pay || 0)}</div><div class="s">${du.n || 0} bozum › Elmas</div></div>
+      <div class="card"><div class="k">🧾 Bize açık borç</div><div class="v">${azn(db.azn || 0)}</div><div class="s">${db.n || 0} borç</div></div></div>
+    ${isYetkili() ? `<div class="s" style="padding:4px 12px">🔻 Düşük bakiye uyarısı: ${c.low_coin ? nf(c.low_coin) + " coin altı" : "kapalı"} <button style="padding:3px 10px;font-size:13px" onclick="lowCoinEdit(${Number(c.low_coin) || 0})">değiştir</button></div>` : ""}
     <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
     ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
       return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
@@ -1166,6 +1191,8 @@ async function teamReport(day) { const d = await api("team_report", day ? { day 
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
   const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card"), dmOn: $("am_dmOn").checked, almazOn: v("almazOn"), almazOff: v("almazOff") }; // boş metin → varsayılan
   const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
+async function lowCoinEdit(v) { const x = prompt("Bu coin miktarının altına inince uyar (0 = kapalı):", String(v)); if (x == null) return; const n = Number(String(x).replace(/\D/g, ""));
+  const d = await api("low_coin_save", { low_coin: n }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); loadCoins(); }
 async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
 
 // 🏢 Ajans (sadece okuma)
