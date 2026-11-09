@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.24">
+<meta name="build" content="2.1.25">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -63,6 +63,10 @@
   .xinfo button { padding: 4px 10px; font-size: 13px; margin-left: 6px; vertical-align: middle; } .xinfo .s { font-size: 12px; }
   .xinfo.note, .xinfo.rem { display: flex; align-items: center; gap: 6px; } .xinfo .xt { flex: 1; min-width: 0; overflow-wrap: anywhere; } .xinfo.note button, .xinfo.rem button { flex: none; margin-left: 0; }
   #compWrap { position: relative; }
+  .comp { position: relative; } #sendBtn { width: 84px; } /* 🎤 / Gönder aynı genişlik: yazı kutusu oynamasın */
+  .recbar { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--panel); }
+  .recbar .rt { flex: 1; font-weight: 700; color: #f87171; font-variant-numeric: tabular-nums; } .recbar .rt::before { content: "🔴 "; animation: recb 1s steps(2) infinite; } @keyframes recb { 50% { opacity: .3; } }
+  .recbar button { min-height: 44px; }
   .slash { position: absolute; left: 8px; right: 8px; bottom: calc(100% + 6px); z-index: 4; max-height: 40vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 24px #0008; }
   .slash button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 12px; font-size: 14px; white-space: normal; } .slash .s { padding: 8px 12px; display: block; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
@@ -288,8 +292,9 @@
       <button onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
       <button onclick="pickImg()" title="Resim">📎</button>
       <input type="file" id="file" accept="image/*" hidden onchange="sendImg(this)">
-      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput();slashUpd()"></textarea>
-      <button class="go" onclick="send()">Gönder</button>
+      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput();slashUpd();sendBtnUpd()"></textarea>
+      <button class="go" id="sendBtn" onclick="sendOrMic()">Gönder</button>
+      <div id="recBar" class="recbar" hidden><span class="rt" id="recTime">0:00</span><span class="s">en fazla 60 sn</span><button onclick="recCancel()">✕ İptal</button><button class="go" onclick="recSend()">➤ Gönder</button></div>
     </div>
     <div class="infol"></div>
   </div>
@@ -592,9 +597,10 @@ async function loadBuyers(uids, force) {
 // ---------- sohbet
 const synced = {};
 async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
-  if (String(id) !== cur) chX = { pay: null, notes: [], rems: [], sent: null }; cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  if (String(id) !== cur) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); } cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
+  sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
@@ -922,9 +928,9 @@ function renderChat(scroll) {
   // Sayfadan gönderilenler: tablet gönderene kadar soluk, hata olursa kırmızı (gönderilen mesaj Sugo'dan gelince listede asıl hâli görünür)
   const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
   for (const o of outbox) {
-    if (o.status === "sent" && (o.kind === "image" || sentTexts.has(obText(o).trim()))) continue;
+    if (o.status === "sent" && (o.kind === "image" || o.kind === "media" || sentTexts.has(obText(o).trim()))) continue;
     const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ gönderiliyor…";
-    items.push({ k: "o" + o.id, at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? "📷 Resim" : emo(esc(obText(o))) + cardTag(obText(o))}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
+    items.push({ k: "o" + o.id, at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? "📷 Resim" : o.kind === "media" ? "🎤 Sesli mesaj" : emo(esc(obText(o))) + cardTag(obText(o))}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
   }
   for (const p of rpend) if (p.c === cur && Date.now() - p.at < 60_000) items.push({ k: "p" + p.at, at: p.at, html: `<div class="m me ${p.fail ? "fail" : "pend"}">${emo(esc(p.t || ""))}<div class="tm">${p.fail ? "❌ gitmedi: " + esc(p.fail) : "⏳ gönderiliyor…"}</div></div>` });
   items.sort((a, b) => a.at - b.at);
@@ -953,7 +959,7 @@ function grow(t) { if (!growTwin) { growTwin = document.createElement("textarea"
   const pv = $("txtPrev"); if (pv && t.id === "txt") { const has = /\[[^\]]+\]/.test(t.value) && [...t.value.matchAll(/\[[^\]]+\]/g)].some((x) => EMO.has(x[0].toLowerCase()));
     pv.hidden = !has; if (has) pv.innerHTML = `<span class="s">Gidecek hâli: </span>` + emo(esc(t.value)); } }
 async function send(textArg, extra) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
-  if (textArg === undefined) { $("txt").value = ""; grow($("txt")); } if ($("slashList")) $("slashList").hidden = true;
+  if (textArg === undefined) { $("txt").value = ""; grow($("txt")); sendBtnUpd(); } if ($("slashList")) $("slashList").hidden = true;
   const rq = replyTo; replyTo = null; renderReply();
   outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, ...(rq ? { q: rq } : {}), status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
   ownRow(cur, t);
@@ -973,6 +979,31 @@ function tplFill(t) { const c = pcs && pcs.current; return String(t).replace(/\{
 function slashUpd() { const el = $("slashList"), v = $("txt").value; if (!el) return; const m = /^\/(\S*)$/.exec(v);
   if (!m) { if (!el.hidden) el.hidden = true; return; } const q = m[1].toLocaleLowerCase("tr"), list = tpls.filter((t) => t && t.trim() && (!q || t.toLocaleLowerCase("tr").includes(q))).slice(0, 12);
   el.innerHTML = list.length ? list.map((t) => `<button data-t="${esc(t)}" onclick="slashPick(this.dataset.t)">⚡ ${emo(esc(t.length > 120 ? t.slice(0, 119) + "…" : t))}</button>`).join("") : `<span class="s">Hazır mesaj yok${q ? ` ("${esc(q)}")` : ""}. Kartlar sekmesinden eklenir.</span>`; el.hidden = false; }
+// 🎤 Sesli mesaj: yazı kutusu boşken Gönder → 🎤. Kayıt tarayıcıda AMR'ye çevrilir (Sugo'nun biçimi; kütüphane ilk sohbette arka planda iner)
+const AMR_JS = "https://cdn.jsdelivr.net/npm/benz-amr-recorder@1.1.5/BenzAMRRecorder.min.js", AMR_SRI = "sha384-vIIZiLPvpQrkqaGIgTHgiCueTs4eJlC4keXqDelxwuk2/axt6v0ErdBNWPbDlIQU";
+let rec = null, recT = 0, recAt = 0, amrP = null;
+function loadAmr() { if (window.BenzAMRRecorder) return Promise.resolve(); if (amrP) return amrP;
+  amrP = new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = AMR_JS; sc.integrity = AMR_SRI; sc.crossOrigin = "anonymous"; sc.async = true;
+    sc.onload = () => ok(); sc.onerror = () => { amrP = null; no(new Error("ses kaydedici yüklenemedi")); }; document.head.appendChild(sc); }); return amrP; }
+function micOk() { return !!(cur && !isSys(cur) && can("mesaj") && navigator.mediaDevices && navigator.mediaDevices.getUserMedia); }
+function sendBtnUpd() { const b = $("sendBtn"); if (!b) return; const m = !$("txt").value.trim() && micOk() ? "mic" : "send";
+  if (b.dataset.m !== m) { b.dataset.m = m; b.textContent = m === "mic" ? "🎤" : "Gönder"; b.title = m === "mic" ? "Sesli mesaj kaydet" : "Gönder"; b.setAttribute("aria-label", b.title); } }
+function sendOrMic() { if ($("sendBtn").dataset.m === "mic") recStart(); else send(); }
+async function recStart() { if (rec) return; const c = cur;
+  try { await loadAmr(); const r = new window.BenzAMRRecorder(); await r.initWithRecord(); if (cur !== c) { r.destroy(); return; } r.startRecord(); rec = r; recAt = Date.now();
+    $("recBar").hidden = false; recTick(); recT = setInterval(recTick, 250); try { navigator.vibrate && navigator.vibrate(10); } catch (e) {} }
+  catch (e) { rec = null; toast("🎤 Mikrofon açılamadı: " + ((e && (e.message || e.name)) || e) + " (tarayıcıda mikrofon izni verin)", true); } }
+function recTick() { const s = Math.floor((Date.now() - recAt) / 1000); $("recTime").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; if (s >= 60) recSend(); }
+function recStop() { clearInterval(recT); $("recBar").hidden = true; }
+function recCancel() { const r = rec; rec = null; recStop(); try { if (r) { r.cancelRecord(); r.destroy(); } } catch (e) {} }
+async function recSend() { const r = rec, c = cur; if (!r) return; rec = null; recStop();
+  try { await r.finishRecord(); const blob = r.getBlob(), dur = Math.min(60, Math.round(r.getDuration())); try { r.destroy(); } catch (e) {}
+    if (!blob || dur < 1) { toast("Ses çok kısa (en az 1 sn)", true); return; }
+    const url = await new Promise((ok, no) => { const fr = new FileReader(); fr.onload = () => ok(String(fr.result)); fr.onerror = () => no(new Error("okunamadı")); fr.readAsDataURL(blob); });
+    outbox.unshift({ id: "tmp" + Date.now(), kind: "media", body: "", status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); if (cur === c) renderChat(true); ownRow(c, "🎤 Sesli mesaj");
+    const d = await api("send_voice", { conv: c, data: "data:audio/amr;base64," + url.split(",")[1], dur }); if (d.error) { toast("❌ " + d.error, true); if (cur === c) loadChat(); return; }
+    await outboxWait(d.id, c);
+  } catch (e) { toast("❌ Sesli mesaj gönderilemedi: " + ((e && e.message) || e), true); if (cur === c) loadChat(); } }
 function slashPick(t) { const x = $("txt"); x.value = tplFill(t); grow(x); $("slashList").hidden = true; try { x.focus(); x.setSelectionRange(x.value.length, x.value.length); } catch (e) {} }
 function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(tplFill(t)); }
 function pickImg() { $("file").click(); }
