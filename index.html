@@ -298,7 +298,7 @@ function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); l
 // ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
 const STAT = { api: [], rt: null, rtOn: false, live: null, link: "" };
 function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
-  const bits = [`sürüm ${BUILD && BUILD !== "12afaac0c975" ? BUILD.slice(0, 7) : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
+  const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD.slice(0, 7) : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
 async function api(action, body = {}) { const t0 = performance.now(); try { return await api0(action, body); } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
@@ -1004,7 +1004,7 @@ function pauseShow(until) { let el = $("pauseBar"); if (!el) { el = document.cre
 // Yazı yazılırken / PIN, pencere ya da resim açıkken beklenir; yenilemeden sonra açık sohbet, sekme ve kaydırma yeri geri gelir.
 const BUILD = (document.querySelector('meta[name="build"]') || {}).content || "";
 let updT = 0, updChecking = false;
-async function checkUpdate() { if (!BUILD || BUILD === "12afaac0c975" || updChecking || document.hidden) return; updChecking = true;
+async function checkUpdate() { if (!BUILD || BUILD === "__BUILD__" || updChecking || document.hidden) return; updChecking = true;
   try { const r = await fetch("version.json?ts=" + Date.now(), { cache: "no-store" }); const v = r.ok ? (await r.json()).v : null; if (v && v !== BUILD) safeReload(); } catch (e) {} finally { updChecking = false; } }
 function updBusy() { const a = document.activeElement, typing = a && a.matches && a.matches("input, textarea, [contenteditable]") && String(a.value || a.textContent || "").trim();
   return !!(typing || ($("txt") && $("txt").value.trim()) || ($("modal") && $("modal").style.display === "flex") || ($("lb") && !$("lb").hidden) || loginBusy || (typeof replyTo !== "undefined" && replyTo)); }
