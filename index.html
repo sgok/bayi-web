@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.32">
+<meta name="build" content="2.1.33">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.32">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.32">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.32">
+<link rel="manifest" href="manifest.json?v=2.1.33">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.33">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.33">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -195,6 +195,8 @@
   .pffol.on { background: transparent !important; border: 1.5px solid var(--brand) !important; color: var(--brand3); } .pffol.wait { background: transparent !important; border-color: var(--line) !important; }
   #pfBody .pgrid .card { background: var(--tint); border-color: color-mix(in srgb, var(--brand) 25%, var(--line)); border-radius: 16px; padding: 14px; }
   #pfBody .pgrid .card .v { font-size: 24px; } #pfBody .pfsec { text-transform: uppercase; letter-spacing: .6px; font-size: 12px; color: var(--brand3); margin: 18px 2px 8px; }
+  .skrow { pointer-events: none; } .m.skm { min-width: 0; } .m.skm .sk { height: 1em; }
+  .sk { display: inline-block; height: .85em; border-radius: 6px; vertical-align: middle; background: linear-gradient(90deg, #ffffff12 0%, #ffffff26 50%, #ffffff12 100%); background-size: 200% 100%; animation: skm 1.2s ease-in-out infinite; } @keyframes skm { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } } /* profil yer tutucu */
   .pfmore > summary { background: var(--tint); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; } .pfmore { border-top: 0; }
   /* ⚙️ Ayarlar: kişi kartı + gruplu satırlar (iOS ayarları gibi) */
   .sethead { display: flex; gap: 12px; align-items: center; background: var(--hero); border-radius: 18px; padding: 14px; margin: 0 0 14px; }
@@ -276,7 +278,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.32" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.33" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -285,19 +287,19 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.32" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.33" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
     <div id="dmStrip"></div>
     <div class="search"><input id="idIn" type="search" autocomplete="off" placeholder="🔎 İsim ya da UID ile ara / sohbet aç" oninput="srch()" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
     <div id="srchRes"></div>
-    <div id="convs"><div class="row s">Yükleniyor…</div></div>
+    <div id="convs"><div class="tagbar" data-k="tagbar"><button class="rall" disabled>✓✓ Okundu <b>0</b></button><button class="on">💬 Genel</button><button>💎 Elmas satıcıları</button><button>🪙 Coin alıcıları</button></div><div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div></div>
   </div>
-  <div class="pane" id="p-dm"><div id="dmBody"><div class="row s">Yükleniyor…</div></div></div>
-  <div class="pane" id="p-card"><div id="cardBody"><div class="row s">Yükleniyor…</div></div></div>
-  <div class="pane" id="p-coin"><div id="coinBody"><div class="row s">Yükleniyor…</div></div></div>
-  <div class="pane" id="p-aj"><div id="ajBody"><div class="row s">Yükleniyor…</div></div></div>
+  <div class="pane" id="p-dm"><div id="dmBody"></div></div>
+  <div class="pane" id="p-card"><div id="cardBody"></div></div>
+  <div class="pane" id="p-coin"><div id="coinBody"></div></div>
+  <div class="pane" id="p-aj"><div id="ajBody"></div></div>
   <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button><div class="infol"></div></nav>
 </section>
 
@@ -336,11 +338,25 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.32"></script>
+<script src="emoji.js?v=2.1.33"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
 const ASSET_V = encodeURIComponent((document.querySelector('meta[name="build"]') || {}).content || ""); // kod içinden yüklenen dosyalar (emoji resimleri) sürüm etiketiyle: önbellek eskiyi vermesin
+// ⬜ Önceden çizili ekranlar: sekmeler son hâlleriyle (telefonda saklı) ya da aynı düzende yer tutucularla açılır; veri gelince yalnız içerik dolar
+const SKR = (n) => Array.from({ length: n }, () => `<div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div>`).join("");
+const SKC = (n, full) => `<div class="grid">${Array.from({ length: n }, (_, i) => `<div class="card"${full && i === 0 ? ' style="grid-column:1/-1"' : ""}><div class="k"><span class="sk" style="width:7em"></span></div><div class="v"><span class="sk" style="width:5em;height:1em"></span></div><div class="s"><span class="sk" style="width:8em"></span></div></div>`).join("")}</div>`;
+const SKEL = { dmBody: () => SKC(2) + `<h3><span class="sk" style="width:9em"></span></h3>` + SKR(6), cardBody: () => SKC(1, true) + `<h3><span class="sk" style="width:8em"></span></h3>` + SKR(4),
+  coinBody: () => SKC(5, true) + `<h3><span class="sk" style="width:12em"></span></h3>` + SKR(6), ajBody: () => SKC(4) + SKR(5) };
+const PANES = Object.keys(SKEL);
+function paneBoot() { for (const id of PANES) { const el = $(id); if (!el || el.dataset.pb) continue; el.dataset.pb = 1; let h = null; try { h = localStorage.getItem("bw_pane_" + id); } catch (e) {}
+  el.innerHTML = h || SKEL[id](); let t = 0; // son çizilen hâl saklanır (yer tutucu saklanmaz)
+  new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => { if (el.querySelector(".sk")) return; try { localStorage.setItem("bw_pane_" + id, el.innerHTML.slice(0, 300_000)); } catch (e) {} }, 800); }).observe(el, { childList: true, subtree: true, characterData: true }); } }
+const SKM = () => [0, 1, 0, 0, 1, 0, 1].map((me2, i) => `<div class="m${me2 ? " me" : ""} skm"><span class="sk" style="width:${[11, 7, 14, 9, 12, 6, 10][i]}em"></span><div class="tm"><span class="sk" style="width:2.5em"></span></div></div>`).join("");
+// 💬 Sohbet önbelleği: son 40 mesaj + bilgi kutuları (son 30 sohbet); açılınca hemen çizilir, sonra sunucudan tazelenir
+const chCache = { get(c) { try { return JSON.parse(localStorage.getItem("bw_ch_" + c) || "null"); } catch (e) { return null; } },
+  put(c, v) { try { let k = JSON.parse(localStorage.getItem("bw_ch_keys") || "[]").filter((x) => x !== c); k.push(c); while (k.length > 30) localStorage.removeItem("bw_ch_" + k.shift());
+    localStorage.setItem("bw_ch_keys", JSON.stringify(k)); localStorage.setItem("bw_ch_" + c, JSON.stringify(v)); } catch (e) {} } };
 let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null }, tagx = []; // tagx: son 120 sohbette olmayan etiketli kişiler (etiket sekmelerinde görünür)
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -376,7 +392,7 @@ async function api(action, body = {}) { const t0 = performance.now(); try { cons
 async function api0(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
-  if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
 const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
@@ -406,21 +422,25 @@ async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $(
   try { if (d.must_change) { await start(); pwChange(pw, true); } else await start(); } finally { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş"; }
   if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
+function cacheClear() { try { for (const k of Object.keys(localStorage)) if (/^bw_(pane_|ch_)/.test(k)) localStorage.removeItem(k); } catch (e) {} } // başka kişi girerse eski ekranlar görünmesin
+async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
 async function start() {
   // CLS: listenin üstündeki şeritler (bildirim, tablet uyarısı, elmas bozumu) ilk çizimde son bilinen hâliyle yer alır → liste sonradan aşağı kaymaz
   try { notifBarShow(); setTabWarn(localStorage.getItem("bw_tabwarn") || ""); if ($("dmStrip")) $("dmStrip").innerHTML = localStorage.getItem("bw_dmstrip") || ""; } catch (e) {}
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
+  paneBoot(); // sekmeler son hâlleriyle ya da yer tutucularla hazır
   let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
   const fast = !!(cm && Array.isArray(ci) && ci.length);
   if (fast) { me = cm; applyPerms(); show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
+  else { show("inbox"); tab(curTab); } // önbellek yokken de ekran boş kalmasın: liste/sekme iskeleti hemen, kimlik ve veri gelince dolar
   const pInbox = loadInbox();
   if (can("kart")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
   applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
+  setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
   const qp = new URLSearchParams(location.search), rs = takeResume();
   if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
   else if (rs) { if (rs.tab) tab(rs.tab); if (rs.cur) { await openChat(rs.cur); if (rs.a) msgRestore(rs.a); } toast("✨ Sayfa güncellendi"); }
@@ -630,7 +650,9 @@ async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderRep
   sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
-  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
+  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || []; renderPins(); $("cards").classList.remove("on");
+  const cc = !snap && !sy ? chCache.get(cur) : null; // önbellekteki son mesajlar hemen; yoksa balon yer tutucuları
+  if (cc && Array.isArray(cc.hist) && cc.hist.length) { hist = cc.hist; coins = cc.coins || []; chX = cc.x || chX; renderChat(true); } else $("msgs").innerHTML = SKM();
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
   if (!sy && !synced[cur]) { synced[cur] = 1; api("chat_sync", { conv: cur }); } // eski mesajlar Sugo'dan (arka planda; gelince sohbet yenilenir)
   if (snap && snap.hist) { // önceki sohbete dönüş: yüklenmiş eski sayfalarıyla birlikte aynen, kaldığı yerden; sonra arka planda tazelenir
@@ -694,7 +716,8 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
     const loc = chX.sent && (!h.report.sent || Date.parse(chX.sent.at) > Date.parse(h.report.sent.at)) ? chX.sent : h.report.sent || null; // az önce buradan yüklenen sunucuya düşmediyse yerel kalır
     chX = { pay: h.report.pay || null, notes: h.report.notes || [], rems: h.report.rems || [], sent: loc };
     if (Array.isArray(h.report.pins)) { pins = h.report.pins; chPinsSet(c, pins); renderPins(); }
-    const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
+    const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding();
+    if (!isSys(c)) chCache.put(c, { hist: hist.slice(-40), coins, x: chX, at: Date.now() }); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
   if (m.k === "voice" && /^https?:/.test(t)) return voiceBtn(t, Number(m.dur) || 0);
@@ -1057,12 +1080,13 @@ function cardTag(text) { const d = String(text || "").replace(/[\s-]/g, ""); if 
 const pcCan = (c) => c.active && c.number && c.uses < c.max_uses;
 async function toggleCards() { const el = $("cards"), low = stick, keep = () => { if (low) { toBottom(); requestAnimationFrame(toBottom); } }; // en alttaysa altta kalsın (mesajlar kaymasın)
   if (el.classList.contains("on")) { el.classList.remove("on"); keep(); return; }
-  el.innerHTML = `<div class="s">Yükleniyor…</div>`; el.classList.add("on"); keep();
-  const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] };
-  const cards = (pcs.cards || []).filter((x) => x.active && x.number), cu = pcs.current && pcCan(pcs.current) ? pcs.current : null;
-  const list = [...(cu ? [cu] : []), ...cards.filter((x) => pcCan(x) && (!cu || x.id !== cu.id)), ...cards.filter((x) => !pcCan(x))];
-  el.innerHTML = list.length ? list.map((x) => `<button class="${cu && x.id === cu.id ? "next" : ""} ${pcCan(x) ? "" : "full"}" ${pcCan(x) ? `onclick="giveCard(${x.id})"` : "disabled"}>💳 ${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}<div class="s">${x.uses}/${x.max_uses} hak${cu && x.id === cu.id ? " · ⭐ sıradaki" : pcCan(x) ? "" : " · ⛔ hakkı doldu"}</div></button>`).join("")
-    : `<div class="s">Kart yok</div>`; keep(); }
+  const draw = () => { const cards = ((pcs && pcs.cards) || []).filter((x) => x.active && x.number), cu = pcs && pcs.current && pcCan(pcs.current) ? pcs.current : null;
+    const list = [...(cu ? [cu] : []), ...cards.filter((x) => pcCan(x) && (!cu || x.id !== cu.id)), ...cards.filter((x) => !pcCan(x))];
+    const h = list.length ? list.map((x) => `<button class="${cu && x.id === cu.id ? "next" : ""} ${pcCan(x) ? "" : "full"}" ${pcCan(x) ? `onclick="giveCard(${x.id})"` : "disabled"}>💳 ${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}<div class="s">${x.uses}/${x.max_uses} hak${cu && x.id === cu.id ? " · ⭐ sıradaki" : pcCan(x) ? "" : " · ⛔ hakkı doldu"}</div></button>`).join("")
+      : `<div class="s">Kart yok</div>`; if (el.innerHTML !== h) el.innerHTML = h; };
+  if (pcs && (pcs.cards || []).length) draw(); else el.innerHTML = `<button disabled><span class="sk" style="width:12em"></span></button><button disabled><span class="sk" style="width:10em"></span></button>`; // bilinen kartlar hemen
+  el.classList.add("on"); keep();
+  const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; if (el.classList.contains("on")) { draw(); keep(); } }
 async function giveCard(id) { const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
   const d = await api("pcard_give", { id, conv: cur }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
   send(pcTxt(c), { card_after: 1 }); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); } // card_after: ardından sunucu "çeki gönderin" mesajını kuyruğa ekler (Ayarlar › 🤖 Otomatik mesajlar)
@@ -1138,7 +1162,7 @@ const OST = { open: ["⏳", "ödeme eşleşmedi", "#fbbf24"], complete: ["✅", 
 async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit += 40;
   const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
-  if (curTab === "coin") renderCoins(); }
+  renderCoins(); } // gizliyken de çizilir: sekme açılınca hazır (yer tutucu / eski hâl yerine)
 function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {}, du = c.dm_unpaid || {}, db = c.debt || {}, low = c.stock != null && c.low_coin > 0 && c.stock < c.low_coin;
   if ($("hStock")) $("hStock").style.color = low ? "#f87171" : "";
   $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
@@ -1256,7 +1280,7 @@ let relK = "following", relRows = [], relT = 0, relSeq = 0;
 function relOpen(k) { relK = k || relK; relRows = [];
   openModal(`<h3 style="margin:0 0 2px">👥 Bayi hesabı · takip ve arkadaşlar</h3><div class="reltabs" id="relTabs">${REL.map(([k2, l]) => `<button data-k="${k2}" class="${k2 === relK ? "go" : ""}" onclick="relTab('${k2}')">${l}<b>…</b></button>`).join("")}</div>
     <input id="relQ" placeholder="🔎 Ad ya da UID ile ara" oninput="clearTimeout(relT);relT=setTimeout(()=>relLoad(0),300)" autocomplete="off">
-    <div class="s" id="relInfo" style="margin:6px 0">yükleniyor…</div><div id="relList" class="rellist"></div>
+    <div class="s" id="relInfo" style="margin:6px 0"><span class="sk" style="width:16em"></span></div><div id="relList" class="rellist">${SKR(8)}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button onclick="relRefresh()">🔄 Sugo'dan tazele</button><button onclick="closeModal()">Kapat</button></div>`, true);
   relLoad(0); }
 function relTab(k) { relK = k; document.querySelectorAll("#relTabs button").forEach((b) => b.classList.toggle("go", b.dataset.k === k)); relLoad(0); }
@@ -1534,6 +1558,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.32"></script>
+<script src="profile.js?v=2.1.33"></script>
 </body>
 </html>

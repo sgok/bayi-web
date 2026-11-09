@@ -19,7 +19,7 @@
       while (k.length > 60) localStorage.removeItem("pf_" + k.shift()); localStorage.setItem("pf_keys", JSON.stringify(k)); localStorage.setItem("pf_" + uid, raw); } catch (e) {} },
   };
   const pfRefreshing = {}, pfLive = {};
-  let pfUid = null;
+  let pfUid = null, pfMoreOpen = false; // "Diğer bilgiler" açıksa güncellemede kapanmasın
   const sync = (on) => { const el = $("pfSync"); if (el) el.hidden = !on; };
 
   window.prof = async (uid) => {
@@ -29,7 +29,8 @@
     if (!$("prof").classList.contains("on")) history.pushState({ p: uid }, "");
     show("prof"); $("pfBody").scrollTop = 0;
     const cached = pfCache.get(uid);
-    if (cached) render(JSON.parse(cached)); else $("pfBody").innerHTML = `<div class="pfh"><div class="wav" style="background:#059669">${avHtml(k.n, k.av)}</div><div><div class="pn">${esc(k.n || uid)}</div><div class="s">UID ${esc(uid)}</div></div></div><div class="day">yükleniyor…</div>`;
+    pfMoreOpen = false;
+    render(cached ? JSON.parse(cached) : { uid, name: k.n || "", avatar: k.av || null, __sk: true }); // önbellek yoksa aynı düzen yer tutucularla: veri gelince yalnız içerik dolar
     sync(!!pfRefreshing[uid]);
     delete pfLive[uid];
     api("profile_live", { uid }).then(onLive);
@@ -154,20 +155,23 @@
     const lv = pfLive[p.uid], on = lv && !lv.error ? !!(lv.online || lv.room) : null;
     const o = oldName(p);
     const debtSum = (p.debts || []).reduce((t, x) => t + Number(x.remaining || 0), 0);
+    const sk = !!p.__sk, SK = (w) => `<span class="sk" style="width:${w}"></span>`; // yer tutucu (veri gelene kadar)
+    const md = $("pfBody").querySelector(".pfmore"); if (md && md.open) pfMoreOpen = true;
     $("pfBody").innerHTML = `<div class="pfhero"><div class="pfh"><div class="wav" style="background:#059669">${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
-        <div style="flex:1;min-width:0"><div class="pn">${esc(p.name || "(isimsiz)")}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
+        <div style="flex:1;min-width:0"><div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
-          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
+          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${sk ? `<span>${SK("3em")}</span><span>${SK("3em")}</span><span>${SK("4em")}</span>` : tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
-      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`}</div>
+      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}</div>
       <div class="pgrid">
-        ${card("💸 Bizden aldığı coin", coin(b.coins), `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "var(--accent)")}
-        ${card("🧾 Açık borç", debtSum > 0.009 ? az(debtSum) : "yok", (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
+        ${card("💸 Bizden aldığı coin", sk ? SK("4.5em") : coin(b.coins), sk ? SK("7em") : `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "var(--accent)")}
+        ${card("🧾 Açık borç", sk ? SK("3em") : debtSum > 0.009 ? az(debtSum) : "yok", sk ? SK("5em") : (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
       </div>
+      ${sk ? `<div class="pfsec">Son alımları</div><table><tr class="h"><th>Tarih</th><th class="n">Coin</th></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr></table>` : ""}
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
       ${(p.debts || []).length ? `<div class="pfsec">Açık borçlar</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
-      <details class="pfmore"><summary>Diğer bilgiler <span class="s">· oda, hediyeler, albüm, eski resimler, geçmiş, tüm Sugo bilgileri</span></summary>
+      <details class="pfmore"${pfMoreOpen ? " open" : ""}><summary>Diğer bilgiler <span class="s">· oda, hediyeler, albüm, eski resimler, geçmiş, tüm Sugo bilgileri</span></summary>
       ${p.bio ? `<div class="pfbio">${esc(p.bio)}</div>` : ""}
       ${facts.length ? `<div class="pftags" style="margin:2px 0 10px">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
       <div class="s" style="margin:0 0 8px"><span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}
