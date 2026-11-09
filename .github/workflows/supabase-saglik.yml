@@ -1,0 +1,64 @@
+# Supabase sağlık kontrolü (15 dakikada bir). Sağlıksızsa 3 dk sonra tekrar bakar; hâlâ sağlıksızsa projeyi yeniden başlatır.
+# Gerekli sır (repo → Settings → Secrets and variables → Actions): SUPABASE_YONETIM_TOKEN
+# Elle deneme: Actions → "Supabase sağlık kontrolü" → Run workflow ("sadece kontrol" işaretliyse yeniden başlatmaz)
+# Kaynak: SugoBayiYonetim/github-actions/supabase-saglik.yml → bayi-web/.github/workflows/ (aynı dosya)
+name: Supabase sağlık kontrolü
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      sadece_kontrol:
+        description: "Sadece kontrol et, sağlıksız olsa da yeniden başlatma"
+        type: boolean
+        default: true
+permissions: {}
+concurrency:
+  group: supabase-saglik
+  cancel-in-progress: false
+jobs:
+  kontrol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      REF: pspgaetjwmejfgouacbx
+      TOKEN: ${{ secrets.SUPABASE_YONETIM_TOKEN }}
+      SADECE_KONTROL: ${{ github.event_name == 'workflow_dispatch' && inputs.sadece_kontrol || false }}
+    steps:
+      - name: Kontrol et, gerekirse yeniden başlat
+        shell: bash
+        run: |
+          set -u
+          if [ -z "$TOKEN" ]; then echo "::error::SUPABASE_YONETIM_TOKEN sırrı eklenmemiş"; exit 1; fi
+          API="https://api.supabase.com/v1/projects/$REF"
+          # 1) Veri yolu: sağlık fonksiyonu anahtarsız istekte veritabanına sorar → çalışıyorsa hemen 403, veritabanı/REST donmuşsa 503 ya da zaman aşımı
+          # 2) Supabase yönetim API'si: db, rest, auth servislerinin sağlık bayrağı
+          probe() {
+            local f h bad
+            f=$(curl -s -m 20 -o /dev/null -w '%{http_code}' -H 'x-device-key: saglik-kontrolu' "https://$REF.supabase.co/functions/v1/health" || true)
+            h=$(curl -s -m 25 -H "Authorization: Bearer $TOKEN" "$API/health?services=db&services=rest&services=auth" || true)
+            bad=$(printf '%s' "$h" | python3 -c '
+          import json, sys
+          try:
+              d = json.load(sys.stdin)
+          except Exception:
+              print("yanit-yok"); sys.exit()
+          if not isinstance(d, list):
+              print("yanit-hatali"); sys.exit()
+          print(",".join(s.get("name", "?") + ":" + str(s.get("status")) for s in d if not s.get("healthy")))')
+            echo "$(date -u '+%H:%M:%S') UTC · veri yolu HTTP ${f:-000} · yönetim API sağlıksız: [${bad}]"
+            [ "$f" = "403" ] || return 1
+            case "$bad" in ""|yanit-yok|yanit-hatali) return 0;; *) return 1;; esac
+          }
+          if probe; then echo "✅ Sağlıklı"; exit 0; fi
+          echo "⚠️ Sağlıksız görünüyor; 3 dk sonra tekrar bakılacak"; sleep 180
+          if probe; then echo "✅ Kendiliğinden düzeldi"; exit 0; fi
+          if [ "$SADECE_KONTROL" = "true" ]; then echo "::warning::Sağlıksız ama 'sadece kontrol' seçili, yeniden başlatılmadı"; exit 1; fi
+          st=$(curl -s -m 20 -H "Authorization: Bearer $TOKEN" "$API" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("status",""))' 2>/dev/null || true)
+          echo "Proje durumu: ${st:-?}"
+          case "$st" in RESTARTING|COMING_UP|RESTORING|UPGRADING|PAUSING|PAUSED|INACTIVE) echo "::warning::Proje zaten $st durumunda, yeniden başlatılmadı"; exit 1;; esac
+          code=$(curl -s -m 30 -o /dev/null -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" "$API/restart" || true)
+          echo "🔄 Yeniden başlatma isteği: HTTP $code"
+          for i in $(seq 1 24); do sleep 30; if probe; then echo "✅ Yeniden başlatmadan sonra sağlıklı"; break; fi; done
+          echo "::error::Supabase sağlıksızdı ve yeniden başlatıldı (HTTP $code). Sugo bağlantısı birkaç dakikada kendiliğinden döner."
+          exit 1
