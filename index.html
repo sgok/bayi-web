@@ -354,11 +354,11 @@ let cpins = [], cpinsBy = {}; try { cpins = JSON.parse(localStorage.getItem("bw_
 // 🏷️ Sohbet etiketleri (tablet + Ülker ortak): seller = 💎 elmas satıcısı, buyer = 🪙 coin alıcısı; listede üstte filtre (Genel / satıcılar / alıcılar)
 let ctags = {}, lf = "all"; try { ctags = JSON.parse(localStorage.getItem("bw_ctags") || "{}"); lf = localStorage.getItem("bw_lf") || "all"; } catch (e) {}
 const hasTag = (id, t) => (ctags[String(id)] || []).includes(t);
-const tagIcons = (id) => (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı">🪙</span>' : "");
+const tagIcons = (id) => (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı"><span class="gc"></span></span>' : "");
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
 function setLf(k) { lf = k; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
 function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur)) { el.innerHTML = ""; return; }
-  el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')">🪙 Coin alıcısı</button>`; }
+  el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button>`; }
 async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
   const d = await api("conv_tag", { conv: c, tag, on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCtags(d.report && d.report.ctags); renderChTags(); renderInbox(); toast(d.ok || (on ? "Etiketlendi" : "Etiket kaldırıldı")); }
@@ -382,12 +382,12 @@ function renderInbox() {
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
   const shown = lf === "all" ? inbox : inbox.filter((x) => hasTag(x.id, lf)), nSel = inbox.filter((x) => hasTag(x.id, "seller")).length, nBuy = inbox.filter((x) => hasTag(x.id, "buyer")).length;
-  const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')">🪙 Coin alıcıları <b>${nBuy}</b></button></div>`;
+  const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button></div>`;
   morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, 120).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
-    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : "🪙 coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : "<span class="gc"></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = inbox.slice(0, 80).map((x) => String(x.id));
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
