@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.13">
+<meta name="build" content="2.1.14">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -60,6 +60,9 @@
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
   .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
   #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
+  /* Yana kaydırma (sabitle / yanıtla) sırasında sayfanın kendisi yana kaymasın: paneller yatayda kaydırılamaz, satır ve balonlarda tarayıcı yalnız dikey kaydırır */
+  .pane, .msgs, #pfBody { overflow-x: hidden; overscroll-behavior-x: none; } .screen { overflow-x: clip; }
+  #convs .row[data-cid], #msgs .m[data-mid] { touch-action: pan-y; }
   #convs { position: relative; } #convs .row[data-cid] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; } #convs .row.lpsel { filter: brightness(1.35); } /* sağa kaydırarak sabitleme: satırın arkasındaki kırmızı şerit */
   .swbg { position: absolute; left: 0; right: 0; z-index: 0; display: flex; align-items: center; padding-left: 16px; background: linear-gradient(90deg, #7f1d1d, #b91c1c); color: #fecaca; font-weight: 700; font-size: 15px; pointer-events: none; }
   .swbg.ready { background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff; }
