@@ -1,11 +1,11 @@
-# Supabase sağlık kontrolü (15 dakikada bir). Sağlıksızsa 3 dk sonra tekrar bakar; hâlâ sağlıksızsa projeyi yeniden başlatır.
+# Supabase sağlık kontrolü (5 dakikada bir; GitHub en sık 5 dk izin verir). Sağlıksızsa 3 dk sonra tekrar bakar; hâlâ sağlıksızsa projeyi yeniden başlatır.
 # Gerekli sır (repo → Settings → Secrets and variables → Actions): CLAUDE_SUPABASE_SECRET_KEY (Supabase yönetim anahtarı)
 # Elle deneme: Actions → "Supabase sağlık kontrolü" → Run workflow ("sadece kontrol" işaretliyse yeniden başlatmaz)
 # Kaynak: SugoBayiYonetim/github-actions/supabase-saglik.yml → bayi-web/.github/workflows/ (aynı dosya)
 name: Supabase sağlık kontrolü
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       sadece_kontrol:
