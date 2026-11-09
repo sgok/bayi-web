@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="149380286eef">
+<meta name="build" content="e6b3b9ed09a4">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -832,19 +832,38 @@ function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (
   // iPhone ana ekran uygulaması hatası: klavye bir kez açılınca görünür alan küçülür ve öyle kalır (altta boşluk/siyah şerit).
   // Klavye kapanınca / uygulamaya dönünce açık ekran bir an gizlenip gösterilir → iPhone alanı yeniden ölçer (kaydırma konumları korunur)
   let maxVH = window.innerHeight;
-  let healAt = 0;
-  const heal = () => { if (maxVH - window.innerHeight <= 4 || Date.now() - healAt < 1000) return; const sc = document.querySelector(".screen.on"); if (!sc) return; healAt = Date.now();
-    const keep = [...sc.querySelectorAll(".msgs, .pane.on, .list, #pfBody")].map((el) => [el, el.scrollTop]);
-    sc.style.display = "none"; void sc.offsetHeight; sc.style.display = ""; keep.forEach(([el, top]) => { el.scrollTop = top; }); };
+  try { localStorage.setItem("bw_launch_h", JSON.stringify({ at: Date.now(), inner: window.innerHeight, screen: screen.height, app })); } catch (e) {}
+  // Hedef: ana ekran uygulamasında telefonun gerçek ekranı (yeni kurulan test uygulamasında innerHeight = screen.height idi)
+  const target = () => app ? (matchMedia("(orientation: portrait)").matches ? screen.height : screen.width) : maxVH;
+  const short = () => target() - window.innerHeight > 4;
+  const wait = (ms) => new Promise((z) => setTimeout(z, ms));
+  const keepScroll = () => { const sc = document.querySelector(".screen.on"); const k = sc ? [...sc.querySelectorAll(".msgs, .pane.on, .list, #pfBody")].map((el) => [el, el.scrollTop]) : []; return () => k.forEach(([el, top]) => { el.scrollTop = top; }); };
+  // Sırayla denenen yöntemler; işe yarayan bulununca durulur, sonuç kaydedilir (📐 Ekran ölçüsü'nde görünür)
+  const vpMeta = document.querySelector('meta[name="viewport"]'), vp0 = vpMeta ? vpMeta.content : "";
+  const STEPS = [
+    ["kaydır", async () => { window.scrollTo(0, 1); await wait(30); window.scrollTo(0, 0); }],
+    ["ekran", async () => { const sc = document.querySelector(".screen.on"); if (sc) { sc.style.display = "none"; void sc.offsetHeight; sc.style.display = ""; } }],
+    ["sayfa", async () => { r.style.display = "none"; void r.offsetHeight; r.style.display = ""; }],
+    ["yükseklik", async () => { document.body.style.minHeight = "calc(100% + 1px)"; await wait(60); document.body.style.minHeight = ""; }],
+    ["viewport", async () => { if (!vpMeta) return; vpMeta.content = vp0.replace("initial-scale=1", "initial-scale=1.0001"); await wait(80); vpMeta.content = vp0; }],
+  ];
+  let healing = false, healAt = 0;
+  const heal = async (why) => { if (!app || healing || !short() || Date.now() - healAt < 1500) return; healing = true; healAt = Date.now();
+    const before = window.innerHeight, done = [], restore = keepScroll();
+    try { for (const [name, fn] of STEPS) { await fn(); await wait(120); done.push(name + ":" + window.innerHeight); if (!short()) break; } } catch (e) { done.push("hata"); }
+    restore(); healing = false;
+    try { const log = JSON.parse(localStorage.getItem("bw_heal_log") || "[]"); log.unshift({ at: Date.now(), why: why || "", before, after: window.innerHeight, target: target(), steps: done.join(" ") });
+      localStorage.setItem("bw_heal_log", JSON.stringify(log.slice(0, 8))); } catch (e) {} };
   window.__heal = heal;
   addEventListener("resize", () => { maxVH = Math.max(maxVH, window.innerHeight); });
   addEventListener("orientationchange", () => { setTimeout(() => { maxVH = window.innerHeight; }, 400); }); // yön değişince en büyük yükseklik yeniden
-  document.addEventListener("focusout", (e) => { if (e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(() => { r.classList.remove("kb"); if (app) heal(); }, 140); if (app) setTimeout(heal, 600); } });
-  document.addEventListener("visibilitychange", () => { if (app && !document.hidden) setTimeout(heal, 300); });
+  document.addEventListener("focusout", (e) => { if (e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(() => { r.classList.remove("kb"); heal("klavye kapandı"); }, 180); setTimeout(() => heal("klavye +0,8 sn"), 800); } });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(() => heal("uygulamaya dönüş"), 300); });
+  setTimeout(() => heal("açılış"), 600);
   const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px");
     maxVH = Math.max(maxVH, window.innerHeight);
     const typing = !!(document.activeElement && document.activeElement.matches && document.activeElement.matches("input, textarea, [contenteditable]")); // klavye ancak yazı alanı seçiliyken açıktır
-    r.classList.toggle("kb", typing && maxVH - vv.height > 120); if (!typing && app) setTimeout(heal, 200);
+    r.classList.toggle("kb", typing && maxVH - vv.height > 120); if (!typing) setTimeout(() => heal("ekran değişti"), 250);
     if (window.scrollY) window.scrollTo(0, 0); };
   vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
 // Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
@@ -991,8 +1010,10 @@ function screenInfo() { const r = document.documentElement, p = document.createE
   const L = [["Ana ekran uygulaması", r.classList.contains("app") ? "evet" : "hayır"], ["standalone", String(navigator.standalone)], ["klavye sınıfı", r.classList.contains("kb") ? "var" : "yok"],
     ["innerH", innerHeight], ["vvH", window.visualViewport ? Math.round(visualViewport.height) : "-"], ["screenH", screen.height], ["docH", r.clientHeight], ["bodyH", document.body.clientHeight],
     ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
+    ["açılışta innerH", (() => { try { const x = JSON.parse(localStorage.getItem("bw_launch_h") || "null"); return x ? x.inner + " (ekran " + x.screen + ")" : "-"; } catch (e) { return "-"; } })()],
     ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
   openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
+    <div style="font-family:ui-monospace,monospace;font-size:11px;line-height:1.5;margin-top:8px;max-height:30vh;overflow:auto">🔧 Düzeltme denemeleri:<br>${(() => { try { return JSON.parse(localStorage.getItem("bw_heal_log") || "[]").map((x) => `${new Date(x.at).toLocaleTimeString("tr-TR")} ${esc(x.why)}: ${x.before}→${x.after} (hedef ${x.target}) ${esc(x.steps)}`).join("<br>") || "yok"; } catch (e) { return "-"; } })()}</div>
     <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
 // 📱 Sugo uygulamasından bayi hesabına girilecek (ör. yeni kızları onaylamak): sunucu 2 dk bağlanmaz, uygulamayı atmaz; süre bitince ya da "Bitti" ile geri bağlanır
 let pauseT = 0;
