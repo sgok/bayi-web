@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="e6b3b9ed09a4">
+<meta name="build" content="dab9515df316">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -1089,6 +1089,7 @@ function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0,
   openModal(`<h3 style="margin:0 0 4px"><span class="gc"></span> Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
     <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
+    ${me && (me.coin_max || me.coin_day) ? `<div class="s" style="margin-top:6px;color:var(--warn)">🪙 Limitiniz: ${me.coin_max ? "tek seferde en fazla " + nf(me.coin_max) : ""}${me.coin_max && me.coin_day ? " · " : ""}${me.coin_day ? "günde en fazla " + nf(me.coin_day) : ""} coin</div>` : ""}
     <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); }
 let cnT = 0;
@@ -1099,8 +1100,8 @@ function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $
     const azn = k.azn != null ? Number(k.azn) : c / 1000; cn.azn = azn; const ok = k.ok && (!k.max || c <= k.max) && (!k.daily || (k.today || 0) + c <= k.daily);
     $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br><span class="gc"></span> <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
       (k.ok ? "" : `<br>❌ Panel izin vermiyor: ${esc(k.prompt || "")}`) + (k.max && c > k.max ? `<br>❌ Tek seferde en fazla ${Number(k.max).toLocaleString("tr-TR")}` : "") +
-      (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "");
-    $("cnGo").disabled = !ok; }, 400); }
+      (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "") + (k.limit && k.limit.error ? `<br>⛔ <b>${esc(k.limit.error)}</b>` : "");
+    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error); }, 400); }
 async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
   if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
   const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
