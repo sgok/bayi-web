@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="793853f8c567">
+<meta name="build" content="2.0.10">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -301,7 +301,7 @@ function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); l
 // ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
 const STAT = { api: [], rt: null, rtOn: false, live: null, link: "" };
 function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
-  const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD.slice(0, 7) : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
+  const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
 async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} applyPerms(); renderInbox(); if (cur) renderChat(); } }
