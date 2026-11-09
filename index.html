@@ -393,11 +393,23 @@ async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
   el.hidden = !r; if (r) el.innerHTML = `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>`; } // profildeki gibi, "Şu an" yazısı olmadan
 function roomWatch() { clearInterval(roomTimer); $("chRoom").hidden = true; roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
 function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
-function back() { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
+function back() { if (chatStack.length) { history.back(); return; } stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
+// Mesajdaki UID'ye dokununca: profil mi, mesaj mı? "Mesaj at" o kişinin sohbetini açar; geri gelince önceki sohbete, kaldığı yere döner
+let chatStack = [];
+function uidMenu(uid) { const k = inbox.find((x) => String(x.id) === String(uid)) || (people[uid] || {});
+  openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + uid)}</div><div class="s" style="margin-bottom:12px">UID ${esc(uid)}</div>
+    <div style="display:flex;flex-direction:column;gap:8px"><button onclick="closeModal();prof('${esc(uid)}')">👤 Profili aç</button><button class="go" onclick="chatJump('${esc(uid)}')">💬 Mesaj at</button><button onclick="closeModal()">Vazgeç</button></div>`); }
+async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid) return;
+  if (cur) chatStack.push({ c: cur, top: $("msgs").scrollTop, h: $("msgs").scrollHeight, stick });
+  history.pushState({ c: uid }, ""); await openChat(uid); }
+async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c);
+  const box = $("msgs"); if (p.stick) return; stick = false; // en altta değildi: aynı yere (yeni mesaj geldiyse alttan aynı uzaklığa)
+  const put = () => { box.scrollTop = Math.max(0, p.top + (box.scrollHeight - p.h)); }; put(); setTimeout(put, 300); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
 window.addEventListener("popstate", () => {
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
+  if (cur && chatStack.length) { stopMedia(); clearInterval(roomTimer); chatReturn(); return; } // UID'den açılan sohbetten önceki sohbete
   if (cur) { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); }
 });
 // Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
@@ -458,7 +470,7 @@ function emo(html, big) { const only = big && html.replace(/\[[^\]]+\]/g, (x) =>
   return html.replace(/\[[^\]]+\]/g, (x) => EMO.has(x.toLowerCase()) ? emoSpan(x, only ? 44 : 22) : x); }
 // Mesajdaki UID (8–10 hane): dokununca profil
 const uidBare = (html) => String(html).replace(/(^|[^\d])(\d{8,10})(?!\d)/g, (m, a, n) => `${a}<span class="uidl" data-uid="${n}">${n}</span>`);
-document.addEventListener("click", (e) => { const u = e.target.closest && e.target.closest(".uidl[data-uid]"); if (u) { e.stopPropagation(); e.preventDefault(); prof(u.dataset.uid); return; }
+document.addEventListener("click", (e) => { const u = e.target.closest && e.target.closest(".uidl[data-uid]"); if (u) { e.stopPropagation(); e.preventDefault(); uidMenu(u.dataset.uid); return; }
   const im = e.target.closest && e.target.closest("[data-img]"); if (im) { e.stopPropagation(); e.preventDefault(); lbOpen(im.dataset.img); } }, true);
 // Resim büyütme
 function lbOpen(src) { $("lbImg").src = src; $("lbOpen").href = src; $("lb").hidden = false; history.pushState({ lb: 1 }, ""); }
