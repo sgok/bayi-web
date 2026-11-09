@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.19">
+<meta name="build" content="2.1.20">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -55,6 +55,10 @@
   #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
   /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
   .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
+  .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: #7dd3fc; background: rgba(56,189,248,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
+  .wt { font-weight: 700; color: var(--mut, #a1a1aa); } .wt.y { color: #fbbf24; } .wt.r { color: #f87171; } /* ⏱ müşteri ne kadar süredir cevap bekliyor (saatin yerinde) */
+  .typ { color: #4ade80; font-style: italic; }
+  #compWrap { position: relative; } .typpill { position: absolute; left: 12px; bottom: calc(100% + 6px); z-index: 3; background: rgba(20,83,45,.92); color: #bbf7d0; font-size: 13px; border-radius: 999px; padding: 4px 12px; pointer-events: none; }
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
@@ -79,7 +83,7 @@
   .tagbar button { flex: none; padding: 7px 12px; font-size: 14px; border-radius: 999px; } .tagbar button b { color: var(--accent); margin-left: 2px; }
   .tagbar button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; } .tagbar button.on b { color: var(--gofg); }
   .tagic { margin-left: 5px; font-size: 13px; }
-  .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; }
+  .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; } .chtags > .s { flex: none; white-space: nowrap; }
   .chtags button { flex: none; padding: 4px 10px; font-size: 13px; border-radius: 999px; opacity: .75; } .chtags button.on { opacity: 1; background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   nav.bn { flex-wrap: wrap; } .infol { flex-basis: 100%; text-align: center; font-size: 10px; line-height: 13px; color: var(--muted); opacity: .75; padding: 0 6px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
   /* Sürüm satırı iPhone'un alt çubuk (home indicator) payının içine oturur → alt menü/yazı kutusu en alta yapışık görünür; yazı kutusu ayrıca alt pay bırakmaz (çift boşluk vardı) */
@@ -268,6 +272,7 @@
   <div class="cards" id="cards"></div>
   <div id="msgMenu" class="msgmenu" hidden></div>
   <div id="compWrap">
+    <div id="chTyping" class="typpill" hidden></div>
     <div id="emoPanel" class="emopanel" hidden></div>
     <div id="txtPrev" hidden style="padding:6px 12px;border-top:1px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere"></div>
     <div class="tpl" id="tpls"></div>
@@ -276,7 +281,7 @@
       <button onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
       <button onclick="pickImg()" title="Resim">📎</button>
       <input type="file" id="file" accept="image/*" hidden onchange="sendImg(this)">
-      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this)"></textarea>
+      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput()"></textarea>
       <button class="go" onclick="send()">Gönder</button>
     </div>
     <div class="infol"></div>
@@ -392,6 +397,27 @@ const tagIcons = (id) => (hasTag(id, "debtor") ? '<span class="tagic" title="Bor
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
 // 🔕 Sessize alınanlar ({ id: { u: bitiş ms (0 = süresiz), at: başlangıç ms } }) ve 🚫 bloklular: yeni mesajları üste çıkmaz, bildirim/ses yok; bloklular yalnız "Bloklu" sekmesinde
 let cmutes = (() => { try { return JSON.parse(localStorage.getItem("bw_cmutes") || "{}") || {}; } catch (e) { return {}; } })();
+// 🙋 Üstlenme (sunucu: conv_assign, 30 dk) ve ✍️ yazıyor (anlık kanal, sunucuya uğramaz: ek çağrı yok)
+let assigns = {}, typing = {}, typT = 0;
+const asg = (id) => assigns[String(id)] || null, typingBy = (id) => { const t = typing[String(id)]; return t && t.until > Date.now() ? t.by : ""; };
+function rtSend(event, payload) { try { if (rt && rt.readyState === 1 && me && me.rt) rt.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "broadcast", payload: { type: "broadcast", event, payload }, ref: String(Date.now()) })); } catch (e) {} }
+const warned = {};
+function onTypingInput() { if (!cur || !me || isSys(cur)) return; const now = Date.now(); const a = asg(cur);
+  if (a && a.by !== me.name && !warned[cur]) { warned[cur] = 1; toast(`🙋 Bu sohbete ${a.by} bakıyor – iki kişi aynı anda yazmasın`, true); }
+  if (now - typT < 4000) return; typT = now; rtSend("typing", { conv: String(cur), by: me.name }); }
+function onTyping(pl) { const c = String(pl.conv || ""); if (!c || !pl.by || (me && pl.by === me.name)) return; typing[c] = { by: String(pl.by).slice(0, 30), until: Date.now() + 8000 };
+  showTyping(); renderInbox(); clearTimeout(onTyping["t" + c]); onTyping["t" + c] = setTimeout(() => { showTyping(); renderInbox(); }, 8100); }
+function showTyping() { const el = $("chTyping"); if (!el) return; const by = cur ? typingBy(cur) : ""; el.hidden = !by; if (by) el.textContent = `✍️ ${by} yazıyor…`; }
+async function claimToggle() { const c = cur; if (!c) return; const a = asg(c), mine = a && me && a.by === me.name;
+  if (a && !mine && !confirm(`Bu sohbete ${a.by} bakıyor. Siz devralmak istiyor musunuz?`)) return;
+  const d = await api("conv_assign", { conv: String(c), on: !mine }); if (d.error) { toast("❌ " + d.error, true); return; }
+  if (d.report && d.report.assign) assigns = d.report.assign; renderChTags(); renderInbox(); toast(d.ok || "Tamam"); }
+// ⏱ Bekleme: son mesaj müşteriden ve okunmamışsa saatin yerinde "⏱ 7 dk" (5 dk sarı, 15 dk kırmızı); dakikada bir yalnız o yazı güncellenir
+function waitOf(x) { if (!Number(x.u) || x.own || isQuiet(x.id) || isSys(x.id) || !x.at) return null; const m = Math.floor((Date.now() - Number(x.at)) / 60000); if (m < 1) return null;
+  return { t: m < 60 ? `⏱ ${m} dk` : m < 1440 ? `⏱ ${Math.floor(m / 60)} sa` : `⏱ ${Math.floor(m / 1440)} gün`, c: m >= 15 ? "wt r" : m >= 5 ? "wt y" : "wt" }; }
+function timeSlot(x) { const w = waitOf(x); return w ? `<span class="${w.c}">${w.t}</span>` : `<span class="${Number(x.u) && !isQuiet(x.id) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span>`; }
+setInterval(() => { if (document.hidden) return; for (const r of document.querySelectorAll("#convs .row[data-cid]")) { const x = inbox.find((y) => String(y.id) === r.dataset.cid); const sp = r.querySelector(".t > span:last-child");
+  if (x && sp) { const h = timeSlot(x); if (sp.outerHTML !== h) sp.outerHTML = h; } } }, 60_000);
 // Sessize alınan sohbet listede, sessize alındığı andaki son mesaj saatinde (çapa) kalır; yeni mesaj gelse de yukarı çıkmaz
 let manchor = (() => { try { return JSON.parse(localStorage.getItem("bw_manchor") || "{}") || {}; } catch (e) { return {}; } })();
 function setCmutes(m) { if (!m || typeof m !== "object") return; cmutes = m; const a = {};
@@ -408,8 +434,11 @@ function tagRows(k) { const ids = new Set(inbox.map((x) => String(x.id))), ok = 
 let listLim = 100;
 function moreRows() { listLim += 100; renderInbox(); }
 function setLf(k) { lf = k; listLim = 100; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
-function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur) || !can("duzen")) { el.innerHTML = ""; return; }
-  el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button><button class="${hasTag(cur, "boss") ? "on" : ""}" onclick="tagToggle('boss')">👑 Patron</button><button class="${hasTag(cur, "opera") ? "on" : ""}" onclick="tagToggle('opera')">🎭 Opera</button><button class="${hasTag(cur, "debtor") ? "on" : ""}" onclick="tagToggle('debtor')">🧾 Borçlu</button>`; }
+function claimChip() { const a = asg(cur), mine = a && me && a.by === me.name; // 🙋 kim bakıyor (mesaj gönderen kendiliğinden üstlenir)
+  return `<button class="${mine ? "on" : ""}" onclick="claimToggle()" title="Aynı müşteriye iki kişi yazmasın">${a ? (mine ? "🙋 Sizde · bırak" : `🙋 ${esc(a.by)} bakıyor`) : "🙋 Üstlen"}</button>`; }
+function renderChTags() { const el = $("chTags"); if (!el) return; showTyping(); if (!cur || isSys(cur)) { el.innerHTML = ""; return; }
+  if (!can("duzen")) { el.innerHTML = can("mesaj") ? claimChip() : ""; return; }
+  el.innerHTML = claimChip() + `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button><button class="${hasTag(cur, "boss") ? "on" : ""}" onclick="tagToggle('boss')">👑 Patron</button><button class="${hasTag(cur, "opera") ? "on" : ""}" onclick="tagToggle('opera')">🎭 Opera</button><button class="${hasTag(cur, "debtor") ? "on" : ""}" onclick="tagToggle('debtor')">🧾 Borçlu</button>`; }
 async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
   const d = await api("conv_tag", { conv: c, tag, on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCtags(d.report && d.report.ctags); setTagx(d.report); renderChTags(); renderInbox(); toast(d.ok || (on ? "Etiketlendi" : "Etiket kaldırıldı")); }
@@ -422,7 +451,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
-  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); setTagx(d.report); }
+  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
@@ -439,8 +468,8 @@ function renderInbox() {
   if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
   morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}</b><span class="${Number(x.u) && !isQuiet(x.id) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
-      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
+      <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
@@ -1078,6 +1107,17 @@ async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) {
     ${ta("greet", 5, "👋 Karşılama ({durum} yerine aşağıdaki iki satırdan biri gelir)")}${ta("online", 2, "🟢 Ekip çevrimiçiyken")}${ta("busy", 2, "🔴 Meşgulken (aynı kişiye 30 dk'da bir)")}
     <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_cardOn" ${c.cardOn ? "checked" : ""} style="width:22px;height:22px"> Kart verince ardından mesaj gönder</label>${ta("card", 2, "💳 Karttan sonra")}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="autoMsgsSave()">💾 Kaydet</button></div>`, true); }
+// 📊 Ekip raporu (Bayi Yetkilisi): gün gün kişi başına mesaj, resim, coin yükleme, ilk cevap süresi
+const durS = (s) => s == null ? "–" : s < 60 ? `${s} sn` : s < 3600 ? `${Math.round(s / 60)} dk` : `${Math.floor(s / 3600)} sa ${Math.round((s % 3600) / 60)} dk`;
+async function teamReport(day) { const d = await api("team_report", day ? { day } : {}); if (d.error) { toast(d.error, true); return; } const r = d.report || {}, rows = r.rows || [];
+  const sh = (n) => { const t = new Date(r.day + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }, today = new Date(Date.now() + 4 * 3600_000).toISOString().slice(0, 10);
+  openModal(`<h3 style="margin:0 0 6px">📊 Ekip raporu</h3>
+    <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:center;margin-bottom:8px"><button onclick="teamReport('${sh(-1)}')" aria-label="Önceki gün">‹</button><b style="text-align:center">${esc(ajDay(r.day))}${r.day === today ? " · bugün" : ""}</b><button onclick="teamReport('${sh(1)}')" ${r.day >= today ? "disabled" : ""} aria-label="Sonraki gün">›</button></div>
+    ${rows.length ? `<table style="width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums"><tr class="s" style="text-align:left"><th>Kişi</th><th>💬</th><th>📷</th><th>🪙</th><th title="Müşteri yazdıktan sonra ilk cevap">⏱ ilk cevap</th></tr>
+      ${rows.map((x) => `<tr style="border-top:1px solid var(--line)"><td style="padding:6px 0"><b>${esc(x.by_user)}</b></td><td>${x.msgs}</td><td>${x.imgs}</td><td>${x.coin_n ? `${x.coin_n} · ${nf(x.coins)}` : "–"}</td><td>${x.by_user === "Otomatik" ? "–" : `${durS(x.first_avg_s)}${x.first_n ? `<div class="s">${x.first_n} kez · en uzun ${durS(x.first_max_s)}</div>` : ""}`}</td></tr>`).join("")}</table>`
+      : `<div class="s" style="padding:16px 0">Bu gün kayıt yok.</div>`}
+    <div class="s" style="margin-top:8px">💬 mesaj · 📷 resim · 🪙 coin yükleme (adet · coin) · ⏱ müşteri yazdıktan sonra ilk cevaba kadar geçen ortalama süre (6 saatten uzunlar sayılmaz).</div>
+    <button style="width:100%;margin-top:10px" onclick="closeModal()">Kapat</button>`); }
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
   const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card") }; // boş metin → varsayılan
   const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
@@ -1176,7 +1216,7 @@ function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.n
   <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
   ${can("uygulama") && !(me && me.role === "yardimci") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
-  ${isYetkili() ? `<button onclick="autoMsgs()">🤖 Otomatik mesajlar</button>` : ""}
+  ${isYetkili() ? `<button onclick="autoMsgs()">🤖 Otomatik mesajlar</button><button onclick="teamReport()">📊 Ekip raporu</button>` : ""}
   <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button>${me && me.role === "yardimci" ? "" : `<button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>`}
   <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
 function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
@@ -1317,6 +1357,8 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
     if (ev === "cmutes") { const m = (d.payload.payload || {}).cmutes; if (m) { setCmutes(m); sortInbox(); renderInbox(); } return; }
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); setTagx(d.payload.payload); renderInbox(); renderChTags(); } return; }
+    if (ev === "typing") { onTyping(d.payload.payload || {}); return; } // ✍️ başka ekip üyesi yazıyor
+    if (ev === "assign") { const m = (d.payload.payload || {}).assign; if (m) { assigns = m; renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
