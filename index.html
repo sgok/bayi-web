@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.29">
+<meta name="build" content="2.1.30">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
-<link rel="icon" type="image/png" href="icon-192.png?v=2">
+<link rel="manifest" href="manifest.json?v=2.1.30">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.30">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.30">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -245,7 +245,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.30" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -254,7 +254,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.30" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -305,10 +305,11 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.29"></script>
+<script src="emoji.js?v=2.1.30"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
+const ASSET_V = encodeURIComponent((document.querySelector('meta[name="build"]') || {}).content || ""); // kod içinden yüklenen dosyalar (emoji resimleri) sürüm etiketiyle: önbellek eskiyi vermesin
 let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null }, tagx = []; // tagx: son 120 sohbette olmayan etiketli kişiler (etiket sekmelerinde görünür)
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -694,7 +695,7 @@ const voiceBtn = (url, dur) => `🎤 <button class="vplay" data-v="${String(url)
 const EMO = (() => { const m = new Map(), E = window.SUGO_EMOJI || {};
   for (const atlas of ["legacy", "modern"]) { const a = E[atlas]; if (!a) continue; for (const [k, v] of Object.entries(a.items)) m.set(k.toLowerCase(), { atlas, col: v[0], row: v[1], cols: a.cols, rows: a.rows }); } return m; })();
 function emoSpan(code, px) { const e = EMO.get(String(code).toLowerCase()); if (!e) return esc(code);
-  return `<span class="semo" title="${esc(code)}" style="width:${px}px;height:${px}px;background-image:url(emoji_${e.atlas}.webp);background-size:${e.cols * px}px ${e.rows * px}px;background-position:-${e.col * px}px -${e.row * px}px"></span>`; }
+  return `<span class="semo" title="${esc(code)}" style="width:${px}px;height:${px}px;background-image:url(emoji_${e.atlas}.webp?v=${ASSET_V});background-size:${e.cols * px}px ${e.rows * px}px;background-position:-${e.col * px}px -${e.row * px}px"></span>`; }
 function emo(html, big) { const only = big && html.replace(/\[[^\]]+\]/g, (x) => (EMO.has(x.toLowerCase()) ? "" : x)).trim() === "";
   return html.replace(/\[[^\]]+\]/g, (x) => EMO.has(x.toLowerCase()) ? emoSpan(x, only ? 44 : 22) : x); }
 // Mesajdaki UID (8–10 hane): dokununca profil
@@ -1499,6 +1500,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.29"></script>
+<script src="profile.js?v=2.1.30"></script>
 </body>
 </html>
