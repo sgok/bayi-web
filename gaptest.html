@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GapTest">
+<meta name="theme-color" content="#0000ff">
+<meta name="robots" content="noindex, nofollow">
+<title>GapTest</title>
+<link rel="manifest" href="gaptest.json">
+<style>
+  html { background: #ff0000; }
+  html, body { margin: 0; height: 100%; color: #fff; font: 15px/1.4 -apple-system, sans-serif; }
+  body { background: #222; padding: env(safe-area-inset-top) 0 0 0; overflow: hidden; }
+  .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: flex; flex-direction: column; background: #333; outline: 4px solid yellow; outline-offset: -4px; }
+  html.app .screen { bottom: auto; height: calc(var(--apph, 100dvh) - env(safe-area-inset-top)); }
+  .grow { flex: 1; padding: 16px; } nav { background: #0a0; padding: 12px 0 env(safe-area-inset-bottom); text-align: center; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="screen"><div class="grow" id="o">ölçülüyor…</div><nav>ALT MENÜ</nav></div>
+<script>
+const r = document.documentElement, app = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; r.classList.toggle("app", app);
+const full = app ? Math.max(innerHeight, screen.height) : innerHeight; r.style.setProperty("--apph", full + "px");
+setTimeout(() => { const s = document.querySelector(".screen").getBoundingClientRect(), p = document.createElement("div");
+  p.style.cssText = "position:fixed;top:0;bottom:0;left:0;width:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(p); const cs = getComputedStyle(p);
+  document.getElementById("o").innerHTML = ["app " + app, "standalone " + navigator.standalone, "innerH " + innerHeight, "vvH " + (visualViewport && visualViewport.height), "screenH " + screen.height, "docH " + r.clientHeight,
+    "safeTop " + cs.paddingTop, "safeBot " + cs.paddingBottom, "screen.top " + Math.round(s.top) + " bottom " + Math.round(s.bottom), "fixed0 h " + Math.round(p.getBoundingClientRect().height)].join("<br>"); }, 400);
+</script>
+</body>
+</html>

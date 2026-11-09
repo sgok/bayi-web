@@ -1,0 +1,1 @@
+{ "name": "Gap Test", "short_name": "GapTest", "start_url": "./gaptest.html", "scope": "./", "display": "standalone", "background_color": "#0000ff", "theme_color": "#0000ff" }
