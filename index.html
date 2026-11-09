@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.14">
+<meta name="build" content="2.1.15">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -75,6 +75,7 @@
   #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
   #pauseBar[hidden] { display: none; } #pauseBar button { margin-left: 6px; padding: 4px 10px; font-size: 13px; background: #2b1700; color: #ffd84d; border: 0; }
   .tagbar { display: flex; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; z-index: 3; background: var(--bg); }
+  .tagbar button.rall { font-size: 13px; } .tagbar button.rall:disabled { opacity: .45; }
   .tagbar button { flex: none; padding: 7px 12px; font-size: 14px; border-radius: 999px; } .tagbar button b { color: var(--accent); margin-left: 2px; }
   .tagbar button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; } .tagbar button.on b { color: var(--gofg); }
   .tagic { margin-left: 5px; font-size: 13px; }
@@ -416,16 +417,19 @@ const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
   try { if (!window.__listMark) { window.__listMark = 1; setTimeout(() => performance.mark("liste-ekranda"), 0); } } catch (e) {} // açılış ölçümü
   const unread = inbox.reduce((s, x) => s + (Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread;
-  const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
+  const teamRow = `<div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
-  const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
+  const readAll = ""; // CLS: okundu düğmesi artık sekme şeridinde (belirip kaybolarak listeyi itmesin)
   const shown = lf === "all" ? inbox : tagRows(lf), nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
-  const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button></div>`;
-  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall" ${unN ? "" : "disabled"} onclick="readAll()" title="Okunmamış sohbetlerin hepsini okundu yap">✓✓ Okundu <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button></div>`;
+  const lpane = $("convs").closest(".pane"); let anc = null;
+  if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
+  morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+  if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = (lf === "all" ? inbox : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
@@ -767,10 +771,11 @@ if (window.ResizeObserver) new ResizeObserver(() => { if (stick && cur) toBottom
 // Sohbet: satırlar kimliğiyle (data-k) eşlenir → yukarıya eski mesaj eklenince ya da liste değişince mevcut balonlar (ve yüklenmiş resimleri) yerinde kalır, yeniden yüklenip kaydırmaz
 function morphKeyed(box, html) {
   const tpl = document.createElement("div"); tpl.innerHTML = html;
-  const old = new Map(); for (const el of [...box.children]) { const k = el.getAttribute("data-k"); if (k && !old.has(k)) old.set(k, el); }
+  const key = (el) => el.getAttribute("data-k") || el.getAttribute("data-cid"); // sohbet balonu: data-k · liste satırı: data-cid
+  const old = new Map(); for (const el of [...box.children]) { const k = key(el); if (k && !old.has(k)) old.set(k, el); }
   let ref = box.firstChild;
   for (const b of [...tpl.childNodes]) {
-    const k = b.nodeType === 1 ? b.getAttribute("data-k") : null; let node = b;
+    const k = b.nodeType === 1 ? key(b) : null; let node = b;
     if (k && old.has(k)) { const a = old.get(k); old.delete(k); patchNode(a, b); node = a.isConnected && a.parentNode === box ? a : b; }
     if (node === ref) ref = ref.nextSibling; else box.insertBefore(node, ref);
   }
@@ -870,14 +875,15 @@ const pcBank = (c) => (c.bank === "BIRBANK" ? "Kapital (Birbank)" : PCB[c.bank] 
 function cardTag(text) { const d = String(text || "").replace(/[\s-]/g, ""); if (!/^\d{12,20}$/.test(d) || !pcs || !pcs.cards) return "";
   const c = pcs.cards.find((x) => String(x.number || "").replace(/\D/g, "") === d); return c ? `<span class="cardtag">(${esc(pcBank(c))})</span>` : ""; }
 const pcCan = (c) => c.active && c.number && c.uses < c.max_uses;
-async function toggleCards() { const el = $("cards"); if (el.classList.contains("on")) { el.classList.remove("on"); return; }
-  el.innerHTML = `<div class="s">Yükleniyor…</div>`; el.classList.add("on");
+async function toggleCards() { const el = $("cards"), low = stick, keep = () => { if (low) { toBottom(); requestAnimationFrame(toBottom); } }; // en alttaysa altta kalsın (mesajlar kaymasın)
+  if (el.classList.contains("on")) { el.classList.remove("on"); keep(); return; }
+  el.innerHTML = `<div class="s">Yükleniyor…</div>`; el.classList.add("on"); keep();
   const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] };
   const cards = (pcs.cards || []).filter((x) => x.active && x.number), cu = pcs.current && pcCan(pcs.current) ? pcs.current : null;
   const list = [...(cu ? [cu] : []), ...cards.filter((x) => pcCan(x) && (!cu || x.id !== cu.id)), ...cards.filter((x) => !pcCan(x))];
   el.innerHTML = list.length ? list.map((x) => `<button class="${cu && x.id === cu.id ? "next" : ""} ${pcCan(x) ? "" : "full"}" ${pcCan(x) ? `onclick="giveCard(${x.id})"` : "disabled"}>💳 ${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}<div class="s">${x.uses}/${x.max_uses} hak${cu && x.id === cu.id ? " · ⭐ sıradaki" : pcCan(x) ? "" : " · ⛔ hakkı doldu"}</div></button>`).join("")
-    : `<div class="s">Kart yok</div>`; }
-async function giveCard(id) { $("cards").classList.remove("on");
+    : `<div class="s">Kart yok</div>`; keep(); }
+async function giveCard(id) { const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
   const d = await api("pcard_give", { id }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
   send(pcTxt(c)); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); }
 
