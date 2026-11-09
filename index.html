@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.15">
+<meta name="build" content="2.1.16">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -63,7 +63,7 @@
   /* Yana kaydırma (sabitle / yanıtla) sırasında sayfanın kendisi yana kaymasın: paneller yatayda kaydırılamaz, satır ve balonlarda tarayıcı yalnız dikey kaydırır */
   .pane, .msgs, #pfBody { overflow-x: hidden; overscroll-behavior-x: none; } .screen { overflow-x: clip; }
   #convs .row[data-cid], #msgs .m[data-mid] { touch-action: pan-y; }
-  #convs { position: relative; } #convs .row[data-cid] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; } #convs .row.lpsel { filter: brightness(1.35); } /* sağa kaydırarak sabitleme: satırın arkasındaki kırmızı şerit */
+  #convs { position: relative; } .mutes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .mutes button { padding: 9px 4px; font-size: 14px; } #convs .row[data-cid] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; } #convs .row.lpsel { filter: brightness(1.35); } /* sağa kaydırarak sabitleme: satırın arkasındaki kırmızı şerit */
   .swbg { position: absolute; left: 0; right: 0; z-index: 0; display: flex; align-items: center; padding-left: 16px; background: linear-gradient(90deg, #7f1d1d, #b91c1c); color: #fecaca; font-weight: 700; font-size: 15px; pointer-events: none; }
   .swbg.ready { background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff; }
   #convs .row.lswiping { position: relative; z-index: 1; background: var(--bg); } #convs .row.pinned.lswiping { background: linear-gradient(rgba(245,158,11,.10), rgba(245,158,11,.10)), var(--bg); }
@@ -99,6 +99,7 @@
   .row .t { display: flex; justify-content: space-between; gap: 8px; }
   .row .t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .row .p { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; gap: 6px; justify-content: space-between; }
+  .badge.mute { background: #64748b !important; color: #e2e8f0 !important; }
   .badge { background: var(--go); color: #fff; border-radius: 999px; padding: 0 7px; font-size: 12px; font-weight: 700; min-width: 20px; text-align: center; }
   .un { color: var(--accent); font-weight: 700; }
   .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
@@ -389,9 +390,16 @@ let ctags = {}, lf = "all"; try { ctags = JSON.parse(localStorage.getItem("bw_ct
 const hasTag = (id, t) => (ctags[String(id)] || []).includes(t);
 const tagIcons = (id) => (hasTag(id, "debtor") ? '<span class="tagic" title="Borçlu">🧾</span>' : "") + (hasTag(id, "opera") ? '<span class="tagic" title="Opera ekibi">🎭</span>' : "") + (hasTag(id, "boss") ? '<span class="tagic" title="Patron">👑</span>' : "") + (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı"><span class="gc"></span></span>' : "");
 function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
+// 🔕 Sessize alınanlar ({ id: { u: bitiş ms (0 = süresiz), at: başlangıç ms } }) ve 🚫 bloklular: yeni mesajları üste çıkmaz, bildirim/ses yok; bloklular yalnız "Bloklu" sekmesinde
+let cmutes = (() => { try { return JSON.parse(localStorage.getItem("bw_cmutes") || "{}") || {}; } catch (e) { return {}; } })();
+function setCmutes(m) { if (!m || typeof m !== "object") return; cmutes = m; try { localStorage.setItem("bw_cmutes", JSON.stringify(m)); } catch (e) {} }
+const isMuted = (id) => { const m = cmutes[String(id)]; return !!m && (!m.u || m.u > Date.now()); };
+const isBlocked = (id) => hasTag(id, "blocked");
+const isQuiet = (id) => isMuted(id) || isBlocked(id);
+const muteLeft = (id) => { const m = cmutes[String(id)]; if (!m) return ""; if (!m.u) return "süresiz"; const h = (m.u - Date.now()) / 3600_000; return h >= 1 ? Math.ceil(h) + " sa" : Math.max(1, Math.ceil(h * 60)) + " dk"; };
 function setTagx(r) { if (r && Array.isArray(r.tagx)) tagx = r.tagx; }
 // Etiket sekmesi: listedeki (son 120 sohbet) etiketliler + listede olmayan etiketliler (son mesaj saatine göre)
-function tagRows(k) { const ids = new Set(inbox.map((x) => String(x.id))); return inbox.filter((x) => hasTag(x.id, k)).concat(tagx.filter((x) => !ids.has(String(x.id)) && hasTag(x.id, k)).sort((a, b) => (b.at || 0) - (a.at || 0))); }
+function tagRows(k) { const ids = new Set(inbox.map((x) => String(x.id))), ok = (x) => hasTag(x.id, k) && (k === "blocked" || !isBlocked(x.id)); return inbox.filter(ok).concat(tagx.filter((x) => !ids.has(String(x.id)) && ok(x)).sort((a, b) => (b.at || 0) - (a.at || 0))); }
 // Liste 100 kişiyle açılır; "Daha fazla göster" her basışta 100 kişi daha ekler (Supabase'e daha az yük)
 let listLim = 100;
 function moreRows() { listLim += 100; renderInbox(); }
@@ -404,37 +412,38 @@ async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTa
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
-function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1); inbox.sort((a, b) => pg(a) - pg(b) || (Number(b.u) ? 1 : 0) - (Number(a.u) ? 1 : 0) || (b.at || 0) - (a.at || 0)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
+function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) => (Number(x.u) && !isQuiet(x.id) ? 1 : 0), eat = (x) => (isMuted(x.id) ? Math.min(x.at || 0, (cmutes[String(x.id)] || {}).at || 0) : (x.at || 0)); // sessizdeki: sessize alındığı andaki yerinde kalır
+  inbox.sort((a, b) => pg(a) - pg(b) || un(b) - un(a) || eat(b) - eat(a)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setTagx(d.report); }
+  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
 const isSys = (id) => /^300\d\d$/.test(String(id));
 function renderInbox() {
   try { if (!window.__listMark) { window.__listMark = 1; setTimeout(() => performance.mark("liste-ekranda"), 0); } } catch (e) {} // açılış ölçümü
-  const unread = inbox.reduce((s, x) => s + (Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread;
+  const unread = inbox.reduce((s, x) => s + (isQuiet(x.id) ? 0 : Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread; // sessiz/bloklu sayılmaz
   const teamRow = `<div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
-  const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
+  const unN = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)).length;
   const readAll = ""; // CLS: okundu düğmesi artık sekme şeridinde (belirip kaybolarak listeyi itmesin)
-  const shown = lf === "all" ? inbox : tagRows(lf), nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
-  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall" ${unN ? "" : "disabled"} onclick="readAll()" title="Okunmamış sohbetlerin hepsini okundu yap">✓✓ Okundu <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button></div>`;
+  const shown = lf === "all" ? inbox.filter((x) => !isBlocked(x.id)) : tagRows(lf), nBlk = tagRows("blocked").length, nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
+  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall" ${unN ? "" : "disabled"} onclick="readAll()" title="Okunmamış sohbetlerin hepsini okundu yap">✓✓ Okundu <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button><button class="${lf === "blocked" ? "on" : ""}" onclick="setLf('blocked')">🚫 Bloklu <b>${nBlk}</b></button></div>`;
   const lpane = $("convs").closest(".pane"); let anc = null;
   if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
   morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
-      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}</b><span class="${Number(x.u) && !isQuiet(x.id) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
+      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = (lf === "all" ? inbox : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
-async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own); if (!list.length) return;
+async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)); if (!list.length) return;
   if (!confirm(`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`)) return;
   for (const x of list) { await api("read", { conv: String(x.id) }); x.u = ""; }
   renderInbox(); toast(`✓ ${list.length} sohbet okundu yapıldı`); }
@@ -665,9 +674,18 @@ document.addEventListener("touchstart", (e) => { const r = e.target.closest && e
     const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 500); }, 500); }, { passive: true });
 document.addEventListener("touchmove", (e) => { if (rowLp && (Math.abs(e.touches[0].clientX - rowLp.x) > 10 || Math.abs(e.touches[0].clientY - rowLp.y) > 10)) { clearTimeout(rowLpT); rowLp = null; } }, { passive: true });
 ["touchend", "touchcancel"].forEach((ev) => document.addEventListener(ev, () => { clearTimeout(rowLpT); }, { passive: true }));
+async function convMute(id, on, hours) { const d = await api("conv_mute", { conv: String(id), on, hours: hours || 0 }); if (d.error) { toast("❌ " + d.error, true); return; }
+  setCmutes(d.report && d.report.cmutes); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
+async function blockToggle(id) { const on = !isBlocked(id), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
+  if (on && !confirm(`🚫 ${n} bloklansın mı?\nMesajları listede görünmez ve bildirim gelmez; yalnız "Bloklu" sekmesinde görünür.`)) return;
+  const d = await api("conv_tag", { conv: String(id), tag: "blocked", on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  setCtags(d.report && d.report.ctags); setTagx(d.report); sortInbox(); renderInbox(); toast(on ? "🚫 Bloklandı" : "Blok kaldırıldı"); }
 function rowMenu(id) { id = String(id); const k = inbox.find((x) => String(x.id) === id) || (tagx.find((x) => String(x.id) === id)) || {}; const pinned = cpins.includes(id);
   openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + id)}</div><div class="s" style="margin-bottom:12px">UID ${esc(id)}</div>
     <div style="display:flex;flex-direction:column;gap:8px">${can("duzen") ? `<button class="go" onclick="closeModal();convPin('${esc(id)}',${!pinned})">📌 ${pinned ? "Sabitlemeyi kaldır" : "En üste sabitle"}</button>` : ""}
+    ${can("duzen") ? (isMuted(id) ? `<button onclick="closeModal();convMute('${esc(id)}',false)">🔔 Sesi aç <span class="s">(sessizde · ${esc(muteLeft(id))})</span></button>`
+      : `<div class="s" style="margin-top:4px">🔕 Sessize al</div><div class="mutes">${[[1, "1 saat"], [2, "2 saat"], [6, "6 saat"], [12, "12 saat"], [24, "24 saat"], [0, "Süresiz"]].map(([h, t]) => `<button onclick="closeModal();convMute('${esc(id)}',true,${h})">${t}</button>`).join("")}</div>`)
+      + `<button style="${isBlocked(id) ? "" : "border-color:#b91c1c;color:#fca5a5"}" onclick="closeModal();blockToggle('${esc(id)}')">🚫 ${isBlocked(id) ? "Bloğu kaldır" : "Blokla"}</button>` : ""}
     <button onclick="closeModal();openChat('${esc(id)}')">💬 Sohbeti aç</button>${can("profil") ? `<button onclick="closeModal();prof('${esc(id)}')">👤 Profili aç</button>` : ""}<button onclick="closeModal()">Vazgeç</button></div>`);
   setTimeout(() => document.querySelectorAll("#convs .row.lpsel").forEach((x) => x.classList.remove("lpsel")), 400); }
 // Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
@@ -1221,7 +1239,7 @@ function ding() { try { unlockAudio(); if (!actx) return; const t0 = actx.curren
   [[880, 0], [1320, 0.12]].forEach(([f, dt]) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
     g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(0.35, t0 + dt + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.25); o.start(t0 + dt); o.stop(t0 + dt + 0.3); }); } catch (e) {} }
 let lastIncoming = Number(localStorage.getItem("bw_last") || 0);
-function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.u) > 0 && !x.own).map((x) => Number(x.at) || 0));
+function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.u) > 0 && !x.own && !isQuiet(x.id)).map((x) => Number(x.at) || 0)); // sessiz/bloklu ses çıkarmaz
   if (mx > lastIncoming) { if (lastIncoming) ding(); lastIncoming = mx; try { localStorage.setItem("bw_last", String(mx)); } catch (e) {} } }
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", (e) => { const m = e.data || {};
   if (m.kind === "push") { ding(); if (cur) loadChat(); else { loadInbox(); loadDm(); } }
@@ -1258,6 +1276,7 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
+    if (ev === "cmutes") { const m = (d.payload.payload || {}).cmutes; if (m) { setCmutes(m); sortInbox(); renderInbox(); } return; }
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); setTagx(d.payload.payload); renderInbox(); renderChTags(); } return; }
     if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
