@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.1">
+<meta name="build" content="2.1.2">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -74,7 +74,8 @@
   .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; }
   .chtags button { flex: none; padding: 4px 10px; font-size: 13px; border-radius: 999px; opacity: .75; } .chtags button.on { opacity: 1; background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   nav.bn { flex-wrap: wrap; } .infol { flex-basis: 100%; text-align: center; font-size: 10px; line-height: 13px; color: var(--muted); opacity: .75; padding: 0 6px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
-  #compWrap .infol { background: var(--panel); padding-bottom: calc(3px + env(safe-area-inset-bottom)); } html.kb #compWrap .infol { display: none; }
+  /* Sürüm satırı iPhone'un alt çubuk (home indicator) payının içine oturur → alt menü/yazı kutusu en alta yapışık görünür; yazı kutusu ayrıca alt pay bırakmaz (çift boşluk vardı) */
+  #compWrap .infol { background: var(--panel); padding-bottom: max(3px, calc(env(safe-area-inset-bottom) - 16px)); } #compWrap .comp { padding-bottom: 8px; } html.kb #compWrap .infol { display: none; }
   #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
@@ -188,7 +189,7 @@
   #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
   #toast.bad { background: #3a1f1f; }
   .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
-  nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: env(safe-area-inset-bottom); }
+  nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: max(0px, calc(env(safe-area-inset-bottom) - 19px)); }
   nav.bn button { flex: 1; border: 0; border-radius: 0; background: none; padding: 8px 2px 10px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
   nav.bn button b { font-size: 20px; } nav.bn button.on { color: var(--accent); }
   nav.bn i { position: absolute; top: 2px; right: 22%; background: var(--bad); color: #fff; font-style: normal; font-size: 11px; border-radius: 999px; padding: 0 5px; }
