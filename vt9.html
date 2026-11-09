@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VT9">
+<meta name="theme-color" content="#1e1236">
+<script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
+<meta name="robots" content="noindex, nofollow">
+<meta name="build" content="2.1.2">
+<title>VT9 Sugo Coins Bayi</title>
+<link rel="x-manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="icon" type="image/png" href="icon-192.png?v=2">
+<style>
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
+  /* 🎨 Tema: varsayılan "Sugo" (koyu mor + altın sarısı); "Karanlık" = eski yeşil-siyah görünüm (⚙️ Ayarlar'dan) */
+  :root { --bg: #140b25; --panel: #1e1236; --panel2: #2a1a4a; --line: #3b2766; --text: #f4effd; --muted: #ab9fcc; --go: #f5b40b; --go2: #ffd84d; --gofg: #2b1700; --me: #6d28d9; --peer: #2b1c4c; --bad: #f87171; --warn: #fbbf24; --accent: #fbbf24; --img: #1b1030;
+    --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%); }
+  html[data-theme="dark"] { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* Sayfa arka planı = alt menü rengi: iPhone'un küçülttüğü alanın altındaki şerit bu renkle boyanır → alt menünün devamı gibi görünür; ekranlar kendi zeminini çizer */
+  html, body { margin: 0; height: 100%; background: var(--panel); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); overflow: hidden; }
+  /* iPhone ana ekran uygulaması tam ekran: html/body "border-box" olursa body'nin üst güvenli boşluğu %100 yüksekliğin içine sıkışır, sayfa ekrandan kısa kalır ve iPhone görünen alanı 59 pt kısa açar (altta boşluk). "content-box" ile body ekrandan bir çentik boyu uzun olur → iPhone tam ekranı kullanır. Simülatörde VT5 (border-box) 793 / VT6 (content-box) 852 ile doğrulandı */
+  html, body { box-sizing: content-box; }
+  button { font: inherit; color: inherit; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; cursor: pointer; }
+  button.go { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); font-weight: 700; }
+  button:disabled { opacity: .45; }
+  input, textarea { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%; }
+  .s { color: var(--muted); font-size: 13px; }
+  /* Ekran = görünen alan (klavye açıkken klavyenin üstü): iPhone sayfayı kaydırıp başlığı gizlemesin */
+  /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
+     Klavye açık: görünen alana sığar (başlık kaybolmasın) */
+  .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
+  html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
+  html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
+  .screen.on { display: flex; } .screen { background: var(--bg); }
+  header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--hdr); min-height: 58px; }
+  header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
+  .dot.ok { background: #22c55e; } .dot.bad { background: var(--bad); }
+  .av { width: 44px; height: 44px; border-radius: 50%; flex: none; background: #334155; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+  .av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .avw { position: relative; flex: none; display: flex; }
+  .ondot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--bg); box-sizing: border-box; }
+  .ondot.on { background: #22c55e; } .ondot.off { background: #ef4444; }
+  .m .qt { border-left: 3px solid #38bdf8; background: #0006; border-radius: 8px; padding: 4px 8px; margin: 0 0 6px; font-size: 13px; color: var(--muted); cursor: pointer; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .m .qt b { color: #7dd3fc; font-weight: 700; display: block; font-size: 12px; }
+  #replyBar { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 14px; }
+  #replyBar[hidden] { display: none; } #replyBar .rq { flex: 1; min-width: 0; border-left: 3px solid #38bdf8; padding-left: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
+  #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
+  /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
+  .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
+  .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
+  .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
+  .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
+  .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
+  #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
+  .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
+  .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; }
+  .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
+  #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+  #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
+  #pauseBar[hidden] { display: none; } #pauseBar button { margin-left: 6px; padding: 4px 10px; font-size: 13px; background: #2b1700; color: #ffd84d; border: 0; }
+  .tagbar { display: flex; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; z-index: 3; background: var(--bg); }
+  .tagbar button { flex: none; padding: 7px 12px; font-size: 14px; border-radius: 999px; } .tagbar button b { color: var(--accent); margin-left: 2px; }
+  .tagbar button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; } .tagbar button.on b { color: var(--gofg); }
+  .tagic { margin-left: 5px; font-size: 13px; }
+  .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; }
+  .chtags button { flex: none; padding: 4px 10px; font-size: 13px; border-radius: 999px; opacity: .75; } .chtags button.on { opacity: 1; background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  nav.bn { flex-wrap: wrap; } .infol { flex-basis: 100%; text-align: center; font-size: 10px; line-height: 13px; color: var(--muted); opacity: .75; padding: 0 6px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+  /* Sürüm satırı iPhone'un alt çubuk (home indicator) payının içine oturur → alt menü/yazı kutusu en alta yapışık görünür; yazı kutusu ayrıca alt pay bırakmaz (çift boşluk vardı) */
+  #compWrap .infol { background: var(--panel); padding-bottom: max(3px, calc(env(safe-area-inset-bottom) - 16px)); } #compWrap .comp { padding-bottom: 8px; } html.kb #compWrap .infol { display: none; }
+  #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
+  #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
+  #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
+  #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
+  #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
+  #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
+  #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
+  @keyframes notebob { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-3px) rotate(8deg); } }
+  .list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .row { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .row .b { flex: 1; min-width: 0; }
+  .row .t { display: flex; justify-content: space-between; gap: 8px; }
+  .row .t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .p { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; gap: 6px; justify-content: space-between; }
+  .badge { background: var(--go); color: #fff; border-radius: 999px; padding: 0 7px; font-size: 12px; font-weight: 700; min-width: 20px; text-align: center; }
+  .un { color: var(--accent); font-weight: 700; }
+  .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
+  .trust { font-size: 12.5px; margin-top: 3px; color: var(--muted); white-space: normal; } .trust b { color: var(--text); }
+  .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
+  #chTrust .trust { font-size: 13.5px; padding: 6px 14px; margin: 0; border-bottom: 1px solid var(--line); }
+  #srchRes:empty { display: none; } #srchRes { border-bottom: 2px solid var(--line); max-height: 60vh; overflow-y: auto; }
+  #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
+  .row .av.tap { cursor: pointer; outline: 2px solid transparent; } .row .av.tap:active { outline-color: #38bdf8; }
+  /* Sugo emojileri, tepkiler, mesaj menüsü (tabletteki gibi) */
+  .gc { display: inline-block; width: 1em; height: 1em; border-radius: 50%; vertical-align: -0.14em; position: relative; flex: none;
+    background: radial-gradient(circle at 35% 30%, #fff7c2 0 10%, #fde047 11% 42%, #f59e0b 43% 72%, #b45309 73%); box-shadow: inset 0 0 0 .07em #92400e; }
+  .gc::after { content: ""; position: absolute; inset: .2em; border-radius: 50%; border: .07em solid #b4530988; }
+  #hStock { color: #fbbf24; font-weight: 800; }
+  .semo { display: inline-block; vertical-align: -0.3em; background-repeat: no-repeat; }
+  .emochips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; white-space: normal; } .emochips button { padding: 1px 6px; border-radius: 12px; font-size: 12px; background: #00000033; border: 1px solid #ffffff22; display: inline-flex; align-items: center; gap: 3px; } .emochips button.me { border-color: #f59e0b; }
+  .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
+  .msgmenu .mq { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; } .msgmenu .mq button { background: none; border: 0; padding: 4px; border-radius: 10px; } .msgmenu .mq button.on { background: #f59e0b44; }
+  .msgmenu .ma { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; } .msgmenu .ma button { padding: 8px 12px; font-size: 15px; }
+  .msgmenu .mp { font-size: 13px; color: var(--muted); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .emopanel { border-top: 1px solid var(--line); background: var(--panel); padding: 6px 8px; } .emopanel[hidden] { display: none; }
+  .emotabs { display: flex; gap: 6px; margin-bottom: 6px; } .emotabs button { padding: 4px 10px; font-size: 13px; border-radius: 10px; } .emotabs button.on { background: #f59e0b; color: #111; border-color: #f59e0b; }
+  .emogrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; max-height: 210px; overflow-y: auto; } .emogrid button { padding: 3px; border: 0; background: none; border-radius: 8px; }
+  .m[data-mid] { cursor: pointer; -webkit-touch-callout: none; touch-action: pan-y; } .m.sel { outline: 2px solid #f59e0b; }
+  .m.swiping { transition: none; } .m.swback { transition: transform .2s ease; }
+  #pinBar { border-bottom: 1px solid var(--line); background: var(--panel); max-height: 96px; overflow-y: auto; }
+  #pinBar .pin { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+  #pinBar .pin + .pin { border-top: 1px solid var(--line); }
+  #pinBar .pt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #pinBar .px { border: 0; background: none; color: var(--muted); font-size: 15px; padding: 0 4px; }
+  .m.flash { animation: pinflash 1.4s ease; } @keyframes pinflash { 0%, 60% { box-shadow: 0 0 0 3px #f59e0b; } 100% { box-shadow: none; } }
+  .m.wdmine { opacity: .55; background: #3f4a55; color: #cbd5e1; font-style: italic; }
+  .m.wd { background: #64748b22; border: 1px solid #64748b66; color: #cbd5e1; font-style: italic; } .m.wd .orig { font-style: normal; margin-top: 4px; color: #e2e8f0; }
+  .coingrp { align-self: stretch; background: #1e1b4b; border: 2px solid #818cf8; border-radius: 12px; padding: 10px; font-size: 14px; } .coingrp.paid { background: #10251a; border-color: #22c55e; }
+  .dmbox { margin: 8px 10px 12px; border: 2px solid var(--warn); border-radius: 14px; overflow: hidden; background: rgba(251,191,36,.05); }
+  .dmhd { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(251,191,36,.12); border-bottom: 1px solid var(--line); }
+  .dmhd .b { flex: 1; min-width: 0; } .dmhd .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dmtot { text-align: right; flex: none; } .dmtot .v { font-size: 20px; font-weight: 800; color: var(--warn); line-height: 1.2; } .dmtot button { margin-top: 4px; padding: 6px 12px; font-size: 14px; }
+  .dmbox .row:last-child { border-bottom: 0; } .dmsingle { margin: 8px 10px 12px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; } .dmsingle .row:last-child { border-bottom: 0; }
+  .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
+  .bxdm { display: inline-block; margin-top: 3px; font-size: 12.5px; color: #c4b5fd; }
+  .uidl { color: #5aa9e6; text-decoration: underline dotted; cursor: pointer; }
+  #lb { position: fixed; inset: 0; background: #000e; z-index: 60; display: flex; align-items: center; justify-content: center; } #lb[hidden] { display: none; } #lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  #lb a { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 12px; background: #0008; color: #fff; padding: 8px 12px; border-radius: 10px; text-decoration: none; font-size: 14px; }
+  /* Profil (tabletteki gibi) */
+  #pfBody { padding: 12px 14px; } #pfBody .card { margin: 0; } #pfBody .card.empty { color: var(--muted); font-size: 14px; }
+  .pgrid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: 6px 0; }
+  .pfh { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; } .wav { position: relative; width: 72px; height: 72px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 28px; color: #fff; overflow: visible; }
+  .wav img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; } .wav .zoomhit { position: absolute; inset: 0; border-radius: 50%; cursor: zoom-in; z-index: 1; }
+  .wonl { position: absolute; right: 1px; bottom: 1px; width: 14px; height: 14px; border-radius: 50%; background: #25d366; border: 2px solid var(--bg); z-index: 2; } .wonl.off { background: #ef5d5d; }
+  .pn { font-size: 20px; font-weight: 700; overflow-wrap: anywhere; } .pfold { color: var(--muted); font-weight: 500; font-size: .8em; } .pfplain { font-size: 14px; color: var(--muted); } .pfplain b { color: var(--text); }
+  .vtick { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #1d9bf0; color: #fff; font-size: 13px; font-weight: 800; vertical-align: 2px; }
+  .pfcopy { font-size: 12px; padding: 2px 8px; } .pfuid { user-select: all; } .pfrole { color: #38bdf8; }
+  .pflive { margin-top: 4px; font-size: 14px; } .pfroom { border: 1px solid #10b98155; border-radius: 10px; padding: 3px 9px; color: #10b981; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
+  .eqw { display: inline-flex; align-items: center; gap: 2px; height: 1em; } .eqw i { display: block; width: 3px; height: 30%; background: currentColor; border-radius: 2px; animation: eqw .9s ease-in-out infinite; }
+  .eqw i:nth-child(2) { animation-delay: -.6s; } .eqw i:nth-child(3) { animation-delay: -.3s; } .eqw i:nth-child(4) { animation-delay: -.75s; } .eqw i:nth-child(5) { animation-delay: -.15s; } @keyframes eqw { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+  .pfrel { margin-top: 6px; } .relc { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 13px; color: var(--muted); } .relc.on { color: #10b981; border-color: #10b981; font-weight: 700; }
+  .pflinks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; } .pflinks span { background: #2e1a4f; border: 1px solid #7c3aed55; border-radius: 10px; padding: 3px 9px; font-size: 13px; }
+  .pftags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; } .pftags span { background: #ffffff14; border-radius: 999px; padding: 2px 9px; font-size: 13px; }
+  .pfmsg { display: block; width: 100%; margin: 0 0 12px; padding: 13px; font-size: 17px; font-weight: 700; border-radius: 14px; background: #059669; border-color: #059669; color: #fff; }
+  .pfjump { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 12px; } .pfjump button { flex: 1 1 auto; font-size: 14px; padding: 8px 10px; }
+  .pfbio { white-space: pre-wrap; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin: 0 0 8px; overflow-wrap: anywhere; }
+  .pfsec { margin: 16px 0 6px; font-weight: 700; color: var(--muted); font-size: 14px; }
+  .pfbars { display: flex; gap: 3px; align-items: flex-end; height: 60px; padding: 4px 0; } .pfbars i { flex: 1; background: #059669; border-radius: 3px 3px 0 0; min-height: 2px; }
+  .frames { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; } .frames div { font-size: 12px; color: var(--muted); text-align: center; }
+  .frames img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; background: #000; cursor: zoom-in; display: block; }
+  .allinfo { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 4px 12px 10px; } .kvt { font-size: 12px; font-weight: 700; color: var(--muted); margin: 10px 0 4px; text-transform: uppercase; }
+  .kv > div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; } .kv > div:first-child { border-top: 0; } .kv span { color: var(--muted); flex: none; } .kv b { text-align: right; font-weight: 600; overflow-wrap: anywhere; }
+  .raw summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 10px; } .raw pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 11px; max-height: 300px; overflow: auto; }
+  .hist { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; } .hrow { padding: 10px 12px; } .hrow + .hrow { border-top: 1px solid var(--line); }
+  .hh { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; } .hv { margin-top: 4px; white-space: pre-wrap; overflow-wrap: anywhere; } .ho { color: var(--muted); text-decoration: line-through; }
+  .havs { display: flex; align-items: center; gap: 10px; margin-top: 6px; } .havs img, .havs .hph { width: 84px; height: 84px; border-radius: 10px; object-fit: cover; background: #000; } .havs .hph { display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); }
+  #pfBody table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 14px; }
+  #pfBody th, #pfBody td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); } #pfBody th { color: var(--muted); font-size: 12px; } #pfBody .n { text-align: right; } .cause { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .msgs { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .m { max-width: 82%; padding: 7px 10px 5px; border-radius: 12px; background: var(--peer); align-self: flex-start; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .m.me { background: var(--me); align-self: flex-end; }
+  .m.pend { opacity: .6; } .m.fail { border: 1px solid var(--bad); }
+  .m img { max-width: 100%; max-height: 360px; min-height: 120px; object-fit: cover; border-radius: 8px; display: block; background: var(--img); }
+  .m .tm { font-size: 11px; color: #b6c8be; text-align: right; margin-top: 2px; }
+  .day { align-self: center; font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 10px; border-radius: 999px; margin: 6px 0; }
+  .coin { align-self: stretch; background: #2a2210; border: 1px solid #a16207; border-radius: 12px; padding: 10px; font-size: 14px; }
+  .coin.paid { background: #10251a; border-color: #166534; }
+  .tpl { display: flex; gap: 6px; overflow-x: auto; padding: 6px 10px; border-top: 1px solid var(--line); -webkit-overflow-scrolling: touch; }
+  .tpl button { white-space: nowrap; font-size: 14px; padding: 8px 12px; flex: none; }
+  .comp { display: flex; gap: 8px; align-items: flex-end; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--panel); }
+  .comp textarea { resize: none; max-height: 120px; min-height: 44px; flex: 1; min-width: 0; font-size: 16px; }
+  .comp button { flex: none; min-height: 44px; padding: 6px 8px !important; } .comp button.go { padding: 10px 12px !important; } .comp { gap: 6px !important; } /* yazı kutusuna daha çok yer */
+  .cards { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 10px; max-height: 40vh; overflow-y: auto; border-top: 1px solid var(--line); }
+  .cards.on { display: grid; }
+  .cards button { text-align: left; font-weight: 700; padding: 12px; }
+  .cards button.full { text-decoration: line-through; opacity: .45; }
+  .cards button.next { border-color: #d97706; color: #fbbf24; }
+  #login { align-items: center; justify-content: center; gap: 16px; padding: 24px; }
+  #login .pin { font-size: 28px; letter-spacing: 10px; text-align: center; max-width: 260px; }
+  #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
+  #toast.bad { background: #3a1f1f; }
+  .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
+  nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: max(0px, calc(env(safe-area-inset-bottom) - 19px)); }
+  nav.bn button { flex: 1; border: 0; border-radius: 0; background: none; padding: 8px 2px 10px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
+  nav.bn button b { font-size: 20px; } nav.bn button.on { color: var(--accent); }
+  nav.bn i { position: absolute; top: 2px; right: 22%; background: var(--bad); color: #fff; font-style: normal; font-size: 11px; border-radius: 999px; padding: 0 5px; }
+  .pane { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; }
+  .pane.on { display: block; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin: 10px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px; }
+  .grid .card { margin: 0; } .k { color: var(--muted); font-size: 12px; } .v { font-size: 20px; font-weight: 700; }
+  h3 { margin: 14px 12px 6px; font-size: 16px; }
+  .sub { display: flex; gap: 6px; overflow-x: auto; padding: 8px 10px; }
+  .sub button { white-space: nowrap; flex: none; font-size: 14px; padding: 7px 12px; } .sub button.on { background: var(--go); border-color: var(--go); color: #fff; }
+  table { width: calc(100% - 20px); margin: 0 10px; border-collapse: collapse; font-size: 14px; } td, th { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; } td.n, th.n { text-align: right; } th { color: var(--muted); font-weight: 600; font-size: 12px; }
+  .sys { background: rgba(217,70,239,.08); }
+  .dmstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #2a2210; border: 1px solid #a16207; font-size: 14px; }
+  .systabs { display: flex; gap: 6px; overflow-x: auto; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+  .systabs button { white-space: nowrap; flex: none; font-size: 13px; padding: 6px 10px; } .systabs button.on { background: #db2777; border-color: #db2777; color: #fff; }
+  .ro { text-align: center; padding: 14px; color: var(--muted); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;align-items:flex-end;justify-content:center">
+  <div id="modalBox" style="background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 0 0;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom))"></div>
+</div>
+
+<section class="screen" id="login">
+  <img src="icon-192.png?v=2" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
+  <div class="s">Rolünüzü seçip şifrenizle girin</div>
+  <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
+  <button class="go" id="loginBtn" style="min-width:200px" onclick="doLogin()">Giriş</button>
+  <div id="loginMsg" class="lmsg" role="status" aria-live="polite"></div>
+</section>
+
+<section class="screen" id="inbox">
+  <header><img src="icon-192.png?v=2" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <div class="warnbar" id="tabWarn"></div>
+  <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
+  <div class="pane on" id="p-msg">
+    <div id="dmStrip"></div>
+    <div class="search"><input id="idIn" type="search" autocomplete="off" placeholder="🔎 İsim ya da UID ile ara / sohbet aç" oninput="srch()" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
+    <div id="srchRes"></div>
+    <div id="convs"><div class="row s">Yükleniyor…</div></div>
+  </div>
+  <div class="pane" id="p-dm"><div id="dmBody"><div class="row s">Yükleniyor…</div></div></div>
+  <div class="pane" id="p-card"><div id="cardBody"><div class="row s">Yükleniyor…</div></div></div>
+  <div class="pane" id="p-coin"><div id="coinBody"><div class="row s">Yükleniyor…</div></div></div>
+  <div class="pane" id="p-aj"><div id="ajBody"><div class="row s">Yükleniyor…</div></div></div>
+  <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button><div class="infol"></div></nav>
+</section>
+
+<section class="screen" id="prof">
+  <header><button onclick="profClose()">‹</button><h1 id="pfTitle">👤 Profil</h1><span id="pfSync" class="s" hidden>🔄 Sugo'dan tazeleniyor…</span></header>
+  <div class="list" id="pfBody"></div>
+</section>
+<div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
+<section class="screen" id="chat">
+  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chRoom" hidden></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <div id="chTrust"></div>
+  <div id="chTags" class="chtags"></div>
+  <div class="warnbar" id="tabWarn2"></div>
+  <div class="systabs" id="sysTabs" hidden></div>
+  <div id="pinBar" hidden></div>
+  <div class="msgs" id="msgs"></div>
+  <div class="ro" id="roBar" hidden>🔒 Sistem mesajları – salt okunur</div>
+  <div class="cards" id="cards"></div>
+  <div id="msgMenu" class="msgmenu" hidden></div>
+  <div id="compWrap">
+    <div id="emoPanel" class="emopanel" hidden></div>
+    <div id="txtPrev" hidden style="padding:6px 12px;border-top:1px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere"></div>
+    <div class="tpl" id="tpls"></div>
+    <div id="replyBar" hidden></div>
+    <div class="comp">
+      <button onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
+      <button onclick="pickImg()" title="Resim">📎</button>
+      <input type="file" id="file" accept="image/*" hidden onchange="sendImg(this)">
+      <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this)"></textarea>
+      <button class="go" onclick="send()">Gönder</button>
+    </div>
+    <div class="infol"></div>
+  </div>
+</section>
+
+<script src="emoji.js"></script>
+<script>
+const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
+const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
+let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad ? 5000 : 2500); }
+// Ekran değişince kaydırma konumu korunur (gizlenen ekranın konumu tarayıcıda sıfırlanıyordu: profilden dönünce sohbet en üstte açılıyordu)
+let chatAnchor = null; const paneTops = {};
+function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on");
+  document.querySelectorAll(".screen.on").forEach((s) => { if (s.id !== id) s.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id) paneTops[el.id] = el.scrollTop; }); });
+  if (chatWas && id !== "chat") chatAnchor = msgAnchor();
+  document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id));
+  const sc = $(id); if (sc) sc.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id && paneTops[el.id] != null) el.scrollTop = paneTops[el.id]; });
+  if (id === "chat" && !chatWas && chatAnchor) msgRestore(chatAnchor); }
+// Sohbette nerede kalındı: ekranın üstündeki ilk mesaj + ekrana uzaklığı (yeni mesaj / resim yüklense de aynı yer bulunur)
+function msgAnchor() { const box = $("msgs"); if (!box || !cur) return null;
+  if (stick || box.scrollHeight - box.scrollTop - box.clientHeight < 40) return { c: cur, bottom: true };
+  const top = box.getBoundingClientRect().top, el = [...box.querySelectorAll(".m[data-mid]")].find((e) => e.getBoundingClientRect().bottom > top + 4);
+  return el ? { c: cur, mid: el.dataset.mid, off: el.getBoundingClientRect().top - top, top: box.scrollTop } : { c: cur, top: box.scrollTop }; }
+function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); let stop = false;
+  const cancel = () => { stop = true; }; box.addEventListener("touchstart", cancel, { once: true, passive: true }); box.addEventListener("wheel", cancel, { once: true, passive: true });
+  const go = () => { if (stop || a.c !== cur) return;
+    if (a.bottom) { stick = true; box.scrollTop = box.scrollHeight; return; }
+    stick = false; const el = a.mid && box.querySelector(`.m[data-mid="${CSS.escape(String(a.mid))}"]`);
+    if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - a.off; else if (a.top != null) box.scrollTop = a.top; };
+  go(); requestAnimationFrame(go); setTimeout(go, 250); setTimeout(go, 900); } // resimler yüklenip yükseklik değişirse yeniden
+// ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
+const STAT = { api: [], rt: null, rtOn: false, live: null, link: "" };
+function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
+  const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
+    `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
+  document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
+async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} applyPerms(); renderInbox(); if (cur) renderChat(); } }
+async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
+async function api0(action, body = {}) {
+  const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
+  if (!r) return { error: "Bağlantı yok" };
+  if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
+}
+const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
+const initial = (n) => esc(((n || "?").normalize("NFKC").replace(/[^\p{L}\p{N}]/gu, "").match(/./u) || ["?"])[0].toUpperCase());
+const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-process=image/resize,m_fill,h_120,w_120";
+// Çevrimiçi: yeşil = çevrimiçi, kırmızı = çevrimdışı (sunucu 5 dk'da bir Sugo'dan tazeler; bilgi yoksa nokta yok)
+const onDot = (x) => x && "on" in x && !isSys(x.id) ? `<i class="ondot ${x.on ? "on" : "off"}" title="${x.on ? "Çevrimiçi" : "Çevrimdışı"}"></i>` : "";
+function chOnUpd() { const el = $("chOn"); if (!el) return; const x = cur && !isSys(cur) ? inbox.find((i) => String(i.id) === cur) : null;
+  el.hidden = !(x && "on" in x); if (x) { el.className = "ondot " + (x.on ? "on" : "off"); el.title = x.on ? "Çevrimiçi" : "Çevrimdışı"; } }
+const avHtml = (n, a) => initial(n) + (a ? `<img src="${esc(avUrl(a))}" loading="lazy" onerror="this.remove()">` : "");
+function rel(ms) { if (!ms) return ""; const d = new Date(ms), now = new Date(); const hm = d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+  if (d.toDateString() === now.toDateString()) return hm; const y = new Date(now - 864e5); if (d.toDateString() === y.toDateString()) return "Dün " + hm; return d.toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" }); }
+
+// ---------- giriş
+// Giriş: ne olduğu ekranda yazar (kontrol ediliyor → başarılı / neden olmadı); düğme iki kez basılamaz
+function loginMsg(text, kind) { const el = $("loginMsg"); el.textContent = text || ""; el.className = "lmsg " + (kind || ""); }
+let loginBusy = false;
+async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $("loginBtn"), pw = inp.value;
+  if (!pw) { loginMsg("Lütfen şifrenizi yazın", "err"); inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); return; }
+  loginBusy = true; btn.disabled = true; btn.textContent = "⏳ Giriş yapılıyor…"; loginMsg("Şifre kontrol ediliyor…", "wait");
+  const d = await api("login", { password: pw, role: loginRole });
+  if (d.error || !d.token) { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş";
+    const e = String(d.error || ""); loginMsg("❌ " + (e === "Bağlantı yok" ? "İnternet bağlantısı yok, tekrar deneyin" : e || "Giriş yapılamadı, tekrar deneyin"), "err");
+    inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); inp.select(); return; }
+  btn.textContent = "✅ Giriş başarılı"; loginMsg("✅ Giriş başarılı — sohbetler yükleniyor…", "ok");
+  tok = d.token; localStorage.setItem("bw_tok", tok); inp.value = "";
+  try { if (d.must_change) { await start(); pwChange(pw, true); } else await start(); } finally { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş"; }
+  if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
+$("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
+
+async function start() {
+  // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
+  let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
+  const fast = !!(cm && Array.isArray(ci) && ci.length);
+  if (fast) { me = cm; applyPerms(); show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
+  const pInbox = loadInbox();
+  if (can("kart")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
+  const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
+  me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
+  applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
+  const qp = new URLSearchParams(location.search), rs = takeResume();
+  if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
+  else if (rs) { if (rs.tab) tab(rs.tab); if (rs.cur) { await openChat(rs.cur); if (rs.a) msgRestore(rs.a); } toast("✨ Sayfa güncellendi"); }
+  if (location.search) history.replaceState(null, "", location.pathname);
+  api("bayi_templates").then((r) => { tpls = (r.report && r.report.templates) || []; renderTpls(); });
+}
+
+// ---------- tablet durumu (mesajları tablet gönderir)
+async function loadTablet() { const d = await api("tablet"); const age = Date.now() - (d.at || 0);
+  const LIM = 8 * 60_000; // tablet liste değişmese de en geç 5 dk'da bir yazar
+  const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
+  const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez." : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
+  ["tabWarn", "tabWarn2"].forEach((id) => { $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
+
+// ---------- sohbet listesi
+// 📌 Sabitlenen kişiler (Ülker + tablet ortak): listenin en üstünde, en son sabitlenen en üstte; sonra okunmamışlar, sonra en yeni
+let cpins = [], cpinsBy = {}; try { cpins = JSON.parse(localStorage.getItem("bw_cpins") || "[]"); cpinsBy = JSON.parse(localStorage.getItem("bw_cpinsby") || "{}"); } catch (e) {}
+// 🏷️ Sohbet etiketleri (tablet + Ülker ortak): seller = 💎 elmas satıcısı, buyer = 🪙 coin alıcısı; listede üstte filtre (Genel / satıcılar / alıcılar)
+let ctags = {}, lf = "all"; try { ctags = JSON.parse(localStorage.getItem("bw_ctags") || "{}"); lf = localStorage.getItem("bw_lf") || "all"; } catch (e) {}
+const hasTag = (id, t) => (ctags[String(id)] || []).includes(t);
+const tagIcons = (id) => (hasTag(id, "boss") ? '<span class="tagic" title="Patron">👑</span>' : "") + (hasTag(id, "seller") ? '<span class="tagic" title="Elmas satıcısı">💎</span>' : "") + (hasTag(id, "buyer") ? '<span class="tagic" title="Coin alıcısı"><span class="gc"></span></span>' : "");
+function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try { localStorage.setItem("bw_ctags", JSON.stringify(ctags)); } catch (e) {} }
+function setLf(k) { lf = k; try { localStorage.setItem("bw_lf", k); } catch (e) {} renderInbox(); const c = $("convs"); if (c && c.closest(".pane")) c.closest(".pane").scrollTop = 0; }
+function renderChTags() { const el = $("chTags"); if (!el) return; if (!cur || isSys(cur) || !can("duzen")) { el.innerHTML = ""; return; }
+  el.innerHTML = `<span class="s">🏷️ Etiket:</span><button class="${hasTag(cur, "seller") ? "on" : ""}" onclick="tagToggle('seller')">💎 Elmas satıcısı</button><button class="${hasTag(cur, "buyer") ? "on" : ""}" onclick="tagToggle('buyer')"><span class="gc"></span> Coin alıcısı</button><button class="${hasTag(cur, "boss") ? "on" : ""}" onclick="tagToggle('boss')">👑 Patron</button>`; }
+async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTag(c, tag);
+  const d = await api("conv_tag", { conv: c, tag, on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  setCtags(d.report && d.report.ctags); renderChTags(); renderInbox(); toast(d.ok || (on ? "Etiketlendi" : "Etiket kaldırıldı")); }
+function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
+  try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
+const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
+function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (b.at || 0) - (a.at || 0)); } // sabitlenenler üstte, sonra son mesaj saatine göre (okunmamış öne alınmaz)
+async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
+async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
+  inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
+  setCpins(d.report); if (d.report) setCtags(d.report.ctags);
+  sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
+  try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
+const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
+const isSys = (id) => /^300\d\d$/.test(String(id));
+function renderInbox() {
+  try { if (!window.__listMark) { window.__listMark = 1; setTimeout(() => performance.mark("liste-ekranda"), 0); } } catch (e) {} // açılış ölçümü
+  const unread = inbox.reduce((s, x) => s + (Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread;
+  const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
+  const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
+  const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
+  const shown = lf === "all" ? inbox : inbox.filter((x) => hasTag(x.id, lf)), nSel = inbox.filter((x) => hasTag(x.id, "seller")).length, nBuy = inbox.filter((x) => hasTag(x.id, "buyer")).length, nBoss = inbox.filter((x) => hasTag(x.id, "boss")).length;
+  const chips = `<div class="tagbar"><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button></div>`;
+  morph($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, 120).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+    <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
+      <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
+    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+  // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
+  const ids = inbox.slice(0, 80).map((x) => String(x.id));
+  loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
+// Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
+async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own); if (!list.length) return;
+  if (!confirm(`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`)) return;
+  for (const x of list) { await api("read", { conv: String(x.id) }); x.u = ""; }
+  renderInbox(); toast(`✓ ${list.length} sohbet okundu yapıldı`); }
+function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
+  if (!v) { const first = document.querySelector("#srchRes .row[data-uid]"); if (first) { pick(first.dataset.uid); return; } toast("İsim ya da UID yazın", true); return; }
+  pick(v); }
+function pick(uid) { $("idIn").value = ""; $("srchRes").innerHTML = ""; openChat(uid); }
+
+// ---------- kişi arama (isim / UID / biyografi): önce kendi sohbetlerimiz, sonra kayıtlı herkes
+const people = {}; // uid → {n, av} (aramadan/profilden: sohbet başlığı için)
+let srchT = 0, srchQ = "";
+function srch() { clearTimeout(srchT); const q = $("idIn").value.trim(); srchQ = q;
+  if (!q) { $("srchRes").innerHTML = ""; return; }
+  srchT = setTimeout(() => runSrch(q), 350); }
+const pRow = (uid, n, av, sub) => `<div class="row" data-uid="${esc(uid)}" onclick="pick('${esc(uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(uid)}')" title="Profili aç">${avHtml(n, av)}</div>
+  <div class="b"><div class="t"><b>${esc(n || uid)}</b><span class="s">${esc(uid)}</span></div>${sub ? `<div class="p"><span>${sub}</span></div>` : ""}${trust(uid)}</div></div>`;
+async function runSrch(q) {
+  const low = q.toLocaleLowerCase("tr"), digits = /^\d{5,12}$/.test(q);
+  const mine = inbox.filter((x) => String(x.id).includes(q) || String(x.n || "").toLocaleLowerCase("tr").includes(low)).slice(0, 8);
+  const draw = (rows) => { if (srchQ !== q) return;
+    $("srchRes").innerHTML = (digits && !mine.some((x) => String(x.id) === q) && !rows.some((r) => String(r.uid) === q) ? `<div class="row" data-uid="${esc(q)}" onclick="pick('${esc(q)}')"><div class="av">💬</div><div class="b"><b>UID ${esc(q)} ile sohbet aç</b></div></div>` : "")
+      + (mine.length ? `<div class="hd">Sohbetlerimiz</div>` + mine.map((x) => pRow(String(x.id), x.n, x.av, esc(x.p || ""))).join("") : "")
+      + (rows.length ? `<div class="hd">Kayıtlı kişiler</div>` + rows.map((r) => pRow(String(r.uid), r.nickname, r.avatar_url || r.avatar, [r.verified ? "✔️ onaylı" : "", r.online ? "🟢 çevrimiçi" : "", r.wealth_level ? "💰 " + r.wealth_level : ""].filter(Boolean).join(" · "))).join("") : "")
+      || `<div class="row s">Bulunamadı</div>`; };
+  draw([]);
+  if (q.length < 2) return;
+  const d = await api("profiles_search", { q, flt: "", off: 0 });
+  const rows = ((d.report && d.report.rows) || []).filter((r) => !mine.some((x) => String(x.id) === String(r.uid))).slice(0, 20);
+  rows.forEach((r) => { people[r.uid] = { n: r.nickname, av: r.avatar_url || r.avatar }; });
+  draw(rows);
+  if (await loadBuyers([...mine.map((x) => String(x.id)), ...rows.map((r) => String(r.uid))])) draw(rows);
+}
+
+// ---------- güven bilgisi: bizden daha önce coin aldı mı (satış kayıtları) + açık borç — tabletle aynı
+const buyers = {}; let buyersAt = 0;
+const relIso = (s) => s ? rel(Date.parse(s)) : "";
+function trust(uid) {
+  if (!(uid in buyers) || isSys(uid)) return "";
+  const x = buyers[uid];
+  if (!x) return `<div class="trust new">🆕 Bizden daha önce coin almadı</div>`;
+  const good = x.n >= 3 && !x.debt;
+  return `<div class="trust ${x.debt ? "debt" : good ? "good" : "some"}">${good ? "✅" : "🛒"} <b>${x.n} kez</b> aldı · ${nf(x.coins)} coin · ${x.azn} ₼${x.last ? " · son " + esc(relIso(x.last)) : ""}${x.debt ? ` · <b>⚠️ borcu ${x.debt} ₼</b>` : ""}</div>`;
+}
+async function loadBuyers(uids, force) {
+  const need = [...new Set(uids.map(String))].filter((u) => /^\d{3,15}$/.test(u) && !isSys(u) && (force || !(u in buyers))).slice(0, 80);
+  if (!need.length) return false;
+  const d = await api("buyer_stats", { uids: need }); if (d.error) return false;
+  const b = (d.report && d.report.buyers) || {};
+  need.forEach((u) => { buyers[u] = b[u] || null; }); buyersAt = Date.now(); return true;
+}
+
+
+// ---------- sohbet
+const synced = {};
+async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
+  cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
+  $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
+  chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
+  if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
+  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
+  if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
+  if (!sy && !synced[cur]) { synced[cur] = 1; api("chat_sync", { conv: cur }); } // eski mesajlar Sugo'dan (arka planda; gelince sohbet yenilenir)
+  if (snap && snap.hist) { // önceki sohbete dönüş: yüklenmiş eski sayfalarıyla birlikte aynen, kaldığı yerden; sonra arka planda tazelenir
+    hist = snap.hist; older = snap.older || []; histMore = !!snap.histMore; coins = snap.coins || []; outbox = snap.outbox || []; pins = snap.pins || []; renderPins();
+    stick = !!(snap.a && snap.a.bottom); renderChat(false); msgRestore(snap.a); loadChat(false); return; }
+  await loadChat(true);
+  if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; renderInbox(); }
+}
+// Kişi şu an bir odadaysa başlıkta: oda adı (küçük, mavi) + oynayan nota. Sadece açık sohbet için, açıkken dakikada bir sorulur
+let roomTimer = 0;
+async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
+  if (!c || isSys(c) || document.hidden) { el.hidden = true; return; }
+  const d = await api("room_now", { uid: c }); if (c !== cur) return;
+  const r = d.report && d.report.room;
+  el.hidden = !r; if (r) el.innerHTML = `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>`; } // profildeki gibi, "Şu an" yazısı olmadan
+function roomWatch() { clearInterval(roomTimer); $("chRoom").hidden = true; roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
+function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
+function back() { if (chatStack.length) { history.back(); return; } stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
+// Mesajdaki UID'ye dokununca: profil mi, mesaj mı? "Mesaj at" o kişinin sohbetini açar; geri gelince önceki sohbete, kaldığı yere döner
+let chatStack = [];
+function uidMenu(uid) { const k = inbox.find((x) => String(x.id) === String(uid)) || (people[uid] || {});
+  openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + uid)}</div><div class="s" style="margin-bottom:12px">UID ${esc(uid)}</div>
+    <div style="display:flex;flex-direction:column;gap:8px">${can("profil") ? `<button onclick="closeModal();prof('${esc(uid)}')">👤 Profili aç</button>` : ""}<button class="go" onclick="chatJump('${esc(uid)}')">💬 Mesaj at</button><button onclick="closeModal()">Vazgeç</button></div>`); }
+async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid) return;
+  if (cur) chatStack.push({ c: cur, a: msgAnchor(), hist, older, histMore, coins, outbox, pins });
+  history.pushState({ c: uid }, ""); await openChat(uid); }
+async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c, p); }
+// Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
+window.addEventListener("popstate", () => {
+  if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
+  if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
+  if (cur && chatStack.length) { stopMedia(); clearInterval(roomTimer); chatReturn(); return; } // UID'den açılan sohbetten önceki sohbete
+  if (cur) { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); }
+});
+// Bekleyen mesaj işlemleri (tepki / geri al / sil): sunucu bitirene kadar ekrandaki hâl korunur
+const optMsg = {};
+const applyOpt = (list) => Object.keys(optMsg).length ? list.filter((m) => !(optMsg[m.id] && optMsg[m.id].del)).map((m) => { const o = optMsg[m.id]; return !o ? m : o.em ? { ...m, em: o.em } : o.wd ? { ...m, ...o.wd } : m; }) : list;
+// Sohbet son 40 mesajla açılır; "Daha eski mesajlar" ile 40'ar geriye yüklenir (sorgu ve veri yükü azalır)
+let older = [], histMore = false, olderBusy = false, pins = [];
+async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
+  const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
+  const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 40 }); olderBusy = false;
+  if (c !== cur) return; if (d.error) { toast("❌ " + d.error, true); renderChat(); return; }
+  const page = (d.report && d.report.chat) || []; const have = new Set(hist.map((m) => String(m.id)));
+  older = [...page.filter((m) => !have.has(String(m.id))), ...older]; histMore = !!(d.report && d.report.more);
+  hist = applyOpt([...page.filter((m) => !have.has(String(m.id))), ...hist]); stick = false; renderChat();
+  box.scrollTop += box.scrollHeight - h0; } // okunan yer kaymasın
+async function loadChat(scroll) { if (!cur) return; const c = cur;
+  const [h, o] = await Promise.all([api("chat_history", { conv: "b" + c }), isSys(c) ? Promise.resolve({ outbox: [] }) : api("outbox", { conv: c })]);
+  if (c !== cur) return;
+  if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
+    if (!older.length) histMore = !!h.report.more; // eski sayfa yüklenmediyse "devamı var" bilgisi son sayfadan
+    const seenIds = new Set(latest.map((m) => String(m.id)));
+    hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || [];
+    if (Array.isArray(h.report.pins)) { pins = h.report.pins; renderPins(); }
+    const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
+  outbox = o.outbox || []; renderChat(scroll); }
+function bubbleBody(m) { const t = String(m.t || "");
+  if (m.k === "voice" && /^https?:/.test(t)) return voiceBtn(t, Number(m.dur) || 0);
+  if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}"${m.thumb ? ` poster="${esc(m.thumb)}"` : ""} style="max-width:100%;max-height:320px;border-radius:8px;display:block;background:#000"></video>`;
+  if (m.k === "system" || m.k === "call") return `<i>${emo(esc(t || (m.k === "call" ? "📞 Arama" : "Sistem mesajı")))}</i>`;
+  if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<img src="${esc(t)}" data-img="${esc(t)}" loading="lazy">`;
+  return emo(uidBare(esc(t || "[" + (m.k || "mesaj") + "]")), true); }
+// 🎤 Sesli mesaj: Sugo AMR (tarayıcılar çalamaz) → recorder-core ile WAV'a çevrilip çalınır (Sugo'nun kendi sitesi de böyle yapar); MP3 doğrudan
+const AMR_LIBS = ["recorder-core.js", "engine/wav.js", "engine/beta-amr.js", "engine/beta-amr-engine.js"].map((f) => "https://cdn.jsdelivr.net/npm/recorder-core@1.3.25011100/src/" + f);
+let amrReady = null;
+function amrLoad() { if (amrReady) return amrReady;
+  amrReady = AMR_LIBS.reduce((p, u) => p.then(() => new Promise((res, rej) => { const s = document.createElement("script"); s.src = u; s.onload = res; s.onerror = () => rej(new Error("ses çözücü yüklenemedi")); document.head.appendChild(s); })), Promise.resolve());
+  amrReady.catch(() => { amrReady = null; }); return amrReady; }
+async function voiceSrc(url) {
+  const r = await fetch(url); if (!r.ok) throw new Error("HTTP " + r.status); const buf = await r.arrayBuffer();
+  if (new TextDecoder().decode(new Uint8Array(buf.slice(0, 5))) === "#!AMR") { await amrLoad();
+    return await new Promise((res, rej) => window.Recorder.amr2wav(new Blob([buf]), (wav, ms) => res({ src: URL.createObjectURL(wav), ms }), (e) => rej(new Error(String(e))))); }
+  return { src: URL.createObjectURL(new Blob([buf], { type: r.headers.get("content-type") || "audio/mpeg" })) };
+}
+// Kısa sessiz ses: dokunma anında oynatıcının "kilidi açılır" (iPhone/Android, çözme bitince aynı oynatıcı çalabilsin)
+const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+window.voicePlay = async (btn) => { if (btn.disabled) return; btn.disabled = true; const label = btn.textContent; btn.textContent = "⏳ yükleniyor…";
+  const a = document.createElement("audio"); a.src = SILENT_WAV; a.play().catch(() => {}); // dokunuşun içinde
+  try { const v = await voiceSrc(btn.dataset.v); a.controls = true; a.src = v.src; a.style.cssText = "height:36px;max-width:230px;vertical-align:middle";
+    btn.replaceWith(a); a.play().catch(() => {}); }
+  catch (e) { btn.disabled = false; btn.textContent = label; (window.toast || alert)("🎤 Ses çalınamadı: " + e.message, true); } };
+const voiceBtn = (url, dur) => `🎤 <button class="vplay" data-v="${String(url).replace(/"/g, "&quot;")}" onclick="event.stopPropagation();voicePlay(this)" style="padding:6px 12px;border-radius:999px">▶️ Sesli mesaj${dur ? " · " + (dur >= 60 ? Math.floor(dur / 60) + ":" + String(dur % 60).padStart(2, "0") : dur + " sn") : ""}</button>`;
+// ---------- Sugo emojileri: metindeki [beg_you] gibi kodlar Sugo'nun emoji resmine çevrilir (tabletle aynı tablo)
+const EMO = (() => { const m = new Map(), E = window.SUGO_EMOJI || {};
+  for (const atlas of ["legacy", "modern"]) { const a = E[atlas]; if (!a) continue; for (const [k, v] of Object.entries(a.items)) m.set(k.toLowerCase(), { atlas, col: v[0], row: v[1], cols: a.cols, rows: a.rows }); } return m; })();
+function emoSpan(code, px) { const e = EMO.get(String(code).toLowerCase()); if (!e) return esc(code);
+  return `<span class="semo" title="${esc(code)}" style="width:${px}px;height:${px}px;background-image:url(emoji_${e.atlas}.webp);background-size:${e.cols * px}px ${e.rows * px}px;background-position:-${e.col * px}px -${e.row * px}px"></span>`; }
+function emo(html, big) { const only = big && html.replace(/\[[^\]]+\]/g, (x) => (EMO.has(x.toLowerCase()) ? "" : x)).trim() === "";
+  return html.replace(/\[[^\]]+\]/g, (x) => EMO.has(x.toLowerCase()) ? emoSpan(x, only ? 44 : 22) : x); }
+// Mesajdaki UID (8–10 hane): dokununca profil
+const uidBare = (html) => String(html).replace(/(^|[^\d])(\d{8,10})(?!\d)/g, (m, a, n) => `${a}<span class="uidl" data-uid="${n}">${n}</span>`);
+document.addEventListener("click", (e) => { const u = e.target.closest && e.target.closest(".uidl[data-uid]"); if (u) { e.stopPropagation(); e.preventDefault(); uidMenu(u.dataset.uid); return; }
+  const im = e.target.closest && e.target.closest("[data-img]"); if (im) { e.stopPropagation(); e.preventDefault(); lbOpen(im.dataset.img); } }, true);
+// Resim büyütme
+function lbOpen(src) { $("lbImg").src = src; $("lbOpen").href = src; $("lb").hidden = false; history.pushState({ lb: 1 }, ""); }
+function lbClose(e) { if (e && e.target.id === "lbOpen") return; if (!$("lb").hidden) history.back(); }
+
+
+// ---------- 😊 Emoji seçici (son kullanılanlar · Sugo · 3D): yazıya eklenir ya da (menüden) tepki olarak gönderilir
+let emoTab = "recent", reactFor = null;
+const emoRecent = () => { try { return JSON.parse(localStorage.getItem("emoRecent") || "[]"); } catch (e) { return []; } };
+const emoUse = (c) => { try { localStorage.setItem("emoRecent", JSON.stringify([c, ...emoRecent().filter((x) => x !== c)].slice(0, 32))); } catch (e) {} };
+function emoRender() {
+  let tb = emoTab; if (tb === "recent" && !emoRecent().length) tb = emoTab = "legacy";
+  const codes = tb === "recent" ? emoRecent() : Object.keys(((window.SUGO_EMOJI || {})[tb] || {}).items || {});
+  $("emoPanel").innerHTML = `<div class="emotabs">${[["recent", "🕘 Son"], ["legacy", "😊 Sugo"], ["modern", "✨ 3D"]].map(([k, l]) => `<button class="${k === tb ? "on" : ""}" onclick="emoTab='${k}';emoRender()">${l}</button>`).join("")}${reactFor ? '<span class="s" style="align-self:center">tepki seçin</span>' : ""}<button style="margin-left:auto" onclick="emoToggle(false)">✕</button></div>
+    <div class="emogrid">${codes.map((c) => `<button onclick="emoPick('${esc(c)}')" title="${esc(c)}">${emoSpan(c, 32)}</button>`).join("") || '<span class="s">Henüz yok</span>'}</div>`; }
+function emoToggle(on) { const p = $("emoPanel"); p.hidden = on === undefined ? !p.hidden : !on; if (p.hidden) reactFor = null; else emoRender(); }
+function emoPick(code) { emoUse(code);
+  if (reactFor) { const mid = reactFor; reactFor = null; emoToggle(false); msgAct("react", mid, code); return; }
+  const ta = $("txt"), s = ta.selectionStart ?? ta.value.length, e = ta.selectionEnd ?? s;
+  ta.value = ta.value.slice(0, s) + code + ta.value.slice(e); ta.selectionStart = ta.selectionEnd = s + code.length; grow(ta); }
+
+// ---------- mesaj menüsü (dokununca): hızlı tepki · ➕ başka emoji · kopyala · kendi mesajında geri al / sil
+const QUICK_REACT = ["[red_heart_3d]", "[rolling_on_the_floor_laughing_3d]", "[thumbs_up_3d_default]", "[smiling_face_with_heart_eyes_3d]", "[loudly_crying_face_3d]", "[folded_hands_3d_default]", "[fire_3d]", "[face_blowing_a_kiss_3d]"];
+const bayiMe = () => String((me && me.bayi_uid) || window.__bayiUid || "");
+const findMsg = (mid) => hist.find((m) => String(m.id) === String(mid));
+function emoChips(m) {
+  if (!m.em || !m.em.length) return "";
+  const g = new Map(); for (const [u, e] of m.em) { const x = g.get(e) || { n: 0, me: false }; x.n++; if (String(u) === bayiMe() || (!bayiMe() && !m.m && String(u) !== cur)) x.me = true; g.set(e, x); }
+  return `<div class="emochips">${[...g.entries()].map(([e, x]) => `<button class="${x.me ? "me" : ""}" onclick="event.stopPropagation();msgAct('react','${esc(m.id)}','${x.me ? "" : esc(e)}')">${emoSpan(e, 18)}${x.n > 1 ? x.n : ""}</button>`).join("")}</div>`;
+}
+// Yana kaydırma: mesaj sağa çekilince o mesaja yanıt (Sugo'daki "yanıtla" ile aynı; karşı taraf alıntılı görür). Sabitleme: dokununca açılan menüde
+let sw = null;
+document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
+  sw = b && !e.target.closest("video,audio,.vplay,button,a,.emochips") ? { b, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+document.addEventListener("touchmove", (e) => { if (!sw) return; const dx = e.touches[0].clientX - sw.x, dy = e.touches[0].clientY - sw.y;
+  if (!sw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; } if (dx > 12 && dx > Math.abs(dy)) { sw.on = true; clearTimeout(lpT); sw.b.classList.add("swiping"); } }
+  if (sw && sw.on) { sw.dx = dx; sw.b.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
+document.addEventListener("touchend", () => { if (!sw) return; const s = sw; sw = null; if (!s.on) return;
+  s.b.classList.remove("swiping"); s.b.classList.add("swback"); s.b.style.transform = ""; setTimeout(() => s.b.classList.remove("swback"), 250);
+  lpFired = true; // kaydırma sonrası tıklama menü açmasın
+  if (s.dx < 60) return; replyStart(s.b.dataset.mid); try { navigator.vibrate && navigator.vibrate(10); } catch (x) {} }, { passive: true });
+// Listede kişiyi sağa kaydırınca: "en üste sabitlensin mi?" (sabitliyse "kaldırılsın mı?")
+let lsw = null;
+document.addEventListener("touchstart", (e) => { const r = e.target.closest && e.target.closest("#convs .row[data-cid]");
+  lsw = r && !e.target.closest(".tap,button") ? { r, x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: false } : null; }, { passive: true });
+document.addEventListener("touchmove", (e) => { if (!lsw) return; const dx = e.touches[0].clientX - lsw.x, dy = e.touches[0].clientY - lsw.y;
+  if (!lsw.on) { if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { lsw = null; return; } if (dx > 12 && dx > Math.abs(dy)) lsw.on = true; }
+  if (lsw && lsw.on) { lsw.dx = dx; lsw.r.style.transform = `translateX(${Math.max(0, Math.min(dx, 90))}px)`; } }, { passive: true });
+document.addEventListener("touchend", () => { if (!lsw) return; const s = lsw; lsw = null; if (!s.on) return;
+  s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => s.r.classList.remove("swback"), 250);
+  const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 400); // kaydırma sohbeti açmasın
+  if (s.dx < 60 || !can("duzen")) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
+  setTimeout(() => { if (confirm(on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`)) convPin(id, on); }, 220); }, { passive: true });
+// Uzun basma (yarım saniye): mesaj menüsü (iPhone'un kendi seçim balonu yerine)
+let lpT = 0, lpFired = false;
+document.addEventListener("touchstart", (e) => { const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
+  if (!b || e.target.closest("video,audio,.vplay,button,a,[data-img],.emochips,.uidl")) return;
+  lpFired = false; clearTimeout(lpT); lpT = setTimeout(() => { lpFired = true; msgMenuOpen(b.dataset.mid, b); try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} }, 450); }, { passive: true });
+["touchend", "touchmove", "touchcancel"].forEach((ev) => document.addEventListener(ev, () => clearTimeout(lpT), { passive: true }));
+document.addEventListener("click", (e) => {
+  if (lpFired) { lpFired = false; return; } // uzun basmanın ardından gelen tıklama menüyü kapatmasın
+  const b = e.target.closest && e.target.closest("#msgs .m[data-mid]");
+  if (!b || e.target.closest(".emochips") || e.target.closest("[data-img]") || e.target.closest(".uidl") || e.target.closest("video,audio,.vplay,button,a")) return; // oynatıcıya basınca menü açılmaz
+  msgMenuOpen(b.dataset.mid, b);
+});
+function msgMenuOpen(mid, el) {
+  const m = findMsg(mid); if (!m || isSys(cur)) return;
+  document.querySelectorAll("#msgs .m.sel").forEach((x) => x.classList.remove("sel")); if (el) el.classList.add("sel");
+  const mine = (m.em || []).find(([u]) => String(u) === bayiMe()), myE = mine ? mine[1] : "";
+  const prev = m.k === "image" ? "📷 Fotoğraf" : String(m.t || "").slice(0, 60);
+  $("msgMenu").innerHTML = `<div class="mp">${emo(esc(prev))}</div>
+    <div class="mq">${QUICK_REACT.map((c) => `<button class="${c === myE ? "on" : ""}" onclick="msgAct('react','${esc(mid)}','${c === myE ? "" : c}')">${emoSpan(c, 34)}</button>`).join("")}<button onclick="reactMore('${esc(mid)}')" style="font-size:22px;width:42px">➕</button></div>
+    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
+  $("msgMenu").hidden = false;
+}
+// ↩️ Yanıt: alıntı kutusu (mesaj balonunda) + yazı kutusunun üstündeki "yanıtlanıyor" şeridi
+let replyTo = null;
+const obText = (o) => { if (o.kind !== "reply") return String(o.body || ""); try { return String(JSON.parse(o.body).t || ""); } catch (e) { return String(o.body || ""); } };
+const qPrev = (q) => q.k === "image" ? "📷 Fotoğraf" : q.k === "voice" ? "🎤 Sesli mesaj" : q.k === "video" ? "🎬 Video" : emo(esc(String(q.t || "").slice(0, 160)));
+const qWho = (q) => String(q.m || "") === bayiMe() || q.mine ? "Siz" : esc((inbox.find((x) => String(x.id) === String(cur)) || {}).n || "Karşı taraf");
+function quoteHtml(q) { if (!q || !q.seq) return ""; return `<div class="qt" onclick="event.stopPropagation();pinGo('${esc(q.seq)}')"><b>↩️ ${qWho(q)}</b>${qPrev(q)}</div>`; }
+function replyStart(mid) { const m = findMsg(mid); if (!m || isSys(cur) || m.k === "withdraw") return;
+  replyTo = { seq: String(m.id), t: String(m.t || ""), k: m.k || "text", m: m.m ? bayiMe() : String(cur), mine: !!m.m }; renderReply(); try { $("txt").focus(); } catch (e) {} }
+function replyCancel() { replyTo = null; renderReply(); }
+function renderReply() { const el = $("replyBar"); if (!el) return; el.hidden = !replyTo;
+  el.innerHTML = replyTo ? `<span style="font-size:18px">↩️</span><div class="rq"><b>${replyTo.mine ? "Kendi mesajınıza yanıt" : "Yanıtlanıyor · " + qWho(replyTo)}</b>${qPrev(replyTo)}</div><button onclick="replyCancel()" title="Yanıtı kaldır">✕</button>` : ""; }
+// 📌 Sabitlenen mesajlar: sohbetin üstünde şerit (en yeni sabitlenen üstte); dokununca mesaja gider, ✕ kaldırır
+function renderPins() { const el = $("pinBar"); if (!el) return; const list = cur ? pins : [];
+  el.hidden = !list.length;
+  el.innerHTML = list.map((p) => `<div class="pin" onclick="pinGo('${esc(p.id)}')"><span>📌</span><span class="pt">${p.k === "image" ? "📷 Fotoğraf" : p.k === "voice" ? "🎤 Sesli mesaj" : p.k === "video" ? "🎬 Video" : emo(esc(String(p.t || "").slice(0, 120)))}</span><span class="s">${esc(p.by || "")}</span><button class="px" onclick="event.stopPropagation();msgPin('${esc(p.id)}',false)" title="Sabitlemeyi kaldır">✕</button></div>`).join(""); }
+async function msgPin(mid, on) { msgMenuClose(); const c = cur; if (!c) return;
+  const d = await api("chat_pin", { conv: "b" + c, mid: String(mid), on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  if (c === cur) { pins = (d.report && d.report.pins) || []; renderPins(); renderChat(); } toast(d.ok || (on ? "📌 Sabitlendi" : "Kaldırıldı")); }
+function pinGo(mid) { const el = document.querySelector(`#msgs .m[data-mid="${CSS.escape(String(mid))}"]`);
+  if (!el) { toast("Bu mesaj ekrandaki son mesajlardan daha eski — ⬆️ Daha eski mesajlar ile yükleyin"); return; }
+  stick = false; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+function msgMenuClose() { $("msgMenu").hidden = true; document.querySelectorAll("#msgs .m.sel").forEach((x) => x.classList.remove("sel")); }
+function reactMore(mid) { reactFor = mid; msgMenuClose(); emoToggle(true); toast("Tepki olarak eklemek istediğiniz emojiye dokunun"); }
+function msgCopy(mid) { const m = findMsg(mid); msgMenuClose(); if (!m) return;
+  try { navigator.clipboard.writeText(String(m.t || "")).then(() => toast(m.k === "image" ? "📋 Fotoğraf bağlantısı kopyalandı" : "📋 Kopyalandı")); } catch (e) { toast("Kopyalanamadı", true); } }
+/** Tepki / geri al / sil: kuyruğa yazılır, bayi bağlantısı Sugo'da yapar; bitince sohbet yenilenir */
+async function msgAct(kind, mid, e) {
+  msgMenuClose(); const m = findMsg(mid); if (!m || !cur) return;
+  if (kind === "withdraw" && !confirm("Bu mesaj geri alınsın mı? Karşı tarafta 'mesaj geri çekildi' görünür.")) return;
+  if (kind === "delete" && !confirm("Bu mesaj sohbetten silinsin mi? (Sugo'da bizim tarafta silinir; karşı taraf görmeye devam edebilir)")) return;
+  const c = cur;
+  // Sonuç ekranda HEMEN; sunucu bitirene kadar ara yenilemeler bunu ezmez (optMsg), biterse gerçek hâl yüklenir
+  const key = String(mid);
+  if (kind === "react") { const others = (m.em || []).filter(([u]) => String(u) !== bayiMe()); optMsg[key] = { em: e ? [...others, [bayiMe() || "me", e]] : others }; }
+  else if (kind === "withdraw") optMsg[key] = { wd: { k: "withdraw", orig: m.t, origK: m.k, by: (me && me.name) || "" } };
+  else optMsg[key] = { del: true };
+  hist = applyOpt(hist); renderChat();
+  const done = () => { delete optMsg[key]; if (cur === c) loadChat(); };
+  const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m });
+  if (d.error) { toast("❌ " + d.error, true); done(); return; }
+  for (let i = 0; i < 30 && d.id; i++) { await new Promise((r) => setTimeout(r, i < 12 ? 400 : 2000));
+    const g = await api("outbox_get", { id: d.id }), ob = g.ob;
+    if (ob && ob.status === "sent") { toast(kind === "react" ? (e ? "✅ Tepki gönderildi" : "Tepki kaldırıldı") : kind === "withdraw" ? "↩️ Mesaj geri alındı" : "🗑️ Mesaj silindi"); done(); return; }
+    if (ob && ob.status === "failed") { toast("❌ Yapılamadı: " + (ob.error || ""), true); done(); return; } }
+  done();
+}
+
+// ---------- 💎 parça parça elmas bozumu: aynı kişinin aralarında en fazla 2 dk olan bozumları tek grup (toplam + ödenecek) — tabletle aynı
+const DM_GAP = 2 * 60_000;
+function dmGroups(rows) {
+  const asc = rows.filter((r) => r.diamonds || r.amount).slice().sort((a, b) => Date.parse(a.at) - Date.parse(b.at)), out = [];
+  for (const r of asc) { const g = out.find((x) => String(x.uid) === String(r.uid) && Date.parse(r.at) - Date.parse(x.last) <= DM_GAP);
+    if (g) { g.rows.push(r); g.last = r.at; } else out.push({ uid: r.uid, rows: [r], last: r.at }); }
+  for (const g of out) { g.coins = g.rows.reduce((t, r) => t + Number(r.amount), 0); g.diamonds = Math.round(g.coins / 0.36);
+    g.exact = Math.round(g.coins / 1000 * 33 / 36 * 100) / 100; g.pay = Math.floor(g.exact + 1e-6);
+    g.paid = g.rows.every((r) => r.paid_at); g.unpaid = g.rows.filter((r) => !r.paid_at); g.key = g.rows[0].tx; g.name = g.rows[0].nickname || g.uid; }
+  return out;
+}
+function dmGroupLine(g) {
+  return `🧮 <b>Toplam ${g.rows.length} parça: ${nf(g.diamonds)} elmas</b> → ${nf(g.coins)} coin · ` + (g.paid ? `<span style="color:#4ade80;font-weight:800">✅ hepsi ödendi</span> · ${azn(g.pay)}`
+    : `toplam ödenecek <b>${azn(g.pay)}</b>${g.exact !== g.pay ? ` <span class="s">(${azn(g.exact)})</span>` : ""}${g.unpaid.length < g.rows.length ? ` · ${g.unpaid.length} parça ödenmedi` : ""}
+      <button class="go" style="padding:5px 10px;font-size:13px;margin-top:4px" onclick="event.stopPropagation();coinPaidAll('${esc(JSON.stringify(g.unpaid.map((r) => r.tx)))}','${esc(g.name + " · " + g.rows.length + " parça · " + azn(g.pay))}')">💸 Hepsini ödendi yap</button>`);
+}
+async function coinPaidAll(txsJson, label) { const txs = JSON.parse(txsJson);
+  if (!confirm(label + "\n\nParçaların hepsi ödendi olarak işaretlensin mi? (Parayı gönderdiyseniz evet)")) return;
+  const pin = await askPin("Ödendi işaretlemek için işlem PIN'iniz"); if (!pin) return;
+  const d = await api("bayi_coin_paid", { txs, paid: true, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) toast(d.error, true); else { toast("✅ Hepsi ödendi işaretlendi"); if (cur) loadChat(); loadDm(); } }
+// En alta yapışma: sohbet açılınca ve kullanıcı en alttayken yeni içerik/resim yüklenince en alta iner; yukarı kaydırınca bırakır
+let stick = true;
+function toBottom() { const b = $("msgs"); b.scrollTop = b.scrollHeight; }
+$("msgs").addEventListener("scroll", () => { const b = $("msgs"); stick = b.scrollHeight - b.scrollTop - b.clientHeight < 120; }, { passive: true });
+$("msgs").addEventListener("load", (e) => { if (e.target.tagName === "IMG" && stick) toBottom(); }, true);
+if (window.ResizeObserver) new ResizeObserver(() => { if (stick && cur) toBottom(); }).observe($("msgs"));
+// Yerinde güncelleme: aynı kalan öğelere (resim, video, avatar) dokunulmaz, sadece değişen yazı/öznitelik değişir.
+// innerHTML ile baştan çizmek her yenilemede resimleri silip yeniden yüklüyordu (iPhone'da göz kırpma, oynayan video duruyordu)
+function morph(box, html) {
+  const tpl = document.createElement("div"); tpl.innerHTML = html; patchKids(box, tpl); }
+function patchKids(o, n) {
+  const on = [...o.childNodes], nn = [...n.childNodes];
+  for (let i = 0; i < nn.length; i++) { const a = on[i], b = nn[i];
+    if (!a) o.appendChild(b); else patchNode(a, b); }
+  for (let i = nn.length; i < on.length; i++) on[i].remove(); }
+function patchNode(a, b) {
+  if (a.nodeType !== b.nodeType || a.nodeName !== b.nodeName) { a.replaceWith(b); return; }
+  if (a.nodeType !== 1) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
+  if (a.nodeName === "IMG" || a.nodeName === "VIDEO") { if (a.getAttribute("src") !== b.getAttribute("src")) a.replaceWith(b); else syncAttrs(a, b, ["src"]); return; }
+  if (a.outerHTML === b.outerHTML) return;
+  syncAttrs(a, b, []); patchKids(a, b); }
+function syncAttrs(a, b, keep) {
+  for (const at of [...a.attributes]) if (!keep.includes(at.name) && !b.hasAttribute(at.name)) a.removeAttribute(at.name);
+  for (const at of [...b.attributes]) if (!keep.includes(at.name) && a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
+function renderChat(scroll) {
+  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick; const pinIds = new Set(pins.map((p) => String(p.id))), pinBy = Object.fromEntries(pins.map((p) => [String(p.id), p.by || ""]));
+  const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
+    ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
+    : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
+    : `<div class="m ${m.m ? "me" : ""}${pinIds.has(String(m.id)) ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}${m.m && m.k === "text" ? cardTag(m.t) : ""}<div class="tm">${pinIds.has(String(m.id)) ? `<span class="pinmk">📌 Sabit${pinBy[String(m.id)] ? " · " + esc(pinBy[String(m.id)]) : ""}</span>` : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
+  // Parça parça bozum: grubun son parçasının hemen altına toplam
+  for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
+    items.push({ at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
+  for (const c of coins) items.push({ at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 ${c.other ? `<b>Başka hesaptan:</b> ${esc(c.nickname || "")} (UID ${esc(c.uid || "")})<br>` : ""}<b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
+      ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
+      <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div></div>` });
+  // Sayfadan gönderilenler: tablet gönderene kadar soluk, hata olursa kırmızı (gönderilen mesaj Sugo'dan gelince listede asıl hâli görünür)
+  const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
+  for (const o of outbox) {
+    if (o.status === "sent" && (o.kind === "image" || sentTexts.has(obText(o).trim()))) continue;
+    const st = o.status === "failed" ? `❌ gitmedi: ${esc(o.error || "")}` : o.status === "sent" ? "✓ gönderildi" : "⏳ gönderiliyor…";
+    items.push({ at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? "📷 Resim" : emo(esc(obText(o))) + cardTag(obText(o))}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${st}</div></div>` });
+  }
+  for (const p of rpend) if (p.c === cur && Date.now() - p.at < 60_000) items.push({ at: p.at, html: `<div class="m me ${p.fail ? "fail" : "pend"}">${emo(esc(p.t || ""))}<div class="tm">${p.fail ? "❌ gitmedi: " + esc(p.fail) : "⏳ gönderiliyor…"}</div></div>` });
+  items.sort((a, b) => a.at - b.at);
+  let lastDay = "", h = "";
+  for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day">${d}</div>`; lastDay = d; } h += it.html; }
+  if (histMore && h) h = `<div class="day"><button id="olderBtn" onclick="loadOlder()" style="font-size:13px;padding:6px 14px">⬆️ Daha eski mesajlar</button></div>` + h;
+  morph(box, h || `<div class="day">Mesaj yok</div>`);
+  if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
+}
+async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
+  const pin = await askPin(paid ? "Ödendi işaretlemek için işlem PIN'iniz" : "Geri almak için işlem PIN'iniz"); if (!pin) return;
+  const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) loadChat(); loadDm(); } }
+
+// ---------- gönderme (mesajları tablet Sugo'ya gönderir)
+// Yazı kutusu yüksekliği: kutuyu küçültmeden (gizli kopyada) ölçülür — küçülüp büyümesi iPhone'da sayfayı zıplatıyordu
+let growTwin = null;
+function grow(t) { if (!growTwin) { growTwin = document.createElement("textarea"); growTwin.setAttribute("aria-hidden", "true"); growTwin.tabIndex = -1;
+    growTwin.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;height:0;min-height:0;overflow:hidden"; document.body.appendChild(growTwin); }
+  const cs = getComputedStyle(t); growTwin.style.width = t.clientWidth + "px"; growTwin.style.font = cs.font; growTwin.style.padding = cs.padding; growTwin.style.border = cs.border; growTwin.style.boxSizing = cs.boxSizing; growTwin.style.letterSpacing = cs.letterSpacing;
+  growTwin.value = t.value; const h = Math.min(120, Math.max(44, growTwin.scrollHeight + (cs.boxSizing === "border-box" ? parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth) : 0))) + "px";
+  if (t.style.height !== h) t.style.height = h;
+  // Yazıda Sugo emojisi varsa, gideceği hâli (emoji resimleriyle) yazı kutusunun üstünde gösterilir
+  const pv = $("txtPrev"); if (pv && t.id === "txt") { const has = /\[[^\]]+\]/.test(t.value) && [...t.value.matchAll(/\[[^\]]+\]/g)].some((x) => EMO.has(x[0].toLowerCase()));
+    pv.hidden = !has; if (has) pv.innerHTML = `<span class="s">Gidecek hâli: </span>` + emo(esc(t.value)); } }
+async function send(textArg) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
+  if (textArg === undefined) { $("txt").value = ""; grow($("txt")); }
+  const rq = replyTo; replyTo = null; renderReply();
+  outbox.unshift({ id: "tmp" + Date.now(), kind: "text", body: t, ...(rq ? { q: rq } : {}), status: "pending", by_user: me && me.name, created_at: new Date().toISOString() }); renderChat(true);
+  ownRow(cur, t);
+  const c = cur, d = await api("send", { conv: c, text: t, ...(rq ? { reply: rq.seq } : {}) }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  await outboxWait(d.id, c); }
+async function outboxWait(id, c) { if (!id) { loadChat(); return; }
+  for (let i = 0; i < 25; i++) { await new Promise((r) => setTimeout(r, i < 15 ? 400 : 2000)); const g = await api("outbox_get", { id }), ob = g.ob;
+    if (ob && (ob.status === "sent" || ob.status === "failed")) { if (ob.status === "failed") toast("❌ Gitmedi: " + (ob.error || ""), true); break; } }
+  if (cur === c) loadChat(); }
+function renderTpls() { $("tpls").innerHTML = (can("kart") ? `<button onclick="toggleCards()" style="border-color:#d97706;color:#fbbf24;font-weight:800">💳 Kart ver</button>`: "") +
+  tpls.filter((t) => t && t.trim()).map((t, i) => `<button onclick="useTpl(${i})">⚡ ${esc(t.length > 30 ? t.slice(0, 29) + "…" : t)}</button>`).join(""); }
+function useTpl(i) { const t = tpls.filter((x) => x && x.trim())[i]; if (t) send(t); }
+function pickImg() { $("file").click(); }
+async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
+  const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
+  outbox.unshift({ id: "tmp" + Date.now(), kind: "image", status: "pending", created_at: new Date().toISOString() }); renderChat(true);
+  ownRow(cur, "📷 Fotoğraf");
+  const c = cur, d = await api("send_image", { conv: c, data: url }); if (d.error) { toast("❌ " + d.error, true); loadChat(); return; }
+  await outboxWait(d.id, c); }
+function shrink(file) { return new Promise((res) => { const img = new Image(); const u = URL.createObjectURL(file);
+  img.onload = () => { const k = Math.min(1, 1280 / Math.max(img.width, img.height)); const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); res(c.toDataURL("image/jpeg", 0.85)); };
+  img.onerror = () => res(""); img.src = u; }); }
+
+// ---------- kart ver (sıradaki kart; hakkı dolan verilemez)
+const PCB = { ABB: "ABB", BIRBANK: "Birbank (Kapital)", UNIBANK: "Unibank", LEOBANK: "Leobank", M10: "M10", DIGER: "Diğer" };
+const PCS = { ABB: "ABB", BIRBANK: "Birbank", UNIBANK: "Unibank", LEOBANK: "Leobank", M10: "M10", DIGER: "Diğer" };
+const pcTxt = (c) => String(c.number); // müşteriye sadece numara gider (kopyalaması kolay); banka adı sadece bizde görünür
+const pcBank = (c) => (c.bank === "BIRBANK" ? "Kapital (Birbank)" : PCB[c.bank] || c.bank);
+/** Bizim gönderdiğimiz mesaj tam bir kart numarasıysa yanında soluk "(Banka)" — mesajın içinde değil, sadece bu ekranda */
+function cardTag(text) { const d = String(text || "").replace(/[\s-]/g, ""); if (!/^\d{12,20}$/.test(d) || !pcs || !pcs.cards) return "";
+  const c = pcs.cards.find((x) => String(x.number || "").replace(/\D/g, "") === d); return c ? `<span class="cardtag">(${esc(pcBank(c))})</span>` : ""; }
+const pcCan = (c) => c.active && c.number && c.uses < c.max_uses;
+async function toggleCards() { const el = $("cards"); if (el.classList.contains("on")) { el.classList.remove("on"); return; }
+  el.innerHTML = `<div class="s">Yükleniyor…</div>`; el.classList.add("on");
+  const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] };
+  const cards = (pcs.cards || []).filter((x) => x.active && x.number), cu = pcs.current && pcCan(pcs.current) ? pcs.current : null;
+  const list = [...(cu ? [cu] : []), ...cards.filter((x) => pcCan(x) && (!cu || x.id !== cu.id)), ...cards.filter((x) => !pcCan(x))];
+  el.innerHTML = list.length ? list.map((x) => `<button class="${cu && x.id === cu.id ? "next" : ""} ${pcCan(x) ? "" : "full"}" ${pcCan(x) ? `onclick="giveCard(${x.id})"` : "disabled"}>💳 ${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}<div class="s">${x.uses}/${x.max_uses} hak${cu && x.id === cu.id ? " · ⭐ sıradaki" : pcCan(x) ? "" : " · ⛔ hakkı doldu"}</div></button>`).join("")
+    : `<div class="s">Kart yok</div>`; }
+async function giveCard(id) { $("cards").classList.remove("on");
+  const d = await api("pcard_give", { id }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
+  send(pcTxt(c)); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); }
+
+// ---------- alt sekmeler (tabletteki Sugo Bayi bölümüyle aynı)
+let curTab = localStorage.getItem("bw_tab") || "msg";
+function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (e) {}
+  document.querySelectorAll("nav.bn button").forEach((b) => b.classList.toggle("on", b.dataset.p === k));
+  document.querySelectorAll("#inbox .pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + k));
+  refreshTab(); }
+// Klavye: ekranı görünen alana sığdır (iPhone'da sabit ekran klavyeyle kayıyordu)
+(() => { const vv = window.visualViewport; if (!vv) return; const r = document.documentElement;
+  const app = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; r.classList.toggle("app", app);
+  // iPhone ana ekran uygulaması hatası: klavye bir kez açılınca görünür alan küçülür ve öyle kalır (altta boşluk/siyah şerit).
+  // Klavye kapanınca / uygulamaya dönünce açık ekran bir an gizlenip gösterilir → iPhone alanı yeniden ölçer (kaydırma konumları korunur)
+  let maxVH = window.innerHeight;
+  try { localStorage.setItem("bw_launch_h", JSON.stringify({ at: Date.now(), inner: window.innerHeight, screen: screen.height, app })); } catch (e) {}
+  // Hedef: ana ekran uygulamasında telefonun gerçek ekranı (yeni kurulan test uygulamasında innerHeight = screen.height idi)
+  const target = () => app ? (matchMedia("(orientation: portrait)").matches ? screen.height : screen.width) : maxVH;
+  const short = () => target() - window.innerHeight > 4;
+  const wait = (ms) => new Promise((z) => setTimeout(z, ms));
+  const keepScroll = () => { const sc = document.querySelector(".screen.on"); const k = sc ? [...sc.querySelectorAll(".msgs, .pane.on, .list, #pfBody")].map((el) => [el, el.scrollTop]) : []; return () => k.forEach(([el, top]) => { el.scrollTop = top; }); };
+  // Sırayla denenen yöntemler; işe yarayan bulununca durulur, sonuç kaydedilir (📐 Ekran ölçüsü'nde görünür)
+  const vpMeta = document.querySelector('meta[name="viewport"]'), vp0 = vpMeta ? vpMeta.content : "";
+  const STEPS = [
+    ["kaydır", async () => { window.scrollTo(0, 1); await wait(30); window.scrollTo(0, 0); }],
+    ["ekran", async () => { const sc = document.querySelector(".screen.on"); if (sc) { sc.style.display = "none"; void sc.offsetHeight; sc.style.display = ""; } }],
+    ["sayfa", async () => { r.style.display = "none"; void r.offsetHeight; r.style.display = ""; }],
+    ["yükseklik", async () => { document.body.style.minHeight = "calc(100% + 1px)"; await wait(60); document.body.style.minHeight = ""; }],
+    ["viewport", async () => { if (!vpMeta) return; vpMeta.content = vp0.replace("initial-scale=1", "initial-scale=1.0001"); await wait(80); vpMeta.content = vp0; }],
+  ];
+  let healing = false, healAt = 0;
+  const heal = async (why) => { if (!app || healing || !short() || Date.now() - healAt < 1500) return; healing = true; healAt = Date.now();
+    const before = window.innerHeight, done = [], restore = keepScroll();
+    try { for (const [name, fn] of STEPS) { await fn(); await wait(120); done.push(name + ":" + window.innerHeight); if (!short()) break; } } catch (e) { done.push("hata"); }
+    restore(); healing = false;
+    try { const log = JSON.parse(localStorage.getItem("bw_heal_log") || "[]"); log.unshift({ at: Date.now(), why: why || "", before, after: window.innerHeight, target: target(), steps: done.join(" ") });
+      localStorage.setItem("bw_heal_log", JSON.stringify(log.slice(0, 8))); } catch (e) {} };
+  window.__heal = heal;
+  addEventListener("resize", () => { maxVH = Math.max(maxVH, window.innerHeight); });
+  addEventListener("orientationchange", () => { setTimeout(() => { maxVH = window.innerHeight; }, 400); }); // yön değişince en büyük yükseklik yeniden
+  document.addEventListener("focusout", (e) => { if (e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(() => { r.classList.remove("kb"); heal("klavye kapandı"); }, 180); setTimeout(() => heal("klavye +0,8 sn"), 800); } });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(() => heal("uygulamaya dönüş"), 300); });
+  setTimeout(() => heal("açılış"), 600);
+  const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px");
+    maxVH = Math.max(maxVH, window.innerHeight);
+    const typing = !!(document.activeElement && document.activeElement.matches && document.activeElement.matches("input, textarea, [contenteditable]")); // klavye ancak yazı alanı seçiliyken açıktır
+    r.classList.toggle("kb", typing && maxVH - vv.height > 120); if (!typing) setTimeout(() => heal("ekran değişti"), 250);
+    if (window.scrollY) window.scrollTo(0, 0); };
+  vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
+// Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
+(() => { const el = document.createElement("div"); el.id = "ptr"; el.innerHTML = '<span class="ar">⬇️</span> <span class="tx">Yenilemek için çekin</span>'; document.body.appendChild(el);
+  let st = null, busy = false; const TH = 70;
+  const scroller = (tg) => tg.closest && tg.closest(".pane.on, #pfBody, #msgs");
+  const set = (d, txt) => { el.style.transform = `translate(-50%, ${Math.min(d, 90) - 70}px)`; el.style.opacity = d > 8 ? 1 : 0; if (txt) el.querySelector(".tx").textContent = txt; };
+  document.addEventListener("touchstart", (e) => { if (busy || e.touches.length > 1) { st = null; return; } const sc = scroller(e.target);
+    st = sc && sc.scrollTop <= 0 && !e.target.closest("input,textarea,.msgmenu,.emopanel,#lb") ? { sc, y: e.touches[0].clientY, x: e.touches[0].clientX, d: 0 } : null; }, { passive: true });
+  document.addEventListener("touchmove", (e) => { if (!st) return; const dy = e.touches[0].clientY - st.y, dx = e.touches[0].clientX - st.x;
+    if (st.sc.scrollTop > 0 || (st.d === 0 && Math.abs(dx) > Math.abs(dy)) || dy <= 0) { if (st.d) set(0); st = null; return; }
+    st.d = dy * 0.5; el.classList.remove("back"); el.classList.toggle("ready", st.d >= TH); set(st.d, st.d >= TH ? "Bırakın, yenilensin" : "Yenilemek için çekin"); }, { passive: true });
+  document.addEventListener("touchend", async () => { if (!st) return; const s = st; st = null; el.classList.add("back");
+    if (s.d < TH) { set(0); return; } busy = true; el.classList.remove("ready"); el.classList.add("spin"); set(TH, "Yenileniyor…");
+    const t0 = Date.now();
+    try { if (s.sc.id === "msgs") await loadChat(); else if (s.sc.id === "pfBody") { if (typeof prof === "function" && window.__pfUid) await prof(window.__pfUid); } else { refreshTab(); await new Promise((z) => setTimeout(z, 500)); } } catch (x) {}
+    await new Promise((z) => setTimeout(z, Math.max(0, 600 - (Date.now() - t0))));
+    el.classList.remove("spin"); set(0); busy = false; }, { passive: true });
+})();
+function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") loadAj(); else if (curTab === "coin") loadCoins(); loadTablet(); }
+
+// 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
+let coinLimit = 40, coinData = null;
+const OST = { open: ["⏳", "ödeme eşleşmedi", "#fbbf24"], complete: ["✅", "ödendi", "#4ade80"], short: ["⚠️", "eksik ödeme", "#f87171"], over: ["➕", "fazla ödeme", "#38bdf8"], recalled: ["↩️", "geri çekildi", "#94a3b8"] };
+async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit += 40;
+  const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
+  if (c.stock != null) $("hStock").textContent = nf(c.stock);
+  if (curTab === "coin") renderCoins(); }
+function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {};
+  $("coinBody").innerHTML = `<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
+      <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
+      <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div></div>
+    <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
+    ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
+      return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
+        <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
+          <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
+          <div class="s"><span style="color:${st[2]}">${st[0]} ${st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}</div></div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
+    ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
+    <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`; }
+setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(); }, 120_000); // üstteki bakiye 2 dk'da bir
+
+// 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
+let dmLimit = 10, dmData = null;
+const nf = (n) => Number(n || 0).toLocaleString("tr-TR"), azn = (x) => { const n = Number(x); return (Number.isInteger(n) ? String(n) : n.toFixed(2)).replace(".", ",") + " ₼"; };
+async function loadDm() { if (!can("elmas")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report; renderDm(); }
+function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
+  <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
+  <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
+    : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
+/** Sohbet listesinde: bu kişiden son 6 saatte gelen elmas (parça parça ise grubun toplamı) */
+function dmBadge(uid) {
+  if (!dmData) return "";
+  const mine = [...(dmData.open || []), ...(dmData.coins || [])].filter((x, i, a) => x.diamonds && String(x.uid) === String(uid) && Date.now() - Date.parse(x.at) < 6 * 3600_000 && a.findIndex((y) => y.tx === x.tx) === i);
+  if (!mine.length) return "";
+  const g = dmGroups(mine).sort((a, b) => Date.parse(b.last) - Date.parse(a.last))[0];
+  return `<div class="bxdm">💎 ${nf(g.diamonds)} elmas geldi${g.rows.length > 1 ? ` (${g.rows.length} parça)` : ""} · ${g.paid ? "✅ ödendi" : "ödenecek " + azn(g.pay)}</div>`;
+}
+/** Ödenmemişler kişi kişi: her kişinin bozumları bir çerçevede; sağ üstte toplam borç + hepsini ödendi yap */
+function dmPeople(rows) { const m = new Map(); for (const r of rows) { const k = String(r.uid || r.nickname || r.tx); if (!m.has(k)) m.set(k, []); m.get(k).push(r); }
+  return [...m.values()].map((rs) => { const gs = dmGroups(rs), pay = gs.reduce((s, g) => s + g.pay, 0), last = rs.reduce((a, r) => Math.max(a, Date.parse(r.at)), 0);
+    return { rows: rs.slice().sort((a, b) => Date.parse(b.at) - Date.parse(a.at)), pay, last, name: rs[0].nickname || "UID " + rs[0].uid, uid: rs[0].uid, av: rs[0].avatar, conv: rs[0].conv }; })
+    .sort((a, b) => b.last - a.last); }
+function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { if (p.rows.length === 1) return `<div class="dmsingle">${dmListHtml(p.rows)}</div>`; // tek bozum: kutu / toplam yok
+  const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
+  return `<div class="dmbox"><div class="dmhd"><div class="av" ${p.conv || p.uid ? `onclick="openChat('${esc(p.conv || p.uid)}')"` : ""}>${avHtml(p.name, p.av)}</div>
+    <div class="b"><b>${esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
+    <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
+    ${dmListHtml(p.rows)}</div>`; }).join(""); }
+/** Liste: satırlar yeni→eski; grubun toplamı parçalarının altında */
+function dmListHtml(rows) {
+  const groups = dmGroups(rows).filter((g) => g.rows.length > 1), byFirst = new Map(groups.map((g) => [g.rows[0].tx, g]));
+  return rows.map((r) => { const g = byFirst.get(r.tx); return dmRow(r) + (g ? `<div class="dmgrp">${esc(g.name)} · ${dmGroupLine(g)}</div>` : ""); }).join("");
+}
+// 🪙 Tüm coin hareketleri (elmas bozumları + gönderdiğimiz / aldığımız coinler) — tablettteki "Coin kayıtları"
+let crLimit = 20;
+async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
+  if (!more) openModal(`<h3 style="margin:0 0 8px"><span class="gc"></span> Coin hareketleri <span class="s" id="crSum"></span></h3><div id="crList"><div class="row s">Okunuyor…</div></div>`);
+  const d = await api("bayi_coins_get", { all: true, limit: crLimit }); const rep = d.report || {}, rows = rep.coins || [], u = rep.unpaid || {};
+  if (!$("crList")) return;
+  $("crSum").textContent = `(${rows.length}/${rep.total || 0}${u.n ? ` · ${u.n} ödenmemiş elmas, ${azn(u.pay)}` : ""})`;
+  $("crList").innerHTML = rows.length ? rows.map((r) => r.diamonds ? dmRow(r) : `<div class="row"><div class="av">${avHtml(r.nickname, r.avatar)}</div><div class="b"><div class="t"><b>${esc(r.nickname || (r.uid ? "UID " + r.uid : r.type_name || ""))}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+      <div class="s">${esc(r.type_name || "")}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null ? " · bakiye sonrası " + nf(r.result_amount) : ""}</div></div><b style="color:${r.op_type === 1 ? "#4ade80" : "#f87171"}">${r.op_type === 1 ? "+" : "−"}${nf(r.amount)}</b></div>`).join("")
+    + (rep.total > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
+function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = d.unpaid || {}, td = d.today || {};
+  $("nDm").hidden = !u.n; $("nDm").textContent = u.n || "";
+  $("dmStrip").innerHTML = open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "";
+  $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
+    <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div></div></div>
+    <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
+    ${open.length ? `<h3>⏳ Ödenmemişler <span class="s">(${dmPeople(open).length} kişi)</span></h3>${dmPersonBoxes(open)}` : ""}
+    <h3>🕘 Son bozumlar <span class="s">(${nf(d.total)} kayıt)</span></h3>${dmListHtml(d.coins || [])}
+    ${(d.coins || []).length < d.total ? `<div style="padding:12px;text-align:center"><button onclick="dmLimit+=10;loadDm()">Daha fazla</button></div>` : ""}
+    <div class="s" style="padding:10px 12px">100.000 elmas = 36.000 coin = 33 ₼ · bayi hesabının coin kayıtlarından</div>`; }
+
+// 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
+async function loadCards() { if (!can("kart")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
+  $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
+    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><div class="av">💳</div><div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div></div>`).join("")}
+    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme / hak artırma tabletten yapılır.</div>
+    <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
+    <div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
+    <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`; }
+async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
+
+// 🏢 Ajans (sadece okuma)
+let ajData = null, ajSub = localStorage.getItem("bw_aj") || "ozet";
+async function loadAj() { if (!can("ajans")) return; const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
+const ajDay = (d) => { try { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { day: "numeric", month: "short", weekday: "short" }); } catch (e) { return d; } };
+const hrs = (s) => { s = Number(s) || 0; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h} sa ${m} dk` : `${m} dk`; };
+function ajTab(k) { ajSub = k; try { localStorage.setItem("bw_aj", k); } catch (e) {} renderAj(); }
+function renderAj() { const u = ajData; if (!u) return; const info = u.info || {}, days = u.days || [], d0 = days[0] || {};
+  const mon = (d0.day || "").slice(0, 7), md = days.filter((x) => (x.day || "").startsWith(mon)), sum = (k) => md.reduce((s, x) => s + (Number(x[k]) || 0), 0);
+  const T = [["ozet", "📊 Özet"], ["gunluk", "📅 Gün gün"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"], ["basvuru", "📝 Başvurular"], ["alt", "🏢 Alt ajanslar"]];
+  let h = `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}" onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
+  if (ajSub === "ozet") h += `<div class="card"><b>🏢 ${esc(info.name || "Ajans")}</b><div class="s">Seviye ${esc(d0.rating_level || info.rating_level || "—")} · komisyon %${esc(String(d0.rating_ratio ?? "—"))} · ${nf(u.members)} üye · ${nf(info.sub_union_count)} alt ajans</div></div>
+    <div class="s" style="margin:0 12px">Son gün: ${d0.day ? ajDay(d0.day) : "—"} (bugünkü veri yarın gelir) · elmas</div>
+    <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(sum("commission"))}</div></div>
+    <div class="card"><div class="k">🎙 Aktif yayıncı</div><div class="v">${nf(d0.active_anchor)}</div><div class="s">geçerli ${nf(d0.valid_anchor)}</div></div><div class="card"><div class="k">🆕 Yeni üye</div><div class="v">${nf(d0.new_anchor)}</div></div></div>`;
+  if (ajSub === "gunluk") h += `<table><tr><th>Gün</th><th class="n">Gelir</th><th class="n">Komisyon</th><th class="n">Aktif</th></tr>${days.slice(0, 45).map((x) => `<tr><td>${ajDay(x.day)}</td><td class="n">${nf(x.total_income)}</td><td class="n" style="color:#4ade80">${nf(x.commission)}</td><td class="n">${nf(x.active_anchor)}</td></tr>`).join("")}</table>`;
+  if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div><div style="font-weight:700">${nf(x.total_income)}</div></div>`).join("");
+  if (ajSub === "uye") h += `<h3>📆 Bu ay en çok kazananlar</h3>` + (u.month_top || []).filter((x) => Number(x.income_this_month) > 0).map((x, i) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">${nf(x.active_days_this_month)} gün aktif · geçen ay ${nf(x.income_last_month)}</div></div><div style="font-weight:700">${nf(x.income_this_month)}</div></div>`).join("")
+    + `<h3>🆕 Son 14 gün katılanlar</h3>` + (u.new_members || []).map((x) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("");
+  if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
+  if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
+  $("ajBody").innerHTML = h; }
+
+// ---------- pencere, ayarlar, şifre / PIN, coin gönderme
+function openModal(h, top) { $("modalBox").innerHTML = h; const m = $("modal"); m.style.display = "flex";
+  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + 24px)" : "";
+  const b = $("modalBox"); b.style.borderRadius = top ? "18px" : "18px 18px 0 0"; b.style.width = top ? "calc(100% - 24px)" : "100%"; b.style.paddingBottom = top ? "16px" : "calc(16px + env(safe-area-inset-bottom))"; } // top: klavyeli pencere ekranın üstünde (klavye örtmesin)
+function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
+$("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
+function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
+  try { localStorage.setItem("bw_theme", k); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = k === "dark" ? "#12201b" : "#1e1236"; // alt menü rengi
+  menu(); toast(k === "dark" ? "🌑 Karanlık tema" : "💜 Sugo teması"); }
+// Ekran ölçüsü (iPhone alt boşluk sorununu görmek için): uygulamanın gerçek boyutları
+function screenInfo() { const r = document.documentElement, p = document.createElement("div");
+  p.style.cssText = "position:fixed;top:0;bottom:0;left:0;width:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(p);
+  const cs0 = getComputedStyle(p), cs = { paddingTop: cs0.paddingTop, paddingBottom: cs0.paddingBottom }, fh = Math.round(p.getBoundingClientRect().height); p.remove();
+  const sc = document.querySelector(".screen.on"), s = sc ? sc.getBoundingClientRect() : {}, nav = document.querySelector(".screen.on nav.bn"), n = nav ? nav.getBoundingClientRect() : null;
+  const L = [["Ana ekran uygulaması", r.classList.contains("app") ? "evet" : "hayır"], ["standalone", String(navigator.standalone)], ["klavye sınıfı", r.classList.contains("kb") ? "var" : "yok"],
+    ["innerH", innerHeight], ["vvH", window.visualViewport ? Math.round(visualViewport.height) : "-"], ["screenH", screen.height], ["docH", r.clientHeight], ["bodyH", document.body.clientHeight],
+    ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
+    ["açılışta innerH", (() => { try { const x = JSON.parse(localStorage.getItem("bw_launch_h") || "null"); return x ? x.inner + " (ekran " + x.screen + ")" : "-"; } catch (e) { return "-"; } })()],
+    ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
+  openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
+    <div style="font-family:ui-monospace,monospace;font-size:11px;line-height:1.5;margin-top:8px;max-height:30vh;overflow:auto">🔧 Düzeltme denemeleri:<br>${(() => { try { return JSON.parse(localStorage.getItem("bw_heal_log") || "[]").map((x) => `${new Date(x.at).toLocaleTimeString("tr-TR")} ${esc(x.why)}: ${x.before}→${x.after} (hedef ${x.target}) ${esc(x.steps)}`).join("<br>") || "yok"; } catch (e) { return "-"; } })()}</div>
+    <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
+// 📱 Sugo uygulamasından bayi hesabına girilecek (ör. yeni kızları onaylamak): sunucu 2 dk bağlanmaz, uygulamayı atmaz; süre bitince ya da "Bitti" ile geri bağlanır
+let pauseT = 0;
+async function linkPause(min) { closeModal(); const d = await api("link_pause", { minutes: min }); if (d.error) { toast("❌ " + d.error, true); return; }
+  const until = Number(d.report && d.report.pauseUntil) || 0; toast(d.ok || "Tamam"); pauseShow(until); }
+function pauseShow(until) { let el = $("pauseBar"); if (!el) { el = document.createElement("div"); el.id = "pauseBar"; document.body.appendChild(el); }
+  clearInterval(pauseT); if (!until || until <= Date.now()) { el.hidden = true; return; }
+  const tick = () => { const s = Math.max(0, Math.round((until - Date.now()) / 1000));
+    if (!s) { clearInterval(pauseT); el.hidden = true; toast("🔌 Sunucu yeniden bağlanıyor — Sugo uygulamasından çıkış yapın"); return; }
+    el.hidden = false; el.innerHTML = `📱 Sunucu bekliyor <b>${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}</b> · Sugo uygulamasını kullanabilirsiniz, bitince çıkış yapın <button onclick="linkPause(0)">✅ Bitti</button>`; };
+  tick(); pauseT = setInterval(tick, 1000); }
+// ✨ Kendiliğinden güncelleme: her yayında sürüm (meta build + version.json) değişir; açık sayfa farkı görünce kendini yeniler.
+// Yazı yazılırken / PIN, pencere ya da resim açıkken beklenir; yenilemeden sonra açık sohbet, sekme ve kaydırma yeri geri gelir.
+const BUILD = (document.querySelector('meta[name="build"]') || {}).content || "";
+let updT = 0, updChecking = false;
+async function checkUpdate() { if (!BUILD || BUILD === "__BUILD__" || updChecking || document.hidden) return; updChecking = true;
+  try { const r = await fetch("version.json?ts=" + Date.now(), { cache: "no-store" }); const v = r.ok ? (await r.json()).v : null; if (v && v !== BUILD) safeReload(); } catch (e) {} finally { updChecking = false; } }
+function updBusy() { const a = document.activeElement, typing = a && a.matches && a.matches("input, textarea, [contenteditable]") && String(a.value || a.textContent || "").trim();
+  return !!(typing || ($("txt") && $("txt").value.trim()) || ($("modal") && $("modal").style.display === "flex") || ($("lb") && !$("lb").hidden) || loginBusy || (typeof replyTo !== "undefined" && replyTo)); }
+function safeReload() { clearTimeout(updT); if (updBusy()) { updT = setTimeout(safeReload, 8000); return; }
+  try { localStorage.setItem("bw_resume", JSON.stringify({ at: Date.now(), cur: cur && $("chat").classList.contains("on") ? cur : null, tab: curTab, a: cur ? msgAnchor() : null })); } catch (e) {}
+  location.reload(); }
+function takeResume() { try { const r = JSON.parse(localStorage.getItem("bw_resume") || "null"); localStorage.removeItem("bw_resume"); return r && Date.now() - r.at < 120_000 ? r : null; } catch (e) { return null; } }
+setTimeout(statLine, 0); setInterval(checkUpdate, 45_000); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); }); setTimeout(checkUpdate, 8000);
+// 👥 Rol ve izinler: sunucu her işlemde kontrol eder; burada sadece yetkisi olmayan düğme / sekmeler gizlenir
+let loginRole = (() => { try { return localStorage.getItem("bw_role") || "yetkili"; } catch (e) { return "yetkili"; } })();
+function pickRole(r) { loginRole = r; try { localStorage.setItem("bw_role", r); } catch (e) {} document.querySelectorAll("#rolePick button").forEach((b) => b.classList.toggle("on", b.dataset.r === r)); }
+setTimeout(() => pickRole(loginRole), 0);
+const can = (p) => !me || !Array.isArray(me.perms) || me.perms.includes(p);
+const TAB_PERM = { dm: "elmas", card: "kart", coin: "coins", aj: "ajans" };
+function applyPerms() {
+  document.querySelectorAll("nav.bn button[data-p]").forEach((b) => { const need = TAB_PERM[b.dataset.p]; b.hidden = !!need && !can(need); });
+  if (TAB_PERM[curTab] && !can(TAB_PERM[curTab])) tab("msg");
+  if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
+  if (!can("elmas") && $("dmStrip")) $("dmStrip").innerHTML = "";
+  if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
+  try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
+  if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
+}
+function menu() { openModal(`<h3 style="margin:0 0 12px">⚙️ ${esc(me && me.name || "")} <span class="s">· ${esc((me && me.role_label) || "")}</span></h3>
+  <div style="display:grid;gap:8px"><div class="s" style="margin-top:2px">🎨 Tema</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="${themeNow() === "sugo" ? "go" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "go" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
+  ${can("uygulama") && !(me && me.role === "yardimci") ? `<button class="go" onclick="linkPause(2)">📱 Sugo uygulamasını kullanacağım (2 dk)</button>` : ""}
+  <button onclick="pwChange()">🔑 Şifremi değiştir</button><button onclick="screenInfo()">📐 Ekran ölçüsü</button>${me && me.role === "yardimci" ? "" : `<button onclick="pinChange()">🔢 İşlem PIN'imi değiştir</button>`}
+  <button onclick="logout()" style="color:var(--bad)">🚪 Çıkış</button><button onclick="closeModal()">Kapat</button></div>`); }
+function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
+  ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
+  <div style="display:grid;gap:8px">${old ? `<input type="hidden" id="pwOld" value="${esc(old)}">` : `<input id="pwOld" type="password" placeholder="Mevcut şifre" autocomplete="current-password">`}
+  <input id="pwNew" type="password" placeholder="Yeni şifre (en az 6 karakter)" autocomplete="new-password"><input id="pwNew2" type="password" placeholder="Yeni şifre (tekrar)" autocomplete="new-password">
+  <button class="go" onclick="pwSave(${forced ? "true" : "false"})">Kaydet</button>${forced ? "" : `<button onclick="closeModal()">Vazgeç</button>`}</div>`); }
+async function pwSave(forced) { const o = $("pwOld").value, n = $("pwNew").value, n2 = $("pwNew2").value;
+  if (n.length < 6) { toast("Şifre en az 6 karakter olmalı", true); return; } if (n !== n2) { toast("Yeni şifreler aynı değil", true); return; }
+  const d = await api("change_password", { old: o, new: n }); if (d.error) { toast(d.error, true); return; } toast("✅ Şifre değiştirildi"); closeModal();
+  if (forced && me && !me.has_pin) toast("İşlem PIN'iniz yok – yöneticinize söyleyin", true); }
+function pinChange() { openModal(`<h3 style="margin:0 0 8px">🔢 İşlem PIN'i değiştir</h3><div class="s" style="margin-bottom:8px">Coin gönderme ve "ödendi" işaretlemede sorulur. 4 rakam.</div>
+  <div style="display:grid;gap:8px"><input id="pcPw" type="password" placeholder="Giriş şifreniz" autocomplete="current-password">
+  <input id="pcNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (4 rakam)"><input id="pcNew2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (tekrar)">
+  <button class="go" onclick="pinSave()">Kaydet</button><button onclick="closeModal()">Vazgeç</button></div>`); }
+async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.test(n)) { toast("PIN 4 rakam olmalı", true); return; } if (n !== $("pcNew2").value.trim()) { toast("PIN'ler aynı değil", true); return; }
+  const d = await api("change_pin", { password: $("pcPw").value, new_pin: n }); if (d.error) { toast(d.error, true); return; } pinCache = null; if (me) me.has_pin = true; toast("✅ PIN değiştirildi"); closeModal(); }
+// İşlem PIN'i: 5 dakika hatırlanır (tablet gibi)
+let pinCache = null;
+function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
+  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
+    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3><input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
+    // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor)
+    const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); }
+    setTimeout(() => { const j = $("pinIn"); if (j && document.activeElement !== j) j.focus(); }, 60); }); }
+// 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
+let cn = null;
+function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
+  openModal(`<h3 style="margin:0 0 4px"><span class="gc"></span> Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
+    <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
+    ${me && (me.coin_max || me.coin_day) ? `<div class="s" style="margin-top:6px;color:var(--warn)">🪙 Limitiniz: ${me.coin_max ? "tek seferde en fazla " + nf(me.coin_max) : ""}${me.coin_max && me.coin_day ? " · " : ""}${me.coin_day ? "günde en fazla " + nf(me.coin_day) : ""} coin</div>` : ""}
+    <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); }
+let cnT = 0;
+function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $("cnIn").value = c ? String(c) : ""; $("cnGo").disabled = true;
+  $("cnInfo").innerHTML = c >= 1000 ? `⏳ kontrol ediliyor…` : "En az 1.000 coin"; clearTimeout(cnT); if (c < 1000) return;
+  cnT = setTimeout(async () => { const d = await api("coin_check", { uid: cn.uid, coins: c }); if (!cn || cn.coins !== c) return; const k = d.report && d.report.coin;
+    if (d.error || !k) { $("cnInfo").innerHTML = `❌ ${esc(d.error || "kontrol edilemedi")}`; return; } cn.chk = k;
+    const azn = k.azn != null ? Number(k.azn) : c / 1000; cn.azn = azn; const ok = k.ok && (!k.max || c <= k.max) && (!k.daily || (k.today || 0) + c <= k.daily);
+    $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br><span class="gc"></span> <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
+      (k.ok ? "" : `<br>❌ Panel izin vermiyor: ${esc(k.prompt || "")}`) + (k.max && c > k.max ? `<br>❌ Tek seferde en fazla ${Number(k.max).toLocaleString("tr-TR")}` : "") +
+      (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "") + (k.limit && k.limit.error ? `<br>⛔ <b>${esc(k.limit.error)}</b>` : "");
+    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error); }, 400); }
+async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
+  if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
+  const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
+  openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…<div class="s" style="margin-top:6px">Kesinleşmesi bekleniyor (en fazla 10 sn)</div></div>`);
+  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) {
+    // 3 dakika kuralı: kalan süre canlı geri sayılır (mükerrer gönderim olmasın)
+    if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
+      openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><p class="s" style="color:#fbbf24">⚠️ Gönderim çok acilse Selçuk Bey ile iletişime geçin.</p><button onclick="closeModal()">Tamam</button></div>`);
+      const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
+    closeModal(); toast("❌ " + d.error, true); return; }
+  closeModal();
+  if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); } // teşekkür sadece kesin gönderimde
+  else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
+  cn = null; }
+
+// ---------- telefon bildirimi + ses
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
+let swReg = null;
+async function notifSetup() {
+  const bar = $("notifBar"); const showBar = (h) => { bar.innerHTML = h; bar.style.display = h ? "block" : "none"; };
+  if (!("serviceWorker" in navigator)) { showBar(""); return; }
+  try { swReg = await navigator.serviceWorker.register("sw.js"); } catch (e) {}
+  if (isIOS && !standalone) { showBar(`🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Coins Bayi</b> simgesinden açın.`); return; }
+  if (!("Notification" in window) || !("PushManager" in window)) { showBar("ℹ️ Bu tarayıcı bildirim desteklemiyor (iPhone'da iOS 16.4 ve üstü gerekir)."); return; }
+  if (Notification.permission === "denied") { showBar("🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Coins Bayi › İzin Ver."); return; }
+  if (Notification.permission === "default") { showBar(`🔔 Yeni mesaj ve elmas bozumlarında telefona bildirim gelsin mi? <button class="go" style="margin-left:6px;padding:6px 12px" onclick="notifAsk()">Bildirimleri aç</button>`); return; }
+  showBar(""); await pushSubscribe(false);
+}
+async function notifAsk() { unlockAudio(); const p = await Notification.requestPermission(); if (p === "granted") { await pushSubscribe(true); } notifSetup(); }
+function b64uToU8(s) { const p = "=".repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, (c) => c.charCodeAt(0)); }
+async function pushSubscribe(first) {
+  try { const reg = swReg || await navigator.serviceWorker.ready; if (!me || !me.vapid) return;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uToU8(me.vapid) });
+    const d = await api("push_sub", { sub: sub.toJSON() }); if (first) toast(d.error ? "❌ " + d.error : "🔔 Bildirimler açıldı"); } catch (e) { if (first) toast("Bildirim açılamadı: " + (e && e.message || e), true); } }
+// Ses: sayfa açıkken yeni mesaj gelince kısa bir "ding" (telefon sessizdeyse iPhone kendisi susturur)
+let actx = null;
+function unlockAudio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+document.addEventListener("touchstart", unlockAudio, { once: true, passive: true }); document.addEventListener("click", unlockAudio, { once: true });
+function ding() { try { unlockAudio(); if (!actx) return; const t0 = actx.currentTime;
+  [[880, 0], [1320, 0.12]].forEach(([f, dt]) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
+    g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(0.35, t0 + dt + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.25); o.start(t0 + dt); o.stop(t0 + dt + 0.3); }); } catch (e) {} }
+let lastIncoming = Number(localStorage.getItem("bw_last") || 0);
+function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.u) > 0 && !x.own).map((x) => Number(x.at) || 0));
+  if (mx > lastIncoming) { if (lastIncoming) ding(); lastIncoming = mx; try { localStorage.setItem("bw_last", String(mx)); } catch (e) {} } }
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", (e) => { const m = e.data || {};
+  if (m.kind === "push") { ding(); if (cur) loadChat(); else { loadInbox(); loadDm(); } }
+  if (m.kind === "open" && m.url) { const u = new URL(m.url); const c = u.searchParams.get("c"), tt = u.searchParams.get("t"); if (c) openChat(c); else if (tt) { back(); tab(tt); } } });
+
+// ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
+// Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
+// Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
+function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
+  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); sortInbox(); renderInbox(); }
+// Diğer ekranın (tablet / başka telefon) gönderdiği mesaj: Sugo onaylayana kadar soluk "gönderiliyor"
+let rpend = [];
+function onPending(pl) { const c = String(pl.c || ""); if (!c || !pl.oid) return;
+  const txt = String(pl.t || "").trim(), now = Date.now();
+  const own = outbox.some((o) => o.status === "pending" && now - Date.parse(o.created_at) < 30_000 && (pl.k === "text" ? String(o.body || "").trim() === txt : o.kind === "image"));
+  if (own) return; // bu ekranın kendi gönderimi: zaten kendi bekleyen balonu var
+  rpend = rpend.filter((p) => now - p.at < 60_000 && p.oid !== String(pl.oid)); rpend.push({ oid: String(pl.oid), c, k: pl.k, t: txt, at: now });
+  if (cur === c) renderChat(true); ownRow(c, txt); }
+function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) rpend = rpend.filter((p) => p.oid !== String(pl.oid)); if (!c || !it || !it.id) return;
+  if (cur === c && !hist.some((m) => String(m.id) === String(it.id))) {
+    hist = applyOpt([...hist, it].sort((a, b) => Date.parse(a.at) - Date.parse(b.at)));
+    if (it.m) outbox = outbox.filter((o) => !(o.kind === "text" && String(o.body || "").trim() === String(it.t || "").trim()));
+    renderChat(); if (!it.m) ding(); }
+  const r = pl.row, x = inbox.find((i) => String(i.id) === c);
+  if (x && r) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0 });
+    sortInbox(); renderInbox(); }
+  else if (!x) loadInbox(); }
+function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
+  const ws = new WebSocket(me.rt.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(me.rt.anon) + "&vsn=1.0.0"); rt = ws; let ref = 1, hb = 0; const hbAt = {};
+  ws.onopen = () => { ws.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: String(ref++) }));
+    STAT.rtOn = true; statLine(); const beat = () => { try { const r = String(ref++); hbAt[r] = performance.now(); ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: r })); } catch (e) {} };
+    beat(); hb = setInterval(beat, 25_000); };
+  ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
+    if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
+    if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
+    if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
+    if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); renderInbox(); renderChTags(); } return; }
+    if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
+    if (ev === "live") { const pl = d.payload.payload || {}; try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
+    if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
+    if (ev === "pendfail") { const pl = d.payload.payload || {}; const p = rpend.find((x) => x.oid === String(pl.oid)); if (p) { p.fail = pl.err || "gitmedi"; if (cur === p.c) renderChat(); } return; }
+    if (cur && (ev === "outbox" || ev === "msg")) loadChat(); if (ev === "inbox" || ev === "msg") loadInbox(); };
+  ws.onclose = () => { clearInterval(hb); STAT.rtOn = false; statLine(); if (rt === ws) { rt = null; setTimeout(connectRt, 4000); } }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
+}
+setInterval(() => { if (!tok || document.hidden) return; if (cur) loadChat(); else if (curTab === "msg") { loadInbox(); loadDm(); } }, 20_000);
+setInterval(() => { if (tok && !document.hidden) loadTablet(); }, 60_000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden && tok) { if (cur) loadChat(); else loadInbox(); loadTablet(); if (!rt) connectRt(); } });
+$("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !/iPhone|iPad|Android/.test(navigator.userAgent)) { e.preventDefault(); send(); } });
+
+if (tok) start(); else show("login");
+</script>
+<script src="profile.js"></script>
+<script>setTimeout(()=>{document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));document.getElementById(location.hash==='#c'?'chat':'inbox').classList.add('on');document.querySelectorAll('.infol').forEach(e=>e.textContent='sürüm 2.1.x · sunucu 800 ms · canlı · Sugo bağlı');},2500);</script></body>
+</html>
