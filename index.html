@@ -786,15 +786,19 @@ function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (
   // iPhone ana ekran uygulaması hatası: klavye bir kez açılınca görünür alan küçülür ve öyle kalır (altta boşluk/siyah şerit).
   // Klavye kapanınca / uygulamaya dönünce açık ekran bir an gizlenip gösterilir → iPhone alanı yeniden ölçer (kaydırma konumları korunur)
   let maxVH = window.innerHeight;
-  const heal = () => { if (maxVH - window.innerHeight <= 4) return; const sc = document.querySelector(".screen.on"); if (!sc) return;
+  let healAt = 0;
+  const heal = () => { if (maxVH - window.innerHeight <= 4 || Date.now() - healAt < 1000) return; const sc = document.querySelector(".screen.on"); if (!sc) return; healAt = Date.now();
     const keep = [...sc.querySelectorAll(".msgs, .pane.on, .list, #pfBody")].map((el) => [el, el.scrollTop]);
     sc.style.display = "none"; void sc.offsetHeight; sc.style.display = ""; keep.forEach(([el, top]) => { el.scrollTop = top; }); };
   window.__heal = heal;
   addEventListener("resize", () => { maxVH = Math.max(maxVH, window.innerHeight); });
-  document.addEventListener("focusout", (e) => { if (app && e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(heal, 140); setTimeout(heal, 600); } });
+  addEventListener("orientationchange", () => { setTimeout(() => { maxVH = window.innerHeight; }, 400); }); // yön değişince en büyük yükseklik yeniden
+  document.addEventListener("focusout", (e) => { if (e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(() => { r.classList.remove("kb"); if (app) heal(); }, 140); if (app) setTimeout(heal, 600); } });
   document.addEventListener("visibilitychange", () => { if (app && !document.hidden) setTimeout(heal, 300); });
   const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px");
-    maxVH = Math.max(maxVH, window.innerHeight); r.classList.toggle("kb", maxVH - vv.height > 120);
+    maxVH = Math.max(maxVH, window.innerHeight);
+    const typing = !!(document.activeElement && document.activeElement.matches && document.activeElement.matches("input, textarea, [contenteditable]")); // klavye ancak yazı alanı seçiliyken açıktır
+    r.classList.toggle("kb", typing && maxVH - vv.height > 120); if (!typing && app) setTimeout(heal, 200);
     if (window.scrollY) window.scrollTo(0, 0); };
   vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
 // Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
