@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.0">
+<meta name="build" content="2.1.1">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -25,6 +25,8 @@
   /* Sayfa arka planı = alt menü rengi: iPhone'un küçülttüğü alanın altındaki şerit bu renkle boyanır → alt menünün devamı gibi görünür; ekranlar kendi zeminini çizer */
   html, body { margin: 0; height: 100%; background: var(--panel); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); overflow: hidden; }
+  /* iPhone ana ekran uygulaması tam ekran: html/body "border-box" olursa body'nin üst güvenli boşluğu %100 yüksekliğin içine sıkışır, sayfa ekrandan kısa kalır ve iPhone görünen alanı 59 pt kısa açar (altta boşluk). "content-box" ile body ekrandan bir çentik boyu uzun olur → iPhone tam ekranı kullanır. Simülatörde VT5 (border-box) 793 / VT6 (content-box) 852 ile doğrulandı */
+  html, body { box-sizing: content-box; }
   button { font: inherit; color: inherit; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; cursor: pointer; }
   button.go { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); font-weight: 700; }
   button:disabled { opacity: .45; }
