@@ -32,8 +32,6 @@
   /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
      Klavye açık: görünen alana sığar (başlık kaybolmasın) */
   .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
-  /* Ana ekran uygulaması (iPhone): sayfa yüksekliği durum çubuğu kadar kısa bildiriliyor → yükseklik telefonun gerçek ekranından (--apph) */
-  html.app .screen { bottom: auto; height: calc(var(--apph, 100dvh) - env(safe-area-inset-top)); }
   html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
   html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
   .screen.on { display: flex; }
@@ -785,9 +783,18 @@ function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (
 // Klavye: ekranı görünen alana sığdır (iPhone'da sabit ekran klavyeyle kayıyordu)
 (() => { const vv = window.visualViewport; if (!vv) return; const r = document.documentElement;
   const app = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches; r.classList.toggle("app", app);
+  // iPhone ana ekran uygulaması hatası: klavye bir kez açılınca görünür alan küçülür ve öyle kalır (altta boşluk/siyah şerit).
+  // Klavye kapanınca / uygulamaya dönünce açık ekran bir an gizlenip gösterilir → iPhone alanı yeniden ölçer (kaydırma konumları korunur)
+  let maxVH = window.innerHeight;
+  const heal = () => { if (maxVH - window.innerHeight <= 4) return; const sc = document.querySelector(".screen.on"); if (!sc) return;
+    const keep = [...sc.querySelectorAll(".msgs, .pane.on, .list, #pfBody")].map((el) => [el, el.scrollTop]);
+    sc.style.display = "none"; void sc.offsetHeight; sc.style.display = ""; keep.forEach(([el, top]) => { el.scrollTop = top; }); };
+  window.__heal = heal;
+  addEventListener("resize", () => { maxVH = Math.max(maxVH, window.innerHeight); });
+  document.addEventListener("focusout", (e) => { if (app && e.target.matches && e.target.matches("input, textarea, [contenteditable]")) { setTimeout(heal, 140); setTimeout(heal, 600); } });
+  document.addEventListener("visibilitychange", () => { if (app && !document.hidden) setTimeout(heal, 300); });
   const fit = () => { r.style.setProperty("--vvh", vv.height + "px"); r.style.setProperty("--vvt", vv.offsetTop + "px");
-    const full = app ? Math.max(window.innerHeight, matchMedia("(orientation: portrait)").matches ? screen.height : screen.width) : window.innerHeight; // ana ekran uygulamasında gerçek ekran yüksekliği (pt)
-    r.style.setProperty("--apph", full + "px"); r.classList.toggle("kb", full - vv.height > 120);
+    maxVH = Math.max(maxVH, window.innerHeight); r.classList.toggle("kb", maxVH - vv.height > 120);
     if (window.scrollY) window.scrollTo(0, 0); };
   vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); fit(); })();
 // Aşağı çekip bırakınca yenile (listenin en üstündeyken): sekme listeleri, sohbet, profil
@@ -927,11 +934,11 @@ function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme 
 // Ekran ölçüsü (iPhone alt boşluk sorununu görmek için): uygulamanın gerçek boyutları
 function screenInfo() { const r = document.documentElement, p = document.createElement("div");
   p.style.cssText = "position:fixed;top:0;bottom:0;left:0;width:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(p);
-  const cs = getComputedStyle(p), fh = Math.round(p.getBoundingClientRect().height); p.remove();
+  const cs0 = getComputedStyle(p), cs = { paddingTop: cs0.paddingTop, paddingBottom: cs0.paddingBottom }, fh = Math.round(p.getBoundingClientRect().height); p.remove();
   const sc = document.querySelector(".screen.on"), s = sc ? sc.getBoundingClientRect() : {}, nav = document.querySelector(".screen.on nav.bn"), n = nav ? nav.getBoundingClientRect() : null;
   const L = [["Ana ekran uygulaması", r.classList.contains("app") ? "evet" : "hayır"], ["standalone", String(navigator.standalone)], ["klavye sınıfı", r.classList.contains("kb") ? "var" : "yok"],
     ["innerH", innerHeight], ["vvH", window.visualViewport ? Math.round(visualViewport.height) : "-"], ["screenH", screen.height], ["docH", r.clientHeight], ["bodyH", document.body.clientHeight],
-    ["--apph", getComputedStyle(r).getPropertyValue("--apph") || "-"], ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
+    ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
     ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
   openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
     <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
