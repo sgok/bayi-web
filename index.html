@@ -113,7 +113,7 @@
   .dmhd { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(251,191,36,.12); border-bottom: 1px solid var(--line); }
   .dmhd .b { flex: 1; min-width: 0; } .dmhd .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dmtot { text-align: right; flex: none; } .dmtot .v { font-size: 20px; font-weight: 800; color: var(--warn); line-height: 1.2; } .dmtot button { margin-top: 4px; padding: 6px 12px; font-size: 14px; }
-  .dmbox .row:last-child { border-bottom: 0; }
+  .dmbox .row:last-child { border-bottom: 0; } .dmsingle { margin: 8px 10px 12px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; } .dmsingle .row:last-child { border-bottom: 0; }
   .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
   .bxdm { display: inline-block; margin-top: 3px; font-size: 12.5px; color: #c4b5fd; }
   .uidl { color: #5aa9e6; text-decoration: underline dotted; cursor: pointer; }
@@ -852,7 +852,8 @@ function dmPeople(rows) { const m = new Map(); for (const r of rows) { const k =
   return [...m.values()].map((rs) => { const gs = dmGroups(rs), pay = gs.reduce((s, g) => s + g.pay, 0), last = rs.reduce((a, r) => Math.max(a, Date.parse(r.at)), 0);
     return { rows: rs.slice().sort((a, b) => Date.parse(b.at) - Date.parse(a.at)), pay, last, name: rs[0].nickname || "UID " + rs[0].uid, uid: rs[0].uid, av: rs[0].avatar, conv: rs[0].conv }; })
     .sort((a, b) => b.last - a.last); }
-function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
+function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { if (p.rows.length === 1) return `<div class="dmsingle">${dmListHtml(p.rows)}</div>`; // tek bozum: kutu / toplam yok
+  const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
   return `<div class="dmbox"><div class="dmhd"><div class="av" ${p.conv || p.uid ? `onclick="openChat('${esc(p.conv || p.uid)}')"` : ""}>${avHtml(p.name, p.av)}</div>
     <div class="b"><b>${esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
     <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
