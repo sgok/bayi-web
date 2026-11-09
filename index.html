@@ -44,6 +44,7 @@
   #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
   /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
   .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
+  .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
   .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
@@ -325,14 +326,16 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
 
 // ---------- sohbet listesi
 // 📌 Sabitlenen kişiler (Ülker + tablet ortak): listenin en üstünde, en son sabitlenen en üstte; sonra okunmamışlar, sonra en yeni
-let cpins = []; try { cpins = JSON.parse(localStorage.getItem("bw_cpins") || "[]"); } catch (e) {}
+let cpins = [], cpinsBy = {}; try { cpins = JSON.parse(localStorage.getItem("bw_cpins") || "[]"); cpinsBy = JSON.parse(localStorage.getItem("bw_cpinsby") || "{}"); } catch (e) {}
+function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
+  try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
 function sortInbox() { inbox.sort((a, b) => pinRank(a) - pinRank(b) || (Number(b.u) > 0) - (Number(a.u) > 0) || (b.at || 0) - (a.at || 0)); }
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
-  cpins = ((d.report && d.report.cpins) || []).map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
+  setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); if (d.error) { toast(d.error, true); return; }
   inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
-  if (d.report && Array.isArray(d.report.cpins)) { cpins = d.report.cpins.map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} }
+  setCpins(d.report);
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", "#db2777"], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", "#0ea5e9"], ["30006", "Yayıncı Asistanı", "🎙", "#f59e0b"], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
@@ -345,7 +348,7 @@ function renderInbox() {
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
   morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
     : `<div class="row s">Sohbet yok (tablet bayi listesini henüz göndermedi).</div>`));
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
@@ -675,11 +678,11 @@ function syncAttrs(a, b, keep) {
   for (const at of [...a.attributes]) if (!keep.includes(at.name) && !b.hasAttribute(at.name)) a.removeAttribute(at.name);
   for (const at of [...b.attributes]) if (!keep.includes(at.name) && a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
 function renderChat(scroll) {
-  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick; const pinIds = new Set(pins.map((p) => String(p.id)));
+  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick; const pinIds = new Set(pins.map((p) => String(p.id))), pinBy = Object.fromEntries(pins.map((p) => [String(p.id), p.by || ""]));
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
     ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
     : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
-    : `<div class="m ${m.m ? "me" : ""}${pinIds.has(String(m.id)) ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}<div class="tm">${pinIds.has(String(m.id)) ? '<span class="pinmk">📌 Sabit</span>' : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
+    : `<div class="m ${m.m ? "me" : ""}${pinIds.has(String(m.id)) ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}<div class="tm">${pinIds.has(String(m.id)) ? `<span class="pinmk">📌 Sabit${pinBy[String(m.id)] ? " · " + esc(pinBy[String(m.id)]) : ""}</span>` : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
     items.push({ at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
@@ -1009,7 +1012,7 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
   ws.onopen = () => { ws.send(JSON.stringify({ topic: "realtime:" + me.rt.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: String(ref++) }));
     hb = setInterval(() => { try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(ref++) })); } catch (e) {} }, 25_000); };
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
-    if (ev === "cpins") { const l = (d.payload.payload || {}).cpins; if (Array.isArray(l)) { cpins = l.map(String); try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); } catch (e) {} sortInbox(); renderInbox(); } return; }
+    if (ev === "cpins") { if (setCpins(d.payload.payload || {})) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { liveMsg(d.payload.payload || {}); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(d.payload.payload || {}); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
     if (ev === "pendfail") { const pl = d.payload.payload || {}; const p = rpend.find((x) => x.oid === String(pl.oid)); if (p) { p.fail = pl.err || "gitmedi"; if (cur === p.c) renderChat(); } return; }
