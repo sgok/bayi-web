@@ -29,7 +29,7 @@ jobs:
         shell: bash
         run: |
           set -u
-          if [ -z "$TOKEN" ]; then echo "::error::SUPABASE_YONETIM_TOKEN sırrı eklenmemiş"; exit 1; fi
+          if [ -z "$TOKEN" ]; then echo "::warning::SUPABASE_YONETIM_TOKEN sırrı eklenmemiş; kontrol atlandı"; exit 0; fi # sır eklenene kadar hata e-postası yağmasın
           API="https://api.supabase.com/v1/projects/$REF"
           # 1) Veri yolu: sağlık fonksiyonu anahtarsız istekte veritabanına sorar → çalışıyorsa hemen 403, veritabanı/REST donmuşsa 503 ya da zaman aşımı
           # 2) Supabase yönetim API'si: db, rest, auth servislerinin sağlık bayrağı
