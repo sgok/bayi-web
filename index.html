@@ -10,12 +10,13 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.25">
+<meta name="build" content="2.1.26">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="icon" type="image/png" href="icon-192.png?v=2">
 <style>
+  [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
   /* 🎨 Tema: varsayılan "Sugo" (koyu mor + altın sarısı); "Karanlık" = eski yeşil-siyah görünüm (⚙️ Ayarlar'dan) */
   :root { --bg: #140b25; --panel: #1e1236; --panel2: #2a1a4a; --line: #3b2766; --text: #f4effd; --muted: #ab9fcc; --go: #f5b40b; --go2: #ffd84d; --gofg: #2b1700; --me: #6d28d9; --peer: #2b1c4c; --bad: #f87171; --warn: #fbbf24; --accent: #fbbf24; --img: #1b1030;
