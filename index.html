@@ -935,7 +935,9 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
   $("ajBody").innerHTML = h; }
 
 // ---------- pencere, ayarlar, şifre / PIN, coin gönderme
-function openModal(h) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; }
+function openModal(h, top) { $("modalBox").innerHTML = h; const m = $("modal"); m.style.display = "flex";
+  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + 24px)" : "";
+  const b = $("modalBox"); b.style.borderRadius = top ? "18px" : "18px 18px 0 0"; b.style.width = top ? "calc(100% - 24px)" : "100%"; b.style.paddingBottom = top ? "16px" : "calc(16px + env(safe-area-inset-bottom))"; } // top: klavyeli pencere ekranın üstünde (klavye örtmesin)
 function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
 $("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
 const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
@@ -978,8 +980,10 @@ let pinCache = null;
 function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
   return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
     openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3><input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`);
-    setTimeout(() => { const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); } }, 50); }); }
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
+    // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor)
+    const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); }
+    setTimeout(() => { const j = $("pinIn"); if (j && document.activeElement !== j) j.focus(); }, 60); }); }
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
 function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
