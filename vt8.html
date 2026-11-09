@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VT8">
+<meta name="theme-color" content="#1e1236">
+<script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
+<meta name="robots" content="noindex, nofollow">
+<meta name="build" content="__BUILD__">
+<title>VT8</title>
+<style>
+  /* 🎨 Tema: varsayılan "Sugo" (koyu mor + altın sarısı); "Karanlık" = eski yeşil-siyah görünüm (⚙️ Ayarlar'dan) */
+  :root { --bg: #140b25; --panel: #1e1236; --panel2: #2a1a4a; --line: #3b2766; --text: #f4effd; --muted: #ab9fcc; --go: #f5b40b; --go2: #ffd84d; --gofg: #2b1700; --me: #6d28d9; --peer: #2b1c4c; --bad: #f87171; --warn: #fbbf24; --accent: #fbbf24; --img: #1b1030;
+    --hdr: linear-gradient(90deg, #2e1559 0%, #1e1236 100%); }
+  html[data-theme="dark"] { --bg: #0b1512; --panel: #12201b; --panel2: #18291f; --line: #24382f; --text: #e8f2ec; --muted: #8ea89a; --go: #16a34a; --go2: #16a34a; --gofg: #fff; --me: #075e54; --peer: #1d2c25; --accent: #4ade80; --img: #0f1a16; --hdr: var(--panel); }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* Sayfa arka planı = alt menü rengi: iPhone'un küçülttüğü alanın altındaki şerit bu renkle boyanır → alt menünün devamı gibi görünür; ekranlar kendi zeminini çizer */
+  html, body { margin: 0; height: 100%; background: var(--panel); color: var(--text); font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); overflow: hidden; }
+  button { font: inherit; color: inherit; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; cursor: pointer; }
+  button.go { background: linear-gradient(135deg, var(--go2), var(--go)); border-color: var(--go); color: var(--gofg); font-weight: 700; }
+  button:disabled { opacity: .45; }
+  input, textarea { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%; }
+  .s { color: var(--muted); font-size: 13px; }
+  /* Ekran = görünen alan (klavye açıkken klavyenin üstü): iPhone sayfayı kaydırıp başlığı gizlemesin */
+  /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
+     Klavye açık: görünen alana sığar (başlık kaybolmasın) */
+  .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
+  html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
+</style>
+</head>
+<body>
+<div id="vtbox" style="position:fixed;left:0;right:0;top:0;bottom:0;outline:4px solid yellow;outline-offset:-4px;background:#333;color:#fff;font:15px/1.5 -apple-system,sans-serif;padding:60px 16px;z-index:9">
+<b id="vtname" style="font-size:22px"></b><div id="vto">ölçülüyor…</div></div>
+<div style="position:fixed;left:0;right:0;bottom:0;height:60px;background:#0a0;z-index:10;color:#fff;font-weight:700;text-align:center;line-height:60px">ALT</div>
+<script>
+const launch = innerHeight;
+document.documentElement.style.background = "#ff0000"; document.body.style.background = "#ff0000";
+document.getElementById("vtname").textContent = document.title;
+
+setTimeout(() => { const p = document.createElement("div"); p.style.cssText = "position:fixed;top:0;bottom:0;left:0;width:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)"; document.body.appendChild(p);
+  const cs = getComputedStyle(p), st = cs.paddingTop, sb = cs.paddingBottom, fh = Math.round(p.getBoundingClientRect().height); p.remove();
+  document.getElementById("vto").innerHTML = ["açılışta innerH " + launch, "innerH " + innerHeight, "screenH " + screen.height, "safeTop " + st, "safeBot " + sb, "fixed0 h " + fh, "standalone " + navigator.standalone, "SW " + ("serviceWorker" in navigator && navigator.serviceWorker.controller ? "denetimde" : "yok")].join("<br>"); }, 500);
+</script>
+</body>
+</html>
