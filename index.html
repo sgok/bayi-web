@@ -241,7 +241,26 @@ let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = []
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad ? 5000 : 2500); }
-function show(id) { document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id)); }
+// Ekran değişince kaydırma konumu korunur (gizlenen ekranın konumu tarayıcıda sıfırlanıyordu: profilden dönünce sohbet en üstte açılıyordu)
+let chatAnchor = null; const paneTops = {};
+function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on");
+  document.querySelectorAll(".screen.on").forEach((s) => { if (s.id !== id) s.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id) paneTops[el.id] = el.scrollTop; }); });
+  if (chatWas && id !== "chat") chatAnchor = msgAnchor();
+  document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id));
+  const sc = $(id); if (sc) sc.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id && paneTops[el.id] != null) el.scrollTop = paneTops[el.id]; });
+  if (id === "chat" && !chatWas && chatAnchor) msgRestore(chatAnchor); }
+// Sohbette nerede kalındı: ekranın üstündeki ilk mesaj + ekrana uzaklığı (yeni mesaj / resim yüklense de aynı yer bulunur)
+function msgAnchor() { const box = $("msgs"); if (!box || !cur) return null;
+  if (stick || box.scrollHeight - box.scrollTop - box.clientHeight < 40) return { c: cur, bottom: true };
+  const top = box.getBoundingClientRect().top, el = [...box.querySelectorAll(".m[data-mid]")].find((e) => e.getBoundingClientRect().bottom > top + 4);
+  return el ? { c: cur, mid: el.dataset.mid, off: el.getBoundingClientRect().top - top, top: box.scrollTop } : { c: cur, top: box.scrollTop }; }
+function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); let stop = false;
+  const cancel = () => { stop = true; }; box.addEventListener("touchstart", cancel, { once: true, passive: true }); box.addEventListener("wheel", cancel, { once: true, passive: true });
+  const go = () => { if (stop || a.c !== cur) return;
+    if (a.bottom) { stick = true; box.scrollTop = box.scrollHeight; return; }
+    stick = false; const el = a.mid && box.querySelector(`.m[data-mid="${CSS.escape(String(a.mid))}"]`);
+    if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - a.off; else if (a.top != null) box.scrollTop = a.top; };
+  go(); requestAnimationFrame(go); setTimeout(go, 250); setTimeout(go, 900); } // resimler yüklenip yükseklik değişirse yeniden
 async function api(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
@@ -372,7 +391,7 @@ async function loadBuyers(uids, force) {
 
 // ---------- sohbet
 const synced = {};
-async function openChat(id) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {}
+async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
   cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); if (!sy) loadBuyers([cur]).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
@@ -381,6 +400,9 @@ async function openChat(id) { stopMedia(); replyTo = null; try { renderReply(); 
   hist = []; coins = []; outbox = []; older = []; histMore = false; pins = []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
   if (!sy && !synced[cur]) { synced[cur] = 1; api("chat_sync", { conv: cur }); } // eski mesajlar Sugo'dan (arka planda; gelince sohbet yenilenir)
+  if (snap && snap.hist) { // önceki sohbete dönüş: yüklenmiş eski sayfalarıyla birlikte aynen, kaldığı yerden; sonra arka planda tazelenir
+    hist = snap.hist; older = snap.older || []; histMore = !!snap.histMore; coins = snap.coins || []; outbox = snap.outbox || []; pins = snap.pins || []; renderPins();
+    stick = !!(snap.a && snap.a.bottom); renderChat(false); msgRestore(snap.a); loadChat(false); return; }
   await loadChat(true);
   if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; renderInbox(); }
 }
@@ -400,11 +422,9 @@ function uidMenu(uid) { const k = inbox.find((x) => String(x.id) === String(uid)
   openModal(`<div style="font-weight:700;margin-bottom:4px">${esc(k.n || "UID " + uid)}</div><div class="s" style="margin-bottom:12px">UID ${esc(uid)}</div>
     <div style="display:flex;flex-direction:column;gap:8px"><button onclick="closeModal();prof('${esc(uid)}')">👤 Profili aç</button><button class="go" onclick="chatJump('${esc(uid)}')">💬 Mesaj at</button><button onclick="closeModal()">Vazgeç</button></div>`); }
 async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid) return;
-  if (cur) chatStack.push({ c: cur, top: $("msgs").scrollTop, h: $("msgs").scrollHeight, stick });
+  if (cur) chatStack.push({ c: cur, a: msgAnchor(), hist, older, histMore, coins, outbox, pins });
   history.pushState({ c: uid }, ""); await openChat(uid); }
-async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c);
-  const box = $("msgs"); if (p.stick) return; stick = false; // en altta değildi: aynı yere (yeni mesaj geldiyse alttan aynı uzaklığa)
-  const put = () => { box.scrollTop = Math.max(0, p.top + (box.scrollHeight - p.h)); }; put(); setTimeout(put, 300); }
+async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c, p); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
 window.addEventListener("popstate", () => {
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
