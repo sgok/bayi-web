@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.9">
+<meta name="build" content="2.1.10">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -95,7 +95,7 @@
   .un { color: var(--accent); font-weight: 700; }
   .search { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 8px; }
   .trust { font-size: 12.5px; margin-top: 3px; color: var(--muted); white-space: normal; } .trust b { color: var(--text); }
-  .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
+  .trust.ph { visibility: hidden; } .trust.good { color: #10b981; } .trust.some { color: #fbbf24; } .trust.debt { color: #f87171; } .trust.debt b { color: #fecaca; } .trust.new { color: #94a3b8; }
   #chTrust .trust { font-size: 13.5px; padding: 6px 14px; margin: 0; border-bottom: 1px solid var(--line); }
   #srchRes:empty { display: none; } #srchRes { border-bottom: 2px solid var(--line); max-height: 60vh; overflow-y: auto; }
   #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
@@ -170,7 +170,7 @@
   .m.me { background: var(--me); align-self: flex-end; }
   .m.pend { opacity: .6; } .m.fail { border: 1px solid var(--bad); }
   /* Sohbet resmi: yükseklik SABİT (yüklenince boyu değişip sohbeti kaydırmasın; iPhone kaydırma yerini kendisi tutmuyor). Genişlik resme göre, taşan kırpılır; dokununca tamamı açılır */
-  .m img { height: 260px; width: auto; min-width: 120px; max-width: 100%; object-fit: cover; border-radius: 8px; display: block; background: var(--img); }
+  .m img { height: 260px; width: 200px; max-width: 100%; object-fit: contain; border-radius: 8px; display: block; background: var(--img); }
   .m .tm { font-size: 11px; color: #b6c8be; text-align: right; margin-top: 2px; }
   .day { align-self: center; font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 10px; border-radius: 999px; margin: 6px 0; }
   .coin { align-self: stretch; background: #2a2210; border: 1px solid #a16207; border-radius: 12px; padding: 10px; font-size: 14px; }
@@ -345,7 +345,10 @@ async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $(
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
 async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
+function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
 async function start() {
+  // CLS: listenin üstündeki şeritler (bildirim, tablet uyarısı, elmas bozumu) ilk çizimde son bilinen hâliyle yer alır → liste sonradan aşağı kaymaz
+  try { notifBarShow(); setTabWarn(localStorage.getItem("bw_tabwarn") || ""); if ($("dmStrip")) $("dmStrip").innerHTML = localStorage.getItem("bw_dmstrip") || ""; } catch (e) {}
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
   let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
   const fast = !!(cm && Array.isArray(ci) && ci.length);
@@ -367,7 +370,8 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
   const LIM = 8 * 60_000; // tablet liste değişmese de en geç 5 dk'da bir yazar
   const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
   const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez." : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
-  ["tabWarn", "tabWarn2"].forEach((id) => { $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
+  setTabWarn(msg); try { localStorage.setItem("bw_tabwarn", msg); } catch (e) {} }
+function setTabWarn(msg) { ["tabWarn", "tabWarn2"].forEach((id) => { if ($(id).textContent !== msg) $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
 
 // ---------- sohbet listesi
 // 📌 Sabitlenen kişiler (Ülker + tablet ortak): listenin en üstünde, en son sabitlenen en üstte; sonra okunmamışlar, sonra en yeni
@@ -451,10 +455,12 @@ async function runSrch(q) {
 }
 
 // ---------- güven bilgisi: bizden daha önce coin aldı mı (satış kayıtları) + açık borç — tabletle aynı
-const buyers = {}; let buyersAt = 0;
+// Alış bilgisi telefonda saklanır: liste açılışta satır altıyla birlikte çizilir (sonradan eklenip satırları uzatmasın — CLS); arkada tazelenir
+const buyers = (() => { try { return JSON.parse(localStorage.getItem("bw_buyers") || "{}") || {}; } catch (e) { return {}; } })(); let buyersAt = 0;
 const relIso = (s) => s ? rel(Date.parse(s)) : "";
 function trust(uid) {
-  if (!(uid in buyers) || isSys(uid)) return "";
+  if (isSys(uid)) return "";
+  if (!(uid in buyers)) return `<div class="trust ph">·</div>`; // bilgi gelene kadar yeri ayrılır (satır sonradan uzamasın)
   const x = buyers[uid];
   if (!x) return `<div class="trust new">🆕 Bizden daha önce coin almadı</div>`;
   if (!x.n && x.debt) return `<div class="trust debt"><b>⚠️ borcu ${x.debt} ₼</b></div>`; // satış kaydı yok ama borç kaydı var
@@ -466,7 +472,8 @@ async function loadBuyers(uids, force) {
   if (!need.length) return false;
   const d = await api("buyer_stats", { uids: need }); if (d.error) return false;
   const b = (d.report && d.report.buyers) || {};
-  need.forEach((u) => { buyers[u] = b[u] || null; }); buyersAt = Date.now(); return true;
+  need.forEach((u) => { buyers[u] = b[u] || null; }); buyersAt = Date.now();
+  try { const keep = Object.keys(buyers).slice(-400); localStorage.setItem("bw_buyers", JSON.stringify(Object.fromEntries(keep.map((k) => [k, buyers[k]])))); } catch (e) {} return true;
 }
 
 
@@ -538,7 +545,7 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
   if (m.k === "voice" && /^https?:/.test(t)) return voiceBtn(t, Number(m.dur) || 0);
-  if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}"${m.thumb ? ` poster="${esc(m.thumb)}"` : ""} style="height:260px;max-width:100%;object-fit:cover;border-radius:8px;display:block;background:#000"></video>`;
+  if (m.k === "video" && /^https?:/.test(t)) return `<video controls preload="none" playsinline src="${esc(t)}"${m.thumb ? ` poster="${esc(m.thumb)}"` : ""} style="height:260px;width:200px;max-width:100%;object-fit:contain;border-radius:8px;display:block;background:#000"></video>`;
   if (m.k === "system" || m.k === "call") return `<i>${emo(esc(t || (m.k === "call" ? "📞 Arama" : "Sistem mesajı")))}</i>`;
   if ((m.k === "image" || /^https?:\/\/\S+\.(jpe?g|png|webp|gif)(\?\S*)?$/i.test(t)) && /^https?:/.test(t)) return `<img src="${esc(t)}" data-img="${esc(t)}" loading="lazy">`;
   return emo(uidBare(esc(t || "[" + (m.k || "mesaj") + "]")), true); }
@@ -842,7 +849,7 @@ async function giveCard(id) { $("cards").classList.remove("on");
 
 // ---------- alt sekmeler (tabletteki Sugo Bayi bölümüyle aynı)
 let curTab = localStorage.getItem("bw_tab") || "msg";
-function tab(k) { curTab = k; try { localStorage.setItem("bw_tab", k); } catch (e) {}
+function tab(k) { if (!document.getElementById("p-" + k)) k = "msg"; curTab = k; try { localStorage.setItem("bw_tab", k); } catch (e) {} // bilinmeyen sekme (bozuk bağlantı) → Sohbetler; ekran boş kalmasın
   document.querySelectorAll("nav.bn button").forEach((b) => b.classList.toggle("on", b.dataset.p === k));
   document.querySelectorAll("#inbox .pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + k));
   refreshTab(); }
@@ -971,7 +978,7 @@ async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
     + (rep.total > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
 function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = d.unpaid || {}, td = d.today || {};
   $("nDm").hidden = !u.n; $("nDm").textContent = u.n || "";
-  $("dmStrip").innerHTML = open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "";
+  setDmStrip(open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "");
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
     <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div></div></div>
     <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
@@ -1068,7 +1075,7 @@ function applyPerms() {
   document.querySelectorAll("nav.bn button[data-p]").forEach((b) => { const need = TAB_PERM[b.dataset.p]; b.hidden = !!need && !can(need); });
   if (TAB_PERM[curTab] && !can(TAB_PERM[curTab])) tab("msg");
   if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
-  if (!can("elmas") && $("dmStrip")) $("dmStrip").innerHTML = "";
+  if (!can("elmas") && $("dmStrip")) setDmStrip("");
   if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
@@ -1141,15 +1148,20 @@ async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins,
 // ---------- telefon bildirimi + ses
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
 let swReg = null;
+// CLS: şeridin görünüp görünmeyeceği bekletmeden (izin durumu anında bilinir) ilk çizimde belirlenir; liste sonradan aşağı itilmez
+function notifBarHtml() {
+  if (!("serviceWorker" in navigator)) return "";
+  if (isIOS && !standalone) return `🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Coins Bayi</b> simgesinden açın.`;
+  if (!("Notification" in window) || !("PushManager" in window)) return "ℹ️ Bu tarayıcı bildirim desteklemiyor (iPhone'da iOS 16.4 ve üstü gerekir).";
+  if (Notification.permission === "denied") return "🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Coins Bayi › İzin Ver.";
+  if (Notification.permission === "default") return `🔔 Yeni mesaj ve elmas bozumlarında telefona bildirim gelsin mi? <button class="go" style="margin-left:6px;padding:6px 12px" onclick="notifAsk()">Bildirimleri aç</button>`;
+  return ""; }
+function notifBarShow() { const bar = $("notifBar"), h = notifBarHtml(); if (bar.innerHTML !== h) bar.innerHTML = h; bar.style.display = h ? "block" : "none"; return h; }
 async function notifSetup() {
-  const bar = $("notifBar"); const showBar = (h) => { bar.innerHTML = h; bar.style.display = h ? "block" : "none"; };
-  if (!("serviceWorker" in navigator)) { showBar(""); return; }
+  const h = notifBarShow();
+  if (!("serviceWorker" in navigator)) return;
   try { swReg = await navigator.serviceWorker.register("sw.js"); } catch (e) {}
-  if (isIOS && !standalone) { showBar(`🔔 <b>Bildirim almak için</b>: Safari'de alttaki <b>Paylaş</b> (⬆️) › <b>Ana Ekrana Ekle</b>'ye basın. Sonra Ana Ekrandaki <b>Sugo Coins Bayi</b> simgesinden açın.`); return; }
-  if (!("Notification" in window) || !("PushManager" in window)) { showBar("ℹ️ Bu tarayıcı bildirim desteklemiyor (iPhone'da iOS 16.4 ve üstü gerekir)."); return; }
-  if (Notification.permission === "denied") { showBar("🔕 Bildirimler kapalı. Açmak için: Ayarlar › Bildirimler › Sugo Coins Bayi › İzin Ver."); return; }
-  if (Notification.permission === "default") { showBar(`🔔 Yeni mesaj ve elmas bozumlarında telefona bildirim gelsin mi? <button class="go" style="margin-left:6px;padding:6px 12px" onclick="notifAsk()">Bildirimleri aç</button>`); return; }
-  showBar(""); await pushSubscribe(false);
+  if (!h && "Notification" in window && Notification.permission === "granted") await pushSubscribe(false);
 }
 async function notifAsk() { unlockAudio(); const p = await Notification.requestPermission(); if (p === "granted") { await pushSubscribe(true); } notifSetup(); }
 function b64uToU8(s) { const p = "=".repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, (c) => c.charCodeAt(0)); }
