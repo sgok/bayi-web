@@ -42,7 +42,11 @@
   #replyBar { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 14px; }
   #replyBar[hidden] { display: none; } #replyBar .rq { flex: 1; min-width: 0; border-left: 3px solid #38bdf8; padding-left: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
   #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
-  .row.pinned { background: #ffffff08; } .pinic { font-size: 13px; margin-right: 4px; }
+  /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
+  .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
+  .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
+  .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
+  .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
   #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
   #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
@@ -327,7 +331,7 @@ function renderInbox() {
   const teamRow = `<div class="row sys" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
   const unN = inbox.filter((x) => Number(x.u) && !x.own).length;
   const readAll = unN ? `<div style="padding:6px 12px;border-bottom:1px solid var(--line)"><button style="width:100%;font-size:14px" onclick="readAll()">✓✓ ${unN} okunmamış sohbetin hepsini okundu yap</button></div>` : "";
-  morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x) => `<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+  morph($("convs"), readAll + teamRow + (inbox.length ? inbox.slice(0, 120).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}</b><span class="${Number(x.u) ? "un" : "s"}">${esc(x.at ? rel(x.at) : x.t || "")}</span></div>
       <div class="p"><span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>${Number(x.u) ? `<span class="badge">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("")
@@ -583,7 +587,7 @@ function renderPins() { const el = $("pinBar"); if (!el) return; const list = cu
   el.innerHTML = list.map((p) => `<div class="pin" onclick="pinGo('${esc(p.id)}')"><span>📌</span><span class="pt">${p.k === "image" ? "📷 Fotoğraf" : p.k === "voice" ? "🎤 Sesli mesaj" : p.k === "video" ? "🎬 Video" : emo(esc(String(p.t || "").slice(0, 120)))}</span><span class="s">${esc(p.by || "")}</span><button class="px" onclick="event.stopPropagation();msgPin('${esc(p.id)}',false)" title="Sabitlemeyi kaldır">✕</button></div>`).join(""); }
 async function msgPin(mid, on) { msgMenuClose(); const c = cur; if (!c) return;
   const d = await api("chat_pin", { conv: "b" + c, mid: String(mid), on }); if (d.error) { toast("❌ " + d.error, true); return; }
-  if (c === cur) { pins = (d.report && d.report.pins) || []; renderPins(); } toast(d.ok || (on ? "📌 Sabitlendi" : "Kaldırıldı")); }
+  if (c === cur) { pins = (d.report && d.report.pins) || []; renderPins(); renderChat(); } toast(d.ok || (on ? "📌 Sabitlendi" : "Kaldırıldı")); }
 function pinGo(mid) { const el = document.querySelector(`#msgs .m[data-mid="${CSS.escape(String(mid))}"]`);
   if (!el) { toast("Bu mesaj ekrandaki son mesajlardan daha eski — ⬆️ Daha eski mesajlar ile yükleyin"); return; }
   stick = false; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
@@ -659,11 +663,11 @@ function syncAttrs(a, b, keep) {
   for (const at of [...a.attributes]) if (!keep.includes(at.name) && !b.hasAttribute(at.name)) a.removeAttribute(at.name);
   for (const at of [...b.attributes]) if (!keep.includes(at.name) && a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
 function renderChat(scroll) {
-  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick;
+  const box = $("msgs"); if (scroll) stick = true; const atBottom = stick; const pinIds = new Set(pins.map((p) => String(p.id)));
   const items = hist.map((m) => ({ at: Date.parse(m.at), html: m.k === "withdraw"
     ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
     : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
-    : `<div class="m ${m.m ? "me" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}<div class="tm">${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
+    : `<div class="m ${m.m ? "me" : ""}${pinIds.has(String(m.id)) ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}<div class="tm">${pinIds.has(String(m.id)) ? '<span class="pinmk">📌 Sabit</span>' : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
     items.push({ at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
