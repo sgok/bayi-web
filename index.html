@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.16">
+<meta name="build" content="2.1.17">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -417,7 +417,7 @@ function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) =>
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
-  inbox = ((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id)));
+  inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
@@ -445,7 +445,7 @@ function renderInbox() {
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
 async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)); if (!list.length) return;
   if (!confirm(`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`)) return;
-  for (const x of list) { await api("read", { conv: String(x.id) }); x.u = ""; }
+  for (const x of list) { await api("read", { conv: String(x.id) }); x.u = ""; x.readAt = Number(x.at) || Date.now(); }
   renderInbox(); toast(`✓ ${list.length} sohbet okundu yapıldı`); }
 function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
   if (!v) { const first = document.querySelector("#srchRes .row[data-uid]"); if (first) { pick(first.dataset.uid); return; } toast("İsim ya da UID yazın", true); return; }
@@ -515,7 +515,7 @@ async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderRep
     hist = snap.hist; older = snap.older || []; histMore = !!snap.histMore; coins = snap.coins || []; outbox = snap.outbox || []; pins = snap.pins || []; renderPins();
     stick = !!(snap.a && snap.a.bottom); renderChat(false); msgRestore(snap.a); loadChat(false); return; }
   await loadChat(true);
-  if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; renderInbox(); }
+  if (Number(x.u) && !sy) { api("read", { conv: cur }); x.u = ""; x.readAt = Number(x.at) || Date.now(); renderInbox(); }
 }
 // Kişi şu an bir odadaysa başlıkta: oda adı (küçük, mavi) + oynayan nota. Sadece açık sohbet için, açıkken dakikada bir sorulur
 let roomTimer = 0;
@@ -1249,7 +1249,14 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
 // Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
 function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
-  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0 }); sortInbox(); renderInbox(); }
+  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0, loc: Date.now() }); sortInbox(); renderInbox(); }
+// Sunucudaki liste birkaç saniye geride kalabilir: satırın yerelde daha yeni hâli (gönderdiğimiz / anlık gelen mesaj, okundu) varsa 2 dk boyunca korunur.
+// (Yoksa yenileme eski önizlemeyi yazıyor, satır "onun mesajı ↔ bizim mesajımız" arasında gidip geliyordu.)
+function mergeRows(items) { const prev = new Map(inbox.map((x) => [String(x.id), x])), now = Date.now();
+  return items.map((x) => { const o = prev.get(String(x.id)); if (!o) return x; let y = x;
+    if (o.loc && now - o.loc < 120_000 && (Number(o.at) || 0) > (Number(x.at) || 0)) y = { ...x, at: o.at, own: o.own, p: o.p, rd: o.rd, u: o.u, loc: o.loc };
+    if (o.readAt && (Number(y.at) || 0) <= o.readAt && Number(y.u)) y = { ...y, u: "", readAt: o.readAt }; else if (o.readAt) y = { ...y, readAt: o.readAt };
+    return y; }); }
 // Diğer ekranın (tablet / başka telefon) gönderdiği mesaj: Sugo onaylayana kadar soluk "gönderiliyor"
 let rpend = [];
 function onPending(pl) { const c = String(pl.c || ""); if (!c || !pl.oid) return;
@@ -1264,7 +1271,7 @@ function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) r
     if (it.m) outbox = outbox.filter((o) => !(o.kind === "text" && String(o.body || "").trim() === String(it.t || "").trim()));
     renderChat(); if (!it.m) ding(); }
   const r = pl.row, x = inbox.find((i) => String(i.id) === c);
-  if (x && r) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0 });
+  if (x && r && (Number(r.at) || 0) >= (x.loc ? 0 : Number(x.at) || 0)) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0, loc: Date.now() });
     sortInbox(); renderInbox(); }
   else if (!x) loadInbox(); }
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
