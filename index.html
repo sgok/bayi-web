@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.11">
+<meta name="build" content="2.1.12">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -80,7 +80,7 @@
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
   #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
-  #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
+  #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } #chRoom { min-height: 19px; } #chRoom[hidden] { display: block; visibility: hidden; } /* CLS: oda satırının yeri hep ayrılı (bilgi Sugo'dan geç gelir; başlık sonradan uzayıp mesajları itmesin) */ /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
   #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
   #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
@@ -488,7 +488,7 @@ async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderRep
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
-  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
+  hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || []; renderPins(); $("msgs").innerHTML = `<div class="day">Yükleniyor…</div>`; $("cards").classList.remove("on");
   if (!$("chat").classList.contains("on")) history.pushState({ c: cur }, ""); show("chat");
   if (!sy && !synced[cur]) { synced[cur] = 1; api("chat_sync", { conv: cur }); } // eski mesajlar Sugo'dan (arka planda; gelince sohbet yenilenir)
   if (snap && snap.hist) { // önceki sohbete dönüş: yüklenmiş eski sayfalarıyla birlikte aynen, kaldığı yerden; sonra arka planda tazelenir
@@ -528,6 +528,10 @@ const optMsg = {};
 const applyOpt = (list) => Object.keys(optMsg).length ? list.filter((m) => !(optMsg[m.id] && optMsg[m.id].del)).map((m) => { const o = optMsg[m.id]; return !o ? m : o.em ? { ...m, em: o.em } : o.wd ? { ...m, ...o.wd } : m; }) : list;
 // Sohbet son 40 mesajla açılır; "Daha eski mesajlar" ile 40'ar geriye yüklenir (sorgu ve veri yükü azalır)
 let older = [], histMore = false, olderBusy = false, pins = [];
+// CLS: sabit mesaj şeridi sohbet açılınca son bilinen hâliyle hemen çizilir (geçmiş gelince belirip mesajları itmesin)
+const chPins = (() => { try { return JSON.parse(localStorage.getItem("bw_pinc") || "{}") || {}; } catch (e) { return {}; } })();
+function chPinsSet(c, list) { if (!c) return; const had = !!chPins[c]; if (list && list.length) chPins[c] = list; else delete chPins[c]; if (!had && !chPins[c]) return;
+  try { const ks = Object.keys(chPins); if (ks.length > 60) delete chPins[ks[0]]; localStorage.setItem("bw_pinc", JSON.stringify(chPins)); } catch (e) {} }
 async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
   const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
   const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 40 }); olderBusy = false;
@@ -543,7 +547,7 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
     if (!older.length) histMore = !!h.report.more; // eski sayfa yüklenmediyse "devamı var" bilgisi son sayfadan
     const seenIds = new Set(latest.map((m) => String(m.id)));
     hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || [];
-    if (Array.isArray(h.report.pins)) { pins = h.report.pins; renderPins(); }
+    if (Array.isArray(h.report.pins)) { pins = h.report.pins; chPinsSet(c, pins); renderPins(); }
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
 function bubbleBody(m) { const t = String(m.t || "");
@@ -939,16 +943,19 @@ setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
 let dmLimit = 10, dmData = null;
 const nf = (n) => Number(n || 0).toLocaleString("tr-TR"), azn = (x) => { const n = Number(x); return (Number.isInteger(n) ? String(n) : n.toFixed(2)).replace(".", ",") + " ₼"; };
-async function loadDm() { if (!can("elmas")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report; renderDm(); }
+async function loadDm() { if (!can("elmas")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report;
+  try { const recent = (x) => x && x.diamonds && Date.now() - Date.parse(x.at) < 6 * 3600_000; dmBadgeCache = { open: (dmData.open || []).filter(recent), coins: (dmData.coins || []).filter(recent) }; localStorage.setItem("bw_dmb", JSON.stringify(dmBadgeCache)); } catch (e) {}
+  renderDm(); }
 function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
   <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
   <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
     : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
 /** Sohbet listesinde: bu kişiden son 6 saatte gelen elmas (parça parça ise grubun toplamı) */
+let dmBadgeCache = (() => { try { return JSON.parse(localStorage.getItem("bw_dmb") || "null"); } catch (e) { return null; } })();
 function dmBadge(uid) {
-  if (!dmData) return "";
-  const mine = [...(dmData.open || []), ...(dmData.coins || [])].filter((x, i, a) => x.diamonds && String(x.uid) === String(uid) && Date.now() - Date.parse(x.at) < 6 * 3600_000 && a.findIndex((y) => y.tx === x.tx) === i);
+  const src = dmData || dmBadgeCache; if (!src) return "";
+  const mine = [...(src.open || []), ...(src.coins || [])].filter((x, i, a) => x.diamonds && String(x.uid) === String(uid) && Date.now() - Date.parse(x.at) < 6 * 3600_000 && a.findIndex((y) => y.tx === x.tx) === i);
   if (!mine.length) return "";
   const g = dmGroups(mine).sort((a, b) => Date.parse(b.last) - Date.parse(a.last))[0];
   return `<div class="bxdm">💎 ${nf(g.diamonds)} elmas geldi${g.rows.length > 1 ? ` (${g.rows.length} parça)` : ""} · ${g.paid ? "✅ ödendi" : "ödenecek " + azn(g.pay)}</div>`;
