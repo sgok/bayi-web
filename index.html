@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.23">
+<meta name="build" content="2.1.24">
 <title>Sugo Coins Bayi</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -405,12 +405,13 @@ function setCtags(m) { if (!m || typeof m !== "object") return; ctags = m; try {
 // 🔕 Sessize alınanlar ({ id: { u: bitiş ms (0 = süresiz), at: başlangıç ms } }) ve 🚫 bloklular: yeni mesajları üste çıkmaz, bildirim/ses yok; bloklular yalnız "Bloklu" sekmesinde
 let cmutes = (() => { try { return JSON.parse(localStorage.getItem("bw_cmutes") || "{}") || {}; } catch (e) { return {}; } })();
 // 💳 ödeme şeridi, 📝 notlar, ⏰ hatırlatmalar: sohbetle aynı istekte gelir (chat_history), sohbetin en altında
-let chX = { pay: null, notes: [], rems: [] }, rems = {};
+let chX = { pay: null, notes: [], rems: [], sent: null }, rems = {};
+const sentAfter = (t) => !!(chX.sent && Date.parse(chX.sent.at) >= Date.parse(t) - 60_000); // bu andan sonra (1 dk pay) coin yüklendi mi
 const hm = (t) => { try { return new Date(t).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p = chX.pay;
   if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span><br>${p.ev
     ? (() => { const r = payRound(p.ev.azn, p.ev.orig), co = Math.round(r * 1000), fark = r !== p.ev.azn;
-      return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${hm(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
+      return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${hm(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${sentAfter(p.ev.at) ? `<br>🪙 <b>${nf(chX.sent.coins)} coin yüklendi</b> <span class="s">· ${hm(chX.sent.at)}${chX.sent.by ? " · " + esc(chX.sent.by) : ""}</span>` : can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
     : p.result === "unused" ? "❌ 15 dk içinde bu karta para gelmedi" : p.result === "undone" ? "↩️ Kart verme geri alındı" : "⏳ Para bekleniyor…"}</div>`;
   for (const n of (chX.notes || []).slice(0, 3)) h += `<div class="xinfo note" data-k="xn${n.id}"><span class="xt">📝 ${emo(esc(n.body))} <span class="s">· ${esc(n.by_user || "")} · ${rel(Date.parse(n.at))}</span></span><button onclick="noteHide(${n.id})" aria-label="Notu kaldır">✕</button></div>`;
   for (const r of chX.rems || []) { const due = Date.parse(r.due_at), late = due <= Date.now();
@@ -429,7 +430,7 @@ function parseCoins(t) { t = String(t || "").toLowerCase(); if (/almaz|elmas|�
   return 0; }
 function askedCoins() { if (!can("coin") || !cur || isSys(cur)) return 0; let i = hist.length - 1; const tail = [];
   for (; i >= 0 && tail.length < 3; i--) { const m = hist[i]; if (m.m) break; if (m.k === "text") tail.push(m); }
-  for (const m of tail) { const v = parseCoins(m.t); if (v) return v; } return 0; }
+  for (const m of tail) { const v = parseCoins(m.t); if (v) return sentAfter(m.at) ? 0 : v; } return 0; } // istenen yüklendiyse öneri kaybolur
 function noteAdd() { if (!cur) return; openModal(`<h3 style="margin:0 0 8px">📝 Müşteri notu</h3><div class="s" style="margin-bottom:8px">Ekipteki herkes görür. Ör: "Her zaman Günel kartına öder", "Borcu var, 50 ₼".</div>
   <textarea id="noteIn" rows="3" style="width:100%" maxlength="1000"></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="noteSave()">💾 Kaydet</button></div>`, true); }
 async function noteSave() { const c = cur, t = ($("noteIn").value || "").trim(); if (!t) { toast("Not boş", true); return; }
@@ -591,7 +592,7 @@ async function loadBuyers(uids, force) {
 // ---------- sohbet
 const synced = {};
 async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
-  if (String(id) !== cur) chX = { pay: null, notes: [], rems: [] }; cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
+  if (String(id) !== cur) chX = { pay: null, notes: [], rems: [], sent: null }; cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
@@ -656,7 +657,9 @@ async function loadChat(scroll) { if (!cur) return; const c = cur;
   if (h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
     if (!older.length) histMore = !!h.report.more; // eski sayfa yüklenmediyse "devamı var" bilgisi son sayfadan
     const seenIds = new Set(latest.map((m) => String(m.id)));
-    hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || []; chX = { pay: h.report.pay || null, notes: h.report.notes || [], rems: h.report.rems || [] };
+    hist = applyOpt([...older.filter((m) => !seenIds.has(String(m.id))), ...latest]); coins = h.report.coins || [];
+    const loc = chX.sent && (!h.report.sent || Date.parse(chX.sent.at) > Date.parse(h.report.sent.at)) ? chX.sent : h.report.sent || null; // az önce buradan yüklenen sunucuya düşmediyse yerel kalır
+    chX = { pay: h.report.pay || null, notes: h.report.notes || [], rems: h.report.rems || [], sent: loc };
     if (Array.isArray(h.report.pins)) { pins = h.report.pins; chPinsSet(c, pins); renderPins(); }
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m) ding(); }
   outbox = o.outbox || []; renderChat(scroll); }
@@ -1345,7 +1348,7 @@ async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins,
       openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><p class="s" style="color:#fbbf24">⚠️ Gönderim çok acilse Selçuk Bey ile iletişime geçin.</p><button onclick="closeModal()">Tamam</button></div>`);
       const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
     closeModal(); toast("❌ " + d.error, true); return; }
-  closeModal();
+  closeModal(); if (cn && cn.uid === cur) { chX.sent = { at: new Date().toISOString(), coins: c, by: (me && me.name) || "" }; renderChat(); } // ⚡ öneriler hemen kaybolur
   if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); } // teşekkür sadece kesin gönderimde
   else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
   cn = null; }
