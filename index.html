@@ -48,6 +48,8 @@
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
   .m.pinmsg { box-shadow: 0 0 0 2px #f59e0b; } .m .pinmk { color: #fbbf24; font-weight: 700; margin-right: 4px; }
   #convs .row[data-cid] { transition: none; } #convs .row.swback { transition: transform .2s ease; }
+  .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
+  #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
   #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
@@ -186,7 +188,8 @@
   <img src="icon-192.png?v=2" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="s">Şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
-  <button class="go" style="min-width:200px" onclick="doLogin()">Giriş</button>
+  <button class="go" id="loginBtn" style="min-width:200px" onclick="doLogin()">Giriş</button>
+  <div id="loginMsg" class="lmsg" role="status" aria-live="polite"></div>
 </section>
 
 <section class="screen" id="inbox">
@@ -282,12 +285,22 @@ function rel(ms) { if (!ms) return ""; const d = new Date(ms), now = new Date();
   if (d.toDateString() === now.toDateString()) return hm; const y = new Date(now - 864e5); if (d.toDateString() === y.toDateString()) return "Dün " + hm; return d.toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" }); }
 
 // ---------- giriş
-async function doLogin() { const pw = $("pin").value; if (!pw) return;
-  const d = await api("login", { password: pw }); if (d.error || !d.token) { toast(d.error || "Giriş olmadı", true); return; }
-  tok = d.token; localStorage.setItem("bw_tok", tok); $("pin").value = "";
-  if (d.must_change) { await start(); pwChange(pw, true); return; } start(); }
+// Giriş: ne olduğu ekranda yazar (kontrol ediliyor → başarılı / neden olmadı); düğme iki kez basılamaz
+function loginMsg(text, kind) { const el = $("loginMsg"); el.textContent = text || ""; el.className = "lmsg " + (kind || ""); }
+let loginBusy = false;
+async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $("loginBtn"), pw = inp.value;
+  if (!pw) { loginMsg("Lütfen şifrenizi yazın", "err"); inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); return; }
+  loginBusy = true; btn.disabled = true; btn.textContent = "⏳ Giriş yapılıyor…"; loginMsg("Şifre kontrol ediliyor…", "wait");
+  const d = await api("login", { password: pw });
+  if (d.error || !d.token) { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş";
+    const e = String(d.error || ""); loginMsg("❌ " + (e === "Bağlantı yok" ? "İnternet bağlantısı yok, tekrar deneyin" : e || "Giriş yapılamadı, tekrar deneyin"), "err");
+    inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); inp.select(); return; }
+  btn.textContent = "✅ Giriş başarılı"; loginMsg("✅ Giriş başarılı — sohbetler yükleniyor…", "ok");
+  tok = d.token; localStorage.setItem("bw_tok", tok); inp.value = "";
+  try { if (d.must_change) { await start(); pwChange(pw, true); } else await start(); } finally { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş"; }
+  if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); show("login"); }
+async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
 async function start() {
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
@@ -295,7 +308,7 @@ async function start() {
   const fast = !!(cm && Array.isArray(ci) && ci.length);
   if (fast) { me = cm; show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
   const pInbox = loadInbox();
-  const d = await api("me"); if (d.error) { show("login"); return; }
+  const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
   if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
   const qp = new URLSearchParams(location.search); if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
