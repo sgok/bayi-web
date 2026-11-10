@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.47">
+<meta name="build" content="2.1.48">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.47">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.47">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.47">
+<link rel="manifest" href="manifest.json?v=2.1.48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.48">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.48">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -90,6 +90,9 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
   .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; } .rolepick button[data-r="sahip"] { grid-column: 1 / -1; }
   .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  /* 💸 Alışı kim ödedi: kişi / banka çipleri (tek seçim) */
+  .paychips { display: flex; flex-wrap: wrap; gap: 6px; } .paychips button { padding: 8px 12px; font-size: 15px; border-radius: 999px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .paychips button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
   #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + var(--swh, 0px) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
@@ -339,7 +342,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.47" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.48" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -348,7 +351,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.47" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.48" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -403,7 +406,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.47"></script>
+<script src="emoji.js?v=2.1.48"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -995,12 +998,14 @@ async function msgAct(kind, mid, e) {
   done();
 }
 
-// ---------- 💎 parça parça elmas bozumu: aynı kişinin aralarında en fazla 2 dk olan bozumları tek grup (toplam + ödenecek) — tabletle aynı
-const DM_GAP = 2 * 60_000;
+// ---------- 💎 parça parça elmas bozumu: aynı alış partisindeki (batch) bozumlar her zaman tek grup; partisi yoksa aynı kişinin aralarında en fazla 10 dk olanlar
+// (muhasebedeki MERGE_MIN ile aynı). Ödenecek grup başına: grubun toplam coini → aşağı yuvarla (parçaları ayrı yuvarlayıp toplamak 1 ₼ eksik gösterir)
+const DM_GAP = 10 * 60_000;
 function dmGroups(rows) {
   const asc = rows.filter((r) => r.diamonds || r.amount).slice().sort((a, b) => Date.parse(a.at) - Date.parse(b.at)), out = [];
-  for (const r of asc) { const g = out.find((x) => String(x.uid) === String(r.uid) && Date.parse(r.at) - Date.parse(x.last) <= DM_GAP);
-    if (g) { g.rows.push(r); g.last = r.at; } else out.push({ uid: r.uid, rows: [r], last: r.at }); }
+  for (const r of asc) { const b = r.batch != null && r.batch !== "" ? String(r.batch) : null;
+    const g = b ? out.find((x) => x.batch === b) : out.find((x) => !x.batch && String(x.uid) === String(r.uid) && Date.parse(r.at) - Date.parse(x.last) <= DM_GAP);
+    if (g) { g.rows.push(r); g.last = r.at; } else out.push({ uid: r.uid, batch: b, rows: [r], last: r.at }); }
   for (const g of out) { g.coins = g.rows.reduce((t, r) => t + Number(r.amount), 0); g.diamonds = Math.round(g.coins / 0.36);
     g.exact = Math.round(g.coins / 1000 * 33 / 36 * 100) / 100; g.pay = Math.floor(g.exact + 1e-6);
     g.paid = g.rows.every((r) => r.paid_at); g.unpaid = g.rows.filter((r) => !r.paid_at); g.key = g.rows[0].tx; g.name = g.rows[0].nickname || g.uid; }
@@ -1012,10 +1017,60 @@ function dmGroupLine(g) {
       <button class="go" style="padding:5px 10px;font-size:13px;margin-top:4px" data-pe onclick="event.stopPropagation();coinPaidAll('${esc(JSON.stringify(g.unpaid.map((r) => r.tx)))}','${esc(g.name + " · " + g.rows.length + " parça · " + azn(g.pay))}')">💸 Hepsini ödendi yap</button>`);
 }
 async function coinPaidAll(txsJson, label) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; } const txs = JSON.parse(txsJson);
-  if (!confirm(label + "\n\nParçaların hepsi ödendi olarak işaretlensin mi? (Parayı gönderdiyseniz evet)")) return;
+  coinPaySend({ txs }, "✅ Hepsi ödendi işaretlendi", label); }
+// 💸 Ödendi: PIN → sunucuya ask:true; alış ödenmemişse sunucu hiçbir şey işaretlemeden need_pay döner → "Alışı kim ödedi?" (kişi + banka, Telegram'daki gibi)
+async function coinPaySend(body, okMsg, label) {
   const pin = await askPin("Ödendi işaretlemek için işlem PIN'iniz"); if (!pin) return;
-  const d = await api("bayi_coin_paid", { txs, paid: true, pin }); if (d.pin === "wrong") pinCache = null;
-  if (d.error) toast(d.error, true); else { toast("✅ Hepsi ödendi işaretlendi"); if (cur) loadChat(); loadDm(); } }
+  const d = await api("bayi_coin_paid", { ...body, paid: true, pin, ask: true }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) { toast(d.error, true); return; }
+  const np = d.report && d.report.need_pay; if (np) { payAsk(np, body, pin, okMsg, label); return; }
+  coinPaidDone(typeof d.ok === "string" ? d.ok : okMsg); }
+function coinPaidDone(msg) { toast(msg); if (cur) loadChat(); loadDm(); }
+let paySt = null; // açık "Alışı kim ödedi?" penceresi: { np, body, pin, okMsg, person, bank, busy }
+const payLs = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; };
+const payAzn = (x) => Number(x || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " ₼";
+const payCards = (pid) => { const seen = new Map(); for (const c of (paySt.np.cards || []).filter((c) => String(c.person_id) === String(pid))) { const k = String(c.bank); if (!seen.has(k)) seen.set(k, { bank: c.bank, label: c.label, l4: [] }); if (c.last4) seen.get(k).l4.push(c.last4); } return [...seen.values()]; }; // aynı bankanın kartları tek çip
+const payBankName = (code) => { const b = (paySt.np.banks || []).find((x) => String(x.code) === String(code)), c = (paySt.np.cards || []).find((x) => String(x.bank) === String(code)); return (b && b.label) || (c && c.label) || String(code || ""); };
+const payBankMap = () => { try { return JSON.parse(payLs("bw_pay_bank") || "{}") || {}; } catch (e) { return {}; } };
+function payDefBank(pid) { const m = payBankMap()[pid], ok = (paySt.np.banks || []).some((b) => String(b.code) === String(m)) || (paySt.np.cards || []).some((c) => String(c.bank) === String(m));
+  if (m && ok) return String(m); const c = payCards(pid)[0]; return c ? String(c.bank) : ""; }
+function payAsk(np, body, pin, okMsg, label) { const ppl = np.people || [];
+  if (!ppl.length) { toast("Kişi listesi boş — sunucudan kişi gelmedi", true); return; }
+  const has = (id) => id != null && ppl.some((p) => String(p.id) === String(id)), last = payLs("bw_pay_person");
+  const person = String(has(last) ? last : has(np.me) ? np.me : ppl[0].id);
+  paySt = { np, body, pin, okMsg, person, bank: "", busy: false }; paySt.bank = payDefBank(person);
+  const one = (np.batches || []).length === 1;
+  openModal(`<h3 style="margin:0 0 4px">💸 Alışı kim ödedi?</h3>
+    <div class="s" style="margin-bottom:10px;overflow-wrap:anywhere">${esc(np.what || label || "")} · <b>${payAzn(np.amount)}</b></div>
+    <div class="s" style="margin-bottom:6px">Kişi</div><div class="paychips" id="payPpl">${ppl.map((p) => `<button data-id="${esc(String(p.id))}" onclick="payPerson(this.dataset.id)">${esc(p.name)}</button>`).join("")}</div>
+    <div class="s" style="margin:12px 0 6px">Banka</div><div class="paychips" id="payCards"></div>
+    <select id="payOther" onchange="payBank(this.value)" style="width:100%;height:42px;margin-top:8px;font-size:16px;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 10px"></select>
+    ${one ? `<label class="s" style="display:block;margin-top:12px">Tutar (₼)<input id="payAmt" inputmode="decimal" autocomplete="off" value="${esc(String(np.amount ?? "").replace(".", ","))}" oninput="payDraw()" onfocus="setTimeout(() => { const g = $('payGo'); if (g) g.scrollIntoView({ block: 'nearest' }); }, 350)" style="margin-top:4px;font-size:18px"></label>` : ""}
+    <div style="display:grid;gap:8px;margin-top:14px"><button class="go" id="payGo" onclick="payGo()" style="padding:14px;font-size:16px;overflow-wrap:anywhere"></button><button onclick="payCancel()">Vazgeç</button></div>`);
+  payDraw(); }
+function payAmt() { const i = $("payAmt"); if (!i) return { v: Number(paySt.np.amount), send: false }; const s = String(i.value || "").trim().replace(",", "."), v = Number(s);
+  return { v, send: true, ok: s !== "" && Number.isFinite(v) && v > 0 }; }
+function payDraw() { if (!paySt || !$("payGo")) return; const st = paySt, cards = payCards(st.person), inCards = cards.some((c) => String(c.bank) === st.bank);
+  document.querySelectorAll("#payPpl button").forEach((b) => b.classList.toggle("on", b.dataset.id === st.person));
+  $("payCards").innerHTML = cards.length ? cards.map((c) => `<button data-b="${esc(String(c.bank))}" class="${String(c.bank) === st.bank ? "on" : ""}" onclick="payBank(this.dataset.b)">${esc(c.label || payBankName(c.bank))} ${c.l4.map((x) => "···" + esc(String(x))).join(", ")}</button>`).join("")
+    : `<span class="s">Bu kişinin kayıtlı kartı yok — aşağıdan bankayı seçin</span>`;
+  $("payOther").innerHTML = `<option value="">Diğer banka…</option>` + (st.np.banks || []).map((b) => `<option value="${esc(String(b.code))}" ${!inCards && String(b.code) === st.bank ? "selected" : ""}>${esc(b.label || b.code)}</option>`).join("");
+  const a = payAmt(), p = (st.np.people || []).find((x) => String(x.id) === st.person), g = $("payGo");
+  g.textContent = st.busy ? "⏳ Kaydediliyor…" : !st.bank ? "Banka seçin" : a.send && !a.ok ? "Tutarı yazın" : `✅ Ödendi · ${payAzn(a.v)} · ${p ? p.name : ""} ${payBankName(st.bank)}`;
+  g.disabled = st.busy || !st.bank || (a.send && !a.ok); }
+function payPerson(id) { if (!paySt || paySt.busy) return; paySt.person = String(id); paySt.bank = payDefBank(paySt.person); payDraw(); }
+function payBank(code) { if (!paySt || paySt.busy) return; if (code) paySt.bank = String(code); else if (!payCards(paySt.person).some((c) => String(c.bank) === paySt.bank)) paySt.bank = ""; payDraw(); }
+function payCancel() { paySt = null; closeModal(); }
+async function payGo() { const st = paySt; if (!st || st.busy || !st.bank) return; const a = payAmt(); if (a.send && !a.ok) { toast("Tutar geçersiz", true); return; }
+  st.busy = true; payDraw();
+  const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
+  const body = { ...st.body, paid: true, pin, ask: true, person_id: isNaN(Number(st.person)) ? st.person : Number(st.person), bank: st.bank, ...(a.send ? { amount: Math.round(a.v * 100) / 100 } : {}) };
+  let d; try { d = await api("bayi_coin_paid", body); } catch (e) { d = { error: "Bağlantı hatası: " + (e && e.message || e) }; }
+  if (paySt !== st) return; // bu arada kapatıldı
+  if (d.pin === "wrong") pinCache = null;
+  if (d.error || (d.report && d.report.need_pay)) { st.busy = false; payDraw(); toast(d.error || "Ödeme kaydedilemedi, tekrar deneyin", true); return; }
+  payLs("bw_pay_person", st.person); const m = payBankMap(); m[st.person] = st.bank; payLs("bw_pay_bank", JSON.stringify(m));
+  paySt = null; closeModal(); coinPaidDone(typeof d.ok === "string" ? d.ok : st.okMsg); }
 // En alta yapışma: sohbet açılınca ve kullanıcı en alttayken yeni içerik/resim yüklenince en alta iner; yukarı kaydırınca bırakır
 let stick = true;
 function toBottom() { const b = $("msgs"); b.scrollTop = b.scrollHeight; }
@@ -1060,7 +1115,7 @@ function renderChat(scroll) {
     : `<div class="m ${m.m ? "me" : ""}${pinIds.has(String(m.id)) ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}${m.m && m.k === "text" ? cardTag(m.t) : ""}<div class="tm">${pinIds.has(String(m.id)) ? `<span class="pinmk">📌 Sabit${pinBy[String(m.id)] ? " · " + esc(pinBy[String(m.id)]) : ""}</span>` : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span style="color:#7dd3fc;font-weight:700">✓✓</span>' : " ✓") : ""}</div>${emoChips(m)}</div>` }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
-    items.push({ k: "g" + g.last, at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
+    items.push({ k: "g" + g.last, at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aynı alıştaki ya da aralarında en fazla 10 dk olan bozumlar tek grup</div></div>` });
   for (const c of coins) items.push({ k: "c" + c.tx, at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 ${c.other ? `<b>Başka hesaptan:</b> ${esc(c.nickname || "")} (UID ${esc(c.uid || "")})<br>` : ""}<b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
       ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
       <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div></div>` });
@@ -1081,8 +1136,10 @@ function renderChat(scroll) {
   morphKeyed(box, h || `<div class="day">Mesaj yok</div>`);
   if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
-async function coinPaid(tx, paid) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; } if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
-  const pin = await askPin(paid ? "Ödendi işaretlemek için işlem PIN'iniz" : "Geri almak için işlem PIN'iniz"); if (!pin) return;
+async function coinPaid(tx, paid) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
+  if (paid) { coinPaySend({ tx }, "✅ Ödendi işaretlendi"); return; }
+  if (!confirm("Ödendi işareti geri alınsın mı?\n\nAlışa yazılan ödeme de geri alınır.")) return;
+  const pin = await askPin("Geri almak için işlem PIN'iniz"); if (!pin) return;
   const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) loadChat(); loadDm(); } }
 
@@ -1316,7 +1373,10 @@ async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
   $("crList").innerHTML = rows.length ? rows.map((r) => r.diamonds ? dmRow(r) : `<div class="row"><div class="av">${avHtml(r.nickname, r.avatar)}</div><div class="b"><div class="t"><b>${esc(r.nickname || (r.uid ? "UID " + r.uid : r.type_name || ""))}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
       <div class="s">${esc(r.type_name || "")}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null ? " · bakiye sonrası " + nf(r.result_amount) : ""}</div></div><b style="color:${r.op_type === 1 ? "#4ade80" : "#f87171"}">${r.op_type === 1 ? "+" : "−"}${nf(r.amount)}</b></div>`).join("")
     + (rep.total > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
-function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = d.unpaid || {}, td = d.today || {};
+/** Ödenmemiş toplamı grup bazında (kişi kartındaki "Toplam borç" ile aynı hesap); liste eksikse sunucunun toplamı */
+function dmUnpaid(d) { const u = (d && d.unpaid) || {}, open = (d && d.open) || []; if (!open.length || open.length < (u.n || 0)) return u;
+  return { ...u, pay: Math.round(dmGroups(open).reduce((s, g) => s + g.pay, 0) * 100) / 100 }; }
+function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = dmUnpaid(d), td = d.today || {};
   $("nDm").hidden = !u.n; $("nDm").textContent = u.n || "";
   setDmStrip(open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "");
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
@@ -1974,6 +2034,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.47"></script>
+<script src="profile.js?v=2.1.48"></script>
 </body>
 </html>
