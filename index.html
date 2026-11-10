@@ -8,13 +8,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sugo Coins Bayi">
 <meta name="theme-color" content="#1e1236">
-<script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
+<script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}
+try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
+</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.44">
+<meta name="build" content="2.1.45">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.44">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.44">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.44">
+<link rel="manifest" href="manifest.json?v=2.1.45">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.45">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.45">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -37,8 +39,8 @@
   /* Ekran = görünen alan (klavye açıkken klavyenin üstü): iPhone sayfayı kaydırıp başlığı gizlemesin */
   /* Klavye kapalı: ekran en alta kadar (ana ekran uygulamasında görünen alan yüksekliği alt çubuk kadar kısa geliyordu → altta boşluk kalıyordu).
      Klavye açık: görünen alana sığar (başlık kaybolmasın) */
-  .screen { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); bottom: 0; display: none; flex-direction: column; }
-  html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top)); }
+  .screen { position: fixed; left: 0; right: 0; top: calc(env(safe-area-inset-top) + var(--swh, 0px)); bottom: 0; display: none; flex-direction: column; }
+  html.kb .screen { top: calc(var(--vvt, 0px) + env(safe-area-inset-top) + var(--swh, 0px)); bottom: auto; height: calc(var(--vvh, 100dvh) - env(safe-area-inset-top) - var(--swh, 0px)); }
   html.kb .comp { padding-bottom: 8px; } /* klavye açık: alt güvenli boşluk gereksiz */
   .screen.on { display: flex; } .screen { background: var(--bg); }
   header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--hdr); min-height: 58px; }
@@ -90,10 +92,15 @@
   .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
-  #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
+  #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + var(--swh, 0px) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
   /* 📨 ajans sahibine Sugo uygulaması onay isteği: her ekranın üstünde (yer kaplamaz) */
-  #pzBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 72; background: linear-gradient(135deg, #6d28d9, #a855f7); color: #fff; font-size: 14.5px; line-height: 1.35; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0009; border: 1px solid #c4b5fd66; }
+  #pzBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + var(--swh, 0px) + 64px); z-index: 72; background: linear-gradient(135deg, #6d28d9, #a855f7); color: #fff; font-size: 14.5px; line-height: 1.35; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0009; border: 1px solid #c4b5fd66; }
   #pzBar[hidden] { display: none; } #pzBar .pzb { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; } #pzBar button { padding: 9px; font-size: 15px; font-weight: 700; border: 0; background: #00000040; color: #fff; } #pzBar .pzok { background: #16a34a; } #pzBar .pzl { font-variant-numeric: tabular-nums; }
+  /* 🔀 ajans sahibi başka hesaptayken: güvenli alanın hemen altında sabit şerit; ekranlar şerit kadar aşağıdan başlar (html.swon sayfa çizilmeden önce konur → kayma yok), alt menü / yazı kutusu kapanmaz */
+  html.swon { --swh: 34px; }
+  #swBar { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top); height: var(--swh, 34px); z-index: 74; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left)); background: linear-gradient(135deg, #92400e, #d97706); color: #fff; font-size: 13.5px; font-weight: 600; line-height: 1.2; box-shadow: 0 2px 8px #0006; }
+  html.kb #swBar { top: calc(var(--vvt, 0px) + env(safe-area-inset-top)); } #swBar[hidden], html:not(.swon) #swBar { display: none; }
+  #swBar .swn { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } #swBar button { flex: none; padding: 4px 11px; font-size: 13px; font-weight: 700; border: 0; border-radius: 999px; background: #00000045; color: #fff; }
   #pauseBar[hidden] { display: none; } #pauseBar button { margin-left: 6px; padding: 4px 10px; font-size: 13px; background: #2b1700; color: #ffd84d; border: 0; }
   .tagbar { display: flex; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; z-index: 3; background: var(--bg); }
   .tagbar button.rall { font-size: 13px; } .tagbar button.rall:disabled { opacity: .45; }
@@ -105,7 +112,7 @@
   nav.bn { flex-wrap: wrap; } .infol { flex-basis: 100%; text-align: center; font-size: 10px; line-height: 13px; color: var(--muted); opacity: .75; padding: 0 6px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
   /* Sürüm satırı iPhone'un alt çubuk (home indicator) payının içine oturur → alt menü/yazı kutusu en alta yapışık görünür; yazı kutusu ayrıca alt pay bırakmaz (çift boşluk vardı) */
   #compWrap .infol { background: var(--panel); padding-bottom: max(3px, calc(env(safe-area-inset-bottom) - 16px)); } #compWrap .comp { padding-bottom: 8px; } html.kb #compWrap .infol { display: none; }
-  #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
+  #ptr { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + var(--swh, 0px) + 8px); z-index: 80; transform: translate(-50%, -70px); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--muted); box-shadow: 0 6px 18px #0008; pointer-events: none; opacity: 0; }
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
   #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
@@ -164,7 +171,7 @@
   .bxdm { display: inline-block; margin-top: 3px; font-size: 12.5px; color: #c4b5fd; }
   .uidl { color: #5aa9e6; text-decoration: underline dotted; cursor: pointer; }
   #lb { position: fixed; inset: 0; background: #000e; z-index: 60; display: flex; align-items: center; justify-content: center; } #lb[hidden] { display: none; } #lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  #lb a { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 12px; background: #0008; color: #fff; padding: 8px 12px; border-radius: 10px; text-decoration: none; font-size: 14px; }
+  #lb a { position: absolute; top: calc(10px + env(safe-area-inset-top) + var(--swh, 0px)); right: 12px; background: #0008; color: #fff; padding: 8px 12px; border-radius: 10px; text-decoration: none; font-size: 14px; }
   /* Profil (tabletteki gibi) */
   #pfBody { padding: 12px 14px; } #pfBody .card { margin: 0; } #pfBody .card.empty { color: var(--muted); font-size: 14px; }
   .pgrid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: 6px 0; }
@@ -272,7 +279,7 @@
   .cards button.next { border-color: #d97706; color: #fbbf24; }
   #login { align-items: center; justify-content: center; gap: 16px; padding: 24px; }
   #login .pin { font-size: 28px; letter-spacing: 10px; text-align: center; max-width: 260px; }
-  #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
+  #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top) + var(--swh, 0px)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
   #toast.bad { background: #3a1f1f; }
   .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
   nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: max(0px, calc(env(safe-area-inset-bottom) - 19px)); }
@@ -332,7 +339,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.44" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.45" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -341,7 +348,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.44" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.45" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -396,7 +403,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.44"></script>
+<script src="emoji.js?v=2.1.45"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -445,12 +452,13 @@ function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((
   const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
-async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} applyPerms(); renderInbox(); if (cur) renderChat(); } }
+async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); renderInbox(); if (cur) renderChat(); } }
 async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
 async function api0(action, body = {}) {
   const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-web-token": tok }, body: JSON.stringify({ action, ...body }) }).catch(() => null);
   if (!r) return { error: "Bağlantı yok" };
-  if (r.status === 401) { tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  if (r.status === 401 && swOwner() && swOwner() !== tok) { swDone(swOwner()); return { error: "Geçiş oturumu kapandı, kendi hesabınıza dönülüyor" }; } // 🔀 geçiş oturumu kapanmış: sahibin oturumuna dön
+  if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
 const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("toplu:")) return ""; const w = s.startsWith("tablet") ? "Selçuk" : s.replace(/\s*\(toplu\)$/, ""); return ` (${esc(w)})`; };
@@ -497,10 +505,10 @@ async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $(
   if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
 function cacheClear() { try { for (const k of Object.keys(localStorage)) if (/^bw_(pane_|ch_)/.test(k)) localStorage.removeItem(k); } catch (e) {} } // başka kişi girerse eski ekranlar görünmesin
-async function logout() { closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
+async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
-async function start() {
+async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekteki adla)
   // CLS: listenin üstündeki şeritler (bildirim, tablet uyarısı, elmas bozumu) ilk çizimde son bilinen hâliyle yer alır → liste sonradan aşağı kaymaz
   try { notifBarShow(); setTabWarn(localStorage.getItem("bw_tabwarn") || ""); if ($("dmStrip")) $("dmStrip").innerHTML = localStorage.getItem("bw_dmstrip") || ""; } catch (e) {}
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
@@ -513,7 +521,7 @@ async function start() {
   if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
-  applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
+  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
   setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
   const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
   // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
@@ -1430,9 +1438,9 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
 function openModal(h, top) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; modalLayout(!!top); }
 // top: klavyeli pencere ekranın üstünde, yüksekliği klavyenin üstünde kalan alana sığar (düğmeler kaydırılarak görünür)
 function modalLayout(top) { const m = $("modal"), b = $("modalBox"); m.dataset.top = top ? "1" : "";
-  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + 12px)" : "";
+  m.style.alignItems = top ? "flex-start" : "flex-end"; m.style.paddingTop = top ? "calc(env(safe-area-inset-top) + var(--swh, 0px) + 12px)" : "";
   b.style.borderRadius = top ? "18px" : "18px 18px 0 0"; b.style.width = top ? "calc(100% - 24px)" : "100%"; b.style.paddingBottom = top ? "16px" : "calc(16px + env(safe-area-inset-bottom))";
-  b.style.maxHeight = top ? "calc(var(--vvh, 100dvh) - env(safe-area-inset-top) - 24px)" : "90vh"; }
+  b.style.maxHeight = top ? "calc(var(--vvh, 100dvh) - env(safe-area-inset-top) - var(--swh, 0px) - 24px)" : "90vh"; }
 // Pencerede bir yazı kutusuna dokunulunca (ör. Yükleme Yap · coin miktarı) pencere üste taşınır: klavye kutuyu örtmesin
 document.addEventListener("focusin", (e) => { const t = e.target; if (!t || !t.matches || !t.matches("#modal input, #modal textarea")) return;
   if ($("modal").dataset.top !== "1") { window.__modalMoved = Date.now(); modalLayout(true); } setTimeout(() => { try { t.scrollIntoView({ block: "nearest" }); } catch (x) {} }, 300); });
@@ -1531,10 +1539,12 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
     can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : ""])}
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
   ${grp("👑 Ajans sahibi", isSahip() ? [row("💳", "", "Kartları yönet", "ekle · düzenle · sıra · hak sıfırla · pasif", "ownCards()"), row("👥", "", "Web kullanıcıları", "ekle · rol · izin · şifre / PIN · pasif", "ownUsers()"),
-    row("📜", "", "İşlem kaydı", "kim ne yaptı (mesaj, onay, coin, kart, giriş)", "ownAudit()"), row("🔌", "", "Bayi bağlantısı", "sunucu / tablet · Sugo Bayi aç / kapa", "ownLink()")] : [])}
-  ${grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
+    row("🔀", "", "Hesaplar arası geçiş", "şifresiz başka kullanıcının paneline geç", "acSwitch()"),
+    row("📜", "", "İşlem kaydı", "kim ne yaptı (mesaj, onay, coin, kart, giriş)", "ownAudit()"), row("🔌", "", "Bayi bağlantısı", "sunucu / tablet · Sugo Bayi aç / kapa", "ownLink()")]
+    : swOn() ? [row("🔀", "", "Hesaplar arası geçiş", "başka kullanıcıya doğrudan geç", "acSwitch()")] : [])}
+  ${swOn() ? "" : grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
   ${grp("Diğer", [row("📐", "", "Ekran ölçüsü", "", "screenInfo()")])}
-  <button class="setout" onclick="logout()">🚪 Çıkış yap</button>`); }
+  <button class="setout" onclick="logout()">${swOn() ? "↩️ Kendi hesabıma dön" : "🚪 Çıkış yap"}</button>`); }
 // ⚙️ Ayarlar tam sayfa: alt sayfalar üst üste (her biri tarayıcı geçmişinde) → ‹ / geri hareketi bir üst sayfa, ✕ ayarları tamamen kapatır
 let setStack = [], setPrev = "inbox";
 const setOn = () => !!$("set") && $("set").classList.contains("on");
@@ -1566,7 +1576,7 @@ async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.tes
 let pinCache = null;
 function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
   return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
-    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3><input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
+    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3>${swOn() ? `<div class="s swpin" style="margin:-4px 0 8px">👑 Kendi PIN'iniz (${esc(me.switched.by || "ajans sahibi")})</div>` : ""}<input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
     // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor)
     const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); }
@@ -1625,6 +1635,37 @@ async function payUndo() { const p = chX.pay, c0 = cur; if (!p || !c0) return;
 const ROLES_W = { sahip: ["👑", "Ajans sahibi"], yetkili: ["🏪", "Bayi Yetkilisi"], yardimci: ["🤝", "Yardımcı"] };
 const roleTxt = (r, lbl) => { const x = ROLES_W[r] || ROLES_W.yetkili; return x[0] + " " + (lbl || x[1]); };
 // sayfa gövdesi tek kutu: içi yenilenince ayarlar geçmişindeki kopyası da yenilenir (geri gelince eski hâli görünmesin)
+// 🔀 Hesaplar arası geçiş (ajans sahibi): şifresiz başka web kullanıcısının paneli; sahibin token'ı bw_tok_owner'da durur, şeritten / Çıkış'tan dönülür
+// Geçişte kişiye özel önbellekler silinir ve sayfa baştan yüklenir (başkasının listesi / izinleri ekranda kalmasın). PIN isteyen işlemlerde sahibin kendi PIN'i sorulur.
+let acData = null, swGoing = false;
+const swOwner = () => { try { return localStorage.getItem("bw_tok_owner") || ""; } catch (e) { return ""; } };
+const swOn = () => !!(me && me.switched);
+function swDraw() { let c = null; try { c = JSON.parse(localStorage.getItem("bw_sw") || "null"); } catch (e) {}
+  if (me && !me.switched && swOwner()) { try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} } // sunucu geçiş yok diyor: eski kayıt
+  const on = me ? !!me.switched : !!swOwner(), nm = me && me.switched ? me.name : (c && c.name) || "başka";
+  document.documentElement.classList.toggle("swon", on); let el = $("swBar");
+  if (!on) { if (el) el.hidden = true; return; }
+  if (!el) { el = document.createElement("div"); el.id = "swBar"; el.setAttribute("role", "status"); document.body.appendChild(el); }
+  const h = `<span class="swn">👑 <b>${esc(nm)}</b> hesabındasınız</span><button onclick="swBack()">Kendi hesabıma dön</button>`; if (el.innerHTML !== h) el.innerHTML = h; el.hidden = false; }
+function swClear() { cacheClear(); // kişiye özel her şey: liste, sohbetler, sekmeler, kimlik, kaldığı yer, etiket / sessiz / sabit kayıtları
+  // kalır: cihaz ayarları (tema, giriş rolü) ve bayinin herkese aynı şeritleri (elmas şeridi, tablet uyarısı, VIP): ilk çizimde yerinde olsunlar, liste sonradan itilmesin (CLS)
+  try { for (const k of Object.keys(localStorage)) if (/^bw_/.test(k) && !/^bw_(tok|tok_owner|sw|theme|role|heal_log|launch_h|relsort|last|dmstrip|tabwarn|dmb|vipm|vipm_ver)$/.test(k)) localStorage.removeItem(k); } catch (e) {}
+  try { if (window.caches) caches.delete("bw-nav").catch(() => 0); } catch (e) {} }
+function swGo() { location.reload(); } // senaryolar bunu yerinde yükleyiciyle değiştirir
+function swDone(own) { if (swGoing) return; swGoing = true; swClear(); tok = own || "";
+  try { if (own) localStorage.setItem("bw_tok", own); else localStorage.removeItem("bw_tok"); localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} swGo(); }
+async function swBack() { if (swGoing) return; const own = swOwner(); toast("↩️ Kendi hesabınıza dönülüyor…"); await api0("account_return"); swDone(own); } // sahip token'ı geçersizse yeniden yüklemede giriş ekranı gelir
+async function swTo(key) { if (swGoing || !key) return; // şu an olunan hesabın satırı kapalı (dokunulmaz)
+  const d = await api("account_switch", { key }); if (d.error || !d.token) { toast("❌ " + (d.error || "Geçilemedi"), true); return; }
+  try { if (!swOwner() && !swOn()) localStorage.setItem("bw_tok_owner", tok); localStorage.setItem("bw_sw", JSON.stringify({ name: d.name, role_label: d.role_label })); } catch (e) {} // zaten geçişteyse sahibin token'ı korunur
+  swGoing = true; swClear(); tok = d.token; try { localStorage.setItem("bw_tok", d.token); } catch (e) {} toast("🔀 " + (d.name || "") + " hesabına geçiliyor…"); swGo(); }
+function acSwitch() { sheet("acsw", `<h3>🔀 Hesaplar arası geçiş</h3><div id="acBody">${acHtml()}</div>`); acLoad(); }
+async function acLoad() { const d = await api("account_list"); if (d.error) { toast("❌ " + d.error, true); return; } acData = (d.report && d.report.accounts) || []; if ($("acBody")) ownFill("acsw", "acBody", acHtml()); }
+function acHtml() { const cur0 = me && me.switched ? me.name : "";
+  const rows = (acData || []).map((a) => { const here = a.name === cur0, sub = `${esc(a.role_label || a.role || "")} · ${here ? "şu an bu hesaptasınız" : "son görülme " + (a.last_seen ? rel(Date.parse(a.last_seen)) : "hiç girmedi")}`;
+    return `<button class="setrow acrow" data-key="${esc(a.key)}" ${here ? "disabled" : `onclick="swTo(this.dataset.key)"`}><span class="si">${initial(a.name)}</span><span class="st">${esc(a.name)}<small>${sub}</small></span><span class="chev">${here ? "✓" : "›"}</span></button>`; });
+  return `<div class="s" style="margin:0 4px 10px">Dokunduğunuz kişinin panelini onun gördüğü gibi kullanırsınız; şifre sorulmaz. Üstteki şeritten ya da Çıkış'tan kendi hesabınıza dönersiniz. PIN isteyen işlemlerde kendi PIN'iniz sorulur.</div>`
+    + (acData ? (rows.length ? `<div class="setlist">${rows.join("")}</div>` : `<div class="s" style="margin:0 4px">Geçilebilecek başka hesap yok.</div>`) : `<div class="setlist">${SKR(3)}</div>`); }
 function ownFill(key, id, h) { const el = $(id); if (el && el.innerHTML !== h) el.innerHTML = h; const t = setStack.find((x) => x.key === key); if (t) t.h = `<div id="${id}">${h}</div>`; }
 async function ownAct(action, body, title) { const pin = await askPin(title || "Değişiklik için işlem PIN'iniz"); if (!pin) return null;
   const d = await api(action, { ...body, pin }); if (d.pin === "wrong") pinCache = null;
@@ -1837,7 +1878,7 @@ async function notifSetup() {
 async function notifAsk() { unlockAudio(); const p = await Notification.requestPermission(); if (p === "granted") { await pushSubscribe(true); } notifSetup(); }
 function b64uToU8(s) { const p = "=".repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, (c) => c.charCodeAt(0)); }
 async function pushSubscribe(first) {
-  try { const reg = swReg || await navigator.serviceWorker.ready; if (!me || !me.vapid) return;
+  try { const reg = swReg || await navigator.serviceWorker.ready; if (!me || !me.vapid || swOn()) return; // 🔀 geçişteyken abonelik başkasının adına yazılmasın
     let sub = await reg.pushManager.getSubscription();
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uToU8(me.vapid) });
     const d = await api("push_sub", { sub: sub.toJSON() }); if (first) toast(d.error ? "❌ " + d.error : "🔔 Bildirimler açıldı"); } catch (e) { if (first) toast("Bildirim açılamadı: " + (e && e.message || e), true); } }
@@ -1933,6 +1974,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.44"></script>
+<script src="profile.js?v=2.1.45"></script>
 </body>
 </html>
