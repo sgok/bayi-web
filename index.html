@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.34">
+<meta name="build" content="2.1.35">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.34">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.34">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.34">
+<link rel="manifest" href="manifest.json?v=2.1.35">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.35">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.35">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -199,6 +199,7 @@
   .sk { display: inline-block; height: .85em; border-radius: 6px; vertical-align: middle; background: linear-gradient(90deg, #ffffff12 0%, #ffffff26 50%, #ffffff12 100%); background-size: 200% 100%; animation: skm 1.2s ease-in-out infinite; } @keyframes skm { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } } /* profil yer tutucu */
   .pfmore > summary { background: var(--tint); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; } .pfmore { border-top: 0; }
   /* ⚙️ Ayarlar: kişi kartı + gruplu satırlar (iOS ayarları gibi) */
+  #setBody { padding: 12px 14px calc(24px + env(safe-area-inset-bottom)); } #set header .setx { margin-left: auto; width: 44px; height: 44px; padding: 0; font-size: 18px; } #setBk { visibility: hidden; }
   .sethead { display: flex; gap: 12px; align-items: center; background: var(--hero); border-radius: 18px; padding: 14px; margin: 0 0 14px; }
   .sethead .sav { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; flex: none; }
   .sethead b { font-size: 18px; display: block; } .setlbl { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--brand3); margin: 14px 4px 6px; }
@@ -278,7 +279,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.34" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.35" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -287,7 +288,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.34" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.35" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -303,6 +304,10 @@
   <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button><div class="infol"></div></nav>
 </section>
 
+<section class="screen" id="set">
+  <header><button id="setBk" onclick="history.back()" aria-label="Geri">‹</button><h1 id="setTitle">⚙️ Ayarlar</h1><button class="setx" onclick="setClose()" aria-label="Ayarları kapat">✕</button></header>
+  <div class="list" id="setBody"></div>
+</section>
 <section class="screen" id="prof">
   <header><button onclick="profClose()">‹</button><h1 id="pfTitle">👤 Profil</h1><span id="pfSync" class="s" hidden>🔄 Sugo'dan tazeleniyor…</span></header>
   <div class="list" id="pfBody"></div>
@@ -338,7 +343,7 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.34"></script>
+<script src="emoji.js?v=2.1.35"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -363,7 +368,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad ? 5000 : 2500); }
 // Ekran değişince kaydırma konumu korunur (gizlenen ekranın konumu tarayıcıda sıfırlanıyordu: profilden dönünce sohbet en üstte açılıyordu)
 let chatAnchor = null; const paneTops = {};
-function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on");
+function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on"); if (id === "chat" || id === "login") setStack = []; // ayarlardan sohbete geçildi: ayarlar kapanmış sayılır
   document.querySelectorAll(".screen.on").forEach((s) => { if (s.id !== id) s.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id) paneTops[el.id] = el.scrollTop; }); });
   if (chatWas && id !== "chat") chatAnchor = msgAnchor();
   document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id));
@@ -684,6 +689,8 @@ async function chatReturn() { const p = chatStack.pop(); if (!p) return; await o
 window.addEventListener("popstate", () => { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} // geri hareketinde klavye açılmasın
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
+  if (setOn()) { const d = Math.max(0, Math.min(setStack.length, Number(history.state && history.state.set) || 0)); // geçmişte kaçıncı kattayız (✕ birkaç katı tek olayda geri alır)
+    if (d > 0) { setStack.length = d; setRender(); } else { setStack = []; show(setPrev || "inbox"); } return; } // ⚙️ alt sayfa → üst sayfa; kök → kapat
   if (cur && chatStack.length) { stopMedia(); clearInterval(roomTimer); chatReturn(); return; } // UID'den açılan sohbetten önceki sohbete
   if (cur) { stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); }
 });
@@ -1257,7 +1264,7 @@ async function cardUses(id, nu) { const x = ((pcs && pcs.cards) || []).find((c) 
 // 🤖 Otomatik mesajlar (yalnız Bayi Yetkilisi): karşılama, meşgul, karttan sonra "çeki gönderin"
 async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) { toast(d.error, true); return; } const c = (d.report && d.report.auto) || {}, df = (d.report && d.report.def) || {};
   const ta = (k, rows, label) => `<div class="s" style="margin-top:8px">${label}</div><textarea id="am_${k}" rows="${rows}" style="width:100%" placeholder="${esc(df[k] || "")}">${esc(c[k] || "")}</textarea>`;
-  openModal(`<h3 style="margin:0 0 4px">🤖 Otomatik mesajlar</h3><div class="s">Sessiz, bloklu, 🎭 Opera ve 👑 Patron sohbetlerine gitmez. Sohbette "Otomatik" adıyla görünür.</div>
+  sheet("auto", `<h3 style="margin:0 0 4px">🤖 Otomatik mesajlar</h3><div class="s">Sessiz, bloklu, 🎭 Opera ve 👑 Patron sohbetlerine gitmez. Sohbette "Otomatik" adıyla görünür.</div>
     <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="am_on" ${c.on ? "checked" : ""} style="width:22px;height:22px"> Karşılama / meşgul mesajı açık</label>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><label class="s">Sessizlik (dk) sonra karşıla<input id="am_gap" inputmode="numeric" value="${Number(c.gapMin) || 60}"></label>
       <label class="s">Meşgul<select id="am_busyMode" style="width:100%;height:40px"><option value="auto" ${c.busyMode === "auto" ? "selected" : ""}>Kimse çevrimiçi değilse</option><option value="always" ${c.busyMode === "always" ? "selected" : ""}>Hep meşgul</option><option value="off" ${c.busyMode === "off" ? "selected" : ""}>Kapalı</option></select></label></div>
@@ -1269,7 +1276,7 @@ async function autoMsgs() { const d = await api("auto_msgs_get"); if (d.error) {
 const durS = (s) => s == null ? "–" : s < 60 ? `${s} sn` : s < 3600 ? `${Math.round(s / 60)} dk` : `${Math.floor(s / 3600)} sa ${Math.round((s % 3600) / 60)} dk`;
 async function teamReport(day) { const d = await api("team_report", day ? { day } : {}); if (d.error) { toast(d.error, true); return; } const r = d.report || {}, rows = r.rows || [];
   const sh = (n) => { const t = new Date(r.day + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }, today = new Date(Date.now() + 4 * 3600_000).toISOString().slice(0, 10);
-  openModal(`<h3 style="margin:0 0 6px">📊 Ekip raporu</h3>
+  sheet("team", `<h3 style="margin:0 0 6px">📊 Ekip raporu</h3>
     <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:center;margin-bottom:8px"><button onclick="teamReport('${sh(-1)}')" aria-label="Önceki gün">‹</button><b style="text-align:center">${esc(ajDay(r.day))}${r.day === today ? " · bugün" : ""}</b><button onclick="teamReport('${sh(1)}')" ${r.day >= today ? "disabled" : ""} aria-label="Sonraki gün">›</button></div>
     ${rows.length ? `<table style="width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums"><tr class="s" style="text-align:left"><th>Kişi</th><th>💬</th><th>📷</th><th>🪙</th><th title="Müşteri yazdıktan sonra ilk cevap">⏱ ilk cevap</th></tr>
       ${rows.map((x) => `<tr style="border-top:1px solid var(--line)"><td style="padding:6px 0"><b>${esc(x.by_user)}</b></td><td>${x.msgs}</td><td>${x.imgs}</td><td>${x.coin_n ? `${x.coin_n} · ${nf(x.coins)}` : "–"}</td><td>${x.by_user === "Otomatik" ? "–" : `${durS(x.first_avg_s)}${x.first_n ? `<div class="s">${x.first_n} kez · en uzun ${durS(x.first_max_s)}</div>` : ""}`}</td></tr>`).join("")}</table>`
@@ -1280,11 +1287,12 @@ async function teamReport(day) { const d = await api("team_report", day ? { day 
 const REL = [["following", "➕ Takip ettiklerimiz"], ["followers", "👀 Takipçiler"], ["friends", "🤝 Arkadaşlar"]];
 let relK = "following", relRows = [], relT = 0, relSeq = 0;
 function relOpen(k) { relK = k || relK; relRows = [];
-  openModal(`<h3 style="margin:0 0 2px">👥 Bayi hesabı · takip ve arkadaşlar</h3><div class="reltabs" id="relTabs">${REL.map(([k2, l]) => `<button data-k="${k2}" class="${k2 === relK ? "go" : ""}" onclick="relTab('${k2}')">${l}<b>…</b></button>`).join("")}</div>
+  sheet("rel", `<h3 style="margin:0 0 2px">👥 Takip ve arkadaşlar</h3><div class="reltabs" id="relTabs">${REL.map(([k2, l]) => `<button data-k="${k2}" class="${k2 === relK ? "go" : ""}" onclick="relTab('${k2}')">${l}<b>…</b></button>`).join("")}</div>
     <input id="relQ" placeholder="🔎 Ad ya da UID ile ara" oninput="clearTimeout(relT);relT=setTimeout(()=>relLoad(0),300)" autocomplete="off">
     <div class="s" id="relInfo" style="margin:6px 0"><span class="sk" style="width:16em"></span></div><div id="relList" class="rellist">${SKR(8)}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button onclick="relRefresh()">🔄 Sugo'dan tazele</button><button onclick="closeModal()">Kapat</button></div>`, true);
   relLoad(0); }
+function relPick(uid) { if (setOn()) prof(uid); else { closeModal(); prof(uid); } } // ayarlardan: profil ayarların üstünde (geri → ayarlar)
 function relTab(k) { relK = k; document.querySelectorAll("#relTabs button").forEach((b) => b.classList.toggle("go", b.dataset.k === k)); relLoad(0); }
 async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || {}).value || "").trim();
   const d = await api("relations_list", { kind: relK, q, offset: off, ...(refresh ? { refresh: true } : {}) }); if (seq !== relSeq || !$("relList")) return;
@@ -1293,7 +1301,7 @@ async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || 
   document.querySelectorAll("#relTabs button").forEach((b) => { const n = (r.counts || {})[b.dataset.k]; const bb = b.querySelector("b"); if (bb) bb.textContent = n == null ? "…" : nf(n); });
   $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
   const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
-  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="closeModal();prof('${esc(x.uid)}')"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>
+  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>
       <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span></div></div></div>`).join("")
     + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
     : `<div class="row s">${q ? "Bulunamadı." : "Liste boş."}</div>`; }
@@ -1337,7 +1345,8 @@ function modalLayout(top) { const m = $("modal"), b = $("modalBox"); m.dataset.t
 // Pencerede bir yazı kutusuna dokunulunca (ör. Yükleme Yap · coin miktarı) pencere üste taşınır: klavye kutuyu örtmesin
 document.addEventListener("focusin", (e) => { const t = e.target; if (!t || !t.matches || !t.matches("#modal input, #modal textarea")) return;
   if ($("modal").dataset.top !== "1") { window.__modalMoved = Date.now(); modalLayout(true); } setTimeout(() => { try { t.scrollIntoView({ block: "nearest" }); } catch (x) {} }, 300); });
-function closeModal() { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
+function closeModal() { if ($("modal").style.display !== "flex" && setOn()) { if (setStack.length > 1) history.back(); else setClose(); return; } // ayarlar sayfasında "Kapat/Vazgeç/Kaydet" → bir üst sayfa
+  $("modal").style.display = "none"; $("modalBox").innerHTML = ""; }
 $("modal").addEventListener("click", (e) => { if (e.target.id === "modal" && Date.now() - (window.__modalMoved || 0) > 600) closeModal(); }); // pencere klavye için üste taşındıysa aynı dokunuşun tıklaması kapatmasın
 const themeNow = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "sugo");
 function setTheme(k) { if (k === "dark") document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme;
@@ -1353,7 +1362,7 @@ function screenInfo() { const r = document.documentElement, p = document.createE
     ["safeTop", cs.paddingTop], ["safeBot", cs.paddingBottom], ["fixed0 h", fh],
     ["açılışta innerH", (() => { try { const x = JSON.parse(localStorage.getItem("bw_launch_h") || "null"); return x ? x.inner + " (ekran " + x.screen + ")" : "-"; } catch (e) { return "-"; } })()],
     ["ekran üst / alt", Math.round(s.top) + " / " + Math.round(s.bottom)], ["alt menü üst / alt", n ? Math.round(n.top) + " / " + Math.round(n.bottom) : "-"], ["sürüm", (document.querySelector('link[rel="apple-touch-icon"]') || {}).href ? "ikon v2" : "eski"]];
-  openModal(`<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
+  sheet("ekran", `<h3 style="margin:0 0 8px">📐 Ekran ölçüsü</h3><div style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${L.map(([k, v]) => `${esc(k)}: <b>${esc(String(v))}</b>`).join("<br>")}</div>
     <div style="font-family:ui-monospace,monospace;font-size:11px;line-height:1.5;margin-top:8px;max-height:30vh;overflow:auto">🔧 Düzeltme denemeleri:<br>${(() => { try { return JSON.parse(localStorage.getItem("bw_heal_log") || "[]").map((x) => `${new Date(x.at).toLocaleTimeString("tr-TR")} ${esc(x.why)}: ${x.before}→${x.after} (hedef ${x.target}) ${esc(x.steps)}`).join("<br>") || "yok"; } catch (e) { return "-"; } })()}</div>
     <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
 // 📱 Sugo uygulamasından bayi hesabına girilecek (ör. yeni kızları onaylamak): sunucu 2 dk bağlanmaz, uygulamayı atmaz; süre bitince ya da "Bitti" ile geri bağlanır
@@ -1394,18 +1403,31 @@ function applyPerms() {
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
 }
-function menu() { const row = (ic, bg, t, sub, fn) => `<button class="setrow" onclick="${fn}"><span class="si">${ic}</span><span class="st">${t}${sub ? `<small>${sub}</small>` : ""}</span><span class="chev">›</span></button>`;
+function menu() { setOpen(); }
+function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow" onclick="${fn}"><span class="si">${ic}</span><span class="st">${t}${sub ? `<small>${sub}</small>` : ""}</span><span class="chev">›</span></button>`;
   const grp = (lbl, rows) => rows.filter(Boolean).length ? `<div class="setlbl">${lbl}</div><div class="setlist">${rows.filter(Boolean).join("")}</div>` : "";
   const nm = (me && me.name) || "";
-  openModal(`<div class="sethead"><div class="sav">${esc(nm.slice(0, 1).toLocaleUpperCase("tr") || "?")}</div><div style="min-width:0"><b>${esc(nm)}</b><span class="s">${esc((me && me.role_label) || "")}</span></div></div>
+  return (`<div class="sethead"><div class="sav">${esc(nm.slice(0, 1).toLocaleUpperCase("tr") || "?")}</div><div style="min-width:0"><b>${esc(nm)}</b><span class="s">${esc((me && me.role_label) || "")}</span></div></div>
   <div class="setlbl" style="margin-top:0">Görünüm</div><div class="seg"><button class="${themeNow() === "sugo" ? "on" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "on" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
   ${grp("Bayi hesabı", [can("mesaj") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
     can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucu 2 dk bağlanmaz, uygulama atılmaz", "linkPause(2)") : ""])}
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
   ${grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
   ${grp("Diğer", [row("📐", "", "Ekran ölçüsü", "", "screenInfo()")])}
-  <button class="setout" onclick="logout()">🚪 Çıkış yap</button><button class="setclose" onclick="closeModal()">Kapat</button>`); }
-function pwChange(old, forced) { openModal(`<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
+  <button class="setout" onclick="logout()">🚪 Çıkış yap</button>`); }
+// ⚙️ Ayarlar tam sayfa: alt sayfalar üst üste (her biri tarayıcı geçmişinde) → ‹ / geri hareketi bir üst sayfa, ✕ ayarları tamamen kapatır
+let setStack = [], setPrev = "inbox";
+const setOn = () => !!$("set") && $("set").classList.contains("on");
+function setRender() { const t = setStack[setStack.length - 1]; if (!t) return; $("setTitle").textContent = t.title || "⚙️ Ayarlar"; $("setBk").style.visibility = setStack.length > 1 ? "visible" : "hidden";
+  $("setBody").innerHTML = t.h; $("setBody").scrollTop = 0; }
+function setOpen() { if (setOn()) return; closeModal(); const on = document.querySelector(".screen.on"); setPrev = on ? on.id : "inbox";
+  setStack = [{ key: "root", title: "⚙️ Ayarlar", h: menuHtml() }]; history.pushState({ set: 1 }, ""); show("set"); setRender(); }
+function setPage(key, h) { const m = /^\s*<h3[^>]*>([\s\S]*?)<\/h3>/.exec(h), title = m ? m[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim() : "", body = m ? h.slice(m[0].length) : h;
+  const top = setStack[setStack.length - 1]; if (top && top.key === key) { top.h = body; if (title) top.title = title; setRender(); return; } // aynı sayfa (ör. rapor gün değişimi): yerinde
+  setStack.push({ key, title, h: body }); history.pushState({ set: setStack.length }, ""); setRender(); }
+function setClose() { const n = setStack.length; if (!n) return; history.go(-n); } // geçmişten ayarların hepsi düşer, popstate ekranı kapatır
+function sheet(key, h, top) { if (setOn()) setPage(key, h); else openModal(h, top); } // ayarlardan açılan sayfa: tam sayfa; başka yerden: pencere
+function pwChange(old, forced) { sheet("pw", `<h3 style="margin:0 0 8px">🔑 ${forced ? "Yeni şifrenizi belirleyin" : "Şifre değiştir"}</h3>
   ${forced ? `<div class="s" style="margin-bottom:8px">Size verilen geçici şifreyi kendi şifrenizle değiştirin.</div>` : ""}
   <div style="display:grid;gap:8px">${old ? `<input type="hidden" id="pwOld" value="${esc(old)}">` : `<input id="pwOld" type="password" placeholder="Mevcut şifre" autocomplete="current-password">`}
   <input id="pwNew" type="password" placeholder="Yeni şifre (en az 6 karakter)" autocomplete="new-password"><input id="pwNew2" type="password" placeholder="Yeni şifre (tekrar)" autocomplete="new-password">
@@ -1414,7 +1436,7 @@ async function pwSave(forced) { const o = $("pwOld").value, n = $("pwNew").value
   if (n.length < 6) { toast("Şifre en az 6 karakter olmalı", true); return; } if (n !== n2) { toast("Yeni şifreler aynı değil", true); return; }
   const d = await api("change_password", { old: o, new: n }); if (d.error) { toast(d.error, true); return; } toast("✅ Şifre değiştirildi"); closeModal();
   if (forced && me && !me.has_pin) toast("İşlem PIN'iniz yok – yöneticinize söyleyin", true); }
-function pinChange() { openModal(`<h3 style="margin:0 0 8px">🔢 İşlem PIN'i değiştir</h3><div class="s" style="margin-bottom:8px">Coin gönderme ve "ödendi" işaretlemede sorulur. 4 rakam.</div>
+function pinChange() { sheet("pin", `<h3 style="margin:0 0 8px">🔢 İşlem PIN'i değiştir</h3><div class="s" style="margin-bottom:8px">Coin gönderme ve "ödendi" işaretlemede sorulur. 4 rakam.</div>
   <div style="display:grid;gap:8px"><input id="pcPw" type="password" placeholder="Giriş şifreniz" autocomplete="current-password">
   <input id="pcNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (4 rakam)"><input id="pcNew2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Yeni PIN (tekrar)">
   <button class="go" onclick="pinSave()">Kaydet</button><button onclick="closeModal()">Vazgeç</button></div>`); }
@@ -1562,6 +1584,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.34"></script>
+<script src="profile.js?v=2.1.35"></script>
 </body>
 </html>

@@ -38,7 +38,7 @@
     onNet(d, false);
   };
   window.profClose = () => { pfUid = null; history.back(); };
-  window.profPop = () => { pfUid = null; show(cur ? "chat" : "inbox"); }; // geri tuşu (ana sayfadaki tek yönetici çağırır)
+  window.profPop = () => { pfUid = null; show(typeof setStack !== "undefined" && setStack.length ? "set" : cur ? "chat" : "inbox"); }; // geri tuşu (ana sayfadaki tek yönetici çağırır); ayarlardan açıldıysa ayarlara
 
   function onNet(d, noRefresh) {
     const p = d && d.report && d.report.profile;
