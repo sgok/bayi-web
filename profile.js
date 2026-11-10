@@ -148,6 +148,7 @@
     const ours = ["bas", "bayi", "asistan", "kiz"].includes(role);
     const since = (x) => x && x.from ? (x.from === rv.today ? "bugünden" : x.from.slice(5).split("-").reverse().join(".") + "'den") + " beri" : "";
     const recvSub = !rv ? (p.stale ? "Sugo'dan okunuyor…" : "Sugo'dan okunamadı") : ours && rv.month ? `bu ay +${coin(rv.month.gain)} (${since(rv.month)})${rv.week ? ` · 7 gün +${coin(rv.week.gain)}` : ""}` : `${rv.kinds} çeşit hediye · tüm zamanlar`;
+    // ♂/♀ iOS'ta yedek yazı tipiyle aşağı kayıyordu: aşağıda çizim (svg) olarak basılır
     const tags = [p.gender === 1 ? "♀ Kız" : p.gender === 2 ? "♂ Erkek" : "", p.svip ? "SVIP " + p.svip : "", p.vip ? "VIP " + p.vip : "", p.wealth ? "Servet " + p.wealth : "", p.charm ? "Cazibe " + p.charm : ""].filter(Boolean);
     const age = p.birthday ? Math.floor((Date.now() - Date.parse(p.birthday)) / 31557600000) : null, inf = p.info || {};
     const facts = [age && age > 10 && age < 90 ? age + " yaş" : "", inf.tall ? inf.tall + " cm" : "", inf.weight ? inf.weight + " kg" : "", inf.profession || "", inf.industry || "", inf.hometown || ""].filter(Boolean);
@@ -161,7 +162,7 @@
         <div style="flex:1;min-width:0"><div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
-          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${sk ? `<span>${SK("3em")}</span><span>${SK("3em")}</span><span>${SK("4em")}</span>` : tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div></div></div>
+          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${sk ? `<span>${SK("3em")}</span><span>${SK("3em")}</span><span>${SK("4em")}</span>` : tags.map((t) => `<span>${/^[♂♀] /.test(t) ? genderSvg(t[0] === "♂") + esc(t.slice(2)) : esc(t)}</span>`).join("")}</div></div></div>
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
       <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}</div>
       <div class="pgrid">
@@ -203,3 +204,6 @@
   window.profMsg = (uid) => { pfUid = null; history.back(); setTimeout(() => (typeof pick === "function" ? pick(uid) : openChat(uid)), 60); };
   window.uidCopy = (uid) => { try { navigator.clipboard.writeText(String(uid)).then(() => toast("📋 UID kopyalandı: " + uid)); } catch (e) { toast("Kopyalanamadı", true); } };
 })();
+// ♂ / ♀ simgesi: yazı tipine bağlı değil, yazıyla aynı hizada
+function genderSvg(m) { return `<svg class="gsym" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">${m
+  ? '<circle cx="6.5" cy="9.5" r="4"/><path d="M9.5 6.5 14 2M10 2h4v4"/>' : '<circle cx="8" cy="6" r="4"/><path d="M8 10v5M5.5 12.5h5"/>'}</svg>`; }
