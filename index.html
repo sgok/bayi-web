@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.49">
+<meta name="build" content="2.1.50">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.49">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.49">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.49">
+<link rel="manifest" href="manifest.json?v=2.1.50">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.50">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.50">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -351,7 +351,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.49" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.50" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -360,7 +360,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.49" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.50" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -415,7 +415,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.49"></script>
+<script src="emoji.js?v=2.1.50"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -1344,7 +1344,7 @@ async function loadDm() { if (!canSee("elmas_gor")) { dmData = null; return; } c
   try { const recent = (x) => x && x.diamonds && Date.now() - Date.parse(x.at) < 6 * 3600_000; dmBadgeCache = { open: (dmData.open || []).filter(recent), coins: (dmData.coins || []).filter(recent) }; localStorage.setItem("bw_dmb", JSON.stringify(dmBadgeCache)); } catch (e) {}
   renderDm(); }
 function dmRow(r) { if (dmOwn(r)) return `<div class="row dmown"><div class="av" style="background:linear-gradient(135deg,#38bdf8,#0369a1)">💎</div>
-  <div class="b"><div class="t"><b>🔁 Kendi elmas bozumu</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="b"><div class="t"><b>🔁 Kendi bozum</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · bayi hesabı</div></div>
   <div style="text-align:right;color:#4ade80;font-weight:700;white-space:nowrap">+${nf(r.amount)} coin</div></div>`;
   return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
@@ -1518,7 +1518,9 @@ async function loadWallet(fresh) { if (!me || !walletOk()) { walletDraw(); retur
 function walletSet(w) { if (!w) return; walletData = { ...(walletData || {}), ...Object.fromEntries(Object.entries(w).filter(([, v]) => v != null)) };
   try { localStorage.setItem("bw_wallet", JSON.stringify(walletData)); } catch (e) {} walletDraw(); }
 function walletDraw() { const w = walletData, on = walletOk() && !!w && w.diamond != null, h = $("hDia");
-  if (h) { const t = on ? "💎 " + nf(w.diamond) : ""; if (h.textContent !== t) h.textContent = t; h.hidden = !on; }
+  // dar ekranda (≤ 380 px) kısa yazılır: 251.665 → 252K, 1.250.000 → 1,3M (tam sayı Ajansım kartında)
+  const kk = (n) => n >= 1e6 ? (Math.round(n / 1e5) / 10).toLocaleString("tr-TR") + "M" : n >= 1e4 ? Math.round(n / 1e3) + "K" : nf(n);
+  if (h) { const t = on ? "💎 " + (innerWidth <= 380 ? kk(Number(w.diamond)) : nf(w.diamond)) : ""; if (h.textContent !== t) h.textContent = t; h.hidden = !on; }
   const c = $("ajWallet"), x = walletCard(); // değişmediyse yeniden çizilmez
   if (c && !x) c.remove(); else if (c && c.__h !== x) { c.outerHTML = x; const n = $("ajWallet"); if (n) n.__h = x; } else if (!c && x && ajData && $("ajBody").querySelector(".sub")) renderAj();
   if ($("exPacks")) exDraw(); }
@@ -2103,6 +2105,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.49"></script>
+<script src="profile.js?v=2.1.50"></script>
 </body>
 </html>
