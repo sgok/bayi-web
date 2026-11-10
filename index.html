@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.38">
+<meta name="build" content="2.1.39">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.38">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.38">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.38">
+<link rel="manifest" href="manifest.json?v=2.1.39">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.39">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.39">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -275,7 +275,10 @@
   .systabs button { white-space: nowrap; flex: none; font-size: 13px; padding: 6px 10px; } .systabs button.on { background: #db2777; border-color: #db2777; color: #fff; }
   .ro { text-align: center; padding: 14px; color: var(--muted); border-top: 1px solid var(--line); }
 .relseen{margin-left:auto;flex:none;font-size:12px;color:var(--mut,#8a8a9a);white-space:nowrap}.relseen.on{color:#16a34a;font-weight:600}.relseen.old{color:#b45309}
-.rellist .row .p{display:flex;align-items:center;gap:8px}
+.rellist .row .p{display:flex;align-items:center;flex-wrap:wrap;column-gap:8px;row-gap:1px}.rellist .row .p .relseen{margin-left:0} /* Mesaj düğmesiyle dar: son görülme sığmazsa alt satıra iner, kesilmez */
+.relsort{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px;scrollbar-width:none}.relsort::-webkit-scrollbar{display:none}.relsort button{flex:none;padding:6px 11px;font-size:13px;border-radius:999px;white-space:nowrap}.relsort button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.rellist .row .b{min-width:0;flex:1}.relmsg{flex:none;align-self:center;padding:7px 11px;font-size:13px;border-radius:999px;margin-left:8px;background:color-mix(in srgb,var(--brand) 18%,transparent);border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--brand3,#fff);font-weight:600}
+.relstat{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;margin-top:2px;color:var(--accent,#fbbf24)}
 </style>
 </head>
 <body>
@@ -285,7 +288,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.38" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.39" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -294,7 +297,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.38" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.39" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -349,7 +352,7 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.38"></script>
+<script src="emoji.js?v=2.1.39"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -1291,9 +1294,11 @@ async function teamReport(day) { const d = await api("team_report", day ? { day 
     <button style="width:100%;margin-top:10px" onclick="closeModal()">Kapat</button>`); }
 // 👥 Bayi hesabının Sugo'daki takip ettikleri / takipçileri / arkadaşları (sunucu 6 saatte bir ve "Tazele" ile Sugo'dan okur)
 const REL = [["following", "➕ Takip ettiklerimiz"], ["followers", "👀 Takipçiler"], ["friends", "🤝 Arkadaşlar"]];
-let relK = "following", relRows = [], relT = 0, relSeq = 0;
+let relK = "following", relRows = [], relT = 0, relSeq = 0, relSort = (() => { try { return localStorage.getItem("bw_relsort") || "new"; } catch (e) { return "new"; } })();
+const RELSORT = [["new", "🆕 Yeniden eskiye"], ["old", "⏳ Eskiden yeniye"], ["online", "🟢 Çevrimiçi"], ["coins", "🪙 En çok coin alan"], ["elmas", "💎 En çok elmas bozan"]];
 function relOpen(k) { relK = k || relK; relRows = [];
   sheet("rel", `<h3 style="margin:0 0 2px">👥 Takip ve arkadaşlar</h3><div class="reltabs" id="relTabs">${REL.map(([k2, l]) => `<button data-k="${k2}" class="${k2 === relK ? "go" : ""}" onclick="relTab('${k2}')">${l}<b>…</b></button>`).join("")}</div>
+    <div class="relsort" id="relSort">${RELSORT.map(([k2, l]) => `<button data-s="${k2}" class="${k2 === relSort ? "on" : ""}" onclick="relSortSet('${k2}')">${l}</button>`).join("")}</div>
     <input id="relQ" placeholder="🔎 Ad ya da UID ile ara" oninput="clearTimeout(relT);relT=setTimeout(()=>relLoad(0),300)" autocomplete="off">
     <div class="s" id="relInfo" style="margin:6px 0"><span class="sk" style="width:16em"></span></div><div id="relList" class="rellist">${SKR(8)}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button onclick="relRefresh()">🔄 Sugo'dan tazele</button><button onclick="closeModal()">Kapat</button></div>`, true);
@@ -1301,14 +1306,15 @@ function relOpen(k) { relK = k || relK; relRows = [];
 function relPick(uid) { if (setOn()) prof(uid); else { closeModal(); prof(uid); } } // ayarlardan: profil ayarların üstünde (geri → ayarlar)
 function relTab(k) { relK = k; document.querySelectorAll("#relTabs button").forEach((b) => b.classList.toggle("go", b.dataset.k === k)); relLoad(0); }
 async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || {}).value || "").trim();
-  const d = await api("relations_list", { kind: relK, q, offset: off, ...(refresh ? { refresh: true } : {}) }); if (seq !== relSeq || !$("relList")) return;
+  const d = await api("relations_list", { kind: relK, q, offset: off, sort: relSort, ...(refresh ? { refresh: true } : {}) }); if (seq !== relSeq || !$("relList")) return;
   if (d.error) { $("relInfo").textContent = "❌ " + d.error; return; } const r = d.report || {};
   relRows = off ? relRows.concat(r.rows || []) : r.rows || [];
   document.querySelectorAll("#relTabs button").forEach((b) => { const n = (r.counts || {})[b.dataset.k]; const bb = b.querySelector("b"); if (bb) bb.textContent = n == null ? "…" : nf(n); });
   $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
   const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
   $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>
-      <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div></div></div>`).join("")
+      <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div>${relStat(x)}</div>
+      <button class="relmsg" onclick="event.stopPropagation();relMsg('${esc(x.uid)}')">💬 Mesaj</button></div>`).join("")
     + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
     : `<div class="row s">${q ? "Bulunamadı." : "Liste boş."}</div>`; }
 // 🟢 çevrimiçi / en son X önce / 30 gündür görülmedi (bilgi ilişki taramasından; 15 dk'dan eskiyse "çevrimiçi" denmez, "en son … önce" olur)
@@ -1317,6 +1323,13 @@ function relSeen(x) { const now = Date.now(), oa = Date.parse(x.online_at || "")
   const m = Math.max(1, Math.round((now - lo) / 60_000)), d = Math.floor((now - lo) / 86_400_000);
   if (d >= 30) return `<span class="relseen old">30+ gündür görülmedi</span>`;
   return `<span class="relseen">en son ${m < 60 ? m + " dk" : m < 1440 ? Math.round(m / 60) + " saat" : d + " gün"} önce</span>`; }
+function relSortSet(k) { relSort = k; try { localStorage.setItem("bw_relsort", k); } catch (e) {} document.querySelectorAll("#relSort button").forEach((b) => b.classList.toggle("on", b.dataset.s === k)); relLoad(0); }
+// 🪙 bizden aldığı coin · 💎 bozdurduğu elmas (varsa; sıralamada hangisi seçiliyse o önde)
+function relStat(x) { const c = Number(x.coins) || 0, e = Number(x.diamonds) || 0; if (!c && !e) return "";
+  const a = c ? `<span>🪙 ${nf(c)}${x.buys ? ` · ${nf(x.buys)} alım` : ""}</span>` : "", b = e ? `<span>💎 ${nf(e)}${x.exch ? ` · ${nf(x.exch)} bozum` : ""}</span>` : "";
+  return `<div class="relstat">${relSort === "elmas" ? b + a : a + b}</div>`; }
+// 💬 listeden doğrudan sohbet: ayarlar kapanır, sohbet açılır
+function relMsg(uid) { if (setOn()) { setClose(); setTimeout(() => openChat(uid), 250); } else { closeModal(); openChat(uid); } }
 function relRefresh() { relLoad(0, true); toast("🔄 Sugo'dan okunuyor (1 dk kadar sürebilir)"); setTimeout(() => { if ($("relList")) relLoad(0); }, 30_000); }
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
   const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card"), dmOn: $("am_dmOn").checked, almazOn: v("almazOn"), almazOff: v("almazOff") }; // boş metin → varsayılan
@@ -1326,18 +1339,20 @@ async function lowCoinEdit(v) { const x = prompt("Bu coin miktarının altına i
 async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
 
 // 🏢 Ajans (sadece okuma)
-let ajData = null, ajSub = localStorage.getItem("bw_aj") || "ozet";
+let ajData = null, ajSub = (() => { try { return localStorage.getItem("bw_aj") || ""; } catch (e) { return ""; } })(); // boşsa rolün ilk sekmesi (yardımcı: başvurular)
 async function loadAj() { if (!can("ajans")) return; const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
 const ajDay = (d) => { try { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { day: "numeric", month: "short", weekday: "short" }); } catch (e) { return d; } };
 const hrs = (s) => { s = Number(s) || 0; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h} sa ${m} dk` : `${m} dk`; };
 function ajTab(k) { ajSub = k; try { localStorage.setItem("bw_aj", k); } catch (e) {} renderAj(); }
 function renderAj() { const u = ajData; if (!u) return; const info = u.info || {}, days = u.days || [], d0 = days[0] || {};
   const mon = (d0.day || "").slice(0, 7), md = days.filter((x) => (x.day || "").startsWith(mon)), sum = (k) => md.reduce((s, x) => s + (Number(x[k]) || 0), 0);
-  const T = [["ozet", "📊 Özet"], ["gunluk", "📅 Gün gün"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"], ["basvuru", "📝 Başvurular"], ["alt", "🏢 Alt ajanslar"]];
+  const T = u.limited || (me && me.role === "yardimci") ? [["basvuru", "📝 Başvurular"], ["ozet", "📊 Özet"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"]] // yardımcı: başvurular ilk; gün gün ve alt ajanslar yok
+    : [["ozet", "📊 Özet"], ["gunluk", "📅 Gün gün"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"], ["basvuru", "📝 Başvurular"], ["alt", "🏢 Alt ajanslar"]];
+  if (!T.some(([k]) => k === ajSub)) ajSub = T[0][0];
   let h = `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}" onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
-  if (ajSub === "ozet") h += `<div class="card"><b>🏢 ${esc(info.name || "Ajans")}</b><div class="s">Seviye ${esc(d0.rating_level || info.rating_level || "—")} · komisyon %${esc(String(d0.rating_ratio ?? "—"))} · ${nf(u.members)} üye · ${nf(info.sub_union_count)} alt ajans</div></div>
+  if (ajSub === "ozet") h += `<div class="card"><b>🏢 ${esc(info.name || "Ajans")}</b><div class="s">Seviye ${esc(d0.rating_level || info.rating_level || "—")} · komisyon %${esc(String(d0.rating_ratio ?? "—"))} · ${nf(u.members)} üye${u.limited ? "" : ` · ${nf(info.sub_union_count)} alt ajans`}</div></div>
     <div class="s" style="margin:0 12px">Son gün: ${d0.day ? ajDay(d0.day) : "—"} (bugünkü veri yarın gelir) · elmas</div>
-    <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(sum("commission"))}</div></div>
+    <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(u.month_commission ?? sum("commission"))}</div></div>
     <div class="card"><div class="k">🎙 Aktif yayıncı</div><div class="v">${nf(d0.active_anchor)}</div><div class="s">geçerli ${nf(d0.valid_anchor)}</div></div><div class="card"><div class="k">🆕 Yeni üye</div><div class="v">${nf(d0.new_anchor)}</div></div></div>`;
   if (ajSub === "gunluk") h += `<table><tr><th>Gün</th><th class="n">Gelir</th><th class="n">Komisyon</th><th class="n">Aktif</th></tr>${days.slice(0, 45).map((x) => `<tr><td>${ajDay(x.day)}</td><td class="n">${nf(x.total_income)}</td><td class="n" style="color:#4ade80">${nf(x.commission)}</td><td class="n">${nf(x.active_anchor)}</td></tr>`).join("")}</table>`;
   if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div><div style="font-weight:700">${nf(x.total_income)}</div></div>`).join("");
@@ -1618,6 +1633,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.38"></script>
+<script src="profile.js?v=2.1.39"></script>
 </body>
 </html>
