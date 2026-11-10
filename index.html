@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.51">
+<meta name="build" content="2.1.52">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.51">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.51">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.51">
+<link rel="manifest" href="manifest.json?v=2.1.52">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.52">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.52">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -188,6 +188,11 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .m .idc { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: 1px; margin: 0 0 0 4px; padding: 0 5px; height: 16px; font: 600 11.5px/14px system-ui, sans-serif; font-style: normal;
     border: 1px solid #f59e0b88; border-radius: 8px; background: #f59e0b22; color: #fcd34d; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .m .idc.ok { border-color: #22c55e77; background: #22c55e1f; color: #4ade80; cursor: default; }
+  .m .idw { white-space: nowrap; } /* ID ile ilk çipi satır sonunda ayrılmasın */
+  /* bizim (mor) balonda okunurluk */
+  .m.me .uidl { color: #e0f2fe; }
+  .m.me .idc { color: #fff7d1; border-color: #fde68acc; background: #00000038; }
+  .m.me .idc.ok { color: #dcfce7; border-color: #86efaccc; background: #00000038; }
   #lb { position: fixed; inset: 0; background: #000e; z-index: 60; display: flex; align-items: center; justify-content: center; } #lb[hidden] { display: none; } #lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
   #lb a { position: absolute; top: calc(10px + env(safe-area-inset-top) + var(--swh, 0px)); right: 12px; background: #0008; color: #fff; padding: 8px 12px; border-radius: 10px; text-decoration: none; font-size: 14px; }
   /* Profil (tabletteki gibi) */
@@ -357,7 +362,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.51" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.52" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -366,7 +371,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.51" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.52" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -421,7 +426,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.51"></script>
+<script src="emoji.js?v=2.1.52"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -862,10 +867,14 @@ function emo(html, big) { const only = big && html.replace(/\[[^\]]+\]/g, (x) =>
 const CARD_RE = /(^|\D)(\d{4}(?:[ -]?\d{4}){3}\d{0,3})(?!\d)/g;
 function idScan(s) { s = String(s); const cards = [...s.matchAll(CARD_RE)].map((m) => [m.index + m[1].length, m.index + m[0].length]), out = [];
   for (const m of s.matchAll(/(^|\D)(\d{5,12})(?!\d)/g)) { const st = m.index + m[1].length, en = st + m[2].length;
-    out.push({ st, en, n: m[2], ok: !cards.some(([a, b]) => st < b && en > a) && !/\+[\d\s().-]*$/.test(s.slice(Math.max(0, st - 24), st)) }); }
+    const card = cards.some(([a, b]) => st < b && en > a), ph = /\+[\d\s().-]*$/.test(s.slice(Math.max(0, st - 24), st));
+    out.push({ st, en, n: m[2], ok: !card && !ph }); }
   return out; }
 function uidBare(html, chips) { const s = String(html); let o = "", i = 0;
-  for (const x of idScan(s)) { o += s.slice(i, x.st) + (x.n.length >= 8 && x.n.length <= 10 ? `<span class="uidl" data-uid="${x.n}">${x.n}</span>` : x.n) + (chips && x.ok ? idChips(x.n) : ""); i = x.en; }
+  for (const x of idScan(s)) { const id = x.ok && x.n.length >= 8 && x.n.length <= 10 ? `<span class="uidl" data-uid="${x.n}">${x.n}</span>` : x.n, c = chips && x.ok ? idChips(x.n) : "";
+    // telefon (+994 …) ve kart numarası bağlantı/çip almaz; ID ile ilk çipi birlikte kalır (satır sonunda ayrılmaz)
+    const k = c.indexOf("</"), first = c && k >= 0 ? c.slice(0, c.indexOf(">", k) + 1) : c;
+    o += s.slice(i, x.st) + (c ? `<span class="idw">${id}${first}</span>${c.slice(first.length)}` : id); i = x.en; }
   return o + s.slice(i); }
 // ---------- 💎 Sohbette yazılan Sugo ID'leri (patron / kız "şu hesaplardan attım 309380267"): o hesabın son elmas bozumları, alış partisi başına bir çip
 // Görünen mesajlardaki adaylar tek istekle sorulur (dm_by_uids); sonuç sohbet başına önbellekte (açılışta hemen çizilir, sonra tazelenir);
@@ -902,7 +911,8 @@ function idRefresh(c) { if (!c || !idSt[c]) return; const st = idSt[c]; st.stale
 function idLive() { clearTimeout(idLiveT); idLiveT = setTimeout(() => idRefresh(cur), 1500); } // canlı elmas olayı: üst üste gelenler tek istek
 function idPay(el) { const u = el.dataset.iu, st = cur && idSt[cur], o = st && st.got[u], g = o && (o.groups || []).find((x) => String(x.key) === el.dataset.ik); if (!g) return;
   if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
-  const what = `${o.name || "UID " + u} · ${dk(g.diamonds)} elmas → ${azn(g.pay)}`;
+  const nm = String(o.name || "").replace(/\[[^\]]+\]/g, "").trim(); // onay penceresinde [emoji] kodu görünmesin
+  const what = `${nm || "UID " + u} · ${dk(g.diamonds)} elmas → ${azn(g.pay).replace(/ ₼/, "\u00a0₼")}`;
   if (!confirm(what + "\nÖdendi olarak işaretlensin mi?")) return;
   const txs = (g.txs || []).map((x) => x && typeof x === "object" ? (x.paid_at || x.paid ? null : x.tx) : x).filter((x) => x != null && x !== "").map(String);
   if (!txs.length) { toast("Ödenecek kayıt bulunamadı", true); return; }
@@ -2168,6 +2178,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.51"></script>
+<script src="profile.js?v=2.1.52"></script>
 </body>
 </html>
