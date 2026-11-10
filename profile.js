@@ -149,7 +149,7 @@
     const since = (x) => x && x.from ? (x.from === rv.today ? "bugünden" : x.from.slice(5).split("-").reverse().join(".") + "'den") + " beri" : "";
     const recvSub = !rv ? (p.stale ? "Sugo'dan okunuyor…" : "Sugo'dan okunamadı") : ours && rv.month ? `bu ay +${coin(rv.month.gain)} (${since(rv.month)})${rv.week ? ` · 7 gün +${coin(rv.week.gain)}` : ""}` : `${rv.kinds} çeşit hediye · tüm zamanlar`;
     // ♂/♀ iOS'ta yedek yazı tipiyle aşağı kayıyordu: aşağıda çizim (svg) olarak basılır
-    const tags = [p.gender === 1 ? "♀ Kız" : p.gender === 2 ? "♂ Erkek" : "", p.svip ? "SVIP " + p.svip : "", p.vip ? "VIP " + p.vip : "", p.wealth ? "Servet " + p.wealth : "", p.charm ? "Cazibe " + p.charm : ""].filter(Boolean);
+    const tags = [p.gender === 1 ? "♀ Kız" : p.gender === 2 ? "♂ Erkek" : "", p.wealth ? "Servet " + p.wealth : "", p.charm ? "Cazibe " + p.charm : ""].filter(Boolean);
     const age = p.birthday ? Math.floor((Date.now() - Date.parse(p.birthday)) / 31557600000) : null, inf = p.info || {};
     const facts = [age && age > 10 && age < 90 ? age + " yaş" : "", inf.tall ? inf.tall + " cm" : "", inf.weight ? inf.weight + " kg" : "", inf.profession || "", inf.industry || "", inf.hometown || ""].filter(Boolean);
     const big = p.avatar_full || p.avatar, noRole = r.seat_all > 0 || r.first ? "Misafir" : "Yabancı";
@@ -158,7 +158,8 @@
     const debtSum = (p.debts || []).reduce((t, x) => t + Number(x.remaining || 0), 0);
     const sk = !!p.__sk, SK = (w) => `<span class="sk" style="width:${w}"></span>`; // yer tutucu (veri gelene kadar)
     const md = $("pfBody").querySelector(".pfmore"); if (md && md.open) pfMoreOpen = true;
-    $("pfBody").innerHTML = `<div class="pfhero"><div class="pfh"><div class="wav" style="background:#059669">${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
+    const vo = sk ? null : vipOf(p.vip, p.svip); // 👑 SVIP (renkli) ya da VIP (gümüş) çerçeve, altında seviye
+    $("pfBody").innerHTML = `<div class="pfhero"><div class="pfh"><div class="wav${vo ? ` vr vr-${vo.k}` : ""}" style="background:#059669${vo ? `;--vc:${vo.c}` : ""}">${vipLab(vo)}${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
         <div style="flex:1;min-width:0"><div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
@@ -169,6 +170,7 @@
         ${card("💸 Bizden aldığı coin", sk ? SK("4.5em") : coin(b.coins), sk ? SK("7em") : `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "var(--accent)")}
         ${card("🧾 Açık borç", sk ? SK("3em") : debtSum > 0.009 ? az(debtSum) : "yok", sk ? SK("5em") : (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
       </div>
+      ${dmCard(p.dm)}
       ${sk ? `<div class="pfsec">Son alımları</div><table><tr class="h"><th>Tarih</th><th class="n">Coin</th></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr></table>` : ""}
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
       ${(p.debts || []).length ? `<div class="pfsec">Açık borçlar</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
@@ -207,3 +209,9 @@
 // ♂ / ♀ simgesi: yazı tipine bağlı değil, yazıyla aynı hizada
 function genderSvg(m) { return `<svg class="gsym" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">${m
   ? '<circle cx="6.5" cy="9.5" r="4"/><path d="M9.5 6.5 14 2M10 2h4v4"/>' : '<circle cx="8" cy="6" r="4"/><path d="M8 10v5M5.5 12.5h5"/>'}</svg>`; }
+// 💎 Bize bozdurduğu elmaslar (varsa) + ödenmemiş borcumuz: "33 ₼ borcumuz · 100k elmas"
+function dmCard(d) { if (!d || !d.count) return ""; const k = (n) => (n >= 1000 ? (Math.round(n / 100) / 10).toLocaleString("tr-TR") + "k" : nf(n)), u = d.unpaid || {};
+  const tmx = (t) => { try { return new Date(t).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }).replace(",", ""); } catch (e) { return ""; } };
+  return `<div class="card pfdm"><div class="k">💎 Bize bozdurduğu elmas</div><div class="v" style="color:#38bdf8">${nf(d.diamonds)} <span class="s">elmas</span></div>
+    <div class="s">${nf(d.count)} bozum${d.last ? " · son " + tmx(d.last) : ""}</div>
+    ${u.n ? `<div class="pfdmdebt">⚠️ Ödenmemiş: <b>${String(u.pay).replace(".", ",")} ₼</b> borcumuz · ${k(u.diamonds)} elmas${u.n > 1 ? ` (${u.n} parça)` : ""}</div>` : `<div class="pfdmok">✅ Hepsi ödendi</div>`}</div>`; }

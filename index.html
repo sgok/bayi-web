@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.39">
+<meta name="build" content="2.1.40">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.39">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.39">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.39">
+<link rel="manifest" href="manifest.json?v=2.1.40">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.40">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.40">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -279,6 +279,16 @@
 .relsort{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px;scrollbar-width:none}.relsort::-webkit-scrollbar{display:none}.relsort button{flex:none;padding:6px 11px;font-size:13px;border-radius:999px;white-space:nowrap}.relsort button.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .rellist .row .b{min-width:0;flex:1}.relmsg{flex:none;align-self:center;padding:7px 11px;font-size:13px;border-radius:999px;margin-left:8px;background:color-mix(in srgb,var(--brand) 18%,transparent);border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--brand3,#fff);font-weight:600}
 .relstat{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;margin-top:2px;color:var(--accent,#fbbf24)}
+html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozumlarını görür, ödendi yapamaz */
+.rallrow{gap:10px;align-items:center;cursor:default}.rallrow button{flex:none;padding:8px 14px;font-size:14px}.rallrow .s{font-size:12px}
+/* 👑 VIP / SVIP çerçevesi (etiket mutlak konumlu: satır boyu değişmez) */
+.avw.vr > .av { box-shadow: 0 0 0 2px var(--bg, #0b0f0e), 0 0 0 4px var(--vc); }
+.vlab { position: absolute; left: -6px; bottom: -7px; z-index: 3; font-style: normal; font-size: 9px; font-weight: 800; line-height: 14px; padding: 0 3px; border-radius: 7px; background: var(--vc); color: #fff; white-space: nowrap; letter-spacing: 0; box-shadow: 0 1px 3px #0007; pointer-events: none; }
+.vlab.vr-s2 { color: #2a1d00; } .vlab.vr-v { color: #0f172a; }
+.avw.vr .ondot { z-index: 4; } /* nokta yerinde kalır (kayma olmasın), etiketin üstünde */
+.pfhero .wav.vr { box-shadow: 0 0 0 3px var(--vc), 0 0 0 7px color-mix(in srgb, var(--vc) 28%, transparent); }
+.pfhero .wav .vlab { left: 50%; transform: translateX(-50%); letter-spacing: .3px; font-size: 12.5px; line-height: 19px; bottom: -11px; padding: 0 10px; border-radius: 10px; }
+.pfdm{margin:10px 0 0}.pfdmdebt{margin-top:8px;padding:8px 10px;border-radius:10px;background:#f8717122;color:#fca5a5;font-size:14px}.pfdmdebt b{color:#f87171}.pfdmok{margin-top:6px;color:#4ade80;font-size:13px;font-weight:600}
 </style>
 </head>
 <body>
@@ -288,7 +298,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.39" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.40" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -297,14 +307,14 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.39" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.40" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
     <div id="dmStrip"></div>
     <div class="search"><input id="idIn" type="search" autocomplete="off" placeholder="🔎 İsim ya da UID ile ara / sohbet aç" oninput="srch()" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
     <div id="srchRes"></div>
-    <div id="convs"><div class="tagbar" data-k="tagbar"><button class="rall" disabled>✓✓ Okundu <b>0</b></button><button class="on">💬 Genel</button><button>💎 Elmas satıcıları</button><button>🪙 Coin alıcıları</button></div><div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div></div>
+    <div id="convs"><div class="tagbar" data-k="tagbar"><button class="rall">📩 Okunmayanlar <b>0</b></button><button class="on">💬 Genel</button><button>💎 Elmas satıcıları</button><button>🪙 Coin alıcıları</button></div><div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div></div>
   </div>
   <div class="pane" id="p-dm"><div id="dmBody"></div></div>
   <div class="pane" id="p-card"><div id="cardBody"></div></div>
@@ -352,7 +362,7 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.39"></script>
+<script src="emoji.js?v=2.1.40"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -413,6 +423,14 @@ const whoPaid = (n) => { const s = String(n || ""); if (!s || s.startsWith("topl
 const initial = (n) => esc(((n || "?").normalize("NFKC").replace(/[^\p{L}\p{N}]/gu, "").match(/./u) || ["?"])[0].toUpperCase());
 const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-process=image/resize,m_fill,h_120,w_120";
 // Çevrimiçi: yeşil = çevrimiçi, kırmızı = çevrimdışı (sunucu 5 dk'da bir Sugo'dan tazeler; bilgi yoksa nokta yok)
+// 👑 VIP / SVIP çerçevesi: SVIP1 yeşil, SVIP2 sarı, SVIP3 mavi, SVIP4 mor, SVIP5+ kırmızı; VIP gümüş (listelerde yalnız SVIP)
+const SVC = ["", "#22c55e", "#eab308", "#3b82f6", "#a855f7", "#ef4444"];
+let vipm = (() => { try { return JSON.parse(localStorage.getItem("bw_vipm") || "{}"); } catch (e) { return {}; } })();
+function vipOf(vip, svip, onlySvip) { const s = Number(svip) || 0, v = Number(vip) || 0;
+  if (s > 0) return { c: SVC[Math.min(s, 5)], t: "SVIP" + s, k: "s" + Math.min(s, 5) }; if (v > 0 && !onlySvip) return { c: "#94a3b8", t: "VIP" + v, k: "v" }; return null; }
+const vipAttr = (o) => (o ? ` vr vr-${o.k}" style="--vc:${o.c}` : ""); // class="avw${vipAttr(o)}" → çerçeve rengi
+const vipLab = (o) => (o ? `<i class="vlab vr-${o.k}">${o.t}</i>` : "");
+const vipConv = (id) => { const v = vipm[String(id)]; return v ? vipOf(v[0], v[1], true) : null; };
 const onDot = (x) => x && "on" in x && !isSys(x.id) ? `<i class="ondot ${x.on ? "on" : "off"}" title="${x.on ? "Çevrimiçi" : "Çevrimdışı"}"></i>` : "";
 function chOnUpd() { const el = $("chOn"); if (!el) return; const x = cur && !isSys(cur) ? inbox.find((i) => String(i.id) === cur) : null;
   el.hidden = !(x && "on" in x); if (x) { el.className = "ondot " + (x.on ? "on" : "off"); el.title = x.on ? "Çevrimiçi" : "Çevrimdışı"; } }
@@ -450,7 +468,7 @@ async function start() {
   if (fast) { me = cm; applyPerms(); show("inbox"); tab(curTab); inbox = ci; sortInbox(); renderInbox(); }
   else { show("inbox"); tab(curTab); } // önbellek yokken de ekran boş kalmasın: liste/sekme iskeleti hemen, kimlik ve veri gelince dolar
   const pInbox = loadInbox();
-  if (can("kart")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
+  if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
   applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
@@ -565,6 +583,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
+  if (d.report && d.report.vips) { vipm = d.report.vips; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); } catch (e) {} } // 👑 SVIP çerçevesi
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
@@ -574,17 +593,18 @@ function renderInbox() {
   try { if (!window.__listMark) { window.__listMark = 1; setTimeout(() => performance.mark("liste-ekranda"), 0); } } catch (e) {} // açılış ölçümü
   const unread = inbox.reduce((s, x) => s + (isQuiet(x.id) ? 0 : Number(x.u) || 0), 0); $("nMsg").hidden = !unread; $("nMsg").textContent = unread; // sessiz/bloklu sayılmaz
   const teamRow = `<div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div>`;
-  const unN = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)).length;
+  const unRows = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)), unN = unRows.length; // 📩 okunmayanlar (filtre + hepsini okundu yap)
   const readAll = ""; // CLS: okundu düğmesi artık sekme şeridinde (belirip kaybolarak listeyi itmesin)
-  const shown = lf === "all" ? inbox.filter((x) => !isBlocked(x.id)) : tagRows(lf), nBlk = tagRows("blocked").length, nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
-  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall" ${unN ? "" : "disabled"} onclick="readAll()" title="Okunmamış sohbetlerin hepsini okundu yap">✓✓ Okundu <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button><button class="${lf === "blocked" ? "on" : ""}" onclick="setLf('blocked')">🚫 Bloklu <b>${nBlk}</b></button></div>`;
+  const shown = lf === "all" ? inbox.filter((x) => !isBlocked(x.id)) : lf === "unread" ? unRows : tagRows(lf), nBlk = tagRows("blocked").length, nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
+  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall${lf === "unread" ? " on" : ""}" onclick="setLf('unread')" title="Yalnız okunmamış sohbetler">📩 Okunmayanlar <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button><button class="${lf === "blocked" ? "on" : ""}" onclick="setLf('blocked')">🚫 Bloklu <b>${nBlk}</b></button></div>`;
   const lpane = $("convs").closest(".pane"); let anc = null;
   if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
-  morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
-    <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
+  const rallRow = lf === "unread" && unN ? `<div class="row rallrow" data-k="rallrow"><button class="go" onclick="readAll()">✓✓ Hepsini okundu yap <b>${unN}</b></button><span class="s">müşterilere "görüldü" gider</span></div>` : "";
+  morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : rallRow) + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
+    <div class="avw${vipAttr(vipConv(x.id))}"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}${vipLab(vipConv(x.id))}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
       <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own && !x.rx ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
-    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
   const ids = (lf === "all" ? inbox : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
@@ -938,9 +958,9 @@ function dmGroups(rows) {
 function dmGroupLine(g) {
   return `🧮 <b>Toplam ${g.rows.length} parça: ${nf(g.diamonds)} elmas</b> → ${nf(g.coins)} coin · ` + (g.paid ? `<span style="color:#4ade80;font-weight:800">✅ hepsi ödendi</span> · ${azn(g.pay)}`
     : `toplam ödenecek <b>${azn(g.pay)}</b>${g.exact !== g.pay ? ` <span class="s">(${azn(g.exact)})</span>` : ""}${g.unpaid.length < g.rows.length ? ` · ${g.unpaid.length} parça ödenmedi` : ""}
-      <button class="go" style="padding:5px 10px;font-size:13px;margin-top:4px" onclick="event.stopPropagation();coinPaidAll('${esc(JSON.stringify(g.unpaid.map((r) => r.tx)))}','${esc(g.name + " · " + g.rows.length + " parça · " + azn(g.pay))}')">💸 Hepsini ödendi yap</button>`);
+      <button class="go" style="padding:5px 10px;font-size:13px;margin-top:4px" data-pe onclick="event.stopPropagation();coinPaidAll('${esc(JSON.stringify(g.unpaid.map((r) => r.tx)))}','${esc(g.name + " · " + g.rows.length + " parça · " + azn(g.pay))}')">💸 Hepsini ödendi yap</button>`);
 }
-async function coinPaidAll(txsJson, label) { const txs = JSON.parse(txsJson);
+async function coinPaidAll(txsJson, label) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; } const txs = JSON.parse(txsJson);
   if (!confirm(label + "\n\nParçaların hepsi ödendi olarak işaretlensin mi? (Parayı gönderdiyseniz evet)")) return;
   const pin = await askPin("Ödendi işaretlemek için işlem PIN'iniz"); if (!pin) return;
   const d = await api("bayi_coin_paid", { txs, paid: true, pin }); if (d.pin === "wrong") pinCache = null;
@@ -991,7 +1011,7 @@ function renderChat(scroll) {
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
     items.push({ k: "g" + g.last, at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aralarında en fazla 2 dk olan bozumlar tek grup</div></div>` });
   for (const c of coins) items.push({ k: "c" + c.tx, at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 ${c.other ? `<b>Başka hesaptan:</b> ${esc(c.nickname || "")} (UID ${esc(c.uid || "")})<br>` : ""}<b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
-      ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
+      ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
       <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div></div>` });
   // Sayfadan gönderilenler: tablet gönderene kadar soluk, hata olursa kırmızı (gönderilen mesaj Sugo'dan gelince listede asıl hâli görünür)
   const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
@@ -1010,7 +1030,7 @@ function renderChat(scroll) {
   morphKeyed(box, h || `<div class="day">Mesaj yok</div>`);
   if (scroll || atBottom) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
 }
-async function coinPaid(tx, paid) { if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
+async function coinPaid(tx, paid) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; } if (paid && !confirm("Elmas bozumu ödendi olarak işaretlensin mi?")) return; if (!paid && !confirm("Ödendi işareti geri alınsın mı?")) return;
   const pin = await askPin(paid ? "Ödendi işaretlemek için işlem PIN'iniz" : "Geri almak için işlem PIN'iniz"); if (!pin) return;
   const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) loadChat(); loadDm(); } }
@@ -1202,14 +1222,14 @@ setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
 let dmLimit = 10, dmData = null;
 const nf = (n) => Number(n || 0).toLocaleString("tr-TR"), azn = (x) => { const n = Number(x); return (Number.isInteger(n) ? String(n) : n.toFixed(2)).replace(".", ",") + " ₼"; };
-async function loadDm() { if (!can("elmas")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report;
+async function loadDm() { if (!canSee("elmas_gor")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report;
   try { const recent = (x) => x && x.diamonds && Date.now() - Date.parse(x.at) < 6 * 3600_000; dmBadgeCache = { open: (dmData.open || []).filter(recent), coins: (dmData.coins || []).filter(recent) }; localStorage.setItem("bw_dmb", JSON.stringify(dmBadgeCache)); } catch (e) {}
   renderDm(); }
 function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
   <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
-  <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
-    : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
+  <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
+    : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
 /** Sohbet listesinde: bu kişiden son 6 saatte gelen elmas (parça parça ise grubun toplamı) */
 let dmBadgeCache = (() => { try { return JSON.parse(localStorage.getItem("bw_dmb") || "null"); } catch (e) { return null; } })();
 function dmBadge(uid) {
@@ -1228,7 +1248,7 @@ function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { if (p.rows.len
   const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
   return `<div class="dmbox"><div class="dmhd"><div class="av" ${p.conv || p.uid ? `onclick="openChat('${esc(p.conv || p.uid)}')"` : ""}>${avHtml(p.name, p.av)}</div>
     <div class="b"><b>${esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
-    <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
+    <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" data-pe onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
     ${dmListHtml(p.rows)}</div>`; }).join(""); }
 /** Liste: satırlar yeni→eski; grubun toplamı parçalarının altında */
 function dmListHtml(rows) {
@@ -1257,13 +1277,13 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
     <div class="s" style="padding:10px 12px">100.000 elmas = 36.000 coin = 33 ₼ · bayi hesabının coin kayıtlarından</div>`; }
 
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
-async function loadCards() { if (!can("kart")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
+async function loadCards() { if (!canSee("kart_gor")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
     <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}</div>`).join("")}
-    <div class="s" style="padding:10px 12px">Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
+    <div class="s" style="padding:10px 12px">${can("kart") ? "" : "👁 <b>Sadece görüntüleme:</b> kart verme ve düzeltme Bayi Yetkilisinde. "}Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
-    <div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
-    <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`; }
+    ${!can("duzen") ? `<div id="tplEd">${tpls.map((x) => `<div class="card" style="margin:6px 10px;white-space:pre-wrap">${esc(x)}</div>`).join("") || '<div class="s" style="margin:6px 12px">Hazır mesaj yok.</div>'}</div><div class="s" style="margin:4px 12px 20px">👁 Düzenleme Bayi Yetkilisinde.</div>` : `<div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
+    <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`}`; }
 const isYetkili = () => !!(me && me.role === "yetkili");
 async function cardUses(id, nu) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
   if (!confirm(`${x.owner} ···${String(x.number).slice(-4)}: kullanılan hak ${x.uses}/${x.max_uses} → ${nu}/${x.max_uses} olsun mu?`)) return;
@@ -1312,7 +1332,7 @@ async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || 
   document.querySelectorAll("#relTabs button").forEach((b) => { const n = (r.counts || {})[b.dataset.k]; const bb = b.querySelector("b"); if (bb) bb.textContent = n == null ? "…" : nf(n); });
   $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
   const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
-  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>
+  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="avw${vipAttr(vipOf(0, x.svip, true))}"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>${vipLab(vipOf(0, x.svip, true))}</div>
       <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div>${relStat(x)}</div>
       <button class="relmsg" onclick="event.stopPropagation();relMsg('${esc(x.uid)}')">💬 Mesaj</button></div>`).join("")
     + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
@@ -1441,12 +1461,14 @@ let loginRole = (() => { try { return localStorage.getItem("bw_role") || "yetkil
 function pickRole(r) { loginRole = r; try { localStorage.setItem("bw_role", r); } catch (e) {} document.querySelectorAll("#rolePick button").forEach((b) => b.classList.toggle("on", b.dataset.r === r)); }
 setTimeout(() => pickRole(loginRole), 0);
 const can = (p) => !me || !Array.isArray(me.perms) || me.perms.includes(p);
-const TAB_PERM = { dm: "elmas", card: "kart", coin: "coins", aj: "ajans" };
+const TAB_PERM = { dm: "elmas_gor", card: "kart_gor", coin: "coins", aj: "ajans" }; // sekmeyi görme; değişiklik ayrı izin (elmas / kart)
+const canSee = (p) => can(p) || can(p.replace(/_gor$/, "")); // eski oturum: yalnız tam izin listelenmişse de görür
 function applyPerms() {
-  document.querySelectorAll("nav.bn button[data-p]").forEach((b) => { const need = TAB_PERM[b.dataset.p]; b.hidden = !!need && !can(need); });
-  if (TAB_PERM[curTab] && !can(TAB_PERM[curTab])) tab("msg");
+  document.querySelectorAll("nav.bn button[data-p]").forEach((b) => { const need = TAB_PERM[b.dataset.p]; b.hidden = !!need && !canSee(need); });
+  if (TAB_PERM[curTab] && !canSee(TAB_PERM[curTab])) tab("msg");
+  document.documentElement.classList.toggle("ro-elmas", !can("elmas")); // 👁 yalnız görme: "ödendi" düğmeleri gizli
   if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
-  if (!can("elmas") && $("dmStrip")) setDmStrip("");
+  if (!canSee("elmas_gor") && $("dmStrip")) setDmStrip("");
   if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
@@ -1633,6 +1655,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.39"></script>
+<script src="profile.js?v=2.1.40"></script>
 </body>
 </html>
