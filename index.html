@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.41">
+<meta name="build" content="2.1.42">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.41">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.41">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.41">
+<link rel="manifest" href="manifest.json?v=2.1.42">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.42">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.42">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -114,7 +114,7 @@
   .list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .row { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
   .row .b { flex: 1; min-width: 0; }
-  .row .t { display: flex; justify-content: space-between; gap: 8px; }
+  .row .t { display: flex; justify-content: space-between; gap: 8px; } .row .t > span:last-child { flex: none; white-space: nowrap; } /* saat hiç bölünmez (uzun ad + SVIP etiketi) */
   .row .t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .row .p { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; gap: 6px; justify-content: space-between; }
   .badge.mute { background: #64748b !important; color: #e2e8f0 !important; }
@@ -284,7 +284,22 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 /* 👑 VIP / SVIP çerçevesi (etiket mutlak konumlu: satır boyu değişmez) */
 .avw.vr > .av { box-shadow: 0 0 0 2px var(--bg, #0b0f0e), 0 0 0 4px var(--vc); }
 .vlab { position: absolute; left: -6px; bottom: -7px; z-index: 3; font-style: normal; font-size: 9px; font-weight: 800; line-height: 14px; padding: 0 3px; border-radius: 7px; background: var(--vc); color: #fff; white-space: nowrap; letter-spacing: 0; box-shadow: 0 1px 3px #0007; pointer-events: none; }
-.vlab.vr-s2 { color: #2a1d00; } .vlab.vr-v { color: #0f172a; }
+.vlab.vr-s2 { color: #2a1d00; } .vlab.vr-v { color: #0f172a; } .vlab.vr-v6 { color: #2a1700; }
+/* VIP6-7: altın halka + ışıltı */
+.avw.vr-v6 > .av { box-shadow: 0 0 0 2px var(--bg, #0b0f0e), 0 0 0 4px var(--vc), 0 0 10px 3px color-mix(in srgb, var(--vc) 55%, transparent); }
+.pfhero .wav.vr-v6 { box-shadow: 0 0 0 3px var(--vc), 0 0 16px 6px color-mix(in srgb, var(--vc) 50%, transparent); }
+/* VIP8+: dönen renkli halka, parlayan etiket */
+.avw.vr-v8 > .av { box-shadow: 0 0 0 2px var(--bg, #0b0f0e); }
+.avw.vr-v8::before, .pfhero .wav.vr-v8::before { content: ""; position: absolute; inset: -5px; border-radius: 50%; pointer-events: none; z-index: 2;
+  background: conic-gradient(#f472b6, #facc15, #34d399, #60a5fa, #a78bfa, #f472b6); animation: vspin 2.4s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3px)); }
+.pfhero .wav.vr-v8 { box-shadow: 0 0 18px 4px #f472b666; } .pfhero .wav.vr-v8::before { inset: -6px; }
+.vlab.vr-v8 { background: linear-gradient(90deg, #f472b6, #facc15, #60a5fa); background-size: 200% 100%; animation: vshine 2s linear infinite; color: #1a0b1f; }
+@keyframes vspin { to { transform: rotate(360deg); } } @keyframes vshine { to { background-position: 200% 0; } }
+@media (prefers-reduced-motion: reduce) { .avw.vr-v8::before, .pfhero .wav.vr-v8::before, .vlab.vr-v8 { animation: none; } }
+/* SVIP adı yanında etiket */
+.svtag[style*="#eab308"] { color: #2a1d00 !important; }
+.svtag { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 6px; font-size: 10.5px; font-weight: 800; line-height: 16px; vertical-align: 1px; background: var(--vc); color: #fff; letter-spacing: .3px; }
 .avw.vr .ondot { z-index: 4; } /* nokta yerinde kalır (kayma olmasın), etiketin üstünde */
 .pfhero .wav.vr { box-shadow: 0 0 0 3px var(--vc), 0 0 0 7px color-mix(in srgb, var(--vc) 28%, transparent); }
 .pfhero .wav .vlab { left: 50%; transform: translateX(-50%); letter-spacing: .3px; font-size: 12.5px; line-height: 19px; bottom: -11px; padding: 0 10px; border-radius: 10px; }
@@ -298,7 +313,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.41" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.42" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -307,7 +322,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.41" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.42" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -362,7 +377,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.41"></script>
+<script src="emoji.js?v=2.1.42"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -427,10 +442,13 @@ const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-proces
 const SVC = ["", "#22c55e", "#eab308", "#3b82f6", "#a855f7", "#ef4444"];
 let vipm = (() => { try { return JSON.parse(localStorage.getItem("bw_vipm") || "{}"); } catch (e) { return {}; } })();
 function vipOf(vip, svip, onlySvip) { const s = Number(svip) || 0, v = Number(vip) || 0;
-  if (s > 0) return { c: SVC[Math.min(s, 5)], t: "SVIP" + s, k: "s" + Math.min(s, 5) }; if (v > 0 && !onlySvip) return { c: "#94a3b8", t: "VIP" + v, k: "v" }; return null; }
+  if (s > 0) return { c: SVC[Math.min(s, 5)], t: "SVIP" + s, k: "s" + Math.min(s, 5) }; if (!(v > 0) || onlySvip) return null;
+  return v >= 8 ? { c: "#f472b6", t: "VIP" + v, k: "v8" } : v >= 6 ? { c: "#f59e0b", t: "VIP" + v, k: "v6" } : { c: "#94a3b8", t: "VIP" + v, k: "v" }; } // VIP1-5 gümüş · VIP6-7 altın ışıltılı · VIP8+ dönen renkli halka
+// 👑 SVIP ise mesaj listesinde adın yanında "SVIP3" etiketi
+const svTag = (id) => { const v = vipm[String(id)], s = v ? Number(v[1]) || 0 : 0; return s > 0 ? `<span class="svtag" style="--vc:${SVC[Math.min(s, 5)]}">SVIP${s}</span>` : ""; };
 const vipAttr = (o) => (o ? ` vr vr-${o.k}" style="--vc:${o.c}` : ""); // class="avw${vipAttr(o)}" → çerçeve rengi
 const vipLab = (o) => (o ? `<i class="vlab vr-${o.k}">${o.t}</i>` : "");
-const vipConv = (id) => { const v = vipm[String(id)]; return v ? vipOf(v[0], v[1], true) : null; };
+const vipConv = (id) => { const v = vipm[String(id)]; return v ? vipOf(v[0], v[1]) : null; };
 // 👑 sohbet başlığında da çerçeve: SVIP renkli, VIP gümüş (profildeki gibi)
 function chVip() { const w = $("chAv") && $("chAv").parentElement; if (!w) return; const v = cur && !isSys(cur) ? vipm[String(cur)] : null, o = v ? vipOf(v[0], v[1]) : null;
   w.classList.toggle("vr", !!o); [...w.classList].filter((c) => c.startsWith("vr-")).forEach((c) => w.classList.remove(c)); if (o) { w.classList.add("vr-" + o.k); w.style.setProperty("--vc", o.c); }
@@ -606,7 +624,7 @@ function renderInbox() {
   const rallRow = lf === "unread" && unN ? `<div class="row rallrow" data-k="rallrow"><button class="go" onclick="readAll()">✓✓ Hepsini okundu yap <b>${unN}</b></button><span class="s">müşterilere "görüldü" gider</span></div>` : "";
   morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : rallRow) + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw${vipAttr(vipConv(x.id))}"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}${vipLab(vipConv(x.id))}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${svTag(x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
       <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own && !x.rx ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
@@ -1336,7 +1354,7 @@ async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || 
   document.querySelectorAll("#relTabs button").forEach((b) => { const n = (r.counts || {})[b.dataset.k]; const bb = b.querySelector("b"); if (bb) bb.textContent = n == null ? "…" : nf(n); });
   $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
   const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
-  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="avw${vipAttr(vipOf(0, x.svip, true))}"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>${vipLab(vipOf(0, x.svip, true))}</div>
+  $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="avw${vipAttr(vipOf(x.vip, x.svip))}"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>${vipLab(vipOf(x.vip, x.svip))}</div>
       <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div>${relStat(x)}</div>
       <button class="relmsg" onclick="event.stopPropagation();relMsg('${esc(x.uid)}')">💬 Mesaj</button></div>`).join("")
     + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
@@ -1659,6 +1677,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.41"></script>
+<script src="profile.js?v=2.1.42"></script>
 </body>
 </html>
