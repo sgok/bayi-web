@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.48">
+<meta name="build" content="2.1.49">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.48">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.48">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.48">
+<link rel="manifest" href="manifest.json?v=2.1.49">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.49">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.49">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -145,6 +145,15 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
     background: radial-gradient(circle at 35% 30%, #fff7c2 0 10%, #fde047 11% 42%, #f59e0b 43% 72%, #b45309 73%); box-shadow: inset 0 0 0 .07em #92400e; }
   .gc::after { content: ""; position: absolute; inset: .2em; border-radius: 50%; border: .07em solid #b4530988; }
   #hStock { color: #fbbf24; font-weight: 800; }
+  #hDia { color: #7dd3fc; font-weight: 700; font-size: 14px; margin-left: 6px; cursor: pointer; } #hDia[hidden] { display: none; } /* 💎 bayi hesabının kendi elması (sahip + yetkili) */
+  .wcard { border-color: #38bdf8; } .wcard .v { font-size: 26px; color: #7dd3fc; } .wcard .wl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 8px; } .wcard .wl > div { min-width: 0; }
+  .wcard .wl small, .wcard .wl b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .wcard .wl small { font-size: 11px; color: var(--muted); } .wcard .wl b { font-size: 15px; font-variant-numeric: tabular-nums; } /* sabit yükseklik: değer gelince kart boyu değişmez */
+  .wcard .wex { width: 100%; margin-top: 10px; font-size: 16px; }
+  .expacks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; } .expacks button { padding: 9px 6px; font-size: 14px; line-height: 1.3; font-variant-numeric: tabular-nums; } .expacks button b { display: block; font-size: 15px; }
+  .expacks button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  .exstep { display: grid; grid-template-columns: 56px 1fr 56px; gap: 8px; align-items: center; } .exstep button { height: 46px; padding: 0; font-size: 22px; } .exstep b { text-align: center; font-size: 24px; font-variant-numeric: tabular-nums; }
+  .exsum { margin: 12px 0 6px; padding: 10px; border-radius: 12px; background: var(--panel2); text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .exwarn { color: var(--warn); font-size: 13px; margin: 6px 0 10px; } #exGo { width: 100%; font-size: 18px; padding: 14px; }
   .semo { display: inline-block; vertical-align: -0.3em; background-repeat: no-repeat; }
   .emochips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; white-space: normal; } .emochips button { padding: 1px 6px; border-radius: 12px; font-size: 12px; background: #00000033; border: 1px solid #ffffff22; display: inline-flex; align-items: center; gap: 3px; } .emochips button.me { border-color: #f59e0b; }
   .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
@@ -342,7 +351,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.48" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.49" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -351,7 +360,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.48" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.49" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -406,7 +415,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.48"></script>
+<script src="emoji.js?v=2.1.49"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -450,9 +459,9 @@ function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); l
     if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - a.off; else if (a.top != null) box.scrollTop = a.top; };
   go(); requestAnimationFrame(go); setTimeout(go, 250); setTimeout(go, 900); } // resimler yüklenip yükseklik değişirse yeniden
 // ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
-const STAT = { api: [], rt: null, rtOn: false, live: null, link: "" };
+const STAT = { api: [], rt: null, rtOn: false, live: null, link: "", needLogin: 0 };
 function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
-  const bits = [`sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
+  const bits = [...(STAT.needLogin && Date.now() - STAT.needLogin < 15 * 60e3 ? ["🔑 Sugo oturumu kapandı – tablet yeniden giriş yapıyor"] : []), `sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
 async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); renderInbox(); if (cur) renderChat(); } }
@@ -524,7 +533,7 @@ async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekt
   if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
-  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
+  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); connectRt(); notifSetup();
   setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
   const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
   // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
@@ -1001,8 +1010,9 @@ async function msgAct(kind, mid, e) {
 // ---------- 💎 parça parça elmas bozumu: aynı alış partisindeki (batch) bozumlar her zaman tek grup; partisi yoksa aynı kişinin aralarında en fazla 10 dk olanlar
 // (muhasebedeki MERGE_MIN ile aynı). Ödenecek grup başına: grubun toplam coini → aşağı yuvarla (parçaları ayrı yuvarlayıp toplamak 1 ₼ eksik gösterir)
 const DM_GAP = 10 * 60_000;
+const dmOwn = (r) => !!(r && (r.own || !r.uid)); // 🔁 bayinin kendi elmas bozumu (uid yok): alış değil, ödenmez
 function dmGroups(rows) {
-  const asc = rows.filter((r) => r.diamonds || r.amount).slice().sort((a, b) => Date.parse(a.at) - Date.parse(b.at)), out = [];
+  const asc = rows.filter((r) => (r.diamonds || r.amount) && !dmOwn(r)).slice().sort((a, b) => Date.parse(a.at) - Date.parse(b.at)), out = [];
   for (const r of asc) { const b = r.batch != null && r.batch !== "" ? String(r.batch) : null;
     const g = b ? out.find((x) => x.batch === b) : out.find((x) => !x.batch && String(x.uid) === String(r.uid) && Date.parse(r.at) - Date.parse(x.last) <= DM_GAP);
     if (g) { g.rows.push(r); g.last = r.at; } else out.push({ uid: r.uid, batch: b, rows: [r], last: r.at }); }
@@ -1300,7 +1310,7 @@ function tab(k) { if (!document.getElementById("p-" + k)) k = "msg"; curTab = k;
     await new Promise((z) => setTimeout(z, Math.max(0, 600 - (Date.now() - t0))));
     el.classList.remove("spin"); set(0); busy = false; }, { passive: true });
 })();
-function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") loadAj(); else if (curTab === "coin") loadCoins(); loadTablet(); }
+function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") { loadAj(); loadWallet(true); } else if (curTab === "coin") loadCoins(); loadTablet(); }
 
 // 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
 let coinLimit = 40, coinData = null;
@@ -1333,7 +1343,11 @@ const nf = (n) => Number(n || 0).toLocaleString("tr-TR"), azn = (x) => { const n
 async function loadDm() { if (!canSee("elmas_gor")) { dmData = null; return; } const d = await api("bayi_coins_get", { limit: dmLimit }); if (!d.report) return; dmData = d.report;
   try { const recent = (x) => x && x.diamonds && Date.now() - Date.parse(x.at) < 6 * 3600_000; dmBadgeCache = { open: (dmData.open || []).filter(recent), coins: (dmData.coins || []).filter(recent) }; localStorage.setItem("bw_dmb", JSON.stringify(dmBadgeCache)); } catch (e) {}
   renderDm(); }
-function dmRow(r) { return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
+function dmRow(r) { if (dmOwn(r)) return `<div class="row dmown"><div class="av" style="background:linear-gradient(135deg,#38bdf8,#0369a1)">💎</div>
+  <div class="b"><div class="t"><b>🔁 Kendi elmas bozumu</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · bayi hesabı</div></div>
+  <div style="text-align:right;color:#4ade80;font-weight:700;white-space:nowrap">+${nf(r.amount)} coin</div></div>`;
+  return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
   <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
   <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
@@ -1374,13 +1388,13 @@ async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
       <div class="s">${esc(r.type_name || "")}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null ? " · bakiye sonrası " + nf(r.result_amount) : ""}</div></div><b style="color:${r.op_type === 1 ? "#4ade80" : "#f87171"}">${r.op_type === 1 ? "+" : "−"}${nf(r.amount)}</b></div>`).join("")
     + (rep.total > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
 /** Ödenmemiş toplamı grup bazında (kişi kartındaki "Toplam borç" ile aynı hesap); liste eksikse sunucunun toplamı */
-function dmUnpaid(d) { const u = (d && d.unpaid) || {}, open = (d && d.open) || []; if (!open.length || open.length < (u.n || 0)) return u;
+function dmUnpaid(d) { const u = (d && d.unpaid) || {}, open = ((d && d.open) || []).filter((r) => !dmOwn(r)); if (!open.length || open.length < (u.n || 0)) return u;
   return { ...u, pay: Math.round(dmGroups(open).reduce((s, g) => s + g.pay, 0) * 100) / 100 }; }
-function renderDm() { const d = dmData; if (!d) return; const open = d.open || [], u = dmUnpaid(d), td = d.today || {};
+function renderDm() { const d = dmData; if (!d) return; const open = (d.open || []).filter((r) => !dmOwn(r)), u = dmUnpaid(d), td = d.today || {}, ot = d.own_today || {};
   $("nDm").hidden = !u.n; $("nDm").textContent = u.n || "";
   setDmStrip(open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "");
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
-    <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div></div></div>
+    <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div>${isYetkili() && ot.n ? `<div class="s dmownt" style="color:#7dd3fc">🔁 Kendi bozum: +${nf(ot.coins)} coin</div>` : ""}</div></div>
     <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
     ${open.length ? `<h3>⏳ Ödenmemişler <span class="s">(${dmPeople(open).length} kişi)</span></h3>${dmPersonBoxes(open)}` : ""}
     <h3>🕘 Son bozumlar <span class="s">(${nf(d.total)} kayıt)</span></h3>${dmListHtml(d.coins || [])}
@@ -1481,7 +1495,7 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
   const T = u.limited || (me && me.role === "yardimci") ? [["basvuru", "📝 Başvurular"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"]] // yardımcı: başvurular ilk; özet, gün gün ve alt ajanslar yok
     : [["ozet", "📊 Özet"], ["gunluk", "📅 Gün gün"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"], ["basvuru", "📝 Başvurular"], ["alt", "🏢 Alt ajanslar"]];
   if (!T.some(([k]) => k === ajSub)) ajSub = T[0][0];
-  let h = `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}" onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
+  const wc = walletCard(); let h = wc + `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}" onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
   if (ajSub === "ozet") h += `<div class="card"><b>🏢 ${esc(info.name || "Ajans")}</b><div class="s">Seviye ${esc(d0.rating_level || info.rating_level || "—")} · komisyon %${esc(String(d0.rating_ratio ?? "—"))} · ${nf(u.members)} üye${u.limited ? "" : ` · ${nf(info.sub_union_count)} alt ajans`}</div></div>
     <div class="s" style="margin:0 12px">Son gün: ${d0.day ? ajDay(d0.day) : "—"} (bugünkü veri yarın gelir) · elmas</div>
     <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(u.month_commission ?? sum("commission"))}</div></div>
@@ -1492,7 +1506,61 @@ function renderAj() { const u = ajData; if (!u) return; const info = u.info || {
     + `<h3>🆕 Son 14 gün katılanlar</h3>` + (u.new_members || []).map((x) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("");
   if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
   if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
-  $("ajBody").innerHTML = h; }
+  $("ajBody").innerHTML = h; const we = $("ajWallet"); if (we) we.__h = wc; }
+
+// 💎 Bayi hesabının kendi elmasları (yalnız ajans sahibi + Bayi Yetkilisi): başlıkta "💎 1.915", Ajans'ın üstünde kart; bozmayı yalnız ajans sahibi yapar
+// Önce telefondaki son değer çizilir; sonra açılışta bir kez, 5 dk'da bir, "wallet" canlı olayıyla ve Ajans açılınca (taze, Sugo'dan) güncellenir
+let walletData = (() => { try { return JSON.parse(localStorage.getItem("bw_wallet") || "null"); } catch (e) { return null; } })(), walletSeq = 0;
+const walletOk = () => isYetkili(); // yardımcı görmez (sunucu da vermez)
+async function loadWallet(fresh) { if (!me || !walletOk()) { walletDraw(); return; } const seq = ++walletSeq;
+  const d = await api("bayi_wallet_get", fresh ? { fresh: true } : {}); if (seq !== walletSeq && !fresh) return; // eski cevap yenisini ezmesin
+  if (d.report && d.report.wallet) walletSet(d.report.wallet); }
+function walletSet(w) { if (!w) return; walletData = { ...(walletData || {}), ...Object.fromEntries(Object.entries(w).filter(([, v]) => v != null)) };
+  try { localStorage.setItem("bw_wallet", JSON.stringify(walletData)); } catch (e) {} walletDraw(); }
+function walletDraw() { const w = walletData, on = walletOk() && !!w && w.diamond != null, h = $("hDia");
+  if (h) { const t = on ? "💎 " + nf(w.diamond) : ""; if (h.textContent !== t) h.textContent = t; h.hidden = !on; }
+  const c = $("ajWallet"), x = walletCard(); // değişmediyse yeniden çizilmez
+  if (c && !x) c.remove(); else if (c && c.__h !== x) { c.outerHTML = x; const n = $("ajWallet"); if (n) n.__h = x; } else if (!c && x && ajData && $("ajBody").querySelector(".sub")) renderAj();
+  if ($("exPacks")) exDraw(); }
+const exCan = () => !!(walletData && walletData.can_exchange && (isSahip() || swOn())); // ajans sahibi (ya da hesap geçişindeki sahip)
+function walletCard() { if (!walletOk()) return ""; const w = walletData || {}, has = w.diamond != null;
+  const x = `<div class="card wcard" id="ajWallet"><div class="k">💎 Bayi hesabının elmasları</div><div class="v">${has ? nf(w.diamond) : "…"}</div>
+    <div class="wl"><div><small>📅 Bugün eklenen</small><b>${w.today != null ? "+" + nf(w.today) : "—"}</b></div><div><small><span class="gc"></span> Coin bakiyesi</small><b style="color:#fbbf24">${w.coin != null ? nf(w.coin) : "—"}</b></div><div><small>🕘 Son okuma</small><b>${w.at ? rel(Date.parse(w.at)) : "…"}</b></div></div>
+    ${exCan() ? `<button class="go wex" onclick="exOpen()">🔁 Elmas boz</button>` : ""}</div>`;
+  return x; }
+setInterval(() => { if (me && document.visibilityState === "visible") loadWallet(); }, 300_000); // 5 dk'da bir
+// 🔁 Elmas bozma (yalnız ajans sahibi): alttan pencere · paket + adet → özet → PIN → bayi_exchange; geri alınamaz, çift basış tek istek
+let exSt = null; // { id, times, busy }
+const exPacks = () => ((walletData && walletData.packs) || []).filter((p) => p && p.id && p.diamond > 0).slice().sort((a, b) => a.diamond - b.diamond);
+function exOpen() { if (!exCan()) { toast("Elmas bozmayı sadece ajans sahibi yapabilir", true); return; }
+  if (exSt && exSt.busy) { toast("⏳ Bozum sürüyor…"); return; }
+  const dia = Number(walletData.diamond) || 0, fit = exPacks().filter((p) => p.diamond <= dia);
+  if (!exSt || !fit.some((p) => p.id === exSt.id)) exSt = { id: fit.length ? fit[fit.length - 1].id : null, times: 1, busy: false }; // varsayılan: sığan en büyük paket
+  openModal(`<h3 style="margin:0 0 4px">🔁 Elmas boz</h3><div class="s" id="exHave"></div><div class="setlbl">Paket (elmas → coin)</div><div class="expacks" id="exPacks"></div>
+    <div class="setlbl">Adet</div><div class="exstep"><button id="exMinus" onclick="exTimes(-1)" aria-label="Azalt">−</button><b id="exN">1</b><button id="exPlus" onclick="exTimes(1)" aria-label="Artır">+</button></div>
+    <div class="exsum" id="exSum"></div><div class="exwarn">⚠️ Geri alınamaz: elmaslar bayi hesabında hemen coin'e çevrilir.</div>
+    <button class="go" id="exGo" onclick="exGo()">🔁 Elmas boz</button><button style="width:100%;margin-top:8px" onclick="closeModal()">Vazgeç</button>`);
+  exDraw(); }
+function exDraw() { if (!exSt || !$("exPacks")) return; const w = walletData || {}, dia = Number(w.diamond) || 0, ps = exPacks(), p = ps.find((x) => x.id === exSt.id && x.diamond <= dia);
+  const max = p ? Math.max(1, Math.min(50, Math.floor(dia / p.diamond))) : 1; exSt.times = Math.max(1, Math.min(max, exSt.times));
+  $("exHave").innerHTML = `Mevcut: 💎 <b>${nf(dia)}</b> elmas · <span class="gc"></span> ${nf(w.coin)} coin`;
+  $("exPacks").innerHTML = ps.map((x) => `<button data-id="${x.id}" class="${p && x.id === p.id ? "on" : ""}" ${x.diamond > dia || exSt.busy ? "disabled" : ""} onclick="exPick(${x.id})"><b>💎 ${nf(x.diamond)}</b>→ ${nf(x.coin)} coin</button>`).join("") || '<div class="s">Paket bilgisi yok</div>';
+  $("exN").textContent = exSt.times; $("exMinus").disabled = !!exSt.busy || !p || exSt.times <= 1; $("exPlus").disabled = !!exSt.busy || !p || exSt.times >= max;
+  const go = $("exGo");
+  if (!p) { $("exSum").textContent = ps.length ? `Bozmak için en az ${nf(ps[0].diamond)} elmas gerekli` : "Paket bilgisi yok"; go.disabled = true; go.textContent = "🔁 Elmas boz"; return; }
+  const dd = p.diamond * exSt.times, cc = p.coin * exSt.times;
+  $("exSum").textContent = `${nf(dd)} elmas → ${nf(cc)} coin · kalan ${nf(dia - dd)} elmas`;
+  go.disabled = !!exSt.busy; go.textContent = exSt.busy ? "⏳ Bozuluyor…" : `🔁 ${nf(dd)} elmas → ${nf(cc)} coin`; }
+function exPick(id) { if (!exSt || exSt.busy) return; exSt.id = id; exSt.times = 1; exDraw(); }
+function exTimes(k) { if (!exSt || exSt.busy) return; exSt.times += k; exDraw(); }
+async function exGo() { const st = exSt, dia = Number((walletData || {}).diamond) || 0, p = st && exPacks().find((x) => x.id === st.id && x.diamond <= dia); if (!st || st.busy || !p) return;
+  st.busy = true; exDraw(); const body = { id: p.id, times: st.times };
+  try { const pin = await askPin("Elmas bozmak için işlem PIN'iniz"); if (!pin) { st.busy = false; exOpen(); return; }
+    const d = await api("bayi_exchange", { ...body, pin }); if (d.pin === "wrong") pinCache = null; st.busy = false;
+    if (d.error) { toast("❌ " + d.error, true); if (d.report && d.report.wallet) walletSet(d.report.wallet); exOpen(); return; }
+    exSt = null; if (d.report && d.report.wallet) walletSet({ ...d.report.wallet, at: d.report.wallet.at || new Date().toISOString() });
+    if ($("exGo")) closeModal(); toast(typeof d.ok === "string" ? d.ok : "✅ Elmas bozuldu"); loadCoins(); loadDm();
+  } catch (e) { st.busy = false; if ($("exGo")) exDraw(); toast("❌ Elmas bozulamadı", true); } }
 
 // ---------- pencere, ayarlar, şifre / PIN, coin gönderme
 function openModal(h, top) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; modalLayout(!!top); }
@@ -1586,7 +1654,7 @@ function applyPerms() {
   if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
   if (!canSee("elmas_gor") && $("dmStrip")) setDmStrip("");
   if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
-  try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {}
+  try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {} try { walletDraw(); } catch (e) {} // 💎 başlıktaki elmas: sahip + yetkili
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
 }
 function menu() { setOpen(); }
@@ -2011,7 +2079,8 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
   ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
-    if (ev === "link") { const pl = d.payload.payload || {}; if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
+    if (ev === "wallet") { const pl = d.payload.payload || {}, w = pl.wallet || pl; if (walletOk() && (w.coin != null || w.diamond != null)) walletSet({ coin: w.coin, diamond: w.diamond, at: new Date().toISOString() }); return; } // 💎 bayi hesabının elması / coini değişti
+    if (ev === "link") { const pl = d.payload.payload || {}; if (pl.need_login) { STAT.needLogin = Date.now(); statLine(); } else if ("mode" in pl || "need_login" in pl) { STAT.needLogin = 0; statLine(); } if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
     if (ev === "pausereq") { onPauseReq(d.payload.payload || {}); return; } // 📨 Sugo uygulaması onay isteği (yeni / onaylandı / reddedildi / süresi doldu)
     if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
@@ -2034,6 +2103,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.48"></script>
+<script src="profile.js?v=2.1.49"></script>
 </body>
 </html>
