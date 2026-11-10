@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.46">
+<meta name="build" content="2.1.47">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.46">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.46">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.46">
+<link rel="manifest" href="manifest.json?v=2.1.47">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.47">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.47">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -339,7 +339,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.46" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.47" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -348,7 +348,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.46" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.47" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -403,7 +403,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.46"></script>
+<script src="emoji.js?v=2.1.47"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -1535,7 +1535,7 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
   const nm = (me && me.name) || "";
   return (`<div class="sethead"><div class="sav">${esc(nm.slice(0, 1).toLocaleUpperCase("tr") || "?")}</div><div style="min-width:0"><b>${esc(nm)}</b><span class="s">${esc((me && me.role_label) || "")}</span></div></div>
   <div class="setlbl" style="margin-top:0">Görünüm</div><div class="seg"><button class="${themeNow() === "sugo" ? "on" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "on" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
-  ${grp("Bayi hesabı", [can("mesaj") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
+  ${grp("Bayi hesabı", [can("mesaj") && !(me && me.role === "yardimci") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
     can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : ""])}
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
   ${grp("👑 Ajans sahibi", isSahip() ? [row("💳", "", "Kartları yönet", "ekle · düzenle · sıra · hak sıfırla · pasif", "ownCards()"), row("👥", "", "Web kullanıcıları", "ekle · rol · izin · şifre / PIN · pasif", "ownUsers()"),
@@ -1974,6 +1974,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.46"></script>
+<script src="profile.js?v=2.1.47"></script>
 </body>
 </html>
