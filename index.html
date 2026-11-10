@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.40">
+<meta name="build" content="2.1.41">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.40">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.40">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.40">
+<link rel="manifest" href="manifest.json?v=2.1.41">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.41">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.41">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -298,7 +298,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.40" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.41" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -307,7 +307,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.40" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.41" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -362,7 +362,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.40"></script>
+<script src="emoji.js?v=2.1.41"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -431,6 +431,10 @@ function vipOf(vip, svip, onlySvip) { const s = Number(svip) || 0, v = Number(vi
 const vipAttr = (o) => (o ? ` vr vr-${o.k}" style="--vc:${o.c}` : ""); // class="avw${vipAttr(o)}" → çerçeve rengi
 const vipLab = (o) => (o ? `<i class="vlab vr-${o.k}">${o.t}</i>` : "");
 const vipConv = (id) => { const v = vipm[String(id)]; return v ? vipOf(v[0], v[1], true) : null; };
+// 👑 sohbet başlığında da çerçeve: SVIP renkli, VIP gümüş (profildeki gibi)
+function chVip() { const w = $("chAv") && $("chAv").parentElement; if (!w) return; const v = cur && !isSys(cur) ? vipm[String(cur)] : null, o = v ? vipOf(v[0], v[1]) : null;
+  w.classList.toggle("vr", !!o); [...w.classList].filter((c) => c.startsWith("vr-")).forEach((c) => w.classList.remove(c)); if (o) { w.classList.add("vr-" + o.k); w.style.setProperty("--vc", o.c); }
+  const old = w.querySelector(".vlab"); if (old) old.remove(); if (o) w.insertAdjacentHTML("beforeend", vipLab(o)); }
 const onDot = (x) => x && "on" in x && !isSys(x.id) ? `<i class="ondot ${x.on ? "on" : "off"}" title="${x.on ? "Çevrimiçi" : "Çevrimdışı"}"></i>` : "";
 function chOnUpd() { const el = $("chOn"); if (!el) return; const x = cur && !isSys(cur) ? inbox.find((i) => String(i.id) === cur) : null;
   el.hidden = !(x && "on" in x); if (x) { el.className = "ondot " + (x.on ? "on" : "off"); el.title = x.on ? "Çevrimiçi" : "Çevrimdışı"; } }
@@ -583,7 +587,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
-  if (d.report && d.report.vips) { vipm = d.report.vips; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); } catch (e) {} } // 👑 SVIP çerçevesi
+  if (d.report && d.report.vips) { vipm = d.report.vips; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); } catch (e) {} if (cur) chVip(); } // 👑 SVIP çerçevesi
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
@@ -681,7 +685,7 @@ async function openChat(id, snap) { stopMedia(); replyTo = null; try { renderRep
   if (String(id) !== cur) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); chFresh = null; } cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
+  chVip(); sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || []; renderPins(); $("cards").classList.remove("on");
@@ -1655,6 +1659,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.40"></script>
+<script src="profile.js?v=2.1.41"></script>
 </body>
 </html>
