@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.42">
+<meta name="build" content="2.1.43">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.42">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.42">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.42">
+<link rel="manifest" href="manifest.json?v=2.1.43">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.43">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.43">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -86,11 +86,14 @@
   .swbg.ready { background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff; }
   #convs .row.lswiping { position: relative; z-index: 1; background: var(--bg); } #convs .row.pinned.lswiping { background: linear-gradient(rgba(245,158,11,.10), rgba(245,158,11,.10)), var(--bg); }
   .cardtag { margin-left: 6px; font-style: italic; font-size: .85em; color: #9ca3af; opacity: .8; white-space: nowrap; } /* sadece bizde: kartın bankası (karşıya gitmez) */
-  .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; }
+  .rolepick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 300px; } .rolepick button { padding: 10px 6px; font-size: 14px; } .rolepick button[data-r="sahip"] { grid-column: 1 / -1; }
   .rolepick button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
   #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
+  /* 📨 ajans sahibine Sugo uygulaması onay isteği: her ekranın üstünde (yer kaplamaz) */
+  #pzBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 64px); z-index: 72; background: linear-gradient(135deg, #6d28d9, #a855f7); color: #fff; font-size: 14.5px; line-height: 1.35; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0009; border: 1px solid #c4b5fd66; }
+  #pzBar[hidden] { display: none; } #pzBar .pzb { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; } #pzBar button { padding: 9px; font-size: 15px; font-weight: 700; border: 0; background: #00000040; color: #fff; } #pzBar .pzok { background: #16a34a; } #pzBar .pzl { font-variant-numeric: tabular-nums; }
   #pauseBar[hidden] { display: none; } #pauseBar button { margin-left: 6px; padding: 4px 10px; font-size: 13px; background: #2b1700; color: #ffd84d; border: 0; }
   .tagbar { display: flex; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; z-index: 3; background: var(--bg); }
   .tagbar button.rall { font-size: 13px; } .tagbar button.rall:disabled { opacity: .45; }
@@ -214,6 +217,22 @@
   .setrow .st { flex: 1; min-width: 0; } .setrow .st small { display: block; color: var(--muted); font-size: 12.5px; } .setrow .chev { color: var(--muted); font-size: 22px; line-height: 1; }
   .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--panel2); border: 1px solid var(--line); border-radius: 14px; padding: 4px; }
   .seg button { border: 0; border-radius: 10px; background: transparent; padding: 9px; } .seg button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); font-weight: 700; }
+  /* 👑 Ajans sahibi sayfaları (kartlar, kullanıcılar, işlem kaydı, bağlantı) */
+  .ownacts { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; } .ownacts button { flex: 1 1 auto; font-size: 14px; padding: 9px 10px; } .ownacts .warnb { border-color: #ef4444; color: #f87171; }
+  .ocnext { margin: 0 0 4px; border-color: #d97706; } .ocnum { font-variant-numeric: tabular-nums; font-size: 18px; margin: 4px 0; } .ocprev .ocnum { font-size: 15px; }
+  .ocrow { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--line); min-height: 58px; } .ocrow:last-child { border-bottom: 0; } .ocrow .b { flex: 1; min-width: 0; } .ocrow .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ocrow.off .b { opacity: .55; } .ocb { display: flex; gap: 4px; flex: none; } .ocb button { width: 38px; height: 38px; padding: 0; font-size: 15px; } .ocb button:disabled { opacity: .3; }
+  .ocform { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--tint, var(--panel)); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: 8px; } .ocform .full { grid-column: 1 / -1; } .ocform label.s { display: grid; gap: 4px; }
+  .ocform select, .auhead select { height: 42px; width: 100%; } .occk { display: flex; gap: 8px; align-items: center; } .occk input, .ouck input { width: 22px; height: 22px; flex: none; }
+  .ocprev { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; } .ocprev select { height: 34px; width: auto; } .ocprev button { padding: 3px 9px; margin-left: auto; }
+  .okc { color: #4ade80; font-weight: 700; } .badc { color: #f87171; font-weight: 700; }
+  .oucard { margin: 10px 0; } .oucard.off { opacity: .8; border-color: #ef444466; } .oucard > .s { margin-top: 4px; } .ouh { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .ouh b { font-size: 18px; }
+  .rpill { font-size: 12.5px; padding: 2px 8px; border-radius: 99px; background: var(--panel2); border: 1px solid var(--line); } .rpill.r-sahip { color: #c4b5fd; border-color: #a78bfa; } .rpill.r-yetkili { color: #fbbf24; border-color: #f59e0b; } .rpill.r-yardimci { color: #7dd3fc; border-color: #38bdf8; }
+  .ouck { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 14.5px; } .ouck:last-child { border-bottom: 0; }
+  .ouform { display: grid; gap: 8px; } .ouform label.s { display: grid; gap: 4px; } .seg.seg3 button { white-space: normal; line-height: 1.2; font-size: 13.5px; }
+  .auhead { margin-bottom: 4px; } .auhead label { display: grid; gap: 4px; } #auBody .sub { padding: 8px 0; } #auList { min-height: 50vh; }
+  .aurow { padding: 10px 4px; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; } .aurow .aut { display: flex; justify-content: space-between; gap: 8px; } .aurow .aut > span:last-child { flex: none; color: var(--muted); font-size: 12.5px; }
+  .olcard { margin: 0 0 8px; } .olcard .v { min-height: 1.3em; } .olcard .s { min-height: 2.8em; margin-top: 2px; }
   .setout { width: 100%; margin-top: 16px; color: var(--bad); background: var(--panel2); font-weight: 700; } .setclose { width: 100%; margin-top: 8px; background: transparent; }
   .pfmore > summary::before { content: "›"; display: inline-block; margin-right: 8px; transition: transform .2s; } .pfmore[open] > summary::before { transform: rotate(90deg); }
   .pfmsg { display: block; width: 100%; margin: 0 0 12px; padding: 13px; font-size: 17px; font-weight: 700; border-radius: 14px; background: #059669; border-color: #059669; color: #fff; }
@@ -313,8 +332,8 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.42" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
-  <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
+  <img src="icon-192.png?v=2.1.43" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
   <button class="go" id="loginBtn" style="min-width:200px" onclick="doLogin()">Giriş</button>
@@ -322,7 +341,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.42" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.43" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -377,7 +396,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.42"></script>
+<script src="emoji.js?v=2.1.43"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -441,6 +460,7 @@ const avUrl = (a) => !a ? "" : /^https?:/.test(a) ? a : OSS + a + "?x-oss-proces
 // 👑 VIP / SVIP çerçevesi: SVIP1 yeşil, SVIP2 sarı, SVIP3 mavi, SVIP4 mor, SVIP5+ kırmızı; VIP gümüş (listelerde yalnız SVIP)
 const SVC = ["", "#22c55e", "#eab308", "#3b82f6", "#a855f7", "#ef4444"];
 let vipm = (() => { try { return JSON.parse(localStorage.getItem("bw_vipm") || "{}"); } catch (e) { return {}; } })();
+let vipsVer = (() => { try { return JSON.parse(localStorage.getItem("bw_vipm_ver") || "null"); } catch (e) { return null; } })(); // VIP/SVIP 6 saatte bir sabitlenir: sunucu yalnız sürüm değişince yeniden gönderir
 function vipOf(vip, svip, onlySvip) { const s = Number(svip) || 0, v = Number(vip) || 0;
   if (s > 0) return { c: SVC[Math.min(s, 5)], t: "SVIP" + s, k: "s" + Math.min(s, 5) }; if (!(v > 0) || onlySvip) return null;
   return v >= 8 ? { c: "#f472b6", t: "VIP" + v, k: "v8" } : v >= 6 ? { c: "#f59e0b", t: "VIP" + v, k: "v6" } : { c: "#94a3b8", t: "VIP" + v, k: "v" }; } // VIP1-5 gümüş · VIP6-7 altın ışıltılı · VIP8+ dönen renkli halka
@@ -495,9 +515,10 @@ async function start() {
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
   applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); connectRt(); notifSetup();
   setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
-  const qp = new URLSearchParams(location.search), rs = takeResume();
-  if (qp.get("c")) openChat(qp.get("c")); else if (qp.get("t")) tab(qp.get("t"));
-  else if (rs) { if (rs.tab) tab(rs.tab); if (rs.cur) { await openChat(rs.cur); if (rs.a) msgRestore(rs.a); } toast("✨ Sayfa güncellendi"); }
+  const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
+  // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
+  const navHit = (qp.get("c") || qp.get("t") || qp.get("pz") ? await navOpen(location.href) : false) | (await takeNavOpen(true)); navReady = true;
+  if (!navHit && rs) { if (rs.tab) tab(rs.tab); if (rs.cur) { await openChat(rs.cur); if (rs.a) msgRestore(rs.a); } toast("✨ Sayfa güncellendi"); }
   if (location.search) history.replaceState(null, "", location.pathname);
   api("bayi_templates").then((r) => { tpls = (r.report && r.report.templates) || []; renderTpls(); });
 }
@@ -525,7 +546,7 @@ let chX = { pay: null, notes: [], rems: [], sent: null }, rems = {}, chFresh = n
 const sentAfter = (t) => !!(chX.sent && Date.parse(chX.sent.at) >= Date.parse(t) - 60_000); // bu andan sonra (1 dk pay) coin yüklendi mi
 const hm = (t) => { try { return new Date(t).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p = chX.pay;
-  if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span><br>${p.ev
+  if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span>${can("kart") && p.result !== "undone" && p.result !== "unused" && !(p.ev && p.sure) ? `<button class="xundo" onclick="payUndo()">↩️ Geri al</button>` : ""}<br>${p.ev
     ? (() => { const r = payRound(p.ev.azn, p.ev.orig), co = Math.round(r * 1000), fark = r !== p.ev.azn;
       return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${hm(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${sentAfter(p.ev.at) ? `<br>🪙 <b>${nf(chX.sent.coins)} coin yüklendi</b> <span class="s">· ${hm(chX.sent.at)}${chX.sent.by ? " · " + esc(chX.sent.by) : ""}</span>` : can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
     : p.result === "unused" ? "❌ 15 dk içinde bu karta para gelmedi" : p.result === "undone" ? "↩️ Kart verme geri alındı" : "⏳ Para bekleniyor…"}</div>`;
@@ -603,9 +624,9 @@ function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) =>
   inbox.sort((a, b) => pg(a) - pg(b) || un(b) - un(a) || eat(b) - eat(a)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
-async function loadInbox() { const d = await api("bayi_inbox_get"); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
+async function loadInbox() { const d = await api("bayi_inbox_get", Object.keys(vipm).length ? { vipsVer } : {}); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
-  if (d.report && d.report.vips) { vipm = d.report.vips; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); } catch (e) {} if (cur) chVip(); } // 👑 SVIP çerçevesi
+  if (d.report && d.report.vips) { vipm = d.report.vips; vipsVer = d.report.vipsVer ?? null; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); localStorage.setItem("bw_vipm_ver", JSON.stringify(vipsVer)); } catch (e) {} if (cur) chVip(); } // yalnız vipsVer geldiyse (değişmedi) önbellektekiler kalır // 👑 SVIP çerçevesi
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
@@ -1302,11 +1323,12 @@ function renderDm() { const d = dmData; if (!d) return; const open = d.open || [
 async function loadCards() { if (!canSee("kart_gor")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
     <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}</div>`).join("")}
-    <div class="s" style="padding:10px 12px">${can("kart") ? "" : "👁 <b>Sadece görüntüleme:</b> kart verme ve düzeltme Bayi Yetkilisinde. "}Kart vermek için sohbette 💳 Kart ver'e basın. Kart ekleme tabletten yapılır${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
+    <div class="s" style="padding:10px 12px">${can("kart") ? "" : "👁 <b>Sadece görüntüleme:</b> kart verme ve düzeltme Bayi Yetkilisinde. "}Kart vermek için sohbette 💳 Kart ver'e basın. ${isSahip() ? "Kart ekleme / düzenleme: ⚙️ Ayarlar › 👑 Kartları yönet" : "Kart ekleme tabletten yapılır"}${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
     ${!can("duzen") ? `<div id="tplEd">${tpls.map((x) => `<div class="card" style="margin:6px 10px;white-space:pre-wrap">${esc(x)}</div>`).join("") || '<div class="s" style="margin:6px 12px">Hazır mesaj yok.</div>'}</div><div class="s" style="margin:4px 12px 20px">👁 Düzenleme Bayi Yetkilisinde.</div>` : `<div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
     <div style="display:flex;gap:8px;margin:8px 10px 20px"><button onclick="tpls.push('');loadCards()">➕ Yeni</button><button class="go" onclick="saveTpls()">💾 Kaydet</button></div>`}`; }
-const isYetkili = () => !!(me && me.role === "yetkili");
+const isYetkili = () => !!(me && (me.role === "yetkili" || me.role === "sahip")); // 👑 ajans sahibi: yetkilinin her şeyi + yönetim
+const isSahip = () => !!(me && me.role === "sahip");
 async function cardUses(id, nu) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
   if (!confirm(`${x.owner} ···${String(x.number).slice(-4)}: kullanılan hak ${x.uses}/${x.max_uses} → ${nu}/${x.max_uses} olsun mu?`)) return;
   const pin = await askPin("Kart hakkını düzeltmek için işlem PIN'iniz"); if (!pin) return;
@@ -1436,7 +1458,8 @@ function screenInfo() { const r = document.documentElement, p = document.createE
     <div class="s" style="margin:8px 0">Bu ekranın görüntüsünü gönderin.</div><button onclick="closeModal()" style="width:100%">Kapat</button>`); }
 // 📱 Sugo uygulamasından bayi hesabına girilecek (ör. yeni kızları onaylamak): sunucu 2 dk bağlanmaz, uygulamayı atmaz; süre bitince ya da "Bitti" ile geri bağlanır
 let pauseT = 0;
-async function linkPause(min, stay) { if (!stay) closeModal(); const d = await api("link_pause", { minutes: min }); if (d.error) { toast("❌ " + d.error, true); return; }
+async function linkPause(min, stay) { if (!stay) closeModal(); const d = await api("link_pause", { minutes: min }); if (d.need_approval) { pzRequest(min); return; } // yetkili: açmak ajans sahibinin onayıyla
+  if (d.error) { toast("❌ " + d.error, true); return; }
   const until = Number(d.report && d.report.pauseUntil) || 0; toast(d.ok || "Tamam"); pauseShow(until); appCdDraw(); }
 // 📱 Ayarlar › Sugo uygulamasını kullanacağım: açıklama, süre, Başlat; geri sayım aynı sayfada (sayfa açıkken üstteki şerit gizli)
 let appMin = 2, pauseUntil = 0;
@@ -1447,11 +1470,14 @@ function appPage() { sheet("app", `<h3>📱 Sugo uygulaması</h3>
     <p class="s">Bu sürede panelden giden mesajlar ve bildirimler bekler; süre bitince sırayla gider.</p></div>
   <div class="setlbl" id="appMinsL">Süre</div><div class="seg seg3" id="appMins">${[2, 5, 10].map((m) => `<button data-m="${m}" class="${m === appMin ? "on" : ""}" onclick="appMinSet(${m})">${m} dk</button>`).join("")}</div>
   <div id="appCd"></div>`); appCdDraw(); }
-function appStart() { if (!confirm(`Sunucu ${appMin} dakika bayi hesabına bağlanmayacak; bu sürede panelden giden mesajlar bekler.\n\nSugo uygulamasını kullanmaya başlansın mı?`)) return; linkPause(appMin, true); }
+function appStart() { if (!isSahip()) { if (!confirm(`Ajans sahibinden ${appMin} dakika Sugo uygulaması onayı istensin mi?\n\nOnaylanınca sunucu ${appMin} dakika bayi hesabına bağlanmaz; bu sürede panelden giden mesajlar bekler.`)) return; pzRequest(appMin); return; }
+  if (!confirm(`Sunucu ${appMin} dakika bayi hesabına bağlanmayacak; bu sürede panelden giden mesajlar bekler.\n\nSugo uygulamasını kullanmaya başlansın mı?`)) return; linkPause(appMin, true); }
 function appMinSet(m) { appMin = m; document.querySelectorAll("#appMins button").forEach((b) => b.classList.toggle("on", Number(b.dataset.m) === m)); appCdDraw(); }
 function appCdDraw() { const el = $("appCd"); if (!el) return; const left = Math.max(0, Math.round((pauseUntil - Date.now()) / 1000)), mins = $("appMins");
-  if (mins) mins.style.display = left ? "none" : ""; if ($("appMinsL")) $("appMinsL").style.display = left ? "none" : "";
-  if (!left) { const h = `<button class="go apgo" onclick="appStart()">📱 Başlat · ${appMin} dk</button>`; if (el.innerHTML !== h) el.innerHTML = h; el.dataset.mode = ""; return; }
+  const wait = !left && pzMine(); if (mins) mins.style.display = left || wait ? "none" : ""; if ($("appMinsL")) $("appMinsL").style.display = left || wait ? "none" : "";
+  if (wait) { const t = mmss(pzLeft()); if (el.dataset.mode === "wait") { el.querySelector(".aptime").textContent = t; return; } el.dataset.mode = "wait"; // onay bekleniyor: istek süresi (10 dk) geri sayar
+    el.innerHTML = `<div class="apcd"><div class="s">⏳ Ajans sahibinin onayı bekleniyor</div><div class="aptime">${t}</div><div class="s">${Number(pzReq.minutes) || 0} dk istendi · onaylanınca geri sayım burada başlar</div></div><button class="apgo" onclick="pzCancel()">↩️ İsteği geri al</button>`; return; }
+  if (!left) { const h = `<button class="go apgo" onclick="appStart()">${isSahip() ? "📱 Başlat" : "📨 Onay iste"} · ${appMin} dk</button>`; if (el.innerHTML !== h) el.innerHTML = h; el.dataset.mode = ""; return; }
   const tot = Math.max(left, Number(el.dataset.tot) || left); el.dataset.tot = tot; const tx = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`, w = Math.round(100 * left / tot) + "%";
   if (el.dataset.mode === "cd") { el.querySelector(".aptime").textContent = tx; el.querySelector(".apbar i").style.width = w; el.querySelectorAll("button")[1].setAttribute("onclick", `linkPause(Math.min(10, Math.ceil(${left} / 60) + 2), true)`); return; } // saniyede yalnız süre ve çubuk (düğmeler yerinde: dokunuş kaybolmasın)
   el.dataset.mode = "cd"; setTimeout(() => { try { el.scrollIntoView({ block: "end", behavior: "smooth" }); } catch (e) {} }, 50); // sayım ve düğmeler görünsün
@@ -1504,6 +1530,8 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
   ${grp("Bayi hesabı", [can("mesaj") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
     can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : ""])}
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
+  ${grp("👑 Ajans sahibi", isSahip() ? [row("💳", "", "Kartları yönet", "ekle · düzenle · sıra · hak sıfırla · pasif", "ownCards()"), row("👥", "", "Web kullanıcıları", "ekle · rol · izin · şifre / PIN · pasif", "ownUsers()"),
+    row("📜", "", "İşlem kaydı", "kim ne yaptı (mesaj, onay, coin, kart, giriş)", "ownAudit()"), row("🔌", "", "Bayi bağlantısı", "sunucu / tablet · Sugo Bayi aç / kapa", "ownLink()")] : [])}
   ${grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
   ${grp("Diğer", [row("📐", "", "Ekran ölçüsü", "", "screenInfo()")])}
   <button class="setout" onclick="logout()">🚪 Çıkış yap</button>`); }
@@ -1543,6 +1571,216 @@ function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Pro
     // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor)
     const i = $("pinIn"); if (i) { i.focus(); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); }
     setTimeout(() => { const j = $("pinIn"); if (j && document.activeElement !== j) j.focus(); }, 60); }); }
+// 📨 Sugo uygulaması onayı: Bayi Yetkilisi ister, ajans sahibi 10 dk içinde onaylar / reddeder. İstek: { id, by, minutes, at, exp (ms), status, decided_by }
+let pzReq = null, pzT = 0;
+const PZ_ST = { pending: "bekliyor", approved: "onaylandı", denied: "reddedildi", expired: "süresi doldu", cancelled: "geri alındı" };
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const pzLeft = () => (pzReq ? Math.max(0, Math.round((Number(pzReq.exp) - Date.now()) / 1000)) : 0);
+const pzMine = () => !!(pzReq && pzReq.status === "pending" && me && pzReq.by === me.name && !isSahip() && pzLeft() > 0); // benim bekleyen isteğim
+const pzForMe = () => !!(pzReq && pzReq.status === "pending" && isSahip() && me && pzReq.by !== me.name && pzLeft() > 0); // ajans sahibi: onay bekleyen
+function pzSet(req) { pzReq = req && req.id ? req : null; clearInterval(pzT); if (pzReq && pzReq.status === "pending") pzT = setInterval(pzTick, 1000); pzDraw(); }
+function pzTick() { if (pzReq && pzReq.status === "pending" && !pzLeft()) { const mine = me && pzReq.by === me.name && !isSahip(); pzReq = { ...pzReq, status: "expired" }; clearInterval(pzT); if (mine) toast("⌛ Onay gelmedi — süre doldu", true); }
+  pzDraw(); }
+function pzDraw() { let el = $("pzBar");
+  if (!pzForMe()) { if (el) el.hidden = true; }
+  else { if (!el) { el = document.createElement("div"); el.id = "pzBar"; el.setAttribute("role", "alert"); el.hidden = true; document.body.appendChild(el); }
+    const t = mmss(pzLeft());
+    if (el.hidden || el.dataset.id !== pzReq.id) { el.dataset.id = pzReq.id; // saniyede yalnız süre değişir (düğmeler yerinde: dokunuş kaybolmasın)
+      el.innerHTML = `<div class="pzt">📱 <b>${esc(pzReq.by)}</b> Sugo uygulamasını <b>${Number(pzReq.minutes) || 0} dk</b> kullanmak istiyor · <b class="pzl">${t}</b></div><div class="pzb"><button class="pzok" onclick="pzDecide(true)">✅ Onayla</button><button onclick="pzDecide(false)">❌ Reddet</button></div>`; el.hidden = false; }
+    else el.querySelector(".pzl").textContent = t; }
+  appCdDraw(); }
+async function pzRequest(min) { const d = await api("link_pause_request", { minutes: min }); if (d.error) { toast("❌ " + d.error, true); return; }
+  const r = d.report || {}; if (r.direct) { toast(d.ok || "Tamam"); pauseShow(Number(r.pauseUntil) || 0); appCdDraw(); return; } // ajans sahibi: onaysız
+  pzSet(r.req); toast("📨 İstek gönderildi — ajans sahibinin onayı bekleniyor"); }
+async function pzCancel() { if (!pzReq) return; const d = await api("link_pause_cancel", { id: pzReq.id }); if (d.error) toast("❌ " + d.error, true); else toast("↩️ İstek geri alındı");
+  pzSet((d.report && d.report.req) || (d.error ? pzReq : null)); }
+async function pzDecide(ok) { const r = pzReq; if (!r) return;
+  if (!confirm(ok ? `${r.by} ${r.minutes} dakika Sugo uygulamasını kullansın mı?\n\nSunucu bu sürede bayi hesabına bağlanmaz; panelden giden mesajlar bekler.` : `${r.by} kişisinin Sugo uygulaması isteği reddedilsin mi?`)) return;
+  const d = await api("link_pause_decide", { id: r.id, ok }); const rep = d.report || {};
+  if (d.error) { toast("❌ " + d.error, true); pzSet(rep.req || null); return; } // başkası karar verdi / süresi doldu: güncel durum
+  pzSet(rep.req || { ...r, status: ok ? "approved" : "denied" }); if (ok && rep.pauseUntil) pauseShow(Number(rep.pauseUntil));
+  toast(ok ? `✅ Onaylandı — ${r.by} ${r.minutes} dk Sugo uygulamasında` : "❌ Reddedildi"); }
+// realtime "pausereq": { req }
+function onPauseReq(pl) { const req = pl && pl.req; if (!req || !req.id) return; const prev = pzReq, same = !!(prev && prev.id === req.id && prev.status === req.status); pzSet(req);
+  if (same || !me) return;
+  if (pzForMe()) { try { ding(); } catch (e) {} return; }
+  if (req.by !== me.name || isSahip()) return;
+  if (req.status === "approved") toast(`✅ Onaylandı${req.decided_by ? " · " + req.decided_by : ""} — sunucu bekliyor, Sugo uygulamasını kullanabilirsiniz`); // geri sayım "link" olayıyla gelir
+  else if (req.status === "denied") toast("❌ Ajans sahibi reddetti", true);
+  else if (req.status === "expired") toast("⌛ Onay gelmedi — süre doldu", true); }
+// açılışta bekleyen istek; want: bildirimden açılan isteğin no'su (?pz=)
+async function pzLoad(want) { if (!me || !(isSahip() || (can("uygulama") && me.role !== "yardimci"))) return; const d = await api("link_pause_req_get"); if (d.error) return;
+  const r = (d.report && d.report.req) || null; pzSet(r);
+  if (want && !(r && r.id === want && r.status === "pending")) toast(r && r.id === want ? `Bu istek ${PZ_ST[r.status] || r.status}${r.decided_by ? " · " + r.decided_by : ""}` : "Bu onay isteği artık yok"); }
+// ↩️ Sohbetteki kart verme şeridi: yanlış kart / vazgeçildi → kartın kullanılan hakkı 1 azalır (onaylı)
+async function payUndo() { const p = chX.pay, c0 = cur; if (!p || !c0) return;
+  const find = () => ((pcs && pcs.cards) || []).find((x) => x.owner === p.owner && String(x.bank).toUpperCase() === String(p.bank).toUpperCase() && String(x.number || "").endsWith(p.last4));
+  let c = find(); if (!c) { const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; c = find(); } if (!c) { toast("Kart bulunamadı", true); return; }
+  if (!confirm(`💳 ${p.owner} ${PCS[p.bank] || p.bank} ···${p.last4}: kart verme geri alınsın mı?\n\nKartın kullanılan hakkı 1 azalır (${c.uses}/${c.max_uses} → ${Math.max(0, c.uses - 1)}/${c.max_uses}).`)) return;
+  const d = await api("pcard_undo", { id: c.id, conv: c0 }); if (d.error) { toast("❌ " + d.error, true); return; }
+  if (d.report && d.report.pcards) pcs = d.report.pcards; if (cur === c0 && chX.pay === p) { chX.pay = { ...p, result: "undone", ev: null }; renderChat(); }
+  toast("↩️ Kart verme geri alındı" + (typeof d.ok === "string" ? " · " + d.ok : "")); }
+
+// 👑 Ajans sahibi (rol "sahip"): tabletteki yönetim webden — kartlar, web kullanıcıları, işlem kaydı, bayi bağlantısı. Değişiklikler kişinin kendi işlem PIN'iyle.
+const ROLES_W = { sahip: ["👑", "Ajans sahibi"], yetkili: ["🏪", "Bayi Yetkilisi"], yardimci: ["🤝", "Yardımcı"] };
+const roleTxt = (r, lbl) => { const x = ROLES_W[r] || ROLES_W.yetkili; return x[0] + " " + (lbl || x[1]); };
+// sayfa gövdesi tek kutu: içi yenilenince ayarlar geçmişindeki kopyası da yenilenir (geri gelince eski hâli görünmesin)
+function ownFill(key, id, h) { const el = $(id); if (el && el.innerHTML !== h) el.innerHTML = h; const t = setStack.find((x) => x.key === key); if (t) t.h = `<div id="${id}">${h}</div>`; }
+async function ownAct(action, body, title) { const pin = await askPin(title || "Değişiklik için işlem PIN'iniz"); if (!pin) return null;
+  const d = await api(action, { ...body, pin }); if (d.pin === "wrong") pinCache = null;
+  if (d.error) { toast("❌ " + d.error, true); return null; } toast(typeof d.ok === "string" ? d.ok : "✅ Kaydedildi"); return d; }
+
+// 💳 Kartları yönet: ekle (tek / toplu yapıştırma), düzenle, sıra, hak sıfırla; kart silinmez, pasif yapılır
+let ocEdit = null, ocBulk = null; // düzenlenen kart (0 = yeni) · toplu yapıştırma { text, owner, items, parsed }
+const pcNum = (n) => String(n || "").replace(/(\d{4})(?=\d)/g, "$1 ");
+const pcLuhn = (n) => { if (!/^\d{13,19}$/.test(n)) return false; let s = 0; for (let i = 0; i < n.length; i++) { let d = +n[n.length - 1 - i]; if (i % 2) { d *= 2; if (d > 9) d -= 9; } s += d; } return s % 10 === 0; };
+const pcBankOf = (w) => { const t = w.toLocaleLowerCase("tr"); return /^abb/.test(t) ? "ABB" : /kapital|birbank|bir bank/.test(t) ? "BIRBANK" : /^u(ni)?bank/.test(t) ? "UNIBANK" : /^leo/.test(t) ? "LEOBANK" : /^m10/.test(t) ? "M10" : null; };
+const ocOwners = () => [...new Set([...((pcs && pcs.cards) || []).map((c) => c.owner).filter(Boolean), "Günel", "Zara"])];
+function ownCards() { ocEdit = null; ocBulk = null; sheet("ocards", `<h3>💳 Kartları yönet</h3><div id="ocBody">${pcs && (pcs.cards || []).length ? ocHtml() : SKC(1, true) + SKR(4)}</div>`); ocLoad(); }
+async function ocLoad() { const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; ocDraw(); }
+function ocDraw() { if ($("ocBody")) ownFill("ocards", "ocBody", ocHtml()); }
+const ocSet = (d) => { if (d.report && d.report.pcards) pcs = d.report.pcards; ocDraw(); if (curTab === "card") loadCards(); };
+function ocHtml() { const cards = (pcs && pcs.cards) || [], cu = pcs && pcs.current;
+  const form = (x) => `<div class="ocform" id="ocF"><input id="ocO" placeholder="Sahibi (ör. Günel)" value="${esc(x.owner)}"><select id="ocB">${Object.entries(PCB).map(([k, v]) => `<option value="${k}" ${String(x.bank).toUpperCase() === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+    <input id="ocN" class="full" inputmode="numeric" autocomplete="off" placeholder="Kart numarası (16 hane)" value="${esc(x.number || "")}">
+    <label class="s">Toplam hak<input id="ocM" type="number" inputmode="numeric" min="1" max="100" value="${Number(x.max_uses) || 5}"></label>
+    <label class="occk"><input id="ocA" type="checkbox" ${x.active ? "checked" : ""}> Aktif (sırada)</label>
+    <button onclick="ocEdit=null;ocDraw()">Vazgeç</button><button class="go" onclick="ocSave(${Number(x.id) || 0})">💾 Kaydet</button></div>`;
+  return `${cu ? `<div class="card ocnext"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div class="ocnum">${esc(pcNum(cu.number))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card ocnext">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş ya da pasif.</div>`}
+  <div class="ownacts"><button class="go" onclick="ocEdit=0;ocBulk=null;ocDraw()">➕ Kart ekle</button><button onclick="ocBulk=ocBulk?null:{text:'',owner:'',items:[]};ocEdit=null;ocDraw()">📋 Toplu ekle</button><button onclick="ocReset()">🔄 Tüm hakları sıfırla</button></div>
+  ${ocEdit === 0 ? form({ id: 0, owner: "", bank: "ABB", number: "", max_uses: 5, active: true }) : ""}${ocBulk ? ocBulkHtml() : ""}
+  <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}" data-id="${x.id}"><div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}</div></div>
+    <div class="ocb"><button onclick="ocMove(${x.id},'up')" ${i ? "" : "disabled"} aria-label="Yukarı">▲</button><button onclick="ocMove(${x.id},'down')" ${i < cards.length - 1 ? "" : "disabled"} aria-label="Aşağı">▼</button><button onclick="ocEdit=${x.id};ocBulk=null;ocDraw()" aria-label="Düzenle">✏️</button><button onclick="ocReset(${x.id})" ${x.uses ? "" : "disabled"} aria-label="Hakkı sıfırla">🔄</button></div></div>${ocEdit === x.id ? form(x) : ""}`).join("") || '<div class="s" style="padding:12px">Kart yok.</div>'}</div>
+  <div class="s" style="margin:10px 4px">Kartlar silinmez: kullanılmayacak kartı ✏️ ile <b>pasif</b> yapın. Değişiklikler işlem PIN'inizle kaydedilir; tablet ve açık sayfalar hemen görür.</div>`; }
+function ocBulkHtml() { const b = ocBulk, known = (pcs && pcs.cards) || [], ok = b.items.length && b.items.every((x) => x.bank && pcLuhn(x.number));
+  return `<div class="ocform"><textarea id="ocPaste" class="full" rows="4" placeholder="Kart bilgilerini yapıştırın (ad, numara, banka; birden çok kart olabilir)" oninput="ocBulk.text=this.value">${esc(b.text)}</textarea>
+    <label class="s full">Adı yazmayan kartların sahibi<select id="ocPO" onchange="ocBulk.owner=this.value">${ocOwners().map((o) => `<option ${o === b.owner ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>
+    <button class="full" onclick="ocParse()">🔎 Kartları ayır</button>
+    ${b.items.map((x, i) => `<div class="full ocprev"><b>${i + 1}.</b> ${esc(x.owner)} <select onchange="ocBulk.items[${i}].bank=this.value;ocDraw()">${[["", "banka?"], ...Object.entries(PCS)].map(([k, v]) => `<option value="${k}" ${x.bank === k || (!x.bank && !k) ? "selected" : ""}>${v}</option>`).join("")}</select> <b class="ocnum">${esc(pcNum(x.number))}</b> ${pcLuhn(x.number) ? '<span class="okc">✓</span>' : '<span class="badc">✗ numara hatalı</span>'}${known.some((c) => c.number === x.number) ? ' <span class="s">(zaten kayıtlı)</span>' : ""}<button onclick="ocBulk.items.splice(${i},1);ocDraw()" aria-label="Çıkar">✕</button></div>`).join("")}
+    ${b.items.length ? `<button class="go full" ${ok ? "" : "disabled"} onclick="ocBulkSave()">💾 ${b.items.length} kartı kaydet</button>${ok ? "" : '<div class="s full">Bankası boş ya da numarası hatalı satırı düzeltin / çıkarın</div>'}` : b.parsed ? '<div class="s full">Metinde kart numarası bulunamadı.</div>' : ""}</div>`; }
+// toplu yapıştırma (tabletteki gibi): metinden sırayla sahip adı / kart numarası / banka sözcüğü; banka numaranın ardından (ya da hemen önünden) gelir
+function ocParse() { const text = ($("ocPaste") || {}).value || "", owners = ocOwners(); ocBulk.text = text; ocBulk.owner = ($("ocPO") || {}).value || owners[0];
+  const re = new RegExp(`(\\d[\\d -]{11,22}\\d)|(abb|kapital ?bank|kapital|birbank|bir bank|unibank|ubank|leobank|leo|m10)|(${owners.map((o) => o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
+  let owner = ocBulk.owner, pend = null, pendBank = null; const out = [];
+  for (const m of text.matchAll(re)) {
+    if (m[3]) { if (pend) { out.push(pend); pend = null; } owner = owners.find((o) => o.toLocaleLowerCase("tr") === m[3].toLocaleLowerCase("tr")) || m[3]; continue; }
+    if (m[1]) { const n = m[1].replace(/\D/g, ""); if (n.length < 13 || n.length > 19) continue; if (pend) out.push(pend); pend = { owner, number: n, bank: pendBank }; pendBank = null; continue; }
+    if (m[2]) { const bk = pcBankOf(m[2]); if (pend && !pend.bank) { pend.bank = bk; out.push(pend); pend = null; } else pendBank = bk; } }
+  if (pend) out.push(pend); ocBulk.items = out; ocBulk.parsed = true; ocDraw(); }
+async function ocBulkSave() { if (!ocBulk || !ocBulk.items.length) return; const items = ocBulk.items.map(({ owner, bank, number }) => ({ owner, bank, number }));
+  const d = await ownAct("pcard_bulk", { items }, `${items.length} kartı kaydetmek için işlem PIN'iniz`); if (!d) return; ocBulk = null; ocSet(d); }
+async function ocSave(id) { const owner = $("ocO").value.trim(), number = $("ocN").value.replace(/\D/g, ""), max_uses = Math.round(Number($("ocM").value) || 0), bank = $("ocB").value, active = $("ocA").checked;
+  if (!owner) { toast("Kartın sahibini yazın", true); return; } if (!(max_uses >= 1 && max_uses <= 100)) { toast("Hak 1–100 arası olmalı", true); return; }
+  if (number && !pcLuhn(number) && !confirm("Kart numarası hatalı görünüyor (kontrol hanesi tutmuyor). Yine de kaydedilsin mi?")) return;
+  const d = await ownAct("pcard_save", { ...(id ? { id } : {}), owner, bank, number, max_uses, active }, "Kartı kaydetmek için işlem PIN'iniz"); if (!d) return; ocEdit = null; ocSet(d); }
+async function ocMove(id, dir) { const d = await ownAct("pcard_move", { id, dir }, "Sırayı değiştirmek için işlem PIN'iniz"); if (d) ocSet(d); }
+async function ocReset(id) { const x = id ? ((pcs && pcs.cards) || []).find((c) => c.id === id) : null;
+  if (!confirm(x ? `${x.owner} ···${String(x.number || "").slice(-4)}: kullanılan hak sıfırlansın mı? (${x.uses}/${x.max_uses} → 0/${x.max_uses})` : "Tüm kartların kullanılan hakları sıfırlansın mı?")) return;
+  const d = await ownAct("pcard_reset", id ? { id } : {}, "Hak sıfırlamak için işlem PIN'iniz"); if (d) ocSet(d); }
+
+// 👥 Web kullanıcıları: ekle, rol, izinler, coin limiti, geçici şifre, PIN, oturumları kapat, pasif / aktif (kendi satırında rol / pasif yok)
+let ouData = null; // son web_users_get cevabı (sayfa önce bununla çizilir)
+const ouUsers = () => (ouData && ouData.web_users) || [];
+const ouU = (k) => ouUsers().find((x) => x.key === k);
+const ouPermL = (k) => (((ouData && ouData.perms_all) || []).find((p) => p[0] === k) || [k, k])[1];
+const ouSelf = (u) => !!(me && u && u.name === me.name);
+function ownUsers() { sheet("ousers", `<h3>👥 Web kullanıcıları</h3><div id="ouBody">${ouData ? ouHtml() : SKR(3)}</div>`); ouLoad(); }
+async function ouLoad() { const d = await api("web_users_get"); if (d.error) { toast(d.error, true); return; } ouData = d.report || {}; if ($("ouBody")) ownFill("ousers", "ouBody", ouHtml()); }
+function ouHtml() { const us = ouUsers();
+  const lim = (u) => !(u.perms || []).includes("coin") ? "coin yükleme izni yok" : u.coin_max || u.coin_day ? [u.coin_max ? "tek seferde en fazla " + nf(u.coin_max) : "", u.coin_day ? "günde en fazla " + nf(u.coin_day) : ""].filter(Boolean).join(" · ") : "sınırsız";
+  const card = (u) => { const self = ouSelf(u), k = esc(u.key);
+    return `<div class="card oucard${u.off ? " off" : ""}" data-key="${k}"><div class="ouh"><b>${esc(u.name)}</b><span class="rpill r-${esc(u.role)}">${esc(roleTxt(u.role, u.role_label))}</span>${u.off ? '<span class="badc">⛔ Pasif</span>' : '<span class="okc">● Aktif</span>'}${self ? '<span class="s">(siz)</span>' : ""}</div>
+      <div class="s">Son görülme: ${u.last_seen ? rel(Date.parse(u.last_seen)) : "hiç girmedi"}</div>
+      <div class="s">🔐 İzinler${u.custom_perms ? " (kişiye özel)" : " (rolün varsayılanı)"}: ${(u.perms || []).map((p) => esc(ouPermL(p).replace(/\s*\(.*\)$/, ""))).join(" · ") || "yok"}</div>
+      <div class="s">🪙 Coin limiti: ${lim(u)}</div>
+      <div class="s">🔑 Şifre: ${u.has_pw ? (u.must_change ? "geçici (ilk girişte değiştirecek)" : "kendisi belirledi") : "yok"} · 🔢 İşlem PIN'i: ${u.has_pin ? "var" : "yok"}</div>
+      <div class="ownacts">${self ? "" : `<button onclick="ouRole('${k}')">🔄 Rol</button>`}<button onclick="ouPerms('${k}')">🔐 İzinler</button><button onclick="ouCoin('${k}')">🪙 Coin limiti</button><button onclick="ouPw('${k}')">🔑 Geçici şifre</button><button onclick="ouPin('${k}')">🔢 PIN sıfırla</button>${u.off ? "" : `<button onclick="ouSet('${k}',{logout_all:true})">🚪 Oturumları kapat</button>`}${self ? "" : u.off ? `<button class="go" onclick="ouSet('${k}',{on:true})">✅ Aktif yap</button>` : `<button class="warnb" onclick="ouSet('${k}',{off:true})">⛔ Pasif yap</button>`}</div></div>`; };
+  return `<div class="ownacts"><button class="go" onclick="ouAdd()">➕ Kullanıcı ekle</button></div>${us.length ? us.map(card).join("") : '<div class="card">Henüz kullanıcı yok.</div>'}
+    <div class="s" style="margin:10px 4px">👑 <b>Ajans sahibi</b> ve 🏪 <b>Bayi Yetkilisi</b> her şeyi yapar (sahip ayrıca bu yönetimi ve Sugo uygulaması onayını); 🤝 <b>Yardımcı</b> mesajlara cevap verir, diğer sekmeleri yalnız görür. İzinler kişi bazında değişir; sunucu her işlemde kontrol eder. Kullanıcı silinmez, pasif yapılır.</div>`; }
+async function ouSave(body, title) { const d = await ownAct("web_user_set", body, title || "Kullanıcıyı değiştirmek için işlem PIN'iniz"); if (!d) return false; ouLoad(); return true; }
+async function ouSet(key, o) { const u = ouU(key); if (!u) return;
+  const q = o.off ? `${u.name} PASİF yapılsın mı? Hemen çıkışa düşer, hiçbir şey yapamaz.` : o.on ? `${u.name} aktif yapılsın mı? Eski şifresiyle girebilir.` : `${u.name} kişisinin açık oturumları kapatılsın mı? Tekrar girmesi gerekir.`;
+  if (!confirm(q)) return; await ouSave({ key, ...o }); }
+const ouRoleSeg = (cur) => `<div class="seg seg3" id="ouRoles">${["sahip", "yetkili", "yardimci"].map((r) => `<button data-r="${r}" class="${r === cur ? "on" : ""}" onclick="document.querySelectorAll('#ouRoles button').forEach((b)=>b.classList.toggle('on',b===this))">${ROLES_W[r][0]} ${ROLES_W[r][1]}</button>`).join("")}</div>`;
+const ouRolePicked = () => (document.querySelector("#ouRoles button.on") || {}).dataset?.r || "";
+function ouRole(key) { const u = ouU(key); if (!u || ouSelf(u)) return;
+  sheet("ourole", `<h3>🔄 ${esc(u.name)} · rol</h3><div class="s" style="margin-bottom:10px">Şu an: <b>${esc(roleTxt(u.role, u.role_label))}</b> · izinler yeni rolün varsayılanına döner.</div>${ouRoleSeg(u.role)}
+    <button class="go apgo" onclick="ouRoleSave('${esc(key)}')">💾 Rolü kaydet</button>`); }
+async function ouRoleSave(key) { const u = ouU(key), r = ouRolePicked(); if (!u || !r) return; if (r === u.role) { toast("Rol zaten " + ROLES_W[r][1]); return; }
+  if (await ouSave({ key, role: r })) closeModal(); }
+function ouPerms(key) { const u = ouU(key); if (!u) return; const all = ((ouData && ouData.perms_all) || []).filter(([k]) => k !== "mesaj");
+  sheet("ouperms", `<h3>🔐 ${esc(u.name)} · izinler</h3><div class="s" style="margin-bottom:10px">Rol: <b>${esc(roleTxt(u.role, u.role_label))}</b> · 💬 mesajlara cevap herkeste açık. Değişiklik kişinin açık sayfasına hemen yansır.</div>
+    <div class="setlist" id="ouPermL">${all.map(([k, l]) => `<label class="ouck"><input type="checkbox" data-p="${esc(k)}" ${(u.perms || []).includes(k) ? "checked" : ""}> ${esc(l)}</label>`).join("")}</div>
+    <div class="ownacts" style="margin-top:12px"><button onclick="ouPermsSave('${esc(key)}',true)">↺ Rolün varsayılanı</button><button class="go" onclick="ouPermsSave('${esc(key)}')">💾 İzinleri kaydet</button></div>`); }
+async function ouPermsSave(key, reset) { const perms = ["mesaj", ...[...document.querySelectorAll("#ouPermL input:checked")].map((i) => i.dataset.p)];
+  if (await ouSave(reset ? { key, perms, reset: true } : { key, perms })) closeModal(); }
+function ouCoin(key) { const u = ouU(key); if (!u) return;
+  sheet("oucoin", `<h3>🪙 ${esc(u.name)} · coin limiti</h3><div class="s" style="margin-bottom:10px">Limit aşılırsa gönderim yapılmaz (sunucu da kontrol eder). 0 = sınırsız.${(u.perms || []).includes("coin") ? "" : "<br>⚠️ Coin yükleme izni şu an kapalı — 🔐 İzinler'den açın."}</div>
+    <div class="ouform"><label class="s">Tek seferde en fazla (coin)<input id="ouMax" inputmode="numeric" value="${Number(u.coin_max) || 0}"></label><label class="s">Günde toplam en fazla (coin)<input id="ouDay" inputmode="numeric" value="${Number(u.coin_day) || 0}"></label>
+    <button class="go" onclick="ouCoinSave('${esc(key)}')">💾 Kaydet</button></div>`); }
+async function ouCoinSave(key) { const n = (id) => Number(String($(id).value).replace(/\D/g, "")) || 0; if (await ouSave({ key, coin_limit: { max: n("ouMax"), day: n("ouDay") } })) closeModal(); }
+function ouPw(key) { const u = ouU(key); if (!u) return;
+  sheet("oupw", `<h3>🔑 ${esc(u.name)} · geçici şifre</h3><div class="s" style="margin-bottom:10px">İlk girişte kendisi yeni şifre belirler. Açık oturumları kapanır.</div>
+    <div class="ouform"><input id="ouPwIn" autocomplete="off" autocapitalize="off" placeholder="Geçici şifre (en az 6 karakter)"><button class="go" onclick="ouPwSave('${esc(key)}')">💾 Kaydet</button></div>`); }
+async function ouPwSave(key) { const v = $("ouPwIn").value.trim(); if (v.length < 6) { toast("Şifre en az 6 karakter olmalı", true); return; } if (await ouSave({ key, new_password: v })) closeModal(); }
+function ouPin(key) { const u = ouU(key); if (!u) return;
+  sheet("oupin", `<h3>🔢 ${esc(u.name)} · işlem PIN'i</h3><div class="s" style="margin-bottom:10px">Coin gönderme, ödendi işaretleme ve kart işlemlerinde sorulur. 4 rakam.</div>
+    <div class="ouform"><input id="ouPinIn" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="Yeni PIN (4 rakam)"><button class="go" onclick="ouPinSave('${esc(key)}')">💾 Kaydet</button></div>`); }
+async function ouPinSave(key) { const v = $("ouPinIn").value.trim(); if (!/^\d{4}$/.test(v)) { toast("İşlem PIN'i 4 rakam olmalı", true); return; } if (await ouSave({ key, new_pin: v })) closeModal(); }
+function ouAdd() { sheet("ouadd", `<h3>➕ Kullanıcı ekle</h3><div class="s" style="margin-bottom:10px">Geçici şifre verin; ilk girişte kendisi yeni şifre belirler. Girişte rolünü seçerek girer.</div>
+    <div class="ouform"><input id="ouName" autocomplete="off" placeholder="Ad (ör. Aysel)"><div class="s">Rol</div>${ouRoleSeg("yardimci")}
+    <input id="ouNPw" autocomplete="off" autocapitalize="off" placeholder="Geçici şifre (en az 6 karakter)"><input id="ouNPin" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="İşlem PIN'i (4 rakam, isteğe bağlı)">
+    <button class="go" onclick="ouAddSave()">➕ Ekle</button></div>`); }
+async function ouAddSave() { const name = $("ouName").value.trim(), role = ouRolePicked(), pw = $("ouNPw").value.trim(), pin = $("ouNPin").value.trim();
+  if (!name) { toast("Adını yazın", true); return; } if (pw.length < 6) { toast("Şifre en az 6 karakter olmalı", true); return; } if (pin && !/^\d{4}$/.test(pin)) { toast("PIN 4 rakam olmalı", true); return; }
+  if (await ouSave({ create: true, name, role, new_password: pw, ...(pin ? { new_pin: pin } : {}) }, "Kullanıcı eklemek için işlem PIN'iniz")) closeModal(); }
+
+// 📜 İşlem kaydı: kişi + tür (mesaj, onay, coin, kart, giriş, diğer)
+const AU_CATS = [["mesaj", "💬 Mesajlar"], ["onay", "✅ Onaylar"], ["coin", "🪙 Coinler"], ["kart", "💳 Kartlar"], ["giris", "🔐 Girişler"], ["diger", "⚡ Diğer"]];
+const AU_ACT = { send: "Mesaj gönderdi", send_image: "Resim gönderdi", send_voice: "Sesli mesaj gönderdi", bayi_coin_paid: "Ödendi", coin_send: "Coin gönderdi", pcard_give: "Kart verdi", pcard_undo: "Kart vermeyi geri aldı", pcard_uses: "Kart hakkını düzeltti",
+  pcard_save: "Kart kaydetti", pcard_bulk: "Toplu kart ekledi", pcard_move: "Kart sırasını değiştirdi", pcard_reset: "Kart hakkını sıfırladı", web_user_set: "Kullanıcıyı değiştirdi", bayi_link_set: "Bayi bağlantısını değiştirdi", bayi_toggle: "Sugo Bayi aç / kapa",
+  link_pause: "Sugo uygulaması (sunucu bekledi)", link_pause_request: "Sugo uygulaması onayı istedi", link_pause_decide: "Sugo uygulaması isteğine karar verdi", link_pause_cancel: "Sugo uygulaması isteğini geri aldı",
+  login: "Giriş yaptı", logout: "Çıkış yaptı", change_password: "Şifresini değiştirdi", change_pin: "İşlem PIN'ini değiştirdi", push_sub: "Bildirimleri açtı", bayi_templates_save: "Hazır mesajları değiştirdi" };
+let auCat = "mesaj", auUser = (() => { try { return localStorage.getItem("bw_auUser") || ""; } catch (e) { return ""; } })(), auRows = null, auTotal = 0, auToday = {};
+function ownAudit() { auRows = null; sheet("oaudit", `<h3>📜 İşlem kaydı</h3><div id="auBody">${auHtml()}</div>`); (ouData ? Promise.resolve() : ouLoad()).then(() => { if (!auUser || !ouUsers().some((u) => u.name === auUser)) auUser = (ouUsers().find((u) => !ouSelf(u)) || ouUsers()[0] || {}).name || "Ülker"; auOpen(auCat); }); }
+function auDraw() { if ($("auBody")) ownFill("oaudit", "auBody", auHtml()); }
+function auPick(n) { auUser = n; try { localStorage.setItem("bw_auUser", n); } catch (e) {} auOpen(auCat); }
+async function auOpen(k, more) { auCat = k; if (!more) { auRows = null; auDraw(); } const cat = k, who = auUser;
+  const d = await api("web_audit_get", { cat, user: who, limit: 30, offset: more ? (auRows || []).length : 0 }); if (cat !== auCat || who !== auUser) return; // bu arada başka sekme seçildi
+  if (d.error) { toast(d.error, true); auRows = []; auDraw(); return; } const a = (d.report && d.report.audit) || {};
+  auRows = more ? (auRows || []).concat(a.rows || []) : a.rows || []; auTotal = a.total || 0; auToday = a.today || {}; auDraw(); }
+function auRow(r) { const t = `<span>${r.at ? rel(Date.parse(r.at)) : ""}</span>`, who = r.name ? `<b>${esc(r.name)}</b> <span class="s">UID ${esc(r.conv)}</span>` : r.conv ? `<span class="s">UID ${esc(r.conv)}</span>` : "";
+  if (auCat === "mesaj") return `<div class="aurow"><div class="aut"><span>${who}</span>${t}</div><div>${r.kind === "image" ? "📷 Resim" : r.kind === "voice" ? "🎤 Sesli mesaj" : esc(r.body || "")} <span class="s">${r.status === "sent" ? "✓ gitti" : r.status === "failed" ? "❌ " + esc(r.error || "gitmedi") : "⏳"}</span></div></div>`;
+  if (auCat === "coin") return `<div class="aurow"><div class="aut"><span>${who || esc(r.target_name || "")}</span>${t}</div><div>🪙 <b>${nf(r.coins)} coin</b>${r.azn != null ? " · " + esc(String(r.azn)) + " ₼" : ""} <span class="s">${r.ok ? "✅ gönderildi" : "❌ " + esc(r.prompt || "")}</span></div></div>`;
+  const d = r.detail || {}; let what = AU_ACT[r.action] || r.action || ""; if (r.action === "bayi_coin_paid") what = d.paid === false ? "↩️ Ödendi işaretini geri aldı" : "✅ Ödendi yaptı";
+  const extra = r.coin ? ` · 💎 ${nf(r.coin.diamonds)} elmas · ${esc(String(r.coin.pay_azn))} ₼` : r.card ? ` · 💳 ${esc(r.card.owner)} ${esc(r.card.bank)} ···${esc(r.card.last4)}` : d.count != null ? ` · ${d.count} mesaj` : d.mode ? " · " + esc(d.mode) : d.op ? " · " + esc(d.op) : "";
+  return `<div class="aurow"><div class="aut"><span><b>${esc(what)}</b>${extra}</span>${t}</div>${who || r.ok === false ? `<div>${who}${r.ok === false ? ` <b class="badc">❌ ${esc(d.pin_wrong ? "PIN yanlış" : d.error || "olmadı")}</b>` : ""}</div>` : ""}</div>`; }
+function auHtml() { const names = [...new Set([...ouUsers().map((u) => u.name), auUser || "Ülker"])];
+  return `<div class="auhead"><label class="s">Kişi<select id="auWho" onchange="auPick(this.value)">${names.map((n) => `<option ${n === auUser ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label></div>
+    <div class="sub">${AU_CATS.map(([k, l]) => `<button class="${k === auCat ? "on" : ""}" onclick="auOpen('${k}')">${l}${auToday[k] ? ` <b>${auToday[k]}</b>` : ""}</button>`).join("")}</div>
+    <div id="auList">${auRows === null ? SKR(6) : auRows.length ? auRows.map(auRow).join("") + (auRows.length < auTotal ? `<div style="padding:12px;text-align:center"><button onclick="auOpen(auCat,true)">Daha fazla (${auTotal - auRows.length})</button></div>` : "") + `<div class="s" style="margin:8px 4px">Toplam ${auTotal} kayıt · bugün ${auToday[auCat] || 0}</div>` : '<div class="s" style="padding:16px 4px">Bu türde kayıt yok.</div>'}</div>`; }
+
+// 🔌 Bayi bağlantısı: hesap sunucuda (7/24) mı tablette mi; Sugo Bayi aç / kapa
+let olData = null;
+function ownLink() { sheet("olink", `<h3>🔌 Bayi bağlantısı</h3><div id="olBody">${olHtml()}</div>`); olLoad(); }
+async function olLoad() { const [a, b] = await Promise.all([api("bayi_link_get"), api("bayi_state")]); if (a.error) toast(a.error, true);
+  olData = { link: (a.report && a.report.link) || (olData && olData.link) || null, st: (b.report && b.report.bayi_state) || (olData && olData.st) || null }; if ($("olBody")) ownFill("olink", "olBody", olHtml()); }
+function olHtml() { const L = olData && olData.link, S = olData && olData.st, sk = (w) => `<span class="sk" style="width:${w}em"></span>`, srv = L ? L.mode === "server" : null, st = (L && L.status) || {};
+  return `<div class="setlbl" style="margin-top:0">Bağlantı</div><div class="card olcard"><div class="k">Bayi hesabı nerede açık?</div><div class="v">${L ? (srv ? "☁️ Sunucuda (7/24)" : "📱 Tablette") : sk(8)}</div>
+    <div class="s">${L ? (srv ? `Durum: ${st.state === "open" ? "🟢 bağlı" : esc(String(st.state || "–"))}${Number(L.pauseUntil) > Date.now() ? ` · 📱 ${esc(L.pauseBy || "")} Sugo uygulamasında` : ""}` : "Tablet kapalıysa ya da interneti yoksa bayi mesajları durur") : sk(14)}</div></div>
+  <div class="seg" id="olMode"><button class="${srv === true ? "on" : ""}" ${L ? "" : "disabled"} onclick="olMode('server')">☁️ Sunucu</button><button class="${srv === false ? "on" : ""}" ${L ? "" : "disabled"} onclick="olMode('tablet')">📱 Tablet</button></div>
+  <div class="s" style="margin:8px 4px">☁️ <b>Sunucu</b>: bayi hesabı 7/24 sunucuda açık; tablet kapalı ya da internetsiz olsa da mesajlar gelir. 📱 <b>Tablet</b>: eski yöntem; tablet kapalıyken bayi mesajları durur.</div>
+  <div class="setlbl">Sugo Bayi</div><div class="card olcard"><div class="k">Bayi hesabının işleri</div><div class="v">${S ? (S.on ? "✅ Açık" : "⏸ Kapalı") : sk(5)}</div>
+    <div class="s">${S ? (S.on ? "Mesaj takibi, bildirimler, elmas bozumları ve ajans okuması çalışıyor" : `Kapalı${S.at ? " · " + rel(Date.parse(S.at)) : ""} – takip, bildirim, elmas ve ajans okuması durdu`) : sk(14)}</div></div>
+  <div class="seg" id="olOn"><button class="${S && S.on ? "on" : ""}" ${S ? "" : "disabled"} onclick="olToggle(true)">✅ Açık</button><button class="${S && !S.on ? "on" : ""}" ${S ? "" : "disabled"} onclick="olToggle(false)">⏸ Kapalı</button></div>
+  <div class="s" style="margin:8px 4px">Kapatınca eski kayıtlar silinmez; istediğiniz zaman tekrar açabilirsiniz. Değişiklikler işlem PIN'inizle.</div>`; }
+async function olMode(m) { const L = olData && olData.link; if (!L || L.mode === m) return;
+  if (!confirm(m === "server" ? "Bayi bağlantısı sunucuya alınsın mı?\n\nSugo bayi hesabı 7/24 sunucuda açık kalır; tablet artık Sugo'ya bağlanmaz. Tablet kapalı ya da internetsiz olsa da mesajlar gelir."
+    : "Bayi bağlantısı tablete alınsın mı?\n\nSunucu bağlantıyı bırakır, tablet tekrar Sugo'ya bağlanır. Tablet kapalıyken bayi mesajları durur.")) return;
+  if (await ownAct("bayi_link_set", { mode: m }, "Bağlantıyı değiştirmek için işlem PIN'iniz")) olLoad(); }
+async function olToggle(on) { const S = olData && olData.st; if (!S || !!S.on === on) return;
+  if (!confirm(on ? "Sugo Bayi açılsın mı?\n\nBayi hesabının mesaj takibi, bildirimleri, elmas bozumları ve ajans okuması yeniden başlar." : "Sugo Bayi kapatılsın mı?\n\nBayi hesabıyla ilgili takip, bildirimler, elmas bozumları ve ajans okuması durur. Eski kayıtlar silinmez.")) return;
+  if (await ownAct("bayi_toggle", { on }, "Sugo Bayi aç / kapa için işlem PIN'iniz")) olLoad(); }
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
 function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
@@ -1615,7 +1853,23 @@ function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.
   if (mx > lastIncoming) { if (lastIncoming) ding(); lastIncoming = mx; try { localStorage.setItem("bw_last", String(mx)); } catch (e) {} } }
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", (e) => { const m = e.data || {};
   if (m.kind === "push") { ding(); if (cur) loadChat(); else { loadInbox(); loadDm(); } }
-  if (m.kind === "open" && m.url) { const u = new URL(m.url); const c = u.searchParams.get("c"), tt = u.searchParams.get("t"); if (c) openChat(c); else if (tt) { back(); tab(tt); } } });
+  if (m.kind === "open" && m.url) { navOpen(m.url); try { caches.open("bw-nav").then((ch) => ch.delete("./__open")).catch(() => 0); } catch (x) {} } }); // önbellekteki kopya ikinci kez açmasın
+// 🔔 Bildirime dokunma → ilgili yer (?c= sohbet, ?t= sekme, ?pz= onay isteği). iPhone'da uyuyan sayfaya SW mesajı kaybolabiliyor: SW hedefi önbelleğe de yazar
+// (caches "bw-nav" ./__open {url, at}); sayfa açılınca / öne gelince okur (2 dk geçerli), siler ve açar. Aynı hedef 5 sn içinde iki kez açılmaz. Kaldığı yere dönüşten (resume) önce gelir.
+let navLast = { k: "", at: 0 }, navReady = false, navBusy = false;
+const popWait = (go) => new Promise((res) => { let t = 0; const f = () => { clearTimeout(t); res(); }; t = setTimeout(() => { removeEventListener("popstate", f); res(); }, 700); addEventListener("popstate", f, { once: true }); go(); });
+async function navReset(toChat) { if ($("modal").style.display === "flex") { if ($("pinIn") && window.__pinRes) __pinRes(""); else { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; } } // açık pencere / PIN sorusu kapanır
+  if (!$("lb").hidden) await popWait(() => history.back());
+  for (let i = 0; i < 4 && ($("prof").classList.contains("on") || setOn()); i++) await popWait(() => ($("prof").classList.contains("on") || !setOn() ? history.back() : history.go(-setStack.length))); // profil / ayarlar geçmişten düşer
+  if (!toChat) for (let i = 0; i < 4 && $("chat").classList.contains("on"); i++) await popWait(() => history.back()); } // sekmeye: sohbetten listeye
+async function navOpen(url) { let u; try { u = new URL(url, location.href); } catch (e) { return false; } const c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz");
+  if (!c && !t && !pz) return false; const k = c ? "c" + c : t ? "t" + t : "pz" + pz; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
+  if (pz) { pzLoad(pz); return true; } // onay bandı her ekranın üstünde: ekran değişmez
+  await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); await openChat(c); } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } return true; }
+async function takeNavOpen(force) { if (!tok || !(force || navReady) || navBusy || !window.caches) return false; navBusy = true;
+  try { const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return false; const x = await r.json().catch(() => ({})); await ch.delete("./__open");
+    return !!(x && x.url && Date.now() - (Number(x.at) || 0) < 120_000) && (await navOpen(x.url)); } catch (e) { return false; } finally { navBusy = false; } }
+document.addEventListener("visibilitychange", () => { if (!document.hidden) takeNavOpen(); }); addEventListener("pageshow", () => takeNavOpen()); addEventListener("focus", () => takeNavOpen());
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
@@ -1657,6 +1911,8 @@ function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); delete hbAt[d.ref]; statLine(); return; }
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event;
     if (ev === "link") { const pl = d.payload.payload || {}; if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
+    if (ev === "pausereq") { onPauseReq(d.payload.payload || {}); return; } // 📨 Sugo uygulaması onay isteği (yeni / onaylandı / reddedildi / süresi doldu)
+    if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
     if (ev === "cmutes") { const m = (d.payload.payload || {}).cmutes; if (m) { setCmutes(m); sortInbox(); renderInbox(); } return; }
     if (ev === "ctags") { const m = (d.payload.payload || {}).ctags; if (m) { setCtags(m); setTagx(d.payload.payload); renderInbox(); renderChTags(); } return; }
@@ -1677,6 +1933,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.42"></script>
+<script src="profile.js?v=2.1.43"></script>
 </body>
 </html>

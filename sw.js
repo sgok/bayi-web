@@ -14,6 +14,8 @@ self.addEventListener("notificationclick", (e) => {
   e.notification.close();
   const url = new URL((e.notification.data && e.notification.data.url) || "./", self.registration.scope).href;
   e.waitUntil((async () => {
+    // iPhone: arka plandaki sayfa uyurken mesaj kaybolabiliyor → hedef önbelleğe yazılır, sayfa öne gelince okur ve açar (2 dk geçerli)
+    try { const ch = await caches.open("bw-nav"); await ch.put("./__open", new Response(JSON.stringify({ url, at: Date.now() }), { headers: { "content-type": "application/json" } })); } catch (x) {}
     const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     for (const c of cs) { if ("focus" in c) { c.postMessage({ kind: "open", url }); return c.focus(); } }
     return self.clients.openWindow(url);
