@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#1e1236">
 <script>try { if (localStorage.getItem("bw_theme") === "dark") { document.documentElement.dataset.theme = "dark"; document.querySelector('meta[name="theme-color"]').content = "#12201b"; } } catch (e) {}</script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.33">
+<meta name="build" content="2.1.34">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.33">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.33">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.33">
+<link rel="manifest" href="manifest.json?v=2.1.34">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.34">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.34">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -278,7 +278,7 @@
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.33" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.34" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -287,7 +287,7 @@
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.33" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.34" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -338,7 +338,7 @@
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.33"></script>
+<script src="emoji.js?v=2.1.34"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web";
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
@@ -569,7 +569,7 @@ function renderInbox() {
   morphKeyed($("convs"), chips + (lf === "all" ? readAll + teamRow : "") + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? '<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler</div>' : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
-      <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
+      <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own && !x.rx ? (x.rd ? "✓✓ " : "✓ ") : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
@@ -896,8 +896,10 @@ async function msgAct(kind, mid, e) {
   else if (kind === "withdraw") optMsg[key] = { wd: { k: "withdraw", orig: m.t, origK: m.k, by: (me && me.name) || "" } };
   else optMsg[key] = { del: true };
   hist = applyOpt(hist); renderChat();
+  const tp = m.k === "image" ? "📷 Fotoğraf" : m.k === "voice" ? "🎤 Sesli mesaj" : m.k === "video" ? "🎬 Video" : String(m.t || "").replace(/\s+/g, " ").slice(0, 60); // tepki verilen mesajın kısa hâli
+  if (kind === "react" && e) rowReact(c, e, tp); // listede hemen "😍 tepki verdiniz: …" (sunucu da aynısını yazar)
   const done = () => { delete optMsg[key]; if (cur === c) loadChat(); };
-  const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m });
+  const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m, ...(kind === "react" ? { t: tp } : {}) });
   if (d.error) { toast("❌ " + d.error, true); done(); return; }
   for (let i = 0; i < 30 && d.id; i++) { await new Promise((r) => setTimeout(r, i < 12 ? 400 : 2000));
     const g = await api("outbox_get", { id: d.id }), ob = g.ob;
@@ -1504,13 +1506,15 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
 // Gönderen ekranda liste satırı da gönderme anında güncellenir (Sugo onayı beklenmez; onay gelince asıl hâl yazılır)
+function rowReact(c, e, t) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
+  Object.assign(x, { at: Date.now(), own: true, rx: 1, p: `${e} tepki verdiniz${t ? `: “${t}”` : ""}`, rd: 0, loc: Date.now() }); sortInbox(); renderInbox(); }
 function ownRow(c, p) { const x = inbox.find((i) => String(i.id) === String(c)); if (!x) return;
-  Object.assign(x, { at: Date.now(), own: true, p, u: "", rd: 0, loc: Date.now() }); sortInbox(); renderInbox(); }
+  Object.assign(x, { at: Date.now(), own: true, rx: 0, p, u: "", rd: 0, loc: Date.now() }); sortInbox(); renderInbox(); }
 // Sunucudaki liste birkaç saniye geride kalabilir: satırın yerelde daha yeni hâli (gönderdiğimiz / anlık gelen mesaj, okundu) varsa 2 dk boyunca korunur.
 // (Yoksa yenileme eski önizlemeyi yazıyor, satır "onun mesajı ↔ bizim mesajımız" arasında gidip geliyordu.)
 function mergeRows(items) { const prev = new Map(inbox.map((x) => [String(x.id), x])), now = Date.now();
   return items.map((x) => { const o = prev.get(String(x.id)); if (!o) return x; let y = x;
-    if (o.loc && now - o.loc < 120_000 && (Number(o.at) || 0) > (Number(x.at) || 0)) y = { ...x, at: o.at, own: o.own, p: o.p, rd: o.rd, u: o.u, loc: o.loc };
+    if (o.loc && now - o.loc < 120_000 && (Number(o.at) || 0) > (Number(x.at) || 0)) y = { ...x, at: o.at, own: o.own, p: o.p, rd: o.rd, u: o.u, rx: o.rx, loc: o.loc };
     if (o.readAt && (Number(y.at) || 0) <= o.readAt && Number(y.u)) y = { ...y, u: "", readAt: o.readAt }; else if (o.readAt) y = { ...y, readAt: o.readAt };
     return y; }); }
 // Diğer ekranın (tablet / başka telefon) gönderdiği mesaj: Sugo onaylayana kadar soluk "gönderiliyor"
@@ -1527,7 +1531,7 @@ function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) r
     if (it.m) outbox = outbox.filter((o) => !(o.kind === "text" && String(o.body || "").trim() === String(it.t || "").trim()));
     renderChat(); if (!it.m) ding(); }
   const r = pl.row, x = inbox.find((i) => String(i.id) === c);
-  if (x && r && (Number(r.at) || 0) >= (x.loc ? 0 : Number(x.at) || 0)) { Object.assign(x, { at: r.at, own: r.own, p: r.p, u: cur === c ? "" : r.u, rd: 0, loc: Date.now() });
+  if (x && r && (Number(r.at) || 0) >= (x.loc ? 0 : Number(x.at) || 0)) { Object.assign(x, { at: r.at, own: r.own, rx: 0, p: r.p, u: cur === c ? "" : r.u, rd: 0, loc: Date.now() });
     sortInbox(); renderInbox(); }
   else if (!x) loadInbox(); }
 function connectRt() { if (!me || !me.rt || !me.rt.url) return; try { if (rt) rt.close(); } catch (e) {}
@@ -1558,6 +1562,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.33"></script>
+<script src="profile.js?v=2.1.34"></script>
 </body>
 </html>
