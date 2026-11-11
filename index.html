@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.62">
+<meta name="build" content="2.1.63">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.62">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.62">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.62">
+<link rel="manifest" href="manifest.json?v=2.1.63">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.63">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.63">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -302,6 +302,12 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .m .tm { font-size: 11px; color: #b6c8be; text-align: right; margin-top: 2px; }
   .m .tm .tk { display: inline-block; min-width: 1.8em; text-align: left; } /* ⏳ → ✓ → ✓✓ aynı genişlik: balon gönderilince / okununca kaymaz */
   .m .tm .tk.rd { color: #7dd3fc; font-weight: 700; }
+  .fullbtn { width: 100%; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* Elmas / Coins sekmelerindeki "Tüm …" düğmesi: tek satır, ikisi aynı boyda */
+  /* 🙈 Gizlenen mesaj (yalnız ajans sahibi görür): soluk balon + üst kenarda küçük etiket. Etiket mutlak konumlu (balonlar arası 6 px boşluk + 7 px iç boşluk), dış çizgi outline: balonun boyu/yeri değişmez */
+  .m.hid { position: relative; background: #1e293bcc; color: #94a3b8; } .m.hid:not(.sel) { outline: 1px dashed #a78bfa99; outline-offset: -1px; }
+  .m.hid img, .m.hid video, .m.hid .semo, .m.hid .vplay { opacity: .45; } .m.hid .tm { color: #7c8a99; }
+  .m .hidtag { position: absolute; top: -6px; right: 8px; height: 12px; padding: 0 5px; border-radius: 6px; background: #6d28d9; color: #fff; font: 700 9.5px/12px system-ui, sans-serif; font-style: normal; white-space: nowrap; overflow: hidden; pointer-events: none; }
+  .m:not(.me) .hidtag { right: auto; left: 8px; }
   .ltk { font-weight: 600; } .ltk.rd { color: #38bdf8; font-weight: 800; } /* listede ✓✓ okundu: mavi (WhatsApp gibi), ✓ gitti: gri */
   .day { align-self: center; font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 10px; border-radius: 999px; margin: 6px 0; }
   .coin { align-self: stretch; background: #2a2210; border: 1px solid #a16207; border-radius: 12px; padding: 10px; font-size: 14px; }
@@ -378,7 +384,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.62" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.63" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -387,7 +393,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.62" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.63" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -442,7 +448,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.62"></script>
+<script src="emoji.js?v=2.1.63"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -461,9 +467,10 @@ const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
 const ASSET_V = encodeURIComponent((document.querySelector('meta[name="build"]') || {}).content || ""); // kod içinden yüklenen dosyalar (emoji resimleri) sürüm etiketiyle: önbellek eskiyi vermesin
 // ⬜ Önceden çizili ekranlar: sekmeler son hâlleriyle (telefonda saklı) ya da aynı düzende yer tutucularla açılır; veri gelince yalnız içerik dolar
 const SKR = (n) => Array.from({ length: n }, () => `<div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div>`).join("");
+const SKB = () => `<div style="padding:0 10px"><button class="fullbtn" disabled><span class="sk" style="width:13em"></span></button></div>`; // tam genişlik düğme yer tutucusu (Elmas / Coins sekmelerindeki "Tüm …" düğmesiyle aynı boy)
 const SKC = (n, full) => `<div class="grid">${Array.from({ length: n }, (_, i) => `<div class="card"${full && i === 0 ? ' style="grid-column:1/-1"' : ""}><div class="k"><span class="sk" style="width:7em"></span></div><div class="v"><span class="sk" style="width:5em;height:1em"></span></div><div class="s"><span class="sk" style="width:8em"></span></div></div>`).join("")}</div>`;
-const SKEL = { dmBody: () => SKC(2) + `<h3><span class="sk" style="width:9em"></span></h3>` + SKR(6), cardBody: () => SKC(1, true) + `<h3><span class="sk" style="width:8em"></span></h3>` + SKR(4),
-  coinBody: () => SKC(5, true) + `<h3><span class="sk" style="width:12em"></span></h3>` + SKR(6), ajBody: () => SKC(4) + SKR(5) };
+const SKEL = { dmBody: () => SKC(2) + SKB() + `<h3><span class="sk" style="width:9em"></span></h3>` + SKR(6), cardBody: () => SKC(1, true) + `<h3><span class="sk" style="width:8em"></span></h3>` + SKR(4),
+  coinBody: () => SKC(5, true) + SKB() + `<h3><span class="sk" style="width:12em"></span></h3>` + SKR(6), ajBody: () => SKC(4) + SKR(5) };
 const PANES = Object.keys(SKEL);
 function paneBoot() { for (const id of PANES) { const el = $(id); if (!el || el.dataset.pb) continue; el.dataset.pb = 1; let h = null; try { h = localStorage.getItem("bw_pane_" + id); } catch (e) {}
   el.innerHTML = h || SKEL[id](); let t = 0, last = h || ""; // son çizilen hâl saklanır (yer tutucu saklanmaz)
@@ -495,12 +502,39 @@ const chCache = (() => { const mem = new Map(), LIM = 300, BYTES = 6e6; let dbP 
     load, // IndexedDB'den (uzun geçmiş)
     put(c, v) { load(c).then((p) => { // önceki önbellekteki, sunucunun bu sayfasından daha eski mesajlar korunur (300'e kadar)
         const h = v.hist || [], t0 = h.length ? Date.parse(h[0].at) : Infinity, old = p && Array.isArray(p.hist) ? p.hist.filter((m) => Date.parse(m.at) < t0) : [];
-        const rec = { ...v, c, hist: [...old, ...h].slice(-LIM), more: old.length ? !!(p && p.more) : !!v.more, at: Date.now() };
-        mem.set(c, rec); if (mem.size > 40) mem.delete(mem.keys().next().value); lsPut(c, rec); wq.set(c, rec); if (!wt) wt = setTimeout(() => idleRun(flush), 400); }).catch(() => {}); },
+        const hs = hidM[c], rec = { ...v, c, hist: hidNo(c, [...old, ...h]).slice(-LIM), more: old.length ? !!(p && p.more) : !!v.more, at: Date.now(), ...(hs ? { hid: [...hs] } : p && p.hid ? { hid: p.hid } : {}) }; // 🙈 sahip olmayanın önbelleğine gizli mesaj yazılmaz (eski kayıttakiler de düşer)
+        mem.set(c, rec); if (mem.size > 40) mem.delete(mem.keys().next().value); lsPut(c, rec); wq.set(c, rec);
+        if (hs && hs.size && !isSahip() && p && Array.isArray(p.hist) && p.hist.some((m) => hs.has(String(m.id)))) { clearTimeout(wt); wt = 0; flush(); } // 🙈 kayıttaki gizli mesaj hemen silinsin (boşta beklemeden)
+        else if (!wt) wt = setTimeout(() => idleRun(flush), 400); }).catch(() => {}); },
     warm(ids) { idleRun(() => { for (const c of ids.slice(0, 10)) load(c).catch(() => {}); }); }, // listede üstteki sohbetler boşta belleğe (açınca anında uzun geçmiş)
     forget() { mem.clear(); wq.clear(); idb().then((db) => { if (!db) return; try { const tx = db.transaction(["ch", "meta"], "readwrite"); tx.objectStore("ch").clear(); tx.objectStore("meta").clear(); } catch (e) {} }); },
     memDrop(c) { mem.delete(c); },
+    patch(c, f) { load(c).then((p) => { const v = p || lsGet(c); if (!v) return; const rec = { ...f(v), c, at: Date.now() }; // 🙈 kayıt yerinde düzeltilir (bellek + localStorage + IndexedDB; hemen yazılır: sayfa kapanırsa gizli mesaj diskte kalmasın)
+        mem.set(c, rec); lsPut(c, rec); wq.set(c, rec); clearTimeout(wt); wt = 0; flush(); }).catch(() => {}); },
     drop(c) { mem.delete(c); wq.delete(c); try { localStorage.removeItem("bw_ch_" + c); } catch (e) {} idb().then((db) => { if (!db) return; try { const tx = db.transaction(["ch", "meta"], "readwrite"); tx.objectStore("ch").delete(c); tx.objectStore("meta").delete(c); } catch (e) {} }); } }; })(); // tek sohbetin önbelleği
+// 🙈 Gizlenen mesajlar: sohbet başına mid kümesi (sunucunun report.hid'i / "hidden" olayı; önbellek kaydında "hid" alanı). Gizleyen ve gören tek rol ajans sahibi:
+// sahipte balon soluk + "Gizli · yalnız siz" etiketi; diğer rollerde mesaj geçmişten, canlı kopyalardan, önbellekten (bellek/localStorage/IndexedDB), sabit şeritten silinir, alıntısı boşaltılır
+const hidM = {};
+function hidOf(c) { c = String(c); return hidM[c] || (hidM[c] = new Set()); }
+function hidSet(c, ids) { hidM[String(c)] = new Set((ids || []).map(String)); }
+// chat_history'nin report.hid'i eklenir; listede OLMAMASI kaldırma sayılmaz (sunucu önbelleği isolate başına 30 sn: başka isolate eski kümeyi verebilir).
+// Kaldırmayı "hidden" {on:false} olayı ve msg_hide cevabı bildirir; olay kaçtıysa diye mid 2 dk boyunca hep yoksa düşer
+const hidMiss = {};
+function hidFromHist(c, hr, latest) { c = String(c); const s = hidOf(c);
+  if (!Array.isArray(hr)) { for (const m of latest || []) if (m && m.hid) s.add(String(m.id)); return; }
+  const now = Date.now(), hs = new Set(hr.map(String)); for (const x of hs) { s.add(x); delete hidMiss[c + "|" + x]; }
+  for (const x of [...s]) if (!hs.has(x)) { const k = c + "|" + x, t = hidMiss[k] || (hidMiss[k] = now); if (now - t > 120_000) { s.delete(x); delete hidMiss[k]; } } }
+function hidNo(c, list) { const s = hidM[String(c)]; if (isSahip() || !s || !s.size || !Array.isArray(list)) return list; let ch = false; // sahip olmayan için süzülmüş liste (değişiklik yoksa aynı dizi)
+  const out = []; for (const m of list) { if (!m) continue; if (s.has(String(m.id))) { ch = true; continue; }
+    if (m.q && m.q.seq != null && s.has(String(m.q.seq)) && (m.q.t || m.q.k !== "hidden")) { ch = true; out.push({ ...m, q: { ...m.q, t: "", k: "hidden" } }); } else out.push(m); }
+  return ch ? out : list; }
+const hidKeep = (c) => { const s = hidM[String(c)]; return (x) => !(s && s.has(String(x && x.id))); };
+function hidPurge(c) { c = String(c); const s = hidM[c]; if (isSahip() || !s || !s.size) return; const keep = hidKeep(c); // sahip olmayan: gizli mid'ler her yerden silinir
+  if (liveKeep[c]) for (const k of s) liveKeep[c].delete(k);
+  if (chPins[c]) { const p = chPins[c].filter(keep); if (p.length !== chPins[c].length) chPinsSet(c, p); }
+  for (const x of chatStack) if (String(x.c) === c) { x.hist = hidNo(c, x.hist || []); x.older = (x.older || []).filter(keep); x.pins = (x.pins || []).filter(keep); }
+  chCache.patch(c, (r) => ({ ...r, hist: hidNo(c, r.hist || []), pins: (r.pins || []).filter(keep), hid: [...s] }));
+  if (cur === c) { older = older.filter(keep); const p2 = pins.filter(keep); if (p2.length !== pins.length) { pins = p2; renderPins(); } renderChat(); } }
 let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null }, tagx = []; // tagx: son 120 sohbette olmayan etiketli kişiler (etiket sekmelerinde görünür)
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -837,10 +871,12 @@ async function openChat(id, snap) {
   chVip(); sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
+  { const c1 = !sy ? chCache.get(String(id)) : null; if (c1 && Array.isArray(c1.hid) && !hidM[String(id)]) hidSet(id, c1.hid); } // 🙈 son bilinen gizli mid'ler (önbellekten çizilmeden önce)
   hist = []; coins = []; outbox = []; older = []; histMore = false; pins = chPins[String(id)] || ((!snap && !sy && chCache.get(String(id))) || {}).pins || []; renderPins(); // sabit şeridi son bilinen hâliyle (önbellekten) $("cards").classList.remove("on");
   const cc = !snap && !sy ? chCache.get(cur) : null; // önbellekteki son mesajlar hemen; yoksa balon yer tutucuları
   if (cc && Array.isArray(cc.hist) && cc.hist.length) { hist = applyRead(cur, cc.hist); coins = cc.coins || []; chX = cc.x || chX; histMore = !!cc.more; renderChat(true); } else { $("msgs").innerHTML = SKM(); chDrawn = ""; }
   if (!snap && !sy) { const c0 = cur; chCache.load(c0).then((v) => { // IndexedDB'deki uzun geçmiş (300'e kadar): ekrandakinden eski mesajlar başa eklenir
+    if (v && Array.isArray(v.hid) && !hidM[c0]) hidSet(c0, v.hid);
     if (!v || cur !== c0 || !Array.isArray(v.hist) || !v.hist.length || (chFresh === c0 && !histMore)) return; const had = hist.length, ids = new Set(hist.map((m) => String(m.id))), t0 = had ? Date.parse(hist[0].at) : Infinity;
     const add = v.hist.filter((m) => !ids.has(String(m.id)) && Date.parse(m.at) < t0); if (!add.length) return;
     if (!had) { coins = v.coins || []; chX = v.x || chX; } hist = applyRead(c0, applyOpt([...add, ...hist])); histMore = !!v.more; renderChat(!had); }); }
@@ -891,12 +927,17 @@ let older = [], histMore = false, olderBusy = false, pins = [];
 const chPins = (() => { try { return JSON.parse(localStorage.getItem("bw_pinc") || "{}") || {}; } catch (e) { return {}; } })();
 function chPinsSet(c, list) { if (!c) return; const had = !!chPins[c]; if (list && list.length) chPins[c] = list; else delete chPins[c]; if (!had && !chPins[c]) return;
   try { const ks = Object.keys(chPins); if (ks.length > 60) delete chPins[ks[0]]; localStorage.setItem("bw_pinc", JSON.stringify(chPins)); } catch (e) {} }
-async function loadOlder() { if (!cur || olderBusy || !hist.length) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
+// 🙈 Eski sayfa imleci: sahip olmayanda sunucu sayfayı gizlileri çıkarıp verir (tamamı gizliyse boş liste + more:true) — sohbetin başı sanılmaz;
+// sunucu report.before verirse (süzülmemiş sayfanın en eski zamanı) oradan devam edilir, yoksa ekrandaki en eski mesajdan
+const olderCur = {};
+async function loadOlder() { const oc = cur && olderCur[cur], bf = oc && (!hist.length || Date.parse(oc) < Date.parse(hist[0].at)) ? oc : hist.length ? hist[0].at : null;
+  if (!cur || olderBusy || !bf) return; olderBusy = true; const c = cur, box = $("msgs"), h0 = box.scrollHeight;
   const bt = box.getBoundingClientRect().top, a = [...box.querySelectorAll(".m[data-mid]")].find((m) => m.getBoundingClientRect().bottom > bt), aId = a && a.dataset.mid, aY = a && a.getBoundingClientRect().top; // okunan mesaj (çapa)
   const btn = $("olderBtn"); if (btn) btn.textContent = "⏳ yükleniyor…";
-  const d = await api("chat_history", { conv: "b" + c, before: hist[0].at, limit: 40 }); olderBusy = false;
+  const d = await api("chat_history", { conv: "b" + c, before: bf, limit: 40 }); olderBusy = false;
   if (c !== cur) return; if (d.error) { toast("❌ " + d.error, true); renderChat(); return; }
-  const page = (d.report && d.report.chat) || []; const have = new Set(hist.map((m) => String(m.id)));
+  hidFromHist(c, d.report && d.report.hid, (d.report && d.report.chat) || []);
+  const page = hidNo(c, (d.report && d.report.chat) || []); olderCur[c] = (d.report && d.report.before) || (page[0] && page[0].at) || bf; const have = new Set(hist.map((m) => String(m.id)));
   older = [...page.filter((m) => !have.has(String(m.id))), ...older]; histMore = !!(d.report && d.report.more);
   hist = applyOpt([...page.filter((m) => !have.has(String(m.id))), ...hist]); stick = false; renderChat();
   const a2 = aId && box.querySelector(`.m[data-mid="${CSS.escape(aId)}"]`); // okunan yer kaymasın: çapa mesajı eski yerine (tarayıcının kendi kaydırma sabitlemesi de devreye girse çift kaydırmaz)
@@ -921,17 +962,20 @@ async function loadChat1(c, scroll) { const gen = ++LC.gen, sys = isSys(c);
     else if (!o) { if (h && h.report) lsOb(false); o = await api("outbox", { conv: c }); } } // sunucu (henüz) vermiyor: eski yol
   if (c !== cur || gen < LC.applied) return; LC.applied = gen; if (h && h.report) pollAt = Date.now();
   if (h && h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
+    if (!sys) { hidFromHist(c, h.report.hid, latest); // 🙈 bu sohbetin gizli mid'leri (sunucu her role verir; içerik yok)
+      if (!isSahip() && hidM[c] && hidM[c].size && liveKeep[c]) for (const x of hidM[c]) liveKeep[c].delete(x); }
     const ids = new Set(latest.map((m) => String(m.id))), t0 = latest.length ? Date.parse(latest[0].at) : Infinity, full = !h.report.more;
     const keepOld = full ? [] : hist.filter((m) => !ids.has(String(m.id)) && Date.parse(m.at) < t0 && !(optMsg[m.id] && optMsg[m.id].del)); // eski sayfalar / önbellek
-    if (!keepOld.length) histMore = !!h.report.more; // eski sayfa yoksa "devamı var" bilgisi son sayfadan
+    if (!keepOld.length) { histMore = !!h.report.more; olderCur[c] = h.report.before || (latest[0] && latest[0].at) || null; } // eski sayfa yoksa "devamı var" bilgisi son sayfadan
     const lk = liveKeep[c]; if (lk) for (let i = 0; i < latest.length; i++) { const id = String(latest[i].id), e = lk.get(id); if (!e) continue; // veritabanına düştü: artık sunucudaki hâli geçerli (silme yansısın)
       if (e.upd && Date.now() - e.at < 120_000 && (latest[i].k !== e.m.k || String(latest[i].t ?? "") !== String(e.m.t ?? ""))) latest[i] = { ...latest[i], ...e.m, em: latest[i].em }; else lk.delete(id); } // tepkiler hep veritabanından // canlı gelen değişiklik (geri çekme) veritabanında henüz yoksa korunur
     const lv = liveList(c).filter((m) => !ids.has(String(m.id)) && !keepOld.some((k) => String(k.id) === String(m.id)));
-    hist = applyRead(c, applyOpt([...keepOld, ...latest, ...lv].sort((a, b) => Date.parse(a.at) - Date.parse(b.at)))); coins = h.report.coins || [];
-    older = keepOld;
+    hist = hidNo(c, applyRead(c, applyOpt([...keepOld, ...latest, ...lv].sort((a, b) => Date.parse(a.at) - Date.parse(b.at))))); coins = h.report.coins || [];
+    older = keepOld.filter(hidKeep(c));
     const loc = chX.sent && (!h.report.sent || Date.parse(chX.sent.at) > Date.parse(h.report.sent.at)) ? chX.sent : h.report.sent || null; // az önce buradan yüklenen sunucuya düşmediyse yerel kalır
     chX = { pay: h.report.pay || null, notes: h.report.notes || [], rems: h.report.rems || [], sent: loc };
-    if (Array.isArray(h.report.pins)) { pins = h.report.pins; chPinsSet(c, pins); renderPins(); }
+    if (Array.isArray(h.report.pins)) { pins = isSahip() ? h.report.pins : h.report.pins.filter(hidKeep(c)); chPinsSet(c, pins); renderPins(); }
+    else if (!isSahip() && pins.some((p) => !hidKeep(c)(p))) { pins = pins.filter(hidKeep(c)); chPinsSet(c, pins); renderPins(); }
     const last = hist[hist.length - 1]; if (before && last && last.id !== before && !last.m && !(liveKeep[c] && liveKeep[c].has(String(last.id)))) ding(); // canlı gelende zaten çaldı
     if (!sys) chCache.put(c, { hist, coins, x: chX, more: histMore, pins }); chFresh = c; }
   if (o && Array.isArray(o.outbox)) outbox = o.outbox; // hata: eski liste korunur
@@ -1130,13 +1174,13 @@ function msgMenuOpen(mid, el) {
   const prev = m.k === "image" ? "📷 Fotoğraf" : String(m.t || "").slice(0, 60);
   $("msgMenu").innerHTML = `<div class="mp">${emo(esc(prev))}</div>
     <div class="mq">${QUICK_REACT.map((c) => `<button class="${c === myE ? "on" : ""}" onclick="msgAct('react','${esc(mid)}','${c === myE ? "" : c}')">${emoSpan(c, 34)}</button>`).join("")}<button onclick="reactMore('${esc(mid)}')" style="font-size:22px;width:42px">➕</button></div>
-    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
+    <div class="ma"><button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${!isSahip() ? "" : hidOf(cur).has(String(mid)) ? `<button onclick="msgHide('${esc(mid)}',false)">👁️ Gizlemeyi kaldır</button>` : `<button onclick="msgHide('${esc(mid)}',true)">🙈 Mesajı gizle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
   $("msgMenu").hidden = false;
 }
 // ↩️ Yanıt: alıntı kutusu (mesaj balonunda) + yazı kutusunun üstündeki "yanıtlanıyor" şeridi
 let replyTo = null;
 const obText = (o) => { if (o.kind !== "reply") return String(o.body || ""); try { return String(JSON.parse(o.body).t || ""); } catch (e) { return String(o.body || ""); } };
-const qPrev = (q) => q.k === "image" ? "📷 Fotoğraf" : q.k === "voice" ? "🎤 Sesli mesaj" : q.k === "video" ? "🎬 Video" : emo(esc(String(q.t || "").slice(0, 160)));
+const qPrev = (q) => q.k === "hidden" ? "<i>🙈 gizli mesaj</i>" : q.k === "image" ? "📷 Fotoğraf" : q.k === "voice" ? "🎤 Sesli mesaj" : q.k === "video" ? "🎬 Video" : emo(esc(String(q.t || "").slice(0, 160)));
 const qWho = (q) => String(q.m || "") === bayiMe() || q.mine ? "Siz" : esc(alOf(cur) || (inbox.find((x) => String(x.id) === String(cur)) || {}).n || "Karşı taraf");
 function quoteHtml(q) { if (!q || !q.seq) return ""; return `<div class="qt" onclick="event.stopPropagation();pinGo('${esc(q.seq)}')"><b>↩️ ${qWho(q)}</b>${qPrev(q)}</div>`; }
 function replyStart(mid) { const m = findMsg(mid); if (!m || isSys(cur) || m.k === "withdraw") return;
@@ -1145,7 +1189,7 @@ function replyCancel() { replyTo = null; renderReply(); }
 function renderReply() { const el = $("replyBar"); if (!el) return; el.hidden = !replyTo;
   el.innerHTML = replyTo ? `<span style="font-size:18px">↩️</span><div class="rq"><b>${replyTo.mine ? "Kendi mesajınıza yanıt" : "Yanıtlanıyor · " + qWho(replyTo)}</b>${qPrev(replyTo)}</div><button onclick="replyCancel()" title="Yanıtı kaldır">✕</button>` : ""; }
 // 📌 Sabitlenen mesajlar: sohbetin üstünde şerit (en yeni sabitlenen üstte); dokununca mesaja gider, ✕ kaldırır
-function renderPins() { const el = $("pinBar"); if (!el) return; const list = cur ? pins : [];
+function renderPins() { const el = $("pinBar"); if (!el) return; const list = cur ? (isSahip() ? pins : pins.filter(hidKeep(cur))) : []; // 🙈 gizli mesaj sahip olmayanın şeridinde yok
   el.hidden = !list.length;
   el.innerHTML = list.map((p) => `<div class="pin" onclick="pinGo('${esc(p.id)}')"><span>📌</span><span class="pt">${p.k === "image" ? "📷 Fotoğraf" : p.k === "voice" ? "🎤 Sesli mesaj" : p.k === "video" ? "🎬 Video" : emo(esc(String(p.t || "").slice(0, 120)))}</span><span class="s">${esc(p.by || "")}</span><button class="px" onclick="event.stopPropagation();msgPin('${esc(p.id)}',false)" title="Sabitlemeyi kaldır">✕</button></div>`).join(""); }
 async function msgPin(mid, on) { msgMenuClose(); const c = cur; if (!c) return;
@@ -1154,6 +1198,19 @@ async function msgPin(mid, on) { msgMenuClose(); const c = cur; if (!c) return;
 function pinGo(mid) { const el = document.querySelector(`#msgs .m[data-mid="${CSS.escape(String(mid))}"]`);
   if (!el) { toast("Bu mesaj ekrandaki son mesajlardan daha eski — ⬆️ Daha eski mesajlar ile yükleyin"); return; }
   stick = false; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+// 🙈 Mesajı gizle (yalnız ajans sahibi): ekip (Bayi Yetkilisi / Yardımcı) görmez; Sugo'daki mesaja dokunulmaz. Sonuç ekranda hemen, sunucu cevabıyla düzeltilir
+async function msgHide(mid, on) { msgMenuClose(); const c = cur, k = String(mid); if (!c || !isSahip()) return; const s = hidOf(c), was = s.has(k);
+  if (on) s.add(k); else s.delete(k); renderChat();
+  const d = await api("msg_hide", { conv: "b" + c, mid: k, on: !!on });
+  if (d.error) { const s2 = hidOf(c); if (was) s2.add(k); else s2.delete(k); if (cur === c) renderChat(); toast("❌ " + d.error, true); return; }
+  if (d.report && Array.isArray(d.report.hid)) hidSet(c, d.report.hid); const hl = [...hidOf(c)]; chCache.patch(c, (r) => ({ ...r, hid: hl }));
+  if (cur === c) renderChat(); toast(d.ok || (on ? "🙈 Mesaj gizlendi" : "Mesaj tekrar görünür")); }
+// "hidden" olayı {c, mid, on}: sahip (başka cihazı) → işaret güncellenir; diğerleri → gizlenen her yerden silinir, kaldırılan sohbet yenilenince geri gelir; liste önizlemesi sunucudan
+function onHidden(pl) { const c = String(pl.c || "").replace(/^b/, ""), mid = String(pl.mid ?? ""); if (!c || !mid) return; const s = hidOf(c), had = s.has(mid), on = pl.on !== false;
+  if (on) s.add(mid); else s.delete(mid); delete hidMiss[c + "|" + mid]; const hl = [...s];
+  if (isSahip()) { if (had !== on) { chCache.patch(c, (r) => ({ ...r, hid: hl })); if (cur === c) renderChat(); } return; }
+  if (on) hidPurge(c); else { chCache.patch(c, (r) => ({ ...r, hid: hl })); if (cur === c) schedChat(); }
+  schedInbox(); }
 function msgMenuClose() { $("msgMenu").hidden = true; document.querySelectorAll("#msgs .m.sel").forEach((x) => x.classList.remove("sel")); }
 // Menü dışına dokunuş: şeffaf yakalayıcı (.mmbg) alır → menü kapanır, dokunuş arkadaki mesaja / düğmeye geçmez.
 // Uzun basmayla açıldıysa parmağı kaldırınca gelen tıklama menüyü hemen kapatmasın
@@ -1308,19 +1365,21 @@ function syncAttrs(a, b, keep) {
 // Çizim maliyeti: balon HTML'i (mesaj kimliği + içerik imzası) önbellekte; sonuç HTML'i değişmediyse DOM'a hiç dokunulmaz.
 // Kaydırma: açılışta (scroll) en alta; kullanıcı zaten alttaysa yalnız içerik değiştiğinde.
 const bubC = new Map(); let bubCtx = "", chDrawn = "", chDrawnC = null;
-function bubHtml(m, pin, pby) { const sig = JSON.stringify(m) + "|" + (pin ? "p" + pby : ""), k = String(m.id), c = bubC.get(k); if (c && c.sig === sig) return c.html;
+function bubHtml(m, pin, pby, hd) { const sig = JSON.stringify(m) + "|" + (pin ? "p" + pby : "") + (hd ? "|h" : ""), k = String(m.id), c = bubC.get(k); if (c && c.sig === sig) return c.html; // hd: 🙈 gizli (yalnız sahipte çizilir)
   const html = m.k === "withdraw"
     ? m.m && m.orig ? `<div class="m me wdmine">${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : emo(esc(m.orig))}<div class="tm" style="font-style:normal">↩️ geri alındı${m.by ? ` <b>(${esc(m.by)})</b>` : ""} · ${rel(Date.parse(m.at))}</div></div>`
     : `<div class="m wd ${m.m ? "me" : ""}">↩️ ${m.m ? "Bu mesajı geri çektiniz" : "Karşı taraf bu mesajı geri çekti"}${m.orig ? `<div class="orig">Geri çekilen mesaj: ${m.origK === "image" && /^https?:/.test(m.orig) ? `<img src="${esc(m.orig)}" data-img="${esc(m.orig)}" loading="lazy">` : `<b>${emo(esc(m.orig))}</b>`}</div>` : ""}<div class="tm">${rel(Date.parse(m.at))}</div></div>`
-    : `<div class="m ${m.m ? "me" : ""}${pin ? " pinmsg" : ""}" data-mid="${esc(m.id)}">${quoteHtml(m.q)}${bubbleBody(m)}${m.m && m.k === "text" ? cardTag(m.t) : ""}<div class="tm">${pin ? `<span class="pinmk">📌 Sabit${pby ? " · " + esc(pby) : ""}</span>` : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span class="tk rd">✓✓</span>' : ' <span class="tk">✓</span>') : ""}</div>${emoChips(m)}</div>`;
+    : `<div class="m ${m.m ? "me" : ""}${pin ? " pinmsg" : ""}${hd ? " hid" : ""}" data-mid="${esc(m.id)}">${hd ? `<span class="hidtag">🙈 Gizli · yalnız siz</span>` : ""}${quoteHtml(m.q)}${bubbleBody(m)}${m.m && m.k === "text" ? cardTag(m.t) : ""}<div class="tm">${pin ? `<span class="pinmk">📌 Sabit${pby ? " · " + esc(pby) : ""}</span>` : ""}${m.m && m.by ? `<b>(${esc(m.by)})</b> ` : ""}${rel(Date.parse(m.at))}${m.m ? (m.rd ? ' <span class="tk rd">✓✓</span>' : ' <span class="tk">✓</span>') : ""}</div>${emoChips(m)}</div>`;
   if (bubC.size > 3000) bubC.clear(); bubC.set(k, { sig, html }); return html; }
 function renderChat(scroll) {
+  if (cur && !isSahip()) hist = hidNo(cur, hist); // 🙈 sahip olmayan: gizlenen mesaj hangi yoldan gelirse gelsin (önbellek / canlı / eski sayfa) çizilmez
+  const hs = cur && isSahip() ? hidM[cur] : null;
   const box = $("msgs"); if (scroll) stick = true; const atBottom = stick; const pinIds = new Set(pins.map((p) => String(p.id))), pinBy = Object.fromEntries(pins.map((p) => [String(p.id), p.by || ""]));
   const st = cur && !isSys(cur) && idSt[cur], ctx = [new Date().toDateString(), cur, bayiMe(), (me && me.name) || "", ((me && me.perms) || []).join(","), JSON.stringify(((pcs && pcs.cards) || []).map((c) => [c.id, c.number, c.owner, c.bank, c.active])), st ? JSON.stringify(st.got) : ""].join("|");
   if (ctx !== bubCtx) { bubCtx = ctx; bubC.clear(); } // gün, kart listesi, ID çipleri, yetki değişince balonlar yeniden kurulur
   const inHist = new Set(hist.map((m) => String(m.id))), mine = myOut.filter((o) => o.c === cur && !o.gone);
   for (const o of mine) outSync(o, inHist); // gönderilenler asıl mesajlarına bağlanır (önce: balon anahtarı asıl mesaja geçer, düğüm aynı kalır)
-  const items = hist.map((m) => ({ k: keyAlias[String(m.id)] || "m" + m.id, at: Math.min(Date.parse(m.at), aliasAt[String(m.id)] ?? Infinity), html: bubHtml(m, pinIds.has(String(m.id)), pinBy[String(m.id)]) }));
+  const items = hist.map((m) => ({ k: keyAlias[String(m.id)] || "m" + m.id, at: Math.min(Date.parse(m.at), aliasAt[String(m.id)] ?? Infinity), html: bubHtml(m, pinIds.has(String(m.id)), pinBy[String(m.id)], !!(hs && hs.has(String(m.id)))) }));
   // Parça parça bozum: grubun son parçasının hemen altına toplam
   for (const g of dmGroups(coins.map((c) => ({ ...c, diamonds: c.diamonds || Math.round(Number(c.amount) / 0.36) })))) if (g.rows.length > 1)
     items.push({ k: "g" + g.last, at: Date.parse(g.last) + 1, html: `<div class="coingrp ${g.paid ? "paid" : ""}">${dmGroupLine(g)}<div class="s">🔒 Sadece sizde görünür · aynı alıştaki ya da aralarında en fazla 10 dk olan bozumlar tek grup</div></div>` });
@@ -1344,7 +1403,7 @@ function renderChat(scroll) {
   let lastDay = "", h = "";
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day" data-k="d${d}">${d}</div>`; lastDay = d; }
     h += it.k ? it.html.replace(/^\s*<div/, `<div data-k="${esc(String(it.k))}"`) : it.html; }
-  if (histMore && h) h = `<div class="day" data-k="older"><button id="olderBtn" onclick="loadOlder()" style="font-size:13px;padding:6px 14px">⬆️ Daha eski mesajlar</button></div>` + h;
+  if (histMore) h = `<div class="day" data-k="older"><button id="olderBtn" onclick="loadOlder()" style="font-size:13px;padding:6px 14px">⬆️ Daha eski mesajlar</button></div>` + h;
   h += chatInfoHtml(); renderTpls(); // en altta: ödeme / not / hatırlatma; alt çubukta ⚡ yükleme önerisi
   h = h || `<div class="day">Mesaj yok</div>`;
   const changed = h !== chDrawn || chDrawnC !== cur || !box.firstElementChild;
@@ -1597,6 +1656,7 @@ function renderCoins() { const c = coinData; if (!c) return; const td = c.today 
       <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div>
       <div class="card" onclick="tab('dm')" style="cursor:pointer"><div class="k">💎 Ödenmemiş elmas</div><div class="v">${azn(du.pay || 0)}</div><div class="s">${du.n || 0} bozum › Elmas</div></div>
       <div class="card"><div class="k">🧾 Bize açık borç</div><div class="v">${azn(db.azn || 0)}</div><div class="s">${db.n || 0} borç</div></div></div>
+    <div style="padding:0 10px"><button class="fullbtn" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
     ${isYetkili() ? `<div class="s" style="padding:4px 12px">🔻 Düşük bakiye uyarısı: ${c.low_coin ? nf(c.low_coin) + " coin altı" : "kapalı"} <button style="padding:3px 10px;font-size:13px" onclick="lowCoinEdit(${Number(c.low_coin) || 0})">değiştir</button></div>` : ""}
     <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
     ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
@@ -1650,14 +1710,24 @@ function dmListHtml(rows) {
 }
 // 🪙 Tüm coin hareketleri (elmas bozumları + gönderdiğimiz / aldığımız coinler) — tablettteki "Coin kayıtları"
 let crLimit = 20;
-async function crOpen(more) { if (!more) crLimit = 20; else crLimit += 20;
+async function crOpen(more) { if (!can("coins")) { toast("Coin hareketlerini görme yetkiniz yok", true); return; } if (!more) crLimit = 20; else crLimit += 20; // Coins sekmesinden
   if (!more) openModal(`<h3 style="margin:0 0 8px"><span class="gc"></span> Coin hareketleri <span class="s" id="crSum"></span></h3><div id="crList"><div class="row s">Okunuyor…</div></div>`);
   const d = await api("bayi_coins_get", { all: true, limit: crLimit }); const rep = d.report || {}, rows = rep.coins || [], u = rep.unpaid || {};
-  if (!$("crList")) return;
+  if (!$("crList")) return; if (d.error) { $("crList").innerHTML = `<div class="row s">❌ ${esc(d.error)}</div>`; return; }
   $("crSum").textContent = `(${rows.length}/${rep.total || 0}${u.n ? ` · ${u.n} ödenmemiş elmas, ${azn(u.pay)}` : ""})`;
   $("crList").innerHTML = rows.length ? rows.map((r) => r.diamonds ? dmRow(r) : `<div class="row"><div class="av">${avHtml(r.nickname, r.avatar)}</div><div class="b"><div class="t"><b>${esc(r.nickname || (r.uid ? "UID " + r.uid : r.type_name || ""))}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
       <div class="s">${esc(r.type_name || "")}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null ? " · bakiye sonrası " + nf(r.result_amount) : ""}</div></div><b style="color:${r.op_type === 1 ? "#4ade80" : "#f87171"}">${r.op_type === 1 ? "+" : "−"}${nf(r.amount)}</b></div>`).join("")
     + (rep.total > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
+// 💎 Tüm elmas bozumları (ödenen / ödenmeyen): yalnız müşterilerin elmas bozumları (bayi_coins_get, all OLMADAN; sunucu op_type 1 / function_type 22 / uid'li süzer), 20'şer sayfa (offset)
+let daRows = [], daBusy = false;
+async function dmAllOpen(more) { if (daBusy) return; if (!more) { daRows = []; openModal(`<h3 style="margin:0 0 8px">💎 Elmas bozumları <span class="s" id="daSum"></span></h3><div id="daList"><div class="row s">Okunuyor…</div></div>`); }
+  const btn = $("daMore"); if (btn) { btn.disabled = true; btn.textContent = "⏳ yükleniyor…"; }
+  daBusy = true; const d = await api("bayi_coins_get", { limit: 20, offset: daRows.length }); daBusy = false; if (!$("daList")) return;
+  if (d.error) { if (btn) { btn.disabled = false; btn.textContent = "⬇️ Daha fazla (+20)"; } toast("❌ " + d.error, true); if (!daRows.length) $("daList").innerHTML = `<div class="row s">❌ ${esc(d.error)}</div>`; return; }
+  const rep = d.report || {}, page = (rep.coins || []).filter((r) => r.diamonds && !dmOwn(r)), have = new Set(daRows.map((r) => String(r.tx))), u = dmUnpaid(rep);
+  daRows = [...daRows, ...page.filter((r) => !have.has(String(r.tx)))];
+  $("daSum").textContent = `(${nf(daRows.length)}/${nf(rep.total || 0)}${u.n ? ` · ödenmemiş ${u.n} bozum, ${azn(u.pay || 0)}` : ""})`;
+  $("daList").innerHTML = daRows.length ? dmListHtml(daRows) + ((rep.total || 0) > daRows.length && page.length ? `<div style="padding:12px;text-align:center"><button id="daMore" onclick="dmAllOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz elmas bozumu yok.</div>'; }
 /** Ödenmemiş toplamı grup bazında (kişi kartındaki "Toplam borç" ile aynı hesap); liste eksikse sunucunun toplamı */
 function dmUnpaid(d) { const u = (d && d.unpaid) || {}, open = ((d && d.open) || []).filter((r) => !dmOwn(r)); if (!open.length || open.length < (u.n || 0)) return u;
   return { ...u, pay: Math.round(dmGroups(open).reduce((s, g) => s + g.pay, 0) * 100) / 100 }; }
@@ -1666,7 +1736,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = (d.open || 
   setDmStrip(open.length ? `<div class="dmstrip" onclick="tab('dm')">💎 <b>${open.length} ödenmemiş elmas bozumu</b> · toplam <b>${azn(u.pay)}</b> ödenecek ›</div>` : "");
   $("dmBody").innerHTML = `<div class="grid"><div class="card"><div class="k">⏳ Ödenmemiş</div><div class="v" style="color:var(--warn)">${azn(u.pay || 0)}</div><div class="s">${u.n || 0} bozum</div></div>
     <div class="card"><div class="k">📅 Bugün</div><div class="v">${nf(td.coins ? Math.round(td.coins / 0.36) : 0)}</div><div class="s">elmas · ${td.n || 0} bozum · ${azn(td.pay || 0)}</div>${isYetkili() && ot.n ? `<div class="s dmownt" style="color:#7dd3fc">🔁 Kendi bozum: +${nf(ot.coins)} coin</div>` : ""}</div></div>
-    <div style="padding:0 10px"><button style="width:100%" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
+    <div style="padding:0 10px"><button class="fullbtn" onclick="dmAllOpen()">💎 Tüm elmas bozumları (ödenen / ödenmeyen)</button></div>
     ${open.length ? `<h3>⏳ Ödenmemişler <span class="s">(${dmPeople(open).length} kişi)</span></h3>${dmPersonBoxes(open)}` : ""}
     <h3>🕘 Son bozumlar <span class="s">(${nf(d.total)} kayıt)</span></h3>${dmListHtml(d.coins || [])}
     ${(d.coins || []).length < d.total ? `<div style="padding:12px;text-align:center"><button onclick="dmLimit+=10;loadDm()">Daha fazla</button></div>` : ""}
@@ -2349,6 +2419,7 @@ function onPending(pl) { const c = String(pl.c || ""); if (!c || !pl.oid) return
   if (cur === c) renderChat(true); ownRow(c, txt); }
 // Anlık mesaj (live): sohbet açıksa hemen eklenir; kendi gönderimimizse (oid) bekleyen balon AYNI düğümde asıl mesaja döner (zıplama yok); başka sohbetinki açık sohbeti çizmez
 function liveMsg(pl) { const c = String(pl.c || ""), it = pl.item; if (pl.oid) rpend = rpend.filter((p) => p.oid !== String(pl.oid)); if (!c || !it || !it.id) return;
+  if (!isSahip() && hidM[c] && hidM[c].size) { if (hidM[c].has(String(it.id))) return; const it2 = hidNo(c, [it])[0]; if (it2 !== it) pl = { ...pl, item: it2 }; } // 🙈 gizli mesaja sonradan gelen tepki / geri çekme yok sayılır (liste önizlemesi dahil); alıntısı boşaltılır
   if (pl.oid) { const oid = String(pl.oid); let o = myOut.find((x) => x.oid === oid); oidMid[oid] = String(it.id);
     if (!o) { o = myOut.find((x) => x.c === c && (x.status === "unsure" || x.status === "pending") && !x.oid && !x.mid && outLike(x, it)) || null; if (o) o.oid = oid; } // cevabı kaybolan / geç gelen gönderim (2026-11-11: cevap 10 sn sürdü, balon çift göründü): aynı türde + aynı yazıdaki en eski bekleyen balonumuz
     if (!o && myOut.some((x) => x.c === c && !x.oid && x.status === "pending")) { // send cevabı (oid) henüz gelmedi: kısa süre beklenir, sonra eşlenir
@@ -2433,6 +2504,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (ev === "typing") { onTyping(pl); return; } // ✍️ başka ekip üyesi yazıyor
     if (ev === "rem") { const m = pl.rem; if (m) { rems = m; renderInbox(); } else schedInbox(); if (cur) schedChat(); return; } // ⏰ hatırlatma kuruldu / zamanı geldi
     if (ev === "assign") { const m = pl.assign; if (m) { assigns = m; renderInbox(); renderChTags(); } return; }
+    if (ev === "hidden") { onHidden(pl); return; } // 🙈 ajans sahibi bir mesajı gizledi / gizlemeyi kaldırdı
     if (ev === "cpins") { if (setCpins(pl)) { sortInbox(); renderInbox(); } return; }
     if (ev === "live") { try { const at = Date.parse(pl.item && pl.item.at); if (at && !(pl.item && pl.item.m)) { STAT.live = Math.max(0, Date.now() - at); statLine(); } } catch (e) {} liveMsg(pl); return; } // sunucudan anında: mesaj + liste satırı (veritabanı beklenmez)
     if (ev === "pending") { onPending(pl); return; } // diğer ekran gönderiyor (Sugo onayı bekleniyor)
@@ -2456,6 +2528,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.62"></script>
+<script src="profile.js?v=2.1.63"></script>
 </body>
 </html>
