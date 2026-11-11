@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.72">
+<meta name="build" content="2.1.73">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.72">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.72">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.72">
+<link rel="manifest" href="manifest.json?v=2.1.73">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.73">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.73">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -496,7 +496,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.72" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.73" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -505,7 +505,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.72" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.73" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -562,7 +562,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.72"></script>
+<script src="emoji.js?v=2.1.73"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -687,7 +687,7 @@ async function api0(action, body = {}) {
   if (!r) return { error: "Bağlantı yok" };
   if (r.status === 401 && t0 !== tok) return { error: "Oturum değişti, tekrar deneyin" };
   if (r.status === 401 && swOwner() && swOwner() !== tok) { swDone(swOwner()); return { error: "Geçiş oturumu kapandı, kendi hesabınıza dönülüyor" }; } // 🔀 geçiş oturumu kapanmış: sahibin oturumuna dön
-  if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); pushDrop(); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
 // 🟡 Kısmen ödenmiş bozum (sunucu paid_part: ödenen kısım): "Kısmen ödendi 10/33 ₼ · kalan 23 ₼"
@@ -737,7 +737,13 @@ async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $(
   if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
 function cacheClear() { try { for (const k of Object.keys(localStorage)) if (/^bw_(pane_|ch_)/.test(k)) localStorage.removeItem(k); } catch (e) {} try { chCache.forget(); } catch (e) {} } // başka kişi girerse eski ekranlar görünmesin
-async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; await api("logout"); tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
+// 🔕 Çıkışta bu telefonun bildirim aboneliği kapanır (kullanıcı 11.11: "çıkış yapınca da bildirim geliyor"): sunucuda kayıt kapatılır (silinmez), tarayıcıda abonelik bırakılır
+async function pushEndpoint() { try { if (!("serviceWorker" in navigator)) return null; const reg = swReg || await Promise.race([navigator.serviceWorker.getRegistration(), new Promise((r) => setTimeout(r, 1500))]);
+  return reg && reg.pushManager ? await Promise.race([reg.pushManager.getSubscription(), new Promise((r) => setTimeout(() => r(null), 1500))]) : null; } catch (e) { return null; } }
+// Oturum kapandıysa (401) ya da sayfa girişsiz açıldıysa: bu tarayıcının aboneliği bırakılır (sunucuya soramayız; bildirim servisi aboneliği düşürür, sunucu ilk gönderimde kapatır)
+async function pushDrop() { const ps = await pushEndpoint(); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } }
+async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; const ps = await pushEndpoint();
+  await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
 async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekteki adla)
@@ -3068,9 +3074,9 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden && to
 addEventListener("pageshow", () => { if (tok) rtWake(); }); addEventListener("online", () => { if (tok) { rtWake(); if (cur) schedChat(); else schedInbox(); } });
 $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !/iPhone|iPad|Android/.test(navigator.userAgent)) { e.preventDefault(); send(); } });
 
-if (tok) start(); else show("login");
+if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.72"></script>
-<script src="durum.js?v=2.1.72"></script>
+<script src="profile.js?v=2.1.73"></script>
+<script src="durum.js?v=2.1.73"></script>
 </body>
 </html>
