@@ -19,6 +19,36 @@
       while (k.length > 60) localStorage.removeItem("pf_" + k.shift()); localStorage.setItem("pf_keys", JSON.stringify(k)); localStorage.setItem("pf_" + uid, raw); } catch (e) {} },
   };
   const pfRefreshing = {}, pfLive = {};
+  // 🏅 Sugo rozetleri / aile / durum sayısı (profile_live): son hâl bu cihazda saklanır → profil açılınca rozet satırı ve aile kartı anında, kaymadan
+  const pflGet = (uid) => { try { return JSON.parse(localStorage.getItem("pfl_" + uid) || "null"); } catch (e) { return null; } };
+  const pflPut = (uid, v) => { try { let k = JSON.parse(localStorage.getItem("pfl_keys") || "[]").filter((x) => x !== uid); k.push(uid); while (k.length > 80) localStorage.removeItem("pfl_" + k.shift());
+    localStorage.setItem("pfl_keys", JSON.stringify(k)); localStorage.setItem("pfl_" + uid, JSON.stringify(v)); } catch (e) {} };
+  const liveOf = (uid) => { const l = pfLive[uid]; return l && (l.badges || "family" in l) ? l : pflGet(uid) || (l && !l.error ? l : null); };
+  window.__pfLiveOf = liveOf;
+  const rawFam = (p) => { const r = p.raw; if (!r) return undefined; const f = (r.familyInfo || {}).family; return f ? { name: f.familyName || "", level: f.familyLevel, icon: f.familyIcon || f.icon || null, members: f.memberCount ?? f.memberNum ?? null } : null; };
+  function badgesH(p) {
+    if (p.__sk && !liveOf(p.uid)) return `<span class="bg-sk"><span class="sk" style="width:2.2em"></span></span><span class="bg-sk"><span class="sk" style="width:2em"></span></span><span class="bg-sk"><span class="sk" style="width:2em"></span></span><span class="bg-sk"><span class="sk" style="width:3em"></span></span>`;
+    const L = liveOf(p.uid) || {}, b = L.badges || {}, out = [];
+    const g = b.gender || (p.gender === 2 ? "m" : p.gender === 1 ? "f" : null);
+    const age = b.age ?? (p.birthday ? Math.floor((Date.now() - Date.parse(p.birthday)) / 31557600000) : null), num = b.level ?? (age && age > 10 && age < 90 ? age : null);
+    if (g || num) out.push(`<span class="bg-${g || "x"}" title="${g === "f" ? "Kız" : g === "m" ? "Erkek" : ""}${b.level != null ? " · seviye " + b.level : num ? " · " + num + " yaş" : ""}">${g ? genderSvg(g === "m") : ""}${num ?? ""}</span>`);
+    const w = b.wealth ?? p.wealth, c = b.charm ?? p.charm;
+    if (w) out.push(`<span class="bg-w" title="Servet seviyesi">💎 ${esc(w)}</span>`);
+    if (c) out.push(`<span class="bg-c" title="Çekicilik seviyesi">⭐ ${esc(c)}</span>`);
+    const vo = vipOf(b.vip ?? p.vip, b.svip ?? p.svip); if (vo) out.push(`<span class="bg-v${/s2|v6|v8|v$/.test(vo.k) ? " dk" : ""}" style="--vc:${vo.c}">👑 ${vo.t}</span>`);
+    // alanlar badges içinde ya da live kökünde gelebilir (sunucu: badges.seller, active_level/active_icon, medals/medal_count, family.level_name/level_icon)
+    const pick = (k) => b[k] ?? L[k], ic = (u, alt) => (u ? `<img src="${escA(avUrl(u))}" alt="" onerror="this.remove()">` : alt || "");
+    if (b.seller || L.seller) out.push(`<span class="bg-sl" title="Coin satıcısı (bayi)">🏪 Satıcı</span>`);
+    const al = pick("active_level"); if (al) out.push(`<span class="bg-ac" title="Aktiflik seviyesi">${ic(pick("active_icon"), "⚡")}Lv${esc(al)}</span>`);
+    const f = "family" in L ? L.family : rawFam(p), fl = f && (f.level_name || (f.level ? "Lv" + f.level : ""));
+    if (f && f.name) out.push(`<span class="bg-fa" title="Aile${f.level_name ? " · " + escA(f.level_name) : ""}">${ic(f.icon, "🛡️")}${esc(f.name)}${fl ? `<small>${ic(f.level_icon || L.level_icon)}${esc(fl)}</small>` : ""}</span>`);
+    const md = pick("medals"), mc = pick("medal_count") ?? (Array.isArray(md) ? md.length : 0);
+    if (mc) out.push(`<span class="bg-md" title="${escA((Array.isArray(md) ? md : []).map((x) => x && x.name).filter(Boolean).slice(0, 8).join(", ") || "Madalyalar")}">${(Array.isArray(md) ? md : []).filter((x) => x && x.icon).slice(0, 3).map((x) => ic(x.icon)).join("") || "🏅"}${esc(mc)}</span>`);
+    return out.join("") || '<span class="bg-sk" style="color:var(--muted);font-weight:500">rozet yok</span>'; }
+  function famH(p) { const L = liveOf(p.uid), f = L && "family" in L ? L.family : rawFam(p);
+    if (f === undefined) return `<div class="pffam"><span class="sk" style="width:22px;height:22px;border-radius:6px"></span><span class="sk" style="width:12em"></span></div>`;
+    if (!f || !f.name) return `<div class="pffam none">👨‍👩‍👧 Ailesi yok</div>`;
+    return `<div class="pffam">${f.icon ? `<img src="${escA(avUrl(f.icon))}" alt="" onerror="this.remove()">` : "👨‍👩‍👧"}<span class="fn">Ailesi: <b>${esc(f.name)}</b>${f.members != null ? ` (${esc(f.members)} üye)` : ""}${f.level_name ? ` · ${esc(f.level_name)}` : f.level ? ` · Lv${esc(f.level)}` : ""}</span></div>`; }
   let pfUid = null, pfMoreOpen = false; // "Diğer bilgiler" açıksa güncellemede kapanmasın
   const sync = (on) => { const el = $("pfSync"); if (el) el.hidden = !on; };
 
@@ -69,8 +99,15 @@
   }
   function onLive(d) {
     const l = d && d.report && d.report.live; if (!l || !l.uid) return;
+    for (const k of ["badges", "family", "moments_count", "seller", "level_icon", "active_level", "active_icon", "medals", "medal_count"]) if (!(k in l) && d.report[k] !== undefined) l[k] = d.report[k]; // alanlar live içinde ya da report kökünde gelebilir
     pfLive[l.uid] = l;
+    if (!l.error && (l.badges || "family" in l)) pflPut(l.uid, { badges: l.badges || null, family: l.family ?? null, moments_count: l.moments_count ?? null,
+      ...Object.fromEntries(["seller", "level_icon", "active_level", "active_icon", "medals", "medal_count"].filter((k) => l[k] !== undefined).map((k) => [k, l[k]])), at: Date.now() });
     if (pfUid !== l.uid) return;
+    const cp = pfCache.get(l.uid), pp = cp ? JSON.parse(cp) : { uid: l.uid };
+    if ($("pfBadges")) { const h = badgesH(pp); if ($("pfBadges").innerHTML !== h) $("pfBadges").innerHTML = h; }
+    if ($("pfFamW")) { const h = famH(pp); if ($("pfFamW").innerHTML !== h) $("pfFamW").innerHTML = h; }
+    if (window.durumPfCount) durumPfCount(l.uid);
     if ($("pfLive")) $("pfLive").innerHTML = liveHtml(l.uid);
     const dot = $("pfDot"); if (dot && !l.error) dot.className = "wonl" + (l.online || l.room ? "" : " off");
   }
@@ -149,8 +186,7 @@
     const ours = ["bas", "bayi", "asistan", "kiz"].includes(role);
     const since = (x) => x && x.from ? (x.from === rv.today ? "bugünden" : x.from.slice(5).split("-").reverse().join(".") + "'den") + " beri" : "";
     const recvSub = !rv ? (p.stale ? "Sugo'dan okunuyor…" : "Sugo'dan okunamadı") : ours && rv.month ? `bu ay +${coin(rv.month.gain)} (${since(rv.month)})${rv.week ? ` · 7 gün +${coin(rv.week.gain)}` : ""}` : `${rv.kinds} çeşit hediye · tüm zamanlar`;
-    // ♂/♀ iOS'ta yedek yazı tipiyle aşağı kayıyordu: aşağıda çizim (svg) olarak basılır
-    const tags = [p.gender === 1 ? "♀ Kız" : p.gender === 2 ? "♂ Erkek" : "", p.wealth ? "Servet " + p.wealth : "", p.charm ? "Cazibe " + p.charm : ""].filter(Boolean);
+    // ♂/♀ iOS'ta yedek yazı tipiyle aşağı kayıyordu: rozet satırında çizim (svg) olarak basılır (badgesH)
     const age = p.birthday ? Math.floor((Date.now() - Date.parse(p.birthday)) / 31557600000) : null, inf = p.info || {};
     const facts = [age && age > 10 && age < 90 ? age + " yaş" : "", inf.tall ? inf.tall + " cm" : "", inf.weight ? inf.weight + " kg" : "", inf.profession || "", inf.industry || "", inf.hometown || ""].filter(Boolean);
     const big = p.avatar_full || p.avatar, noRole = r.seat_all > 0 || r.first ? "Misafir" : "Yabancı";
@@ -164,7 +200,8 @@
         <div style="flex:1;min-width:0">${typeof alOf === "function" && alOf(p.uid) ? `<div class="pfal">🏷️ ${esc(alOf(p.uid))}</div>` : ""}<div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
-          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${sk ? `<span>${SK("3em")}</span><span>${SK("3em")}</span><span>${SK("4em")}</span>` : tags.map((t) => `<span>${/^[♂♀] /.test(t) ? genderSvg(t[0] === "♂") + esc(t.slice(2)) : esc(t)}</span>`).join("")}</div></div></div>
+          <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pfbadges" id="pfBadges">${badgesH(p)}</div></div></div>
+      <div id="pfFamW">${famH(p)}</div>
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
       <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}${typeof aliasEdit === "function" && can("mesaj") ? (sk ? `<button class="pfalias" disabled>🏷️ Takma ad</button>` : `<button class="pfalias" onclick="aliasEdit('${escA(p.uid)}')">🏷️ Takma ad</button>`) : ""}</div>
       <div class="pgrid">
@@ -172,6 +209,7 @@
         ${card("🧾 Açık borç", sk ? SK("3em") : debtSum > 0.009 ? az(debtSum) : "yok", sk ? SK("5em") : (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
       </div>
       ${dmCard(p.dm)}
+      ${window.durumPfHtml && can("mesaj") ? durumPfHtml(p.uid) : ""}
       ${sk ? `<div class="pfsec">Son alımları</div><table><tr class="h"><th>Tarih</th><th class="n">Coin</th></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr></table>` : ""}
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
       ${(p.debts || []).length ? `<div class="pfsec">Açık borçlar</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
