@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.55">
+<meta name="build" content="2.1.56">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.55">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.55">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.55">
+<link rel="manifest" href="manifest.json?v=2.1.56">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.56">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.56">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -372,7 +372,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.55" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.56" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -381,7 +381,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.55" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.56" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -436,7 +436,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.55"></script>
+<script src="emoji.js?v=2.1.56"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -708,6 +708,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function loadInbox() { const d = await api("bayi_inbox_get", Object.keys(vipm).length ? { vipsVer } : {}); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
+  openRead(); // açık sohbete yeni mesaj geldiyse (sunucu listesi okunmamış diyor) okundu yap
   if (d.report && d.report.vips) { vipm = d.report.vips; vipsVer = d.report.vipsVer ?? null; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); localStorage.setItem("bw_vipm_ver", JSON.stringify(vipsVer)); } catch (e) {} if (cur) chVip(); } // yalnız vipsVer geldiyse (değişmedi) önbellektekiler kalır // 👑 SVIP çerçevesi
   setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
@@ -2337,9 +2338,16 @@ function liveApply(pl, o) { const c = String(pl.c), item = { ...pl.item }; delet
   else if (o && cur === c) renderChat();
   liveRow(pl, c); }
 function liveRow(pl, c) { const r = pl.row, x = inbox.find((i) => String(i.id) === c);
-  if (x && r && (Number(r.at) || 0) >= (x.loc ? 0 : Number(x.at) || 0)) { Object.assign(x, { at: r.at, own: r.own, rx: 0, p: r.p, u: cur === c ? "" : r.u, rd: 0, loc: Date.now() });
+  if (x && r && (Number(r.at) || 0) >= (x.loc ? 0 : Number(x.at) || 0)) { const see = chatSeen(c); Object.assign(x, { at: r.at, own: r.own, rx: 0, p: r.p, u: see ? "" : r.u, rd: 0, loc: Date.now() });
+    if (see && !r.own && Number(r.u)) readSoon(c, Number(r.at) || Date.now()); // ekranda açık sohbete gelen mesaj okundu sayılır (Sugo'ya da; yoksa 2 dk sonra liste yine "okunmadı" diyordu)
     sortInbox(); renderInbox(); }
   else if (!x) schedInbox(); }
+// 👁️ Açık sohbet gerçekten ekranda mı (sayfa görünür + sohbet ekranı açık). Arka plandayken gelen mesaj okunmamış kalır, dönünce okundu olur.
+const chatSeen = (c) => cur === String(c) && !document.hidden && $("chat").classList.contains("on");
+const readT = {};
+function readSoon(c, at) { c = String(c); const x = inbox.find((i) => String(i.id) === c); if (x) { x.u = ""; x.readAt = Math.max(Number(x.readAt) || 0, at || Date.now()); }
+  clearTimeout(readT[c]); readT[c] = setTimeout(() => { delete readT[c]; if (chatSeen(c)) api("read", { conv: c }); }, 700); } // art arda gelen mesajlar tek "okundu"
+function openRead() { if (!cur || !chatSeen(cur)) return; const x = inbox.find((i) => String(i.id) === String(cur)); if (x && Number(x.u)) { readSoon(cur, Number(x.at) || Date.now()); renderInbox(); } }
 // "outbox" olayı {id, ok, item?}: kendi gönderimimiz / tepki-geri al-sil bitti. Eşleşmezse (başka iş, ör. geçmiş çekme) false
 function onOutboxEv(pl) { const oid = String(pl.id ?? ""); if (!oid) return false; const o = myOut.find((x) => x.oid === oid);
   if (o) { if (pl.ok && pl.item && pl.item.id) liveMsg({ c: o.c, item: pl.item, oid, row: null });
@@ -2410,12 +2418,12 @@ const rtHealthy = () => !!(rt && rt.readyState === 1 && STAT.rtOn && Date.now() 
 setInterval(() => { if (!tok || document.hidden || Date.now() - pollAt < (cur && rtHealthy() ? 60_000 : 20_000) - 500) return; pollAt = Date.now();
   if (cur) loadChat(); else if (curTab === "msg") { loadInbox(); loadDm(); } }, 5_000);
 setInterval(() => { if (tok && !document.hidden) loadTablet(); }, 60_000);
-document.addEventListener("visibilitychange", () => { if (!document.hidden && tok) { if (cur) schedChat(); else schedInbox(); loadTablet(); rtWake(); } });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && tok) { if (cur) { schedChat(); openRead(); } else schedInbox(); loadTablet(); rtWake(); } });
 addEventListener("pageshow", () => { if (tok) rtWake(); }); addEventListener("online", () => { if (tok) { rtWake(); if (cur) schedChat(); else schedInbox(); } });
 $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !/iPhone|iPad|Android/.test(navigator.userAgent)) { e.preventDefault(); send(); } });
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.55"></script>
+<script src="profile.js?v=2.1.56"></script>
 </body>
 </html>
