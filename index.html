@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.79">
+<meta name="build" content="2.1.80">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.79">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.79">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.79">
+<link rel="manifest" href="manifest.json?v=2.1.80">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.80">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.80">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -71,6 +71,9 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .xinfo.note, .xinfo.rem { display: flex; align-items: center; gap: 6px; } .xinfo .xt { flex: 1; min-width: 0; overflow-wrap: anywhere; } .xinfo.note button, .xinfo.rem button { flex: none; margin-left: 0; }
   #compWrap { position: relative; }
   .comp { position: relative; } #sendBtn { width: 84px; } /* 🎤 / Gönder aynı genişlik: yazı kutusu oynamasın */
+  /* 🔒 sohbet kilidi: yazma kutusunun üstünde, mesajların üzerine binen şerit (yer kaplamaz → kayma yok); kilitliyken kutu soluk */
+  .lockpill { position: absolute; left: 10px; right: 10px; bottom: calc(100% + 6px); z-index: 4; background: color-mix(in srgb, #b45309 90%, #000); color: #fff; font-size: 13px; line-height: 1.3; border-radius: 12px; padding: 6px 12px; pointer-events: none; text-align: center; font-variant-numeric: tabular-nums; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  #compWrap.locked .comp textarea, #compWrap.locked .comp button { opacity: .55; }
   .recbar { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--panel); }
   .recbar .rt { flex: 1; font-weight: 700; color: #f87171; font-variant-numeric: tabular-nums; } .recbar .rt::before { content: "🔴 "; animation: recb 1s steps(2) infinite; } @keyframes recb { 50% { opacity: .3; } }
   .recbar button { min-height: 44px; }
@@ -516,7 +519,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.79" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.80" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -525,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.79" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.80" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -565,6 +568,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   <div id="msgMenu" class="msgmenu" hidden></div><div class="mmbg" id="msgMenuBg" onclick="msgMenuBgTap()"></div>
   <div id="compWrap">
     <div id="chTyping" class="typpill" hidden></div>
+    <div id="chLock" class="lockpill" role="status" aria-live="polite" hidden></div>
     <div id="slashList" class="slash" hidden></div>
     <div id="emoPanel" class="emopanel" hidden></div>
     <div id="txtPrev" hidden style="padding:6px 12px;border-top:1px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere"></div>
@@ -572,7 +576,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
     <div id="replyBar" hidden></div>
     <div class="comp">
       <button id="emoBtn" onclick="emoToggle()" title="Sugo emojileri" style="font-size:20px;padding:6px 10px">😊</button>
-      <button onclick="pickImg()" title="Resim">📎</button>
+      <button id="picBtn" onclick="pickImg()" title="Resim">📎</button>
       <input type="file" id="file" accept="image/*" hidden onchange="sendImg(this)">
       <textarea id="txt" rows="1" placeholder="Mesaj yazın…" autocorrect="off" autocapitalize="sentences" oninput="grow(this);onTypingInput();slashUpd();sendBtnUpd()"></textarea>
       <button class="go" id="sendBtn">Gönder</button>
@@ -582,7 +586,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.79"></script>
+<script src="emoji.js?v=2.1.80"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -851,7 +855,30 @@ function onTypingInput() { if (!cur || !me || isSys(cur)) return; const now = Da
   if (now - typT < 4000) return; typT = now; rtSend("typing", { conv: String(cur), by: me.name }); }
 function onTyping(pl) { const c = String(pl.conv || ""); if (!c || !pl.by || (me && pl.by === me.name)) return; typing[c] = { by: String(pl.by).slice(0, 30), until: Date.now() + 8000 };
   showTyping(); renderInbox(); clearTimeout(onTyping["t" + c]); onTyping["t" + c] = setTimeout(() => { showTyping(); renderInbox(); }, 8100); }
-function showTyping() { const el = $("chTyping"); if (!el) return; const by = cur ? typingBy(cur) : ""; el.hidden = !by; if (by) el.textContent = `✍️ ${by} yazıyor…`; }
+function showTyping() { const el = $("chTyping"); if (!el) return; const by = cur ? typingBy(cur) : ""; el.hidden = !by; if (by) el.textContent = `✍️ ${by} yazıyor…`; lockShow(); }
+// 🔒 Sohbet kilidi (kullanıcı 11.11): başkası bu müşteriye son 2 dk içinde yazdıysa (sunucu: chat_history / outbox cevabındaki lock + anlık "clock" olayı)
+// ya da şu an yazıyorsa (✍️, son 8 sn) yazma kutusu kilitli + geri sayım. Bakmak / okumak / okundu serbest. Yalnız ajans sahibi (kendi hesabında) ezer:
+// "… yine de yazmak istiyor musun?" → force. Asıl kural sunucuda (bu yalnız ekran); yeni sorgu yok, saat: sunucunun verdiği kalan süre (left) bu cihazın saatiyle sayılır.
+const clocks = {}; let lockIv = 0;
+const canForce = () => !!(me && me.role === "sahip" && !me.switched);
+function clockSet(c, l) { c = String(c); if (l && l.by && !(me && l.by === me.name) && Number(l.left) > 0) clocks[c] = { by: String(l.by).slice(0, 30), until: Date.now() + Number(l.left) }; else delete clocks[c]; if (cur === c) lockShow(); }
+function lockOf(c) { if (!c || isSys(c)) return null; c = String(c); const l = clocks[c]; if (l && l.until > Date.now()) return l;
+  const t = typing[c], draft = cur === c && $("txt") && $("txt").value.trim(); return t && t.until > Date.now() && !draft ? { by: t.by, until: 0, typing: 1 } : null; } // kendi taslağım varken karşının "yazıyor"u beni kilitlemez
+const leftTxt = (ms) => { const s = Math.max(1, Math.ceil(ms / 1000)), m = Math.floor(s / 60), r = s % 60; return m ? (r ? `${m} dk ${r} sn` : `${m} dk`) : `${r} sn`; };
+const lockMsg = (l) => `🔒 ${l.by} bu müşteriyle ilgileniyor` + (l.typing ? " (yazıyor…)" : ` · ${leftTxt(l.until - Date.now())} sonra serbest`);
+function lockShow() { const el = $("chLock"); if (!el) return; const l = cur ? lockOf(cur) : null, block = !!l && !canForce();
+  const pill = !!l && !l.typing; // yalnız "yazıyor" ise mevcut ✍️ şeridi kalır (kutu yine kilitli); 2 dk kilidinde geri sayım şeridi onun yerine
+  if (el.hidden !== !pill) el.hidden = !pill; if (pill) { const t = lockMsg(l); if (el.textContent !== t) el.textContent = t; const ty = $("chTyping"); if (ty && !ty.hidden) ty.hidden = true; }
+  const tx = $("txt"), ph = block ? `🔒 ${l.by} ilgileniyor — yazamazsınız` : "Mesaj yazın…";
+  if (tx) { if (tx.disabled !== block) { if (block && document.activeElement === tx) tx.blur(); tx.disabled = block; } if (tx.placeholder !== ph) tx.placeholder = ph; }
+  for (const id of ["emoBtn", "picBtn", "sendBtn"]) { const b = $(id); if (b && b.disabled !== block) b.disabled = block; }
+  $("compWrap").classList.toggle("locked", block);
+  if (l && !lockIv) lockIv = setInterval(lockShow, 1000); else if (!l && lockIv) { clearInterval(lockIv); lockIv = 0; } }
+const lockAsk = (by) => confirm(`${by} bu müşteriyle ilgileniyor, yine de yazmak istiyor musun?`);
+/** Yazmadan / göndermeden önce: kilit yoksa {}; ajans sahibi onaylarsa { force: true }; kilitliyse null (uyarı) */
+function lockGate(c) { const l = lockOf(c); if (!l) return {};
+  if (!canForce()) { toast(lockMsg(l), true); lockShow(); return null; }
+  return lockAsk(l.by) ? { force: true } : null; }
 async function claimToggle() { const c = cur; if (!c) return; const a = asg(c), mine = a && me && a.by === me.name;
   if (a && !mine && !confirm(`Bu sohbete ${a.by} bakıyor. Siz devralmak istiyor musunuz?`)) return;
   const d = await api("conv_assign", { conv: String(c), on: !mine }); if (d.error) { toast("❌ " + d.error, true); return; }
@@ -909,7 +936,9 @@ function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) =>
   inbox.sort((a, b) => pg(a) - pg(b) || un(b) - un(a) || eat(b) - eat(a)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
-async function loadInbox() { const d = await api("bayi_inbox_get", Object.keys(vipm).length ? { vipsVer } : {}); try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); if (window.odaModeSet) odaModeSet(s.state === "open" && s.roomMode ? s.roomMode : { mode: "audio", live: false }); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
+let inboxV = null, inboxVAt = 0; // 📉 liste özeti: değişmediyse sunucu listeyi yeniden göndermez ({ same }); dakikada bir yine tam liste (yerel durum sapmasın)
+async function loadInbox() { const q = Object.keys(vipm).length ? { vipsVer } : {}; if (inboxV && Date.now() - inboxVAt < 60_000) q.v = inboxV;
+  const d = await api("bayi_inbox_get", q); if (d.report && d.report.same) { openRead(); return; } if (d.report && d.report.v) { inboxV = d.report.v; inboxVAt = Date.now(); } else inboxV = null; try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); if (window.odaModeSet) odaModeSet(s.state === "open" && s.roomMode ? s.roomMode : { mode: "audio", live: false }); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   if (d.report && !!d.report.seenMine !== seenMine) { seenMine = !!d.report.seenMine; try { localStorage.setItem("bw_seenMine", seenMine ? "1" : "0"); } catch (e) {} } // 👁️ sunucu kişiye özel okunmamış veriyor
   const its = (d.report && d.report.inbox && d.report.inbox.items) || [];
   sysRows = noSys() ? [] : mergeRows(its.filter((x) => isSys(x.id)), sysRows); try { localStorage.setItem("bw_sysrows", JSON.stringify(sysRows)); } catch (e) {} // 📢 sistem sohbetleri: listede tek SUGO TEAM satırında
@@ -1030,7 +1059,7 @@ async function openChat(id, snap) {
   if (String(id) !== cur) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); chFresh = null; } cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   if (sy) $("chName").textContent = "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : ""); else $("chName").innerHTML = nmH(cur, curName); $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
-  chVip(); sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
+  chVip(); sendBtnUpd(); lockShow(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
   { const c1 = !sy ? chCache.get(String(id)) : null; if (c1 && Array.isArray(c1.hid) && !hidM[String(id)]) hidSet(id, c1.hid); } // 🙈 son bilinen gizli mid'ler (önbellekten çizilmeden önce)
@@ -1124,6 +1153,7 @@ async function loadChat1(c, scroll) { const gen = ++LC.gen, sys = isSys(c);
     if (hob) { o = { outbox: hob }; if (!obInHist) lsOb(true); } // ayrı outbox isteği gerekmez
     else if (!o) { if (h && h.report) lsOb(false); o = await api("outbox", { conv: c }); } } // sunucu (henüz) vermiyor: eski yol
   if (c !== cur || gen < LC.applied) return; LC.applied = gen; if (h && h.report) pollAt = Date.now();
+  if (!sys && h && h.report && "lock" in h) clockSet(c, h.lock); // 🔒 sunucu: bu sohbetin kilidi (yoksa null → açılır)
   if (h && h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
     if (!sys) { hidFromHist(c, h.report.hid, latest); // 🙈 bu sohbetin gizli mid'leri (sunucu her role verir; içerik yok)
       if (!isSahip() && hidM[c] && hidM[c].size && liveKeep[c]) for (const x of hidM[c]) liveKeep[c].delete(x); }
@@ -1430,6 +1460,7 @@ function msgCopy(mid) { const m = findMsg(mid); msgMenuClose(); if (!m) return;
 /** Tepki / geri al / sil: kuyruğa yazılır, bayi bağlantısı Sugo'da yapar; bitince sohbet yenilenir */
 async function msgAct(kind, mid, e) {
   msgMenuClose(); const m = findMsg(mid); if (!m || !cur) return;
+  const g = kind === "react" ? lockGate(cur) : {}; if (!g) return; // 🔒 tepki de yazmadır (geri al / sil kendi mesajımız: serbest)
   if (kind === "withdraw" && !confirm("Bu mesaj geri alınsın mı? Karşı tarafta 'mesaj geri çekildi' görünür.")) return;
   if (kind === "delete" && !confirm("Bu mesaj sohbetten silinsin mi? (Sugo'da bizim tarafta silinir; karşı taraf görmeye devam edebilir)")) return;
   const c = cur;
@@ -1442,8 +1473,8 @@ async function msgAct(kind, mid, e) {
   const tp = m.k === "image" ? "📷 Fotoğraf" : m.k === "voice" ? "🎤 Sesli mesaj" : m.k === "video" ? "🎬 Video" : String(m.t || "").replace(/\s+/g, " ").slice(0, 60); // tepki verilen mesajın kısa hâli
   if (kind === "react" && e) rowReact(c, e, tp); // listede hemen "😍 tepki verdiniz: …" (sunucu da aynısını yazar)
   const done = () => { delete optMsg[key]; if (cur === c) loadChat(); };
-  const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m, ...(kind === "react" ? { t: tp } : {}) });
-  if (d.error) { toast("❌ " + d.error, true); done(); return; }
+  const d = await api("msg_act", { conv: c, kind, mid: String(mid), e: e || "", own: !!m.m, ...(kind === "react" ? { t: tp } : {}), ...(g.force ? { force: true } : {}) });
+  if (d.error) { if (d.lock) clockSet(c, d.lock); toast((d.lock ? "" : "❌ ") + d.error, true); done(); return; }
   const r = d.id ? await obWait(d.id) : null; // "outbox" olayı (yoksa 5 sn sonra yedek yoklama)
   if (r && r.ok) toast(kind === "react" ? (e ? "✅ Tepki gönderildi" : "Tepki kaldırıldı") : kind === "withdraw" ? "↩️ Mesaj geri alındı" : "🗑️ Mesaj silindi");
   else if (r) toast("❌ Yapılamadı: " + (r.err || ""), true);
@@ -1694,13 +1725,18 @@ function outAdd(c, kind, body, q, extra) { outT = Math.max(Date.now(), outT + 1)
 // Önceki istek 10 sn'de cevap vermezse sıra beklenmez (takılı istek gönderimi kilitlemesin).
 const sendQ = {};
 function outGo(o) { const prev = sendQ[o.c] ? Promise.race([sendQ[o.c], new Promise((r) => setTimeout(r, 10_000))]) : Promise.resolve();
-  const p = prev.then(() => o.kind === "text" ? api("send", { conv: o.c, text: o.body, ...(o.q ? { reply: o.q.seq } : {}), ...(o.extra || {}) })
-    : o.kind === "image" ? api("send_image", { conv: o.c, data: o.data }) : api("send_voice", { conv: o.c, data: o.data, dur: o.dur }));
+  const fx = o.force ? { force: true } : {}; // 🔒 ajans sahibi kilidi ezdi
+  const p = prev.then(() => o.kind === "text" ? api("send", { conv: o.c, text: o.body, ...(o.q ? { reply: o.q.seq } : {}), ...(o.extra || {}), ...fx })
+    : o.kind === "image" ? api("send_image", { conv: o.c, data: o.data, ...fx }) : api("send_voice", { conv: o.c, data: o.data, dur: o.dur, ...fx }));
   sendQ[o.c] = p.then(() => {}, () => {}); return p; }
 async function outRun(o) { const d = await outGo(o); if (outResult(o, d)) await sentTrack(o, d.id); }
 // Gönderim isteğinin cevabı: ağ hatasında (cevap kayboldu – istek sunucuya ulaşmış olabilir) "belirsiz": soluk "kontrol ediliyor", sunucu kuyruğu / geçmiş sorulur
 const NET_ERR = /^(Bağlantı yok|Yanıt okunamadı)$/;
-function outResult(o, d) { if (!d.error) return true;
+function outResult(o, d) { if (!d.error) { if (clocks[o.c]) clockSet(o.c, null); return true; } // gönderdim: sohbet artık bende (kilit bende değil)
+  if (d.lock && d.lock.kind !== "coin") { clockSet(o.c, d.lock); o.gone = true; schedInbox(); // 🔒 sunucu kilide takıldı (ekran henüz bilmiyordu): balon kalkar
+    if (canForce() && !o.force && cur === o.c && lockAsk(d.lock.by)) { const n = outAdd(o.c, o.kind, o.body, o.q, o.extra); Object.assign(n, { prev: o.prev || null, data: o.data || null, dur: o.dur, force: true }); renderChat(true); outRun(n); return false; }
+    if (o.kind === "text" && cur === o.c && !$("txt").value.trim()) { $("txt").value = o.body; grow($("txt")); sendBtnUpd(); } // yazdığı kaybolmasın
+    toast(d.error, true); if (cur === o.c) renderChat(); return false; }
   if (NET_ERR.test(String(d.error))) { o.status = "unsure"; o.err = ""; for (const [oid, e] of Object.entries(liveEarly)) if (outLike(o, e.pl.item, e.pl.c)) { delete liveEarly[oid]; o.oid = oid; liveApply(e.pl, o); break; }
     if (o.status === "unsure") outCheck(o); }
   else { o.status = "failed"; o.err = d.error; toast("❌ " + d.error, true); }
@@ -1731,9 +1767,11 @@ function outSync(o, inHist) { if (o.mid && inHist.has(o.mid)) return;
   const at0 = Date.parse(o.created_at) - 60_000, used = new Set([...myOut.filter((y) => y.mid).map((y) => y.mid), ...Object.entries(oidMid).filter(([k]) => k !== o.oid).map(([, v]) => v)]);
   const hm = hist.find((m) => m.m && Date.parse(m.at) >= at0 && !used.has(String(m.id)) && outLike(o, m)); if (hm) outBind(o, String(hm.id)); }
 async function send(textArg, extra) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
+  let force = !!(extra && extra.force); if (!force && !(extra && extra.lockOk)) { const g = lockGate(cur); if (!g) return; force = !!g.force; } // 🔒 kilit: yazı kutuda kalır (lockOk: coin teşekkürü, kilit coin'de bakıldı)
+  if (extra && ("force" in extra || "lockOk" in extra)) { extra = { ...extra }; delete extra.force; delete extra.lockOk; if (!Object.keys(extra).length) extra = undefined; }
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); sendBtnUpd(); } if ($("slashList")) $("slashList").hidden = true;
   const rq = replyTo; replyTo = null; renderReply();
-  const o = outAdd(cur, "text", t, rq, extra); renderChat(true);
+  const o = outAdd(cur, "text", t, rq, extra); if (force) o.force = true; renderChat(true);
   ownRow(cur, t);
   await outRun(o); }
 async function sentTrack(o, id) { const c = o.c; if (!id) { o.status = "sent"; if (cur === c) loadChat(); return; }
@@ -1783,7 +1821,8 @@ function sendOrMic() { if ($("sendBtn").dataset.m === "mic") recStart(); else se
   b.addEventListener("mousedown", (e) => e.preventDefault());
   b.addEventListener("touchend", (e) => { if (e.cancelable) e.preventDefault(); tAt = Date.now(); sendOrMic(); });
   b.addEventListener("click", () => { if (Date.now() - tAt < 700) return; sendOrMic(); }); })();
-async function recStart() { if (rec) return; const c = cur;
+let recForce = false;
+async function recStart() { if (rec) return; const c = cur; const g = lockGate(c); if (!g) return; recForce = !!g.force; // 🔒 kilitliyken kayıt hiç başlamaz
   try { await loadAmr(); const r = new window.BenzAMRRecorder(); await r.initWithRecord(); if (cur !== c) { r.destroy(); return; } r.startRecord(); rec = r; recAt = Date.now();
     $("recBar").hidden = false; recTick(); recT = setInterval(recTick, 250); try { navigator.vibrate && navigator.vibrate(10); } catch (e) {} }
   catch (e) { rec = null; toast("🎤 Mikrofon açılamadı: " + ((e && (e.message || e.name)) || e) + " (tarayıcıda mikrofon izni verin)", true); } }
@@ -1794,7 +1833,7 @@ async function recSend() { const r = rec, c = cur; if (!r) return; rec = null; r
   try { await r.finishRecord(); const blob = r.getBlob(), dur = Math.min(60, Math.round(r.getDuration())); try { r.destroy(); } catch (e) {}
     if (!blob || dur < 1) { toast("Ses çok kısa (en az 1 sn)", true); return; }
     const url = await new Promise((ok, no) => { const fr = new FileReader(); fr.onload = () => ok(String(fr.result)); fr.onerror = () => no(new Error("okunamadı")); fr.readAsDataURL(blob); });
-    const o = outAdd(c, "media", ""); o.data = "data:audio/amr;base64," + url.split(",")[1]; o.dur = dur; if (cur === c) renderChat(true); ownRow(c, "🎤 Sesli mesaj");
+    const o = outAdd(c, "media", ""); o.data = "data:audio/amr;base64," + url.split(",")[1]; o.dur = dur; if (recForce) o.force = true; if (cur === c) renderChat(true); ownRow(c, "🎤 Sesli mesaj");
     await outRun(o);
   } catch (e) { toast("❌ Sesli mesaj gönderilemedi: " + ((e && e.message) || e), true); if (cur === c) loadChat(); } }
 function slashPick(t) { const x = $("txt"); x.value = tplFill(t); grow(x); $("slashList").hidden = true; try { x.focus(); x.setSelectionRange(x.value.length, x.value.length); } catch (e) {} }
@@ -1803,7 +1842,8 @@ function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
   const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
   await sendImgData(url); }
-async function sendImgData(url) { if (!cur) return; const o = outAdd(cur, "image", ""); o.prev = o.data = url; renderChat(true); // önizleme: gönderilen resmin kendisi (asıl balonla aynı boy)
+async function sendImgData(url) { if (!cur) return; const g = lockGate(cur); if (!g) return; // 🔒
+  const o = outAdd(cur, "image", ""); o.prev = o.data = url; if (g.force) o.force = true; renderChat(true); // önizleme: gönderilen resmin kendisi (asıl balonla aynı boy)
   ownRow(cur, "📷 Fotoğraf"); await outRun(o); }
 function shrink(file) { return new Promise((res) => { const img = new Image(); const u = URL.createObjectURL(file);
   img.onload = () => { const k = Math.min(1, 1280 / Math.max(img.width, img.height)); const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
@@ -1828,9 +1868,10 @@ async function toggleCards() { const el = $("cards"), low = stick, keep = () => 
   if (pcs && (pcs.cards || []).length) draw(); else el.innerHTML = `<button disabled><span class="sk" style="width:12em"></span></button><button disabled><span class="sk" style="width:10em"></span></button>`; // bilinen kartlar hemen
   el.classList.add("on"); keep();
   const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; if (el.classList.contains("on")) { draw(); keep(); } }
-async function giveCard(id) { const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
-  const d = await api("pcard_give", { id, conv: cur }); const c = d.report && d.report.given; if (d.error || !c) { toast(d.error || "Kart verilemedi", true); return; }
-  send(pcTxt(c), { card_after: 1 }); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); } // card_after: ardından sunucu "çeki gönderin" mesajını kuyruğa ekler (Ayarlar › 🤖 Otomatik mesajlar)
+async function giveCard(id) { const g = lockGate(cur); if (!g) return; // 🔒 kart mesajı da yazmadır: kilitliyken kart verilmez (hak düşmesin)
+  const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
+  const d = await api("pcard_give", { id, conv: cur, ...(g.force ? { force: true } : {}) }); const c = d.report && d.report.given; if (d.error || !c) { if (d.lock) clockSet(cur, d.lock); toast(d.error || "Kart verilemedi", true); return; }
+  send(pcTxt(c), { card_after: 1, ...(g.force ? { force: true } : {}) }); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); } // card_after: ardından sunucu "çeki gönderin" mesajını kuyruğa ekler (Ayarlar › 🤖 Otomatik mesajlar)
 
 // ---------- alt sekmeler (tabletteki Sugo Bayi bölümüyle aynı)
 let curTab = localStorage.getItem("bw_tab") || "msg";
@@ -2939,7 +2980,7 @@ async function olToggle(on) { const S = olData && olData.st; if (!S || !!S.on ==
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
 function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
-  openModal(`<h3 style="margin:0 0 4px"><span class="gc"></span> Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div>
+  openModal(`<div style="position:relative"><h3 style="margin:0 0 4px"><span class="gc"></span> Yükleme Yap · ${esc(curName)}</h3><div class="s">UID ${esc(cur)} · geri alınamaz</div><div id="cnLock" class="lockpill" style="top:-6px;bottom:auto;left:-4px;right:-4px" hidden></div></div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
     <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
     ${me && (me.coin_max || me.coin_day) ? `<div class="s" style="margin-top:6px;color:var(--warn)">🪙 Limitiniz: ${me.coin_max ? "tek seferde en fazla " + nf(me.coin_max) : ""}${me.coin_max && me.coin_day ? " · " : ""}${me.coin_day ? "günde en fazla " + nf(me.coin_day) : ""} coin</div>` : ""}
@@ -2954,12 +2995,23 @@ function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $
     $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br><span class="gc"></span> <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
       (k.ok ? "" : `<br>❌ Panel izin vermiyor: ${esc(k.prompt || "")}`) + (k.max && c > k.max ? `<br>❌ Tek seferde en fazla ${Number(k.max).toLocaleString("tr-TR")}` : "") +
       (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "") + (k.limit && k.limit.error ? `<br>⛔ <b>${esc(k.limit.error)}</b>` : "");
-    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error); }, 400); }
-async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
+    const lk = k.lock && Number(k.lock.left) > 0 ? k.lock : null; cn.lock = lk ? { ...lk, until: Date.now() + Number(lk.left) } : null; // 🔒 10 dk coin / 2 dk sohbet kilidi (sunucu söyler)
+    const pl = $("cnLock"); if (pl) { pl.hidden = !lk; if (lk) pl.textContent = (lk.msg || "🔒 " + lk.by + " bu kişiyle ilgileniyor") + (canForce() ? " · 👑 onaylarsanız yine de gönderilir" : ""); } // başlığın üstüne biner: pencere boyu değişmez (kayma yok)
+    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error) || (!!lk && !canForce()); }, 400); }
+// 🔒 Coin kilidi penceresi: kim, ne zaman, kalan süre canlı geri sayılır (ajans sahibine "yine de gönder")
+function coinLockModal(d, retry) { const l = d.lock, end = Date.now() + (Number(l.left) || 0), left = () => leftTxt(Math.max(0, end - Date.now()));
+  openModal(`<div style="padding:16px"><b>🔒 Kilitli</b><p id="cnLockMsg">${esc(d.error)}</p><p>Kalan süre: <b id="cnLeft">${left()}</b></p>${canForce() ? `<button class="go" style="width:100%;margin-bottom:8px" id="cnForce">👑 Yine de gönder</button>` : `<p class="s">Süre dolunca tekrar deneyin.</p>`}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
+  if (canForce() && $("cnForce")) $("cnForce").onclick = () => { closeModal(); retry(); };
+  const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); }
+async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
+  const lk = cn.lock && cn.lock.until > Date.now() ? cn.lock : null;
+  if (lk && !force) { if (!canForce()) { toast(lk.msg || "🔒 Kilitli", true); return; } // 🔒 başkası bu kişiye az önce gönderdi / sohbeti yürütüyor
+    if (!confirm(`${lk.kind === "coin" ? `${lk.by} bu kişiye az önce ${nf(lk.coins || 0)} coin gönderdi` : `${lk.by} bu müşteriyle ilgileniyor`}, yine de göndermek istiyor musun?`)) return; force = true; }
   if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
   const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
   openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…<div class="s" style="margin-top:6px">Kesinleşmesi bekleniyor (en fazla 10 sn)</div></div>`);
-  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin }); if (d.pin === "wrong") pinCache = null;
+  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, ...(force ? { force: true } : {}) }); if (d.pin === "wrong") pinCache = null;
+  if (d.error && d.lock && !force) { const cn0 = cn; coinLockModal(d, () => { cn = cn0; cn.lock = null; coinSend(again, true); }); return; } // 🔒 pencere açıkken başkası gönderdi
   if (d.error) {
     // 3 dakika kuralı: kalan süre canlı geri sayılır (mükerrer gönderim olmasın)
     if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
@@ -2967,7 +3019,7 @@ async function coinSend(again) { if (!cn || !cn.chk) return; const c = cn.coins,
       const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
     closeModal(); toast("❌ " + d.error, true); return; }
   closeModal(); if (cn && cn.uid === cur) { chX.sent = { at: new Date().toISOString(), coins: c, by: (me && me.name) || "" }; renderChat(); } // ⚡ öneriler hemen kaybolur
-  if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`); } // teşekkür sadece kesin gönderimde
+  if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
   else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
   cn = null; }
 
@@ -3169,6 +3221,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (ev === "alias") { if (pl && pl.alias) { setAliases(pl.alias); aliasShow(); } return; } // 🏷️ başka ekrandan takma ad
     if (ev === "ctags") { const m = pl.ctags; if (m) { setCtags(m); setTagx(pl); renderInbox(); renderChTags(); } return; }
     if (ev === "typing") { onTyping(pl); return; } // ✍️ başka ekip üyesi yazıyor
+    if (ev === "clock") { if (pl && pl.c) clockSet(String(pl.c), pl); return; } // 🔒 biri bu müşteriye yazdı: 2 dk kilit (kendim yazdıysam kalkar)
     if (ev === "rem") { const m = pl.rem; if (m) { rems = m; renderInbox(); } else schedInbox(); if (cur) schedChat(); return; } // ⏰ hatırlatma kuruldu / zamanı geldi
     if (ev === "assign") { const m = pl.assign; if (m) { assigns = m; renderInbox(); renderChTags(); } return; }
     if (ev === "hidden") { onHidden(pl); return; } // 🙈 ajans sahibi bir mesajı gizledi / gizlemeyi kaldırdı
@@ -3195,7 +3248,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.79"></script>
-<script src="durum.js?v=2.1.79"></script>
+<script src="profile.js?v=2.1.80"></script>
+<script src="durum.js?v=2.1.80"></script>
 </body>
 </html>
