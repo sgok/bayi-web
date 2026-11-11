@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.70">
+<meta name="build" content="2.1.71">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.70">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.70">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.70">
+<link rel="manifest" href="manifest.json?v=2.1.71">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.71">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.71">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -162,6 +162,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #chTrust .trust { font-size: 13.5px; padding: 6px 14px; margin: 0; border-bottom: 1px solid var(--line); }
   #srchRes:empty { display: none; } #srchRes { border-bottom: 2px solid var(--line); max-height: 60vh; overflow-y: auto; }
   #srchRes .hd { padding: 6px 14px; font-size: 12px; color: var(--muted); background: rgba(148,163,184,.08); }
+  .row.tap:active { background: color-mix(in srgb, var(--accent) 14%, transparent); } /* 👤 ajans listesi: dokununca profil */
   .row .av.tap { cursor: pointer; outline: 2px solid transparent; } .row .av.tap:active { outline-color: #38bdf8; }
   /* Sugo emojileri, tepkiler, mesaj menüsü (tabletteki gibi) */
   .gc { display: inline-block; width: 1em; height: 1em; border-radius: 50%; vertical-align: -0.14em; position: relative; flex: none;
@@ -476,7 +477,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.70" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.71" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -485,7 +486,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.70" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.71" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -542,7 +543,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.70"></script>
+<script src="emoji.js?v=2.1.71"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2062,6 +2063,9 @@ async function saveTpls() { const d = await api("bayi_templates_save", { templat
 
 // 🏢 Ajans (sadece okuma)
 let ajData = null, ajSub = (() => { try { return localStorage.getItem("bw_aj") || ""; } catch (e) { return ""; } })(); // boşsa rolün ilk sekmesi (yardımcı: başvurular)
+// 👤 Ajans listelerindeki kişiye dokununca profil (kullanıcı 11.11: "profili çıkan herkesin üzerine basılıp profili açılabilsin"); profil yetkisi yoksa sohbet
+const ajTap = (uid) => /^\d{3,15}$/.test(String(uid || "")) ? ` data-uid="${esc(String(uid))}" onclick="ajPick('${esc(String(uid))}')" role="button" style="cursor:pointer"` : "";
+function ajPick(uid) { if (!uid) return; if (can("profil")) prof(String(uid)); else openChat(String(uid)); }
 async function loadAj() { if (!can("ajans")) return; const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
 const ajDay = (d) => { try { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { day: "numeric", month: "short", weekday: "short" }); } catch (e) { return d; } };
 const hrs = (s) => { s = Number(s) || 0; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h} sa ${m} dk` : `${m} dk`; };
@@ -2078,9 +2082,9 @@ function renderAj() { const u = ajData || (ajSub === "elmas" && oxOk() ? {} : nu
     <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(u.month_commission ?? sum("commission"))}</div></div>
     <div class="card"><div class="k">🎙 Aktif yayıncı</div><div class="v">${nf(d0.active_anchor)}</div><div class="s">geçerli ${nf(d0.valid_anchor)}</div></div><div class="card"><div class="k">🆕 Yeni üye</div><div class="v">${nf(d0.new_anchor)}</div></div></div>`;
   if (ajSub === "gunluk") h += `<table><tr><th>Gün</th><th class="n">Gelir</th><th class="n">Komisyon</th><th class="n">Aktif</th></tr>${days.slice(0, 45).map((x) => `<tr><td>${ajDay(x.day)}</td><td class="n">${nf(x.total_income)}</td><td class="n" style="color:#4ade80">${nf(x.commission)}</td><td class="n">${nf(x.active_anchor)}</td></tr>`).join("")}</table>`;
-  if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div><div style="font-weight:700">${nf(x.total_income)}</div></div>`).join("");
-  if (ajSub === "uye") h += `<h3>📆 Bu ay en çok kazananlar</h3>` + (u.month_top || []).filter((x) => Number(x.income_this_month) > 0).map((x, i) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">${nf(x.active_days_this_month)} gün aktif · geçen ay ${nf(x.income_last_month)}</div></div><div style="font-weight:700">${nf(x.income_this_month)}</div></div>`).join("")
-    + `<h3>🆕 Son 14 gün katılanlar</h3>` + (u.new_members || []).map((x) => `<div class="row"><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("");
+  if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div><div style="font-weight:700">${nf(x.total_income)}</div></div>`).join("");
+  if (ajSub === "uye") h += `<h3>📆 Bu ay en çok kazananlar</h3>` + (u.month_top || []).filter((x) => Number(x.income_this_month) > 0).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">${nf(x.active_days_this_month)} gün aktif · geçen ay ${nf(x.income_last_month)}</div></div><div style="font-weight:700">${nf(x.income_this_month)}</div></div>`).join("")
+    + `<h3>🆕 Son 14 gün katılanlar</h3>` + (u.new_members || []).map((x) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("");
   if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
   if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
   if (ajSub === "elmas") h += `<div id="oxBody">${oxHtml()}</div>`;
@@ -2965,7 +2969,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.70"></script>
-<script src="durum.js?v=2.1.70"></script>
+<script src="profile.js?v=2.1.71"></script>
+<script src="durum.js?v=2.1.71"></script>
 </body>
 </html>
