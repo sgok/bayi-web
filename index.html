@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.77">
+<meta name="build" content="2.1.78">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.77">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.77">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.77">
+<link rel="manifest" href="manifest.json?v=2.1.78">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.78">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.78">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -452,7 +452,12 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   nav.bn > button { grid-row: 1; min-width: 0; padding: 8px 0 10px; font-size: 11px; letter-spacing: -.1px; white-space: nowrap; }
   nav.bn > button:not(.bnc) { overflow: hidden; }
   nav.bn > [data-p="msg"] { grid-column: 1; } nav.bn > [data-p="dm"] { grid-column: 2; } nav.bn > [data-p="card"] { grid-column: 3; } nav.bn > [data-p="durum"] { grid-column: 4; }
-  nav.bn > [data-p="oda"] { grid-column: 5; } nav.bn > [data-p="coin"] { grid-column: 6; } nav.bn > [data-p="aj"] { grid-column: 7; } nav.bn > .infol { grid-column: 1 / -1; grid-row: 2; }
+  nav.bn > [data-p="oda"] { grid-column: 5; } nav.bn > [data-p="coin"] { grid-column: 6; } nav.bn > [data-p="aj"] { grid-column: 7; }
+  /* 🪶 Hafif mod: Oda + Durum gizli, menü 5 sütun (boşluk kalmaz) */
+  html.lite nav.bn { grid-template-columns: repeat(5, minmax(0, 1fr)); } html.lite nav.bn > [data-p="oda"], html.lite nav.bn > [data-p="durum"] { display: none !important; }
+  html.lite nav.bn > [data-p="coin"] { grid-column: 4; } html.lite nav.bn > [data-p="aj"] { grid-column: 5; }
+  .lsw { flex: none; width: 46px; height: 28px; border-radius: 14px; background: #52525b; position: relative; transition: background .2s; } .lsw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s; }
+  .lsw.on { background: #22c55e; } .lsw.on::after { left: 21px; } nav.bn > .infol { grid-column: 1 / -1; grid-row: 2; }
   nav.bn > button.bnc { z-index: 3; color: var(--brand3); font-weight: 700; justify-content: flex-end; }
   nav.bn > button.bnc b { width: 54px; height: 54px; margin-top: -26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;
     background: linear-gradient(135deg, #f472b6 0%, #a855f7 52%, #6366f1 100%); border: 3px solid var(--panel); box-shadow: 0 8px 18px -6px #a855f7cc, 0 0 0 1px #ffffff22 inset; }
@@ -511,7 +516,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.77" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.78" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -520,7 +525,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.77" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.78" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -577,7 +582,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.77"></script>
+<script src="emoji.js?v=2.1.78"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2620,9 +2625,18 @@ function applyPerms() {
   if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {} try { walletDraw(); } catch (e) {} // 💎 başlıktaki elmas: sahip + yetkili
   try { sysPurge(); } catch (e) {} // 🤝 yardımcı: SUGO TEAM satırı / açık sistem sohbeti / önbellekteki sistem kayıtları
+  liteApply();
   if (window.prof && !window.__profWrapped) { const p0 = window.prof; window.prof = (u) => (can("profil") ? p0(u) : toast("Profil açma yetkiniz yok")); window.__profWrapped = 1; }
 }
 function menu() { setOpen(); }
+// 🪶 Hafif mod (kullanıcı 11.11: Supabase donuyor → Oda, Durum, tabletin odada kalması ve dakikalık oda izleyici kapalı; tek anahtarla geri açılır). Yalnız Ajans sahibi değiştirir.
+function liteApply() { const on = !!(me && me.lite); document.documentElement.classList.toggle("lite", on); if (on && (curTab === "oda" || curTab === "durum")) tab("msg"); }
+const liteRow = () => `<button class="setrow" id="liteRow" onclick="liteToggle()"><span class="si">🪶</span><span class="st">Hafif mod<small>${me && me.lite ? "AÇIK · Oda, Durum, oda izleyici kapalı (sistem rahatlar)" : "kapalı · tüm özellikler açık"}</small></span><span class="lsw${me && me.lite ? " on" : ""}"></span></button>`;
+async function liteToggle() { if (!isSahip()) return; const on = !(me && me.lite);
+  if (!confirm(on ? "Hafif mod açılsın mı?\n\nKapanacaklar: 🎙️ Oda, 📸 Durum, tabletin odada kalması / oda sohbeti kaydı, dakikalık Sugo oda izleyicisi ve tablet kare alma.\nMesajlar, coin, elmas, kartlar, banka ve muhasebe aynen çalışır." : "Hafif mod kapatılsın mı?\n\nOda, Durum ve oda izleyici yeniden açılır.")) return;
+  const d = await api("lite_mode_set", { on }); if (d.error) { toast("❌ " + d.error, true); return; }
+  me.lite = !!d.lite; try { localStorage.setItem("bw_me", JSON.stringify(me)); } catch (e) {} liteApply(); const r = $("liteRow"); if (r) r.outerHTML = liteRow();
+  toast(me.lite ? "🪶 Hafif mod açık: Oda ve Durum kapalı" : "✅ Hafif mod kapalı: her şey açık"); }
 function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow" onclick="${fn}"><span class="si">${ic}</span><span class="st">${t}${sub ? `<small>${sub}</small>` : ""}</span><span class="chev">›</span></button>`;
   const grp = (lbl, rows) => rows.filter(Boolean).length ? `<div class="setlbl">${lbl}</div><div class="setlist">${rows.filter(Boolean).join("")}</div>` : "";
   const nm = (me && me.name) || "";
@@ -2633,7 +2647,7 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
   ${grp("👑 Ajans sahibi", isSahip() ? [row("💳", "", "Kartları yönet", "ekle · düzenle · sıra · hak sıfırla · pasif", "ownCards()"), row("👥", "", "Web kullanıcıları", "ekle · rol · izin · şifre / PIN · pasif", "ownUsers()"),
     row("🔀", "", "Hesaplar arası geçiş", "şifresiz başka kullanıcının paneline geç", "acSwitch()"),
-    row("📜", "", "İşlem kaydı", "kim ne yaptı (mesaj, onay, coin, kart, giriş)", "ownAudit()"), row("🔌", "", "Bayi bağlantısı", "sunucu / tablet · Sugo Bayi aç / kapa", "ownLink()")]
+    liteRow(), row("📜", "", "İşlem kaydı", "kim ne yaptı (mesaj, onay, coin, kart, giriş)", "ownAudit()"), row("🔌", "", "Bayi bağlantısı", "sunucu / tablet · Sugo Bayi aç / kapa", "ownLink()")]
     : swOn() ? [row("🔀", "", "Hesaplar arası geçiş", "başka kullanıcıya doğrudan geç", "acSwitch()")] : [])}
   ${swOn() ? "" : grp("Hesabım", [row("🔑", "", "Şifremi değiştir", "", "pwChange()"), me && me.role === "yardimci" ? "" : row("🔢", "", "İşlem PIN'imi değiştir", "coin gönderme ve ödendi işareti", "pinChange()")])}
   ${grp("Diğer", [row("📐", "", "Ekran ölçüsü", "", "screenInfo()")])}
@@ -3174,7 +3188,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.77"></script>
-<script src="durum.js?v=2.1.77"></script>
+<script src="profile.js?v=2.1.78"></script>
+<script src="durum.js?v=2.1.78"></script>
 </body>
 </html>
