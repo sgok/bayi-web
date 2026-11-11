@@ -51,7 +51,7 @@
     return `<div class="igm igc"><div class="igcs">${imgs.map((u) => `<img src="${escA(thumb(u))}" data-img="${escA(imgUrl(u))}" loading="lazy" alt="">`).join("")}</div><i class="igcn">1/${imgs.length}</i></div>
       <div class="igdots">${imgs.map((_, i) => `<i${i ? "" : ' class="on"'}></i>`).join("")}</div>`; }
   function cardH(m, full) { MOM[String(m.id)] = m; const media = (m.imgs || []).some(Boolean) || (m.video && m.video.url), cap = media && m.t;
-    return `<article class="dcard ig${full ? " full" : ""}" data-id="${escA(m.id)}"><div class="dch">${avBox(m)}<div class="dcn"><b data-u="${escA(m.uid)}">${nameH(m.uid, m.n)}</b>${vipChip(m)}${m.pinned ? `<span class="dpin" title="Sabitlenmiş durum">📌</span>` : ""}<span class="igt"> · ${timeTag(m.at, 1)}</span></div><button class="igmenu" data-menu="${escA(m.uid)}" aria-label="Seçenekler">⋯</button></div>
+    return `<article class="dcard ig${full ? " full" : ""}" data-id="${escA(m.id)}"><div class="dch">${avBox(m)}<div class="dcn"><b data-u="${escA(m.uid)}">${nameH(m.uid, m.n)}</b>${vipChip(m)}${m.pinned ? `<span class="dpin" title="Sabitlenmiş durum">📌</span>` : ""}<span class="igt">· ${timeTag(m.at, 1)}</span></div><button class="igmenu" data-menu="${escA(m.uid)}" aria-label="Seçenekler">⋯</button></div>
       ${mediaH(m)}<div class="dcf"><span class="${m.liked ? "lk" : ""}">${m.liked ? "❤️" : "🤍"} <b>${nf0(m.likes)}</b></span><span>💬 <b>${nf0(m.comments)}</b></span></div>
       ${cap ? `<div class="dct${full ? " full" : ""}"><b data-u="${escA(m.uid)}">${nameH(m.uid, m.n)}</b> ${txtH(m.t)}</div>${!full && uzun(m.t) ? `<button class="igdev">devamı</button>` : ""}` : !media && !full && uzun(m.t) ? `<button class="igdev" data-ac="1">devamı</button>` : ""}
       ${!full && Number(m.comments) > 0 ? `<button class="igall">Yorumların hepsini gör (${nf0(m.comments)})</button>` : ""}</article>`; }
@@ -283,18 +283,26 @@
   .dpostb .dpav { width: 40px; height: 40px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; font-size: 20px; background: linear-gradient(135deg, var(--go2), var(--go)); }
   .dpostb .dpt { flex: 1; min-width: 0; color: var(--text); font-weight: 600; font-size: 15px; } .dpostb .dpt small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
   .dpostb .dpplus { flex: none; font-size: 22px; color: var(--brand3); }
-  .dcard { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; margin: 10px; padding: 12px; cursor: pointer; isolation: isolate; }
-  .dch { display: flex; align-items: center; gap: 10px; } .dch .av { width: 42px; height: 42px; } .dcn { min-width: 0; flex: 1; } .dcn > b { font-size: 15px; overflow-wrap: anywhere; cursor: pointer; } .dcn .s { font-size: 12px; }
-  .dch .avw { cursor: pointer; } .dvip { margin-left: 6px; }
-  .dct { margin: 10px 0 0; font-size: 15px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; } .dct.full { display: block; -webkit-line-clamp: none; }
-  .dimg { margin-top: 10px; display: grid; gap: 3px; border-radius: 12px; overflow: hidden; grid-template-columns: repeat(3, 1fr); }
-  .dimg img, .dimg video { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--img, #1b1030); aspect-ratio: 1; cursor: zoom-in; }
-  .dimg.n1 { grid-template-columns: 1fr; aspect-ratio: 4 / 3; } .dimg.n1 > * { aspect-ratio: auto; }
-  .dimg.n2, .dimg.n4 { grid-template-columns: repeat(2, 1fr); }
-  .dimg.dvid video { cursor: default; background: #000; object-fit: contain; }
-  .dcf { display: flex; gap: 16px; align-items: center; margin-top: 10px; font-size: 14px; color: var(--muted); } .dcf .lk { color: #f472b6; } .dcf .dmore { margin-left: auto; font-size: 12px; color: var(--brand3); }
+  /* 📷 Gönderi (Instagram gibi): kenardan kenara, alt çizgiyle ayrılır */
+  .dct { margin: 10px 0 0; font-size: 15px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; } .dct.full { display: block; }
+  .dcard.ig { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; margin: 0; padding: 0 0 12px; cursor: pointer; isolation: isolate; }
+  .dcard.ig .dch { display: flex; align-items: center; gap: 10px; padding: 10px 4px 10px 12px; } .dcard.ig .dch .av { width: 34px; height: 34px; font-size: 14px; } .dch .avw { cursor: pointer; }
+  .dcn { min-width: 0; flex: 1; display: flex; align-items: center; white-space: nowrap; overflow: hidden; font-size: 14px; } .dcn > b { overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-size: 14px; min-width: 0; }
+  .dcn .alo { font-weight: 400; } .dvip { margin-left: 6px; flex: none; } .igt { flex: none; color: var(--muted); margin-left: 5px; }
+  .igmenu { flex: none; background: none; border: 0; padding: 2px 10px; font-size: 22px; line-height: 1; color: var(--text); }
+  .igm { position: relative; width: 100%; aspect-ratio: 4 / 5; background: #000; overflow: hidden; }
+  .igm > img, .igm > video { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; } .igm.dvid video { object-fit: contain; cursor: default; }
+  .igcs { display: flex; width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; } .igcs::-webkit-scrollbar { display: none; }
+  .igcs img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; scroll-snap-align: start; cursor: zoom-in; }
+  .igcn { position: absolute; top: 10px; right: 10px; font-style: normal; font-size: 12px; font-weight: 600; background: #000a; color: #fff; border-radius: 999px; padding: 2px 8px; pointer-events: none; }
+  .igdots { display: flex; justify-content: center; gap: 4px; height: 6px; margin-top: 8px; } .igdots i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); opacity: .45; } .igdots i.on { background: var(--brand); opacity: 1; }
+  .igtx { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 28px; background: linear-gradient(135deg, var(--g)); }
+  .igtx span { color: #fff; font-size: 21px; font-weight: 700; line-height: 1.35; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; text-shadow: 0 1px 3px #0005; display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
+  .dcard.ig .dcf { display: flex; gap: 16px; align-items: center; padding: 10px 12px 0; margin: 0; font-size: 15px; color: var(--text); } .dcf .lk { color: #f472b6; }
+  .dcard.ig .dct { margin: 6px 12px 0; font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .dcard.ig .dct.full { display: block; } .dct > b { cursor: pointer; }
+  .igdev { background: none; border: 0; padding: 2px 12px; font-size: 14px; color: var(--muted); } .igall { display: block; background: none; border: 0; padding: 4px 12px 0; font-size: 14px; color: var(--muted); text-align: left; }
   .dtail { padding: 0 0 24px; } .dend, .dempty { text-align: center; color: var(--muted); padding: 18px 12px; font-size: 14px; } .dmorebtn { display: block; margin: 8px auto; }
-  .ddet .dcard { margin: 0 0 10px; cursor: default; padding: 0; border: 0; background: none; }
+  .ddet .dcard.ig { cursor: default; border: 0; margin: -10px -16px 6px; padding-bottom: 4px; } .ddet .dcard.ig .igmenu { margin-right: 6px; }
   .ddtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; position: sticky; top: -16px; background: var(--panel); padding: 8px 0; z-index: 2; }
   .ddtabs button { font-size: 14px; padding: 8px 6px; border-radius: 999px; } .ddtabs button.on { background: var(--brand2); border-color: var(--brand2); color: #fff; font-weight: 700; } .ddtabs b { margin-left: 3px; }
   .drow { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); } .drow .b { min-width: 0; flex: 1; } .drow .t { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
@@ -309,12 +317,16 @@
   .dpsum { border: 1px solid var(--line); border-radius: 12px; padding: 10px; max-height: 40vh; overflow-y: auto; } .dpsum .dct { margin: 0; }
   .dprog { height: 6px; border-radius: 3px; background: var(--panel2); overflow: hidden; margin-top: 10px; } .dprog i { display: block; height: 100%; width: 40%; border-radius: 3px; background: linear-gradient(90deg, #f472b6, #a855f7); animation: dprog 1.1s ease-in-out infinite; }
   @keyframes dprog { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
-  .dpf { display: flex; gap: 8px; overflow-x: auto; height: 112px; padding: 2px 0 6px; margin: 0 0 6px; scrollbar-width: none; } .dpf::-webkit-scrollbar { display: none; }
-  .dpt1 { position: relative; flex: none; width: 104px; height: 104px; padding: 0; border-radius: 12px; overflow: hidden; background: var(--panel2); border: 1px solid var(--line); display: block; text-align: left; }
-  .dpt1 img { width: 100%; height: 100%; object-fit: cover; display: block; } .dptx { display: block; padding: 8px; font-size: 12px; line-height: 1.3; overflow: hidden; height: 100%; overflow-wrap: anywhere; }
-  .dpt1 i { position: absolute; font-style: normal; font-size: 11px; background: #000a; color: #fff; border-radius: 8px; padding: 0 5px; line-height: 17px; } .dpt1 .dpn { top: 5px; right: 5px; } .dpt1 .dpl { bottom: 5px; left: 5px; }
-  .dpt1.dpall { display: flex; align-items: center; justify-content: center; text-align: center; font-weight: 700; color: var(--brand3); width: 72px; }
-  .dpempty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; border: 1px dashed var(--line); border-radius: 12px; }
+  /* 📷 Profil ızgarası (Instagram gibi): 3 sütun × 2 satır kare, yükseklik sabit */
+  .dpfh { display: flex; align-items: center; gap: 6px; height: 28px; } .dpfall { margin-left: auto; padding: 3px 10px; font-size: 13px; line-height: 18px; border-radius: 999px; } /* "Tümü" çıkınca başlık boyu değişmez */
+  .dpg { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 2px; aspect-ratio: 3 / 2; margin: 0 0 8px; border-radius: 10px; overflow: hidden; }
+  .dpt1 { position: relative; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; background: var(--panel2); overflow: hidden; display: block; min-width: 0; }
+  .dpt1 img { width: 100%; height: 100%; object-fit: cover; display: block; } .dpt1.dpbos { background: transparent; }
+  .dptx { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 8px; background: linear-gradient(135deg, var(--g)); }
+  .dptx > span { color: #fff; font-size: 12px; font-weight: 700; text-align: center; line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+  .dpt1 .dpn { position: absolute; top: 5px; right: 6px; font-style: normal; font-size: 12px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px #000c; pointer-events: none; }
+  .dpempty { grid-column: 1 / -1; grid-row: 1 / -1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; border: 1px dashed var(--line); border-radius: 10px; }
+  .igmn { display: grid; gap: 8px; } .igmnh { display: flex; align-items: center; gap: 10px; padding: 0 2px 6px; } .igmnh .av { width: 36px; height: 36px; } .igmn button { padding: 12px; font-size: 15px; }
   /* 👤 Profil rozetleri (Sugo gibi): tek satır, sabit yükseklik */
   .pfbadges { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; height: 24px; margin-top: 6px; scrollbar-width: none; } .pfbadges::-webkit-scrollbar { display: none; }
   .pfbadges > span { flex: none; display: inline-flex; align-items: center; gap: 3px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; line-height: 1; }
