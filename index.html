@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.71">
+<meta name="build" content="2.1.72">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.71">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.71">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.71">
+<link rel="manifest" href="manifest.json?v=2.1.72">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.72">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.72">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -258,6 +258,25 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .osel button { min-height: 44px; }
   .owrow { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 0; border-bottom: 1px solid var(--line); } .owrow b { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .owrow .s { flex: none; }
   .owrow button { flex: none; width: 44px; height: 44px; padding: 0; } .owadd { display: flex; gap: 8px; margin-top: 10px; } .owadd input { flex: 1; min-width: 0; font-size: 16px; min-height: 44px; } .owadd button { flex: none; min-height: 44px; }
+  /* 💬 Oda sohbeti (tablet Selçuk oturumu odada): Sugo'daki gibi koyu oda zemini, yarı saydam baloncuklar; kutu boyu SABİT (kayma yok), içi kayar */
+  .ochatw { margin: 0 8px 4px; } .ochd { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 4px; } .ochd h3 { margin: 0; flex: none; }
+  .ocst { flex: 1; min-width: 0; text-align: right; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ocst.ocwarn { color: var(--warn); } .ocst.olive { color: #4ade80; }
+  .ochat { position: relative; height: 320px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(180deg, #2b1656 0%, #170c2c 100%); contain: strict; }
+  .ochs { position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 8px 8px 12px; }
+  .ocm { display: flex; gap: 7px; align-items: flex-start; min-width: 0; margin-top: 8px; } .ocm:first-child { margin-top: 0; }
+  .ocav { flex: none; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: none; } .ocav .av { width: 34px; height: 34px; font-size: 13px; }
+  .ocbd { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+  .ocn { display: flex; align-items: center; gap: 4px; max-width: 100%; min-height: 20px; padding: 0; border: 0; border-radius: 0; background: none; font-size: 12px; line-height: 16px; color: var(--ocnc, #c4b5fd); text-align: left; }
+  .ocn > span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ocn .alo { display: none; }
+  .ocbg { flex: none; font-style: normal; font-size: 9.5px; line-height: 14px; padding: 0 5px; border-radius: 7px; font-weight: 800; color: #fff; background: var(--vc, #6d5bd0); }
+  .ocbg.oclv { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+  .ocbub { margin-top: 3px; max-width: 100%; padding: 6px 10px; border-radius: 4px 14px 14px 14px; background: rgba(0, 0, 0, .35); color: #fff; font-size: 14px; line-height: 19px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .ocbub .semo { display: inline-block; vertical-align: -5px; }
+  .ocg .ocbub { background: linear-gradient(90deg, #7c3aed73, #db27775c); } .ocgi { width: 22px; height: 22px; object-fit: contain; vertical-align: -6px; margin: 0 2px; } .ocgt { color: #fde68a; font-weight: 700; }
+  .ocl { align-items: center; } .ocl .ocln { min-width: 0; max-width: 100%; padding: 3px 10px; border-radius: 12px; background: rgba(0, 0, 0, .28); font-size: 12px; line-height: 17px; color: #ffffffb3; overflow-wrap: anywhere; }
+  .oce .ocln { color: #ffffff8c; } .ocl .ocn { display: inline; min-height: 0; font-size: 12px; } .ocl .ocn > span { display: inline; white-space: normal; }
+  .ocnew { position: absolute; left: 50%; bottom: 10px; z-index: 3; transform: translateX(-50%); min-height: 32px; padding: 0 14px; border: 0; border-radius: 16px; background: #8b72ff; color: #fff; font-size: 12px; font-weight: 800; box-shadow: 0 2px 8px #0009; } .ocnew[hidden] { display: none; }
+  .ocempty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; text-align: center; font-size: 13px; color: #ffffffa6; pointer-events: none; } .ocempty[hidden] { display: none; }
   /* 💎 Ajans › Elmas: kendi bozumlarımız (yalnız ajans sahibi) */
   .wcard .wexr { display: flex; gap: 8px; margin-top: 10px; } .wcard .wexr .wex { margin-top: 0; flex: 1; min-width: 0; } .wcard .wexr .wexl { flex: none; min-height: 44px; font-size: 14px; white-space: nowrap; }
   .oxrow .b .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .oxmore { display: block; width: calc(100% - 20px); margin: 10px; min-height: 44px; }
@@ -477,7 +496,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.71" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.72" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -486,7 +505,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.71" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.72" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -543,7 +562,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.71"></script>
+<script src="emoji.js?v=2.1.72"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2215,10 +2234,10 @@ function odaNav() { const b = document.querySelector('nav.bn > button[data-p="od
   const h = cam ? '📹<span class="orec" aria-hidden="true"></span>' : "🎙️"; if (b.innerHTML !== h) b.innerHTML = h; const btn = b.parentElement; if (btn.classList.contains("orecon") !== cam) btn.classList.toggle("orecon", cam);
   const al = cam ? "Oda: kamera açık, canlı" : "Oda"; if (btn.getAttribute("aria-label") !== al) btn.setAttribute("aria-label", al); }
 odaNav();
-window.odaShow = function () { odaOn = true; odaDraw(); clearTimeout(odaT); odaT = setTimeout(odaTick, 0); }; // sekme kabı bu çağrıdan hemen sonra görünür olur
+window.odaShow = function () { odaOn = true; { const re = $("odaBody") && $("odaBody").querySelector(":scope > .orest"); if (re) { re.style.minHeight = ""; re.__rid = odaChRoom(); } } odaDraw(); clearTimeout(odaT); odaT = setTimeout(odaTick, 0); }; // sekme kabı bu çağrıdan hemen sonra görünür olur
 window.odaHide = function () { odaOn = false; clearTimeout(odaT); odaT = 0; };
 const odaVis = () => odaOn && document.visibilityState === "visible" && !!$("p-oda") && $("p-oda").getClientRects().length > 0;
-async function odaTick() { clearTimeout(odaT); odaT = 0; if (!odaOn) return; if (odaVis() && !odaBusy) await odaLoad(); odaMicApply(); if (odaOn) odaT = setTimeout(odaTick, 5000); }
+async function odaTick() { clearTimeout(odaT); odaT = 0; if (!odaOn) return; if (odaVis() && !odaBusy) await odaLoad(); odaMicApply(); odaChHead(); if (odaOn) odaT = setTimeout(odaTick, 5000); }
 document.addEventListener("visibilitychange", () => { if (odaOn && document.visibilityState === "visible") odaTick(); }); // geri gelince beklemeden
 async function odaLoad() { odaBusy = true; let d = null; const sel = odaSel, rw = Date.now() - odaRwAt >= 29_000; // rw: "oda izle" (30 sn'de bir; tablet odayı açık tutar)
   try { d = await api("room_live", { ...(sel ? { room: sel } : {}), ...(rw ? { rw: 1 } : {}) }); } catch (e) {} odaBusy = false; if (rw && d && !d.error) odaRwAt = Date.now();
@@ -2248,7 +2267,7 @@ function odaSeat(s, r, p, pair, fr) { const no = esc(String(s.no ?? "")), u = s.
 function odaParts() { const d = odaData, r = d && d.room;
   if (!r) return { hd: `<div class="ohd"><div class="ocv"><span class="sk" style="width:100%;height:100%"></span></div><div class="b"><b>${odaErr ? "🎙️ Oda" : '<span class="sk" style="width:9em"></span>'}</b><div class="s">${odaErr ? "❌ " + esc(odaErr) : '<span class="sk" style="width:12em"></span>'}</div><div class="s onote">&nbsp;</div></div></div>`,
     chips: `<div class="oselr"><div class="sub osel"><button disabled><span class="sk" style="width:8em"></span></button></div>${odaGear()}</div>`, top: '<div class="otopr"></div>', lay: odaLay(null, ODA_SEATS).key,
-    seats: (() => { const L = odaLay(null, ODA_SEATS); return Array.from({ length: ODA_SEATS }, (_, i) => { const p = L.pos[i]; return `<div class="oseat oemp" data-no="${i + 1}" style="grid-row:${p.row};grid-column:${p.start} / span ${p.span}"><div class="avw"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div></div><div class="onm">&nbsp;</div><div class="osn">&nbsp;</div></div>`; }); })(), rest: "" };
+    seats: (() => { const L = odaLay(null, ODA_SEATS); return Array.from({ length: ODA_SEATS }, (_, i) => { const p = L.pos[i]; return `<div class="oseat oemp" data-no="${i + 1}" style="grid-row:${p.row};grid-column:${p.start} / span ${p.span}"><div class="avw"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div></div><div class="onm">&nbsp;</div><div class="osn">&nbsp;</div></div>`; }); })(), rest: "", past: "" };
   const rooms = (d.rooms || []).filter((x) => x && x.id), seats = (r.seats || []).filter((s) => s).slice().sort((a, b) => Number(a.no) - Number(b.no)), kapali = r.live === false;
   for (let no = seats.length + 1; no <= Math.min(40, Number(r.seat_count) || 0); no++) seats.push({ no, uid: "", mic: "empty" }); // koltuk dizisi kısa geldiyse: oda koltuk sayısı kadar
   const on = seats.filter((s) => s.uid).length, L = odaLay(r, seats.length), prs = odaPairs(r, seats, L);
@@ -2264,27 +2283,30 @@ function odaParts() { const d = odaData, r = d && d.room;
   const aud = (r.audience || []).filter((x) => x && x.uid), rank = (r.rank || []).filter((x) => x && x.uid);
   const pRow = (u, n, av, side, vip) => { const o = vipOf(vip && vip.vip, vip && vip.svip, true); return `<button class="row orow" onclick="odaPick('${esc(String(u))}')"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(n, av)}</div>${vipLab(o)}</div><div class="b"><b>${nmH(u, n || u)}</b></div>${side}</button>`; };
   const rest = (kapali ? `<div class="row s">🔴 Oda şu an kapalı: koltuklar boş. Açılınca burada canlı görünür.</div>` : "")
-    + `<h3>👂 Dinleyiciler <span class="s">(${nf(Math.max(aud.length, Number(r.online) || 0))})</span></h3>` + (aud.length ? `<div class="oaud">${aud.slice(0, 50).map((x) => { const o = vipOf(x.vip, x.svip); return `<button class="oa" onclick="odaPick('${esc(String(x.uid))}')"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${odaRole(x.uid, x.role, r)}</div><span>${nmH(x.uid, x.n || x.uid)}</span></button>`; }).join("")}</div>` : `<div class="row s">${d.viewers === false && !kapali ? "Dinleyici listesi şu an okunamadı." : "Dinleyici yok."}</div>`)
-    + `<h3>🕘 Son 1 saatte koltuktan kalkanlar</h3>` + (past.length ? past.slice(0, 20).map(([u, x]) => pRow(u, x.n, x.av, `<span class="s" style="flex:none">🪑${esc(String(x.no ?? ""))} · ${hm(x.a)}–${hm(x.b)}</span>`, x)).join("") : '<div class="row s">Son 1 saatte koltuktan kalkan olmadı.</div>');
+    + `<h3>👂 Dinleyiciler <span class="s">(${nf(Math.max(aud.length, Number(r.online) || 0))})</span></h3>` + (aud.length ? `<div class="oaud">${aud.slice(0, 50).map((x) => { const o = vipOf(x.vip, x.svip); return `<button class="oa" onclick="odaPick('${esc(String(x.uid))}')"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${odaRole(x.uid, x.role, r)}</div><span>${nmH(x.uid, x.n || x.uid)}</span></button>`; }).join("")}</div>` : `<div class="row s">${d.viewers === false && !kapali ? "Dinleyici listesi şu an okunamadı." : "Dinleyici yok."}</div>`);
+  const pastH = `<h3>🕘 Son 1 saatte koltuktan kalkanlar</h3>` + (past.length ? past.slice(0, 20).map(([u, x]) => pRow(u, x.n, x.av, `<span class="s" style="flex:none">🪑${esc(String(x.no ?? ""))} · ${hm(x.a)}–${hm(x.b)}</span>`, x)).join("") : '<div class="row s">Son 1 saatte koltuktan kalkan olmadı.</div>');
   const frs = d.frames && typeof d.frames === "object" ? d.frames : {}, frOf = (s) => { const f = s && s.cam && s.uid ? frs[String(s.uid)] : null; const x = String((f && f.u) || ""); return /^https:\/\//.test(x) || x.startsWith(location.origin + "/") ? f : null; }; // 🖼️ kamera koltuğu: son tek kişilik kare (sunucu, sugo_shots)
   odaRank = rank.slice(0, 50); // 🏆 hediye gönderenler (kullanıcı 11.11): koltuk/video alanının sağ üstünde ilk 3, dokununca tam liste
   const top = `<div class="otopr">${rank.length ? `<button class="orank" aria-label="Bugün en çok hediye gönderenler" title="Bugün en çok hediye gönderenler" onclick="odaRankOpen()"><span class="ortr">🏆</span>${rank.slice(0, 3).map((x, i) => `<span class="orav r${i + 1}"><div class="av">${avHtml(x.n, x.av)}</div></span>`).join("")}<span class="orch">›</span></button>` : ""}</div>`;
-  return { hd, chips, top, lay: L.key, seats: seats.map((s, i) => odaSeat(s, r, L.pos[i], prs[i], frOf(s))), rest }; }
+  return { hd, chips, top, lay: L.key, seats: seats.map((s, i) => odaSeat(s, r, L.pos[i], prs[i], frOf(s))), rest, past: pastH }; }
 let odaRank = [];
 window.odaRankOpen = function () { const rows = odaRank.map((x, i) => { const o = vipOf(x.vip, x.svip, true); return `<button class="row orow" onclick="closeModal();odaPick('${esc(String(x.uid))}')"><span class="ornk r${i + 1}">${i + 1}</span><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${vipLab(o)}</div><div class="b"><b>${nmH(x.uid, x.n || x.uid)}</b></div><b style="color:#fbbf24;flex:none">${nf(x.value)}</b></button>`; }).join("");
   openModal(`<h3 style="margin:0 0 8px">🏆 Bugün en çok hediye gönderenler</h3>${rows || '<div class="row s">Henüz hediye gönderen yok.</div>'}<button style="width:100%;margin-top:12px" onclick="closeModal()">Kapat</button>`); };
 function odaGear() { return isYetkili() ? `<button class="owset" aria-label="İzlenen odalar" title="İzlenen odalar" onclick="odaWatchEdit()">⚙️</button>` : ""; } // ⚙️ izlenen odalar: üstte, oda çiplerinin sağında (sahip / yetkili)
 /** Bölüm bölüm, yalnız değişeni yenile; koltuk ızgarasında yalnız değişen koltuk (yeni oturan kısa vurgulanır) */
 function odaDraw() { const box = $("odaBody"); if (!box) return; const p = odaParts();
-  if (!box.querySelector(":scope > .oselw + .ohdw + .otopw + .oseats + .otbn")) { box.innerHTML = `<div class="oselw"></div><div class="ohdw"></div><div class="otopw"></div><div class="oseats"></div><div class="otbn">&nbsp;</div><div class="orest"></div>`; odaDrawn = {}; } // oda seçici + ⚙️ en üstte
+  if (!box.querySelector(":scope > .oselw + .ohdw + .otopw + .oseats + .otbn + .orest + .ochatw + .opast")) { box.innerHTML = `<div class="oselw"></div><div class="ohdw"></div><div class="otopw"></div><div class="oseats"></div><div class="otbn">&nbsp;</div><div class="orest"></div>${odaChShell()}<div class="opast"></div>`; odaDrawn = {}; } // oda seçici + ⚙️ en üstte · 💬 sohbet dinleyicilerin altında
   const put = (sel, k, h) => { if (odaDrawn[k] !== h) { box.querySelector(sel).innerHTML = h; odaDrawn[k] = h; } };
-  put(":scope > .ohdw", "hd", p.hd); put(":scope > .oselw", "chips", p.chips); put(":scope > .orest", "rest", p.rest); put(":scope > .otopw", "top", p.top);
+  put(":scope > .ohdw", "hd", p.hd); put(":scope > .oselw", "chips", p.chips); put(":scope > .otopw", "top", p.top); put(":scope > .opast", "past", p.past);
+  if (odaDrawn.rest !== p.rest) odaChKeep(() => { const re = box.querySelector(":scope > .orest"), rid = odaChRoom();
+    if (re.__rid !== rid || !odaDrawn.seen) { re.__rid = rid; re.style.minHeight = ""; } else if (box.offsetParent) { const h0 = Math.ceil(re.getBoundingClientRect().height); if (h0 > (parseInt(re.style.minHeight) || 0)) re.style.minHeight = h0 + "px"; }
+    put(":scope > .orest", "rest", p.rest); }); // dinleyiciler küçülünce sohbet kutusu yukarı zıplamaz (yer korunur; oda değişince / sekme yeniden açılınca sıfır); okunuyorsa büyüyünce de yerinde kalır
   const g = box.querySelector(":scope > .oseats"), cells = [...g.children];
   if (odaDrawn.seen && odaDrawn.lay && odaDrawn.lay !== p.lay) { g.classList.remove("omchg"); void g.offsetWidth; g.classList.add("omchg"); clearTimeout(odaDrawn.mt); odaDrawn.mt = setTimeout(() => g.classList.remove("omchg"), 600); } // düzen değişti (ör. kamera açıldı): yumuşak geçiş
   odaDrawn.lay = p.lay;
   p.seats.forEach((h, i) => { const c = cells[i]; if (!c) { g.insertAdjacentHTML("beforeend", h); return; } if (c.__h === h || (c.__h === undefined && c.outerHTML === h)) { c.__h = h; return; }
     const was = c.dataset.u || "", t = document.createElement("template"); t.innerHTML = h; const n = t.content.firstElementChild; n.__h = h; if (n.dataset.u && n.dataset.u !== was && odaDrawn.seen) n.classList.add("ochg"); c.replaceWith(n); });
-  for (const c of cells.slice(p.seats.length)) c.remove(); odaDrawn.seen = !!(odaData && odaData.room); odaMicApply(); }
+  for (const c of cells.slice(p.seats.length)) c.remove(); odaDrawn.seen = !!(odaData && odaData.room); odaMicApply(); odaChSync(); }
 // 🎤 Tabletteki Selçuk oturumu odadayken (Oda sekmesi görünürken room_live rw:1 → tablet odayı sessizce açık tutar, 5 sn'de bir okur, değişince "room_seats" yayar):
 // mikrofon açık/kapalı, koltuk kilidi, konuşuyor. API'nin verdiğini EZMEZ, yalnız eksikleri tamamlar (kişi uid ile; boş koltuk no ile). Koltuk HTML'ine girmez:
 // yerinde yamanır (resim yeniden yüklenmez, kutu boyu değişmez). Veri yoksa rozet yok + sabit yerde gri not; 20 sn'den eskiyse soluk; 90 sn'den eskiyse yok sayılır.
@@ -2310,6 +2332,84 @@ function odaMicApply() { const box = $("odaBody"), g = box && box.querySelector(
   const need = !!r && r.mic_known === false && r.live !== false, txt = !need ? "\u00a0" : !ok ? "🎤 Mikrofon bilgisi: tablet odaya bağlanınca" : old ? `🎤 Mikrofon bilgisi ${Math.round(age / 1000)} sn önce (tablet)` : "\u00a0";
   if (nt.textContent !== txt) nt.textContent = txt; }
 function odaPickRoom(id) { odaSel = String(id); odaRwAt = 0; try { localStorage.setItem("bw_oda_sel", odaSel); } catch (e) {} odaTick(); }
+// 💬 Oda sohbeti (kullanıcı 11.11: "mesajları da çeksin … aynı sugodaki stilde olsun herşey oda sekmesinde"): tabletteki Selçuk oturumu odada sürekli kalır;
+// web izliyorken (room_live rw:1) tablet son 50 satırı bir kez ("full") ve sonra 2 sn'de bir yalnız yenileri "room_msgs" ile yayar. DB'ye yazılmaz;
+// bu telefonda oda başına son 50 satır saklı (açılınca anında çizilir). Kutu boyu sabit (kayma 0), içi kayar: en alttayken yeni satırda alta kayar,
+// yukarı kaydırıldıysa kaymaz → "↓ N yeni". Ada / avatara dokununca profil (odaPick). Sugo gibi arka arkaya "odaya girdi" satırlarından yalnız sonuncusu kalır.
+const ODA_CH_MAX = 200, ODA_CH_KEEP = 50, ODA_CH_YOK = 90_000;
+let odaCh = { room: "", items: [], ids: new Set(), t: 0, inn: null, why: "", nw: 0, stick: true, sv: 0 };
+let odaChStore = (() => { try { const x = JSON.parse(localStorage.getItem("bw_oda_chat") || "{}"); return x && typeof x === "object" ? x : {}; } catch (e) { return {}; } })(); // oda → { items, t }
+const odaChRoom = () => (odaData && odaData.room ? String(odaData.room.id) : "");
+function odaChShell() { return `<div class="ochatw" hidden><div class="ochd"><h3>💬 Oda sohbeti</h3><span class="ocst"></span></div><div class="ochat"><div class="ochs" role="log" aria-label="Oda sohbeti"></div><div class="ocempty">💬 Oda sohbeti: tablet odaya bağlanınca</div><button class="ocnew" hidden onclick="odaChDown()">↓ Yeni</button></div></div>`; }
+/** Tabletten gelen satırı süz (yalnız bilinen alanlar, boy sınırlı) */
+function odaChClean(x) { if (!x || typeof x !== "object") return null; const id = String(x.id || "").slice(0, 64); if (!id) return null;
+  const kind = ["chat", "gift", "enter", "reward", "system"].includes(x.kind) ? x.kind : "system", u = /^\d{1,24}$/.test(String(x.uid || "")) ? String(x.uid) : "";
+  const o = { id, kind, at: Number(x.at) || 0, uid: u, n: String(x.n || "").slice(0, 60), av: String(x.av || "").slice(0, 300), vip: Number(x.vip) || 0, svip: Number(x.svip) || 0, lv: Number(x.lv) || 0, role: x.role === "owner" || x.role === "admin" ? x.role : "", t: String(x.t || "").slice(0, 500) };
+  if (x.gift && typeof x.gift === "object") { const g = x.gift; o.gift = { name: String(g.name || "").slice(0, 60), icon: /^https:\/\//.test(String(g.icon || "")) || String(g.icon || "").startsWith(location.origin + "/") ? String(g.icon).slice(0, 300) : "", count: Math.max(1, Number(g.count) || 1), to: String(g.to || "").slice(0, 120), toUid: /^\d{1,24}$/.test(String(g.toUid || "")) ? String(g.toUid) : "", win: Number(g.win) || 0, unit: String(g.unit || "").slice(0, 12) }; }
+  if ((kind === "chat" || kind === "system") && !o.t) return null; return o; }
+/** Ad (renkli) + rozetler: 👑 sahip / ⭐ yönetici, SVIP/VIP, seviye */
+function odaChName(it, line) { const o = vipOf(it.vip, it.svip), c = it.role === "owner" ? "#fbbf24" : it.role === "admin" ? "#60a5fa" : o && it.svip ? o.c : "#c4b5fd";
+  const bg = line ? "" : (it.role === "owner" ? '<i class="ocbg" style="--vc:#b45309">👑</i>' : it.role === "admin" ? '<i class="ocbg" style="--vc:#1d4ed8">⭐</i>' : "") + (o ? `<i class="ocbg" style="--vc:${o.c}">${o.t}</i>` : "") + (it.lv ? `<i class="ocbg oclv">Lv${it.lv}</i>` : "");
+  return `<button class="ocn" style="--ocnc:${c}" onclick="odaPick('${esc(it.uid)}')"><span>${nmH(it.uid, it.n || it.uid)}</span>${bg}</button>`; }
+function odaChRow(it) { const id = esc(it.id), tt = it.at ? ` title="${esc(hm(it.at))}"` : "";
+  const av = it.uid ? `<button class="ocav" aria-label="${esc(it.n || it.uid)}" onclick="odaPick('${esc(it.uid)}')"><div class="av">${avHtml(it.n, it.av)}</div></button>` : "";
+  if (it.kind === "enter") return `<div class="ocm ocl oce" data-id="${id}"${tt}><div class="ocln">👋 ${it.uid ? odaChName(it, true) : esc(it.n || "Biri")} odaya girdi</div></div>`;
+  if (it.kind === "system") return `<div class="ocm ocl ocs" data-id="${id}"${tt}><div class="ocln">📢 ${it.uid ? odaChName(it, true) + " " : ""}${emo(esc(it.t))}</div></div>`;
+  if (it.kind === "gift" || it.kind === "reward") { const g = it.gift || { name: "", icon: "", count: 1 }, ic = g.icon ? `<img class="ocgi" src="${esc(g.icon)}" alt="" loading="lazy" onerror="this.remove()">` : "🎁";
+    const body = it.kind === "reward" ? `🍀 ${ic} <span class="ocgt">${nf(g.win || 0)} ${g.unit === "coins" ? "coin" : "kat"}</span> kazandı`
+      : `${g.to === "*" ? "🎉 Tüm odaya" : g.to ? `→ ${g.toUid ? `<button class="ocn" style="display:inline;--ocnc:#fde68a" onclick="odaPick('${esc(g.toUid)}')"><span>${esc(g.to)}</span></button>` : esc(g.to)}` : ""} ${ic} ${esc(g.name || "Hediye")} <span class="ocgt">×${nf(g.count || 1)}</span>`;
+    return `<div class="ocm ocg" data-id="${id}"${tt}>${av}<div class="ocbd">${it.uid ? odaChName(it) : ""}<div class="ocbub">${body}</div></div></div>`; }
+  return `<div class="ocm" data-id="${id}"${tt}>${av}<div class="ocbd">${it.uid ? odaChName(it) : ""}<div class="ocbub">${emo(esc(it.t))}</div></div></div>`; }
+const odaChEl = () => { const b = $("odaBody"); return b ? b.querySelector(":scope > .ochatw") : null; };
+const odaChAtB = (sc) => sc.scrollHeight - sc.clientHeight - sc.scrollTop <= 16;
+/** Oda değiştiyse (ya da kutu yeniden kurulduysa) o odanın saklı satırları baştan çizilir; değilse hiçbir şeye dokunulmaz */
+function odaChSync() { const w = odaChEl(); if (!w) return; const room = odaChRoom(), sc = w.querySelector(".ochs");
+  if (w.hidden !== !room) w.hidden = !room; // oda verisi gelmeden kutu yok (dinleyiciler üstüne dolunca kutu itilmesin: ilk açılışta kayma olmasın)
+  if (room !== odaCh.room) { const st = odaChStore[room] || {}; odaCh = { room, items: Array.isArray(st.items) ? st.items.map(odaChClean).filter(Boolean).slice(-ODA_CH_KEEP) : [], ids: new Set(), t: 0, at0: Number(st.t) || 0, inn: null, why: "", nw: 0, stick: true, sv: 0 };
+    odaCh.items.forEach((x) => odaCh.ids.add(x.id)); }
+  if (sc.__room !== odaCh.room || sc.__n !== odaCh.items.length && sc.childElementCount !== odaCh.items.length) { sc.__room = odaCh.room; sc.innerHTML = odaCh.items.map(odaChRow).join(""); sc.__n = odaCh.items.length;
+    if (!sc.__on) { sc.__on = 1; sc.addEventListener("scroll", () => { if (!sc.clientHeight) return; const b = odaChAtB(sc); odaCh.stick = b; if (b && odaCh.nw) { odaCh.nw = 0; odaChNew(); } }, { passive: true }); }
+    odaCh.nw = 0; odaCh.stick = true; odaChNew(); }
+  odaChBottom(); if (odaCh.stick && !sc.clientHeight) requestAnimationFrame(odaChBottom); odaChHead(); } // sekme gizliyken gelenler: görünür olunca (en alttaysa) alta
+function odaChBottom() { const w = odaChEl(), sc = w && w.querySelector(".ochs"); if (sc && odaCh.stick) sc.scrollTop = sc.scrollHeight; }
+window.odaChDown = function () { odaCh.stick = true; odaCh.nw = 0; odaChNew(); odaChBottom(); };
+function odaChNew() { const w = odaChEl(), b = w && w.querySelector(".ocnew"); if (!b) return; const show = odaCh.nw > 0, txt = `↓ ${odaCh.nw > 99 ? "99+" : odaCh.nw} yeni`;
+  if (b.hidden !== !show) b.hidden = !show; if (show && b.textContent !== txt) b.textContent = txt; }
+/** Başlıktaki durum + boşken ortadaki not (yer sabit; yalnız metin değişir) */
+function odaChHead() { const w = odaChEl(); if (!w) return; const st = w.querySelector(".ocst"), em = w.querySelector(".ocempty"), age = odaCh.t ? Date.now() - odaCh.t : 1e12, r = odaData && odaData.room;
+  const kapali = !!r && r.live === false, yok = odaCh.inn === false && age < ODA_CH_YOK, canli = odaCh.t && age < ODA_CH_YOK && !yok;
+  const s = yok ? `⚠️ Tablet odada değil${odaCh.why ? ": " + odaCh.why : ""}` : canli ? "● tablet odada" : odaCh.items.length ? `Son: ${hm(odaCh.t || odaCh.at0 || odaCh.items[odaCh.items.length - 1].at)}` : "", cl = "ocst" + (yok ? " ocwarn" : canli ? " olive" : "");
+  if (st.textContent !== s) st.textContent = s; if (st.className !== cl) st.className = cl;
+  const e = odaCh.items.length ? "" : yok ? `⚠️ Tablet odada değil${odaCh.why ? " (" + odaCh.why + ")" : ""}` : kapali ? "🔴 Oda kapalı" : canli ? "💬 Henüz mesaj yok" : "💬 Oda sohbeti: tablet odaya bağlanınca";
+  if (em.textContent !== e) em.textContent = e; if (em.hidden !== !e) em.hidden = !e; }
+/** room_msgs: { room, items, full?, in?, why?, at } — yalnız şu an gösterilen oda */
+window.odaMsgsSet = function (pl) { if (!pl || !/^\d{3,12}$/.test(String(pl.room || "")) || !Array.isArray(pl.items)) return;
+  const room = String(pl.room); if (!odaChRoom() || room !== odaChRoom()) return; // başka ekran başka odayı izletiyor
+  odaChSync(); odaCh.t = Date.now(); if ("in" in pl) { odaCh.inn = !!pl.in; odaCh.why = pl.in ? "" : String(pl.why || "").slice(0, 120); }
+  const add = []; for (const x of pl.items.slice(-ODA_CH_KEEP)) { const it = odaChClean(x); if (it && !odaCh.ids.has(it.id) && !add.some((y) => y.id === it.id)) add.push(it); }
+  if (add.length) odaChAdd(add); odaChHead(); };
+function odaChAdd(add) { const w = odaChEl(), sc = w && w.querySelector(".ochs"); if (!sc) return; const L = odaCh.items, last = L.length ? L[L.length - 1].at || 0 : 0;
+  const inOrder = add.every((x, i) => (x.at || 0) >= (i ? add[i - 1].at || 0 : last));
+  if (!inOrder) { // geçmiş (full) araya düşüyor: zamana göre birleştir, baştan çiz
+    const all = L.concat(add).sort((a, b) => (a.at || 0) - (b.at || 0)), out = []; for (const x of all) { if (out.length && out[out.length - 1].kind === "enter" && x.kind !== "enter" && (x.at || 0) >= (out[out.length - 1].at || 0)) out.pop(); out.push(x); }
+    odaCh.items = out.slice(-ODA_CH_MAX); odaCh.ids = new Set(odaCh.items.map((x) => x.id)); add.forEach((x) => odaCh.ids.add(x.id)); sc.__n = -1; sc.__room = ""; const stick = odaCh.stick; odaChSync(); odaCh.stick = stick; odaChBottom(); odaChSave(); return; }
+  const stick = odaCh.stick; let h = "", newN = 0; // en alttaysa (kaydırma dinleyicisi tutar) alta kayar
+  for (const it of add) { odaCh.ids.add(it.id);
+    if (L.length && L[L.length - 1].kind === "enter") { const p = L.pop(); const el = sc.lastElementChild; if (el && el.dataset.id === p.id) el.remove(); else { const q = h.lastIndexOf('<div class="ocm ocl oce"'); if (q >= 0) h = h.slice(0, q); } } // Sugo gibi: girdi satırı yerini sonrakine bırakır
+    L.push(it); h += odaChRow(it); if (it.kind !== "enter") newN++; }
+  sc.insertAdjacentHTML("beforeend", h);
+  if (L.length > ODA_CH_MAX) { const cut = L.length - (ODA_CH_MAX - 50), top0 = sc.scrollTop; let dh = 0; for (let i = 0; i < cut && sc.firstElementChild; i++) { const el = sc.firstElementChild; dh += el.offsetHeight + 8; el.remove(); }
+    L.splice(0, cut); if (!stick) sc.scrollTop = Math.max(0, top0 - dh); } // üstten kesilince okunan yer kaymaz
+  sc.__n = L.length;
+  if (stick) odaChBottom(); else if (newN) { odaCh.nw += newN; odaChNew(); }
+  odaChSave(); }
+/** Telefonda oda başına son 50 satır (en çok 4 oda; 3 sn'de bir yazılır) */
+function odaChSave() { if (odaCh.sv) return; odaCh.sv = setTimeout(() => { odaCh.sv = 0; if (!odaCh.room) return; odaChStore[odaCh.room] = { items: odaCh.items.slice(-ODA_CH_KEEP), t: odaCh.t || Date.now() };
+  const ks = Object.keys(odaChStore).sort((a, b) => (odaChStore[b].t || 0) - (odaChStore[a].t || 0)); for (const k of ks.slice(4)) delete odaChStore[k];
+  try { localStorage.setItem("bw_oda_chat", JSON.stringify(odaChStore)); } catch (e) {} }, 3000); }
+/** Sohbet kutusu okunuyorsa (kutunun üstü ekranın üst yarısında) üstündeki bölümün boyu değişince kutu yerinde kalır (bölme kaydırılır) */
+function odaChKeep(fn) { const w = odaChEl(), pn = $("p-oda"); if (!w || !pn || !pn.clientHeight) return fn(); const pr = pn.getBoundingClientRect(), y0 = w.getBoundingClientRect().top;
+  const read = y0 < pr.top + pr.height / 2 && w.getBoundingClientRect().bottom > pr.top; fn(); if (!read) return; const d = w.getBoundingClientRect().top - y0; if (d) pn.scrollTop += d; }
 // ⚙️ İzlenen odalar (sahip / yetkili): bayinin kendi odası her zaman var; en fazla 10 oda daha (ekle / çıkar → rooms_watch_set)
 let odaW = null; const ODA_WMAX = 10;
 function odaWatchEdit() { if (!isYetkili()) return; odaW = { ids: ((odaData && odaData.rooms) || []).filter((x) => x && x.id && !x.own).map((x) => String(x.id)).slice(0, ODA_WMAX), busy: false };
@@ -2935,6 +3035,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (ev === "wallet") { const w = pl.wallet || pl; if (walletOk() && (w.coin != null || w.diamond != null)) walletSet({ coin: w.coin, diamond: w.diamond, at: new Date().toISOString() }); if (cur) idLive(); return; } // 💎 bayi hesabının elması / coini değişti
     if (ev === "link") { if (pl.need_login) { STAT.needLogin = Date.now(); statLine(); } else if ("mode" in pl || "need_login" in pl) { STAT.needLogin = 0; statLine(); } if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
     if (ev === "room_seats") { if (window.odaSeatsSet) odaSeatsSet(pl); return; } // 🎤 tabletteki Selçuk oturumu odada: mikrofon / kilit / konuşuyor (Oda sekmesi açıkken)
+    if (ev === "room_msgs") { if (window.odaMsgsSet) odaMsgsSet(pl); return; } // 💬 tabletteki Selçuk oturumu odada: oda sohbeti (açılınca son 50, sonra yalnız yeniler)
     if (ev === "room_mode") { if (window.odaModeSet) odaModeSet(pl); return; } // 📹 bayi odası kamera / sesli moda geçti (sunucu dakikada bir bakar)
     if (ev === "pausereq") { onPauseReq(pl); return; } // 📨 Sugo uygulaması onay isteği (yeni / onaylandı / reddedildi / süresi doldu)
     if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
@@ -2969,7 +3070,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.71"></script>
-<script src="durum.js?v=2.1.71"></script>
+<script src="profile.js?v=2.1.72"></script>
+<script src="durum.js?v=2.1.72"></script>
 </body>
 </html>
