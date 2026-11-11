@@ -72,8 +72,13 @@ self.addEventListener("notificationclick", (e) => {
   e.waitUntil((async () => {
     // iPhone: arka plandaki sayfa uyurken mesaj kaybolabiliyor → hedef önbelleğe yazılır, sayfa öne gelince okur ve açar (2 dk geçerli)
     try { const ch = await caches.open("bw-nav"); await ch.put("./__open", new Response(JSON.stringify({ url, at: Date.now() }), { headers: { "content-type": "application/json" } })); } catch (x) {}
-    const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-    for (const c of cs) { if ("focus" in c) { c.postMessage({ kind: "open", url }); return c.focus(); } }
-    return self.clients.openWindow(url);
+    // Uygulama öndeyken (Oda / Durum'dayken de) görünür olma / odak olayı gelmez, tek yol bu mesaj: her açık sayfaya, odaklamadan önce ve sonra,
+    // ayrıca ikinci kanaldan (BroadcastChannel "bw-nav"). Sayfa aynı hedefi 5 sn içinde bir kez açar (navLast).
+    const say = () => { try { const bc = new BroadcastChannel("bw-nav"); bc.postMessage({ kind: "open", url }); bc.close(); } catch (x) {} };
+    const cs = (await self.clients.matchAll({ type: "window", includeUncontrolled: true })).filter((c) => "focus" in c);
+    if (!cs.length) return self.clients.openWindow(url);
+    const post = () => cs.forEach((c) => { try { c.postMessage({ kind: "open", url }); } catch (x) {} });
+    post(); say(); const c = cs.find((x) => x.focused) || cs.find((x) => x.visibilityState === "visible") || cs[0];
+    try { await c.focus(); } catch (x) {} post(); say();
   })());
 });

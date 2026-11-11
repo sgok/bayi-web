@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.76">
+<meta name="build" content="2.1.77">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.76">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.76">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.76">
+<link rel="manifest" href="manifest.json?v=2.1.77">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.77">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.77">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -268,6 +268,10 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .ocbd { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
   .ocn { display: flex; align-items: center; gap: 4px; max-width: 100%; min-height: 20px; padding: 0; border: 0; border-radius: 0; background: none; font-size: 12px; line-height: 16px; color: var(--ocnc, #c4b5fd); text-align: left; }
   .ocn > span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ocn .alo { display: none; }
+  /* 🕒 mesaj saati (20:45:18): adın yanında / satırın sonunda, italik soluk gri; ad satırının boyunu artırmaz (uzun ad kısalır, saat hep görünür) */
+  .ocnr { display: flex; align-items: center; gap: 6px; max-width: 100%; min-width: 0; } .ocnr > .ocn { flex: 0 1 auto; min-width: 0; }
+  .octm { flex: none; font-style: italic; font-weight: 400; font-size: 10.5px; line-height: 14px; color: #d4d4d880; white-space: nowrap; font-variant-numeric: tabular-nums; pointer-events: none; user-select: none; -webkit-user-select: none; }
+  .ocbub .octm, .ocln .octm { margin-left: 6px; }
   .ocbg { flex: none; font-style: normal; font-size: 9.5px; line-height: 14px; padding: 0 5px; border-radius: 7px; font-weight: 800; color: #fff; background: var(--vc, #6d5bd0); }
   .ocbg.oclv { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
   .ocbub { margin-top: 3px; max-width: 100%; padding: 6px 10px; border-radius: 4px 14px 14px 14px; background: rgba(0, 0, 0, .35); color: #fff; font-size: 14px; line-height: 19px; overflow-wrap: anywhere; white-space: pre-wrap; }
@@ -507,7 +511,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.76" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.77" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -516,7 +520,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.76" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.77" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -573,7 +577,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.76"></script>
+<script src="emoji.js?v=2.1.77"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2385,15 +2389,18 @@ function odaChDays(sc) { if (!sc) return; let prev = "";
 function odaChName(it, line) { const o = vipOf(it.vip, it.svip), c = it.role === "owner" ? "#fbbf24" : it.role === "admin" ? "#60a5fa" : o && it.svip ? o.c : "#c4b5fd";
   const bg = line ? "" : (it.role === "owner" ? '<i class="ocbg" style="--vc:#b45309">👑</i>' : it.role === "admin" ? '<i class="ocbg" style="--vc:#1d4ed8">⭐</i>' : "") + (o ? `<i class="ocbg" style="--vc:${o.c}">${o.t}</i>` : "") + (it.lv ? `<i class="ocbg oclv">Lv${it.lv}</i>` : "");
   return `<button class="ocn" style="--ocnc:${c}" onclick="odaPick('${esc(it.uid)}')"><span>${nmH(it.uid, it.n || it.uid)}</span>${bg}</button>`; }
-function odaChRow(it) { const id = esc(it.id) + (it.at ? `" data-d="${odaDay(it.at)}` : ""), tt = it.at ? ` title="${esc(hm(it.at))}"` : "";
+// 🕒 Satır saati: cihazın yerel saati (sohbetlerdeki hm() ile aynı), saniyeli: 20:45:18
+const odaHms = (t) => { if (!(t > 0)) return ""; const d = new Date(t); return isNaN(d) ? "" : [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"); }; // gece yarısı 00 (Intl "24:00" vermesin)
+function odaChRow(it) { const id = esc(it.id) + (it.at ? `" data-d="${odaDay(it.at)}` : ""), tt = it.at ? ` title="${esc(hm(it.at))}"` : "", hs = odaHms(it.at), tm = hs ? `<i class="octm">${hs}</i>` : "";
   const av = it.uid ? `<button class="ocav" aria-label="${esc(it.n || it.uid)}" onclick="odaPick('${esc(it.uid)}')"><div class="av">${avHtml(it.n, it.av)}</div></button>` : "";
-  if (it.kind === "enter") return `<div class="ocm ocl oce" data-id="${id}"${tt}><div class="ocln">👋 ${it.uid ? odaChName(it, true) : esc(it.n || "Biri")} odaya girdi</div></div>`;
-  if (it.kind === "system") return `<div class="ocm ocl ocs" data-id="${id}"${tt}><div class="ocln">📢 ${it.uid ? odaChName(it, true) + " " : ""}${emo(esc(it.t))}</div></div>`;
+  const nr = it.uid ? `<div class="ocnr">${odaChName(it)}${tm}</div>` : "", bt = it.uid ? "" : tm; // adlı satırda saat adın yanında; adsızda balonun sonunda
+  if (it.kind === "enter") return `<div class="ocm ocl oce" data-id="${id}"${tt}><div class="ocln">👋 ${it.uid ? odaChName(it, true) : esc(it.n || "Biri")} odaya girdi${tm}</div></div>`;
+  if (it.kind === "system") return `<div class="ocm ocl ocs" data-id="${id}"${tt}><div class="ocln">📢 ${it.uid ? odaChName(it, true) + " " : ""}${emo(esc(it.t))}${tm}</div></div>`;
   if (it.kind === "gift" || it.kind === "reward") { const g = it.gift || { name: "", icon: "", count: 1 }, ic = g.icon ? `<img class="ocgi" src="${esc(g.icon)}" alt="" loading="lazy" onerror="this.remove()">` : "🎁";
     const body = it.kind === "reward" ? `🍀 ${ic} <span class="ocgt">${nf(g.win || 0)} ${g.unit === "coins" ? "coin" : "kat"}</span> kazandı`
       : `${g.to === "*" ? "🎉 Tüm odaya" : g.to ? `→ ${g.toUid ? `<button class="ocn" style="display:inline;--ocnc:#fde68a" onclick="odaPick('${esc(g.toUid)}')"><span>${esc(g.to)}</span></button>` : esc(g.to)}` : ""} ${ic} ${esc(g.name || "Hediye")} <span class="ocgt">×${nf(g.count || 1)}</span>`;
-    return `<div class="ocm ocg" data-id="${id}"${tt}>${av}<div class="ocbd">${it.uid ? odaChName(it) : ""}<div class="ocbub">${body}</div></div></div>`; }
-  return `<div class="ocm" data-id="${id}"${tt}>${av}<div class="ocbd">${it.uid ? odaChName(it) : ""}<div class="ocbub">${emo(esc(it.t))}</div></div></div>`; }
+    return `<div class="ocm ocg" data-id="${id}"${tt}>${av}<div class="ocbd">${nr}<div class="ocbub">${body}${bt}</div></div></div>`; }
+  return `<div class="ocm" data-id="${id}"${tt}>${av}<div class="ocbd">${nr}<div class="ocbub">${emo(esc(it.t))}${bt}</div></div></div>`; }
 const odaChEl = () => { const b = $("odaBody"); return b ? b.querySelector(":scope > .ochatw") : null; };
 const odaChAtB = (sc) => sc.scrollHeight - sc.clientHeight - sc.scrollTop <= 16;
 /** Kutudaki son SOHBET satırı (en alttaki "gönderiliyor" balonları sayılmaz) */
@@ -2981,7 +2988,12 @@ function checkNew(list) { const mx = Math.max(0, ...list.filter((x) => Number(x.
 if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", (e) => { const m = e.data || {};
   if (m.kind === "push") { ding(); let pc = null; try { pc = new URL((m.data && m.data.url) || "", location.href).searchParams.get("c"); } catch (e) {} // bildirim hangi sohbetin?
     if (cur && (!pc || pc === cur)) { if (!liveFresh(cur)) schedChat(); idLive(); } else { schedInbox(); if (!cur) loadDm(); } }
-  if (m.kind === "open" && m.url) { navOpen(m.url); try { caches.open("bw-nav").then((ch) => ch.delete("./__open")).catch(() => 0); } catch (x) {} } }); // önbellekteki kopya ikinci kez açmasın
+  if (m.kind === "open" && m.url) navMsg(m.url); });
+try { navigator.serviceWorker.startMessages(); } catch (e) {} // SW mesaj kuyruğu açık (yalnız addEventListener ile bazı tarayıcılar kuyruğu bekletebiliyor)
+// Uygulama ÖNDEYKEN bildirime dokunma (kullanıcı 11.11, Oda / Durum'dayken): sayfa zaten görünür → görünür olma / odak olayı gelmez, tek yol SW mesajı.
+// O da kaybolursa diye SW ikinci kanaldan (BroadcastChannel "bw-nav") da söyler; aynı hedef navLast ile bir kez açılır.
+function navMsg(url) { navOpen(url); try { caches.open("bw-nav").then((ch) => ch.delete("./__open")).catch(() => 0); } catch (x) {} } // önbellekteki kopya ikinci kez açmasın
+try { const bc = new BroadcastChannel("bw-nav"); bc.onmessage = (e) => { const m = e.data || {}; if (m.kind === "open" && m.url && tok) navMsg(m.url); }; } catch (e) {}
 // 🔔 Bildirime dokunma → ilgili yer (?c= sohbet, ?t= sekme, ?pz= onay isteği). iPhone'da uyuyan sayfaya SW mesajı kaybolabiliyor: SW hedefi önbelleğe de yazar
 // (caches "bw-nav" ./__open {url, at}); sayfa açılınca / öne gelince okur (2 dk geçerli), siler ve açar. Aynı hedef 5 sn içinde iki kez açılmaz. Kaldığı yere dönüşten (resume) önce gelir.
 let navLast = { k: "", at: 0 }, navReady = false, navBusy = false;
@@ -2993,11 +3005,14 @@ async function navReset(toChat) { if ($("modal").style.display === "flex") { if 
 async function navOpen(url) { let u; try { u = new URL(url, location.href); } catch (e) { return false; } const c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz");
   if (!c && !t && !pz) return false; const k = c ? "c" + c : t ? "t" + t : "pz" + pz; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
   if (pz) { pzLoad(pz); return true; } // onay bandı her ekranın üstünde: ekran değişmez
-  await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); await openChat(c); } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } return true; }
+  // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
+  await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } return true; }
 async function takeNavOpen(force) { if (!tok || !(force || navReady) || navBusy || !window.caches) return false; navBusy = true;
   try { const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return false; const x = await r.json().catch(() => ({})); await ch.delete("./__open");
     return !!(x && x.url && Date.now() - (Number(x.at) || 0) < 120_000) && (await navOpen(x.url)); } catch (e) { return false; } finally { navBusy = false; } }
-document.addEventListener("visibilitychange", () => { if (!document.hidden) takeNavOpen(); }); addEventListener("pageshow", () => takeNavOpen()); addEventListener("focus", () => takeNavOpen());
+// iPhone: dokununca uygulama ÖNCE öne gelir, SW hedefi önbelleğe biraz SONRA yazar → öne gelişte bir kez değil, 3 sn içinde birkaç kez bakılır (yerel önbellek: ağ yok)
+let navPollT = []; const navPoll = () => { navPollT.forEach(clearTimeout); takeNavOpen(); navPollT = [600, 1500, 3000].map((ms) => setTimeout(() => { if (!document.hidden) takeNavOpen(); }, ms)); };
+document.addEventListener("visibilitychange", () => { if (!document.hidden) navPoll(); }); addEventListener("pageshow", navPoll); addEventListener("focus", navPoll);
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
@@ -3159,7 +3174,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.76"></script>
-<script src="durum.js?v=2.1.76"></script>
+<script src="profile.js?v=2.1.77"></script>
+<script src="durum.js?v=2.1.77"></script>
 </body>
 </html>
