@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.59">
+<meta name="build" content="2.1.60">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.59">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.59">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.59">
+<link rel="manifest" href="manifest.json?v=2.1.60">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.60">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.60">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -78,6 +78,8 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .pinby { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fbbf24; background: rgba(245,158,11,.16); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* kim sabitledi */
   .lhd { padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--muted); background: rgba(148,163,184,.08); border-bottom: 1px solid var(--line); }
   .lhd.pin { color: #fbbf24; background: rgba(245,158,11,.14); }
+  /* 🏷️ Takma ad: "Ad (orijinal adı)" – orijinal ad küçük ve soluk; sığmazsa satır sonunda kesilir */
+  .alo { font-size: .74em; font-weight: 500; color: var(--muted); } .pfal { font-size: 13px; color: #fbbf24; font-weight: 700; margin-bottom: 2px; }
   /* 🔴 Okunmamış: önizleme yazısı parlak ve kalın, saat rozet renginde. Sabit sohbette (turuncu zemin + altın rozet birbirine karışıyordu, 2026-11-11)
      sol çizgi, zemin ve rozet kırmızı; başlıkta "N yeni mesaj" */
   .row.unr .p > span:first-child { color: var(--text); font-weight: 600; }
@@ -218,7 +220,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .pfrel { margin-top: 6px; } .relc { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 13px; color: var(--muted); } .relc.on { color: #10b981; border-color: #10b981; font-weight: 700; }
   .pflinks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; } .pflinks span { background: #2e1a4f; border: 1px solid #7c3aed55; border-radius: 10px; padding: 3px 9px; font-size: 13px; }
   .pftags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; } .pftags span { background: #ffffff14; border-radius: 999px; padding: 2px 9px; font-size: 13px; } .pftags .gsym { width: 1em; height: 1em; vertical-align: -.17em; margin-right: 3px; } /* ♂/♀ çizimi yazıyla aynı hizada; çip boyu değişmez */
-  .pfacts { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: 0 0 12px; } .pfacts .pfmsg { margin: 0; }
+  .pfacts { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: 0 0 12px; } .pfacts .pfmsg { margin: 0; } .pfacts .pfalias { grid-column: 1 / -1; padding: 10px 12px; font-size: 15px; font-weight: 700; border-radius: 14px; color: #fbbf24; border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.10); } /* 🏷️ İsim ver: ayrı satır, sabit yükseklik */
   .pffol { min-width: 160px; padding: 13px 12px; font-size: 16px; font-weight: 700; border-radius: 14px; background: #2563eb; border-color: #2563eb; color: #fff; } /* ➕ Takip et: mavi, dolu */
   .pffol.on { background: transparent; border: 1.5px solid var(--brand); color: var(--brand3); } /* ✓ Takip ediliyor: tema çerçevesi, sade (Takip et dolu) */
   .pffol.wait { background: transparent; color: var(--muted, #a1a1aa); } /* aynı genişlik: metin/renk değişince kaymaz */
@@ -373,7 +375,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.59" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.60" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -382,7 +384,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.59" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.60" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -437,7 +439,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.59"></script>
+<script src="emoji.js?v=2.1.60"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -703,6 +705,22 @@ async function tagToggle(tag) { const c = cur; if (!c) return; const on = !hasTa
 function setCpins(r) { if (!r || !Array.isArray(r.cpins)) return false; cpins = r.cpins.map(String); cpinsBy = r.cpinsBy || {};
   try { localStorage.setItem("bw_cpins", JSON.stringify(cpins)); localStorage.setItem("bw_cpinsby", JSON.stringify(cpinsBy)); } catch (e) {} return true; }
 const pinRank = (x) => { const i = cpins.indexOf(String(x.id)); return i < 0 ? 999 : i; };
+// 🏷️ Takma adlar { uid: ad } (ekip ortak; sunucudan, değişince anlık "alias" olayı). nmH: listede/başlıkta "Ad (orijinal)" (orijinal küçük), nmT: düz yazı
+let aliases = (() => { try { return JSON.parse(localStorage.getItem("bw_alias") || "{}") || {}; } catch (e) { return {}; } })();
+function setAliases(m) { if (!m || typeof m !== "object") return; aliases = m; try { localStorage.setItem("bw_alias", JSON.stringify(m)); } catch (e) {} }
+const alOf = (u) => aliases[String(u)] || "";
+const nmH = (u, orig) => { const a = alOf(u), o = orig || String(u || ""); return a ? `${esc(a)} <span class="alo">(${esc(o)})</span>` : esc(o); };
+const nmT = (u, orig) => { const a = alOf(u), o = orig || String(u || ""); return a ? `${a} (${o})` : o; };
+function aliasEdit(uid) { uid = String(uid); const k = inbox.find((x) => String(x.id) === uid) || people[uid] || {}, a = alOf(uid);
+  openModal(`<div style="font-weight:700;margin-bottom:4px">🏷️ Takma ad</div><div class="s" style="margin-bottom:10px">Sugo'daki adı: <b>${esc(k.n || "UID " + uid)}</b> · ekipteki herkes bu adı görür (listede yanında asıl adı küçük yazılır)</div>
+    <input id="alIn" maxlength="40" placeholder="ör. Dağıtıcı Ramil" value="${esc(a)}" style="width:100%;box-sizing:border-box;margin-bottom:10px" onkeydown="if(event.key==='Enter')aliasSave('${esc(uid)}')">
+    <div style="display:flex;gap:8px"><button class="go" style="flex:1" onclick="aliasSave('${esc(uid)}')">Kaydet</button>${a ? `<button onclick="aliasSave('${esc(uid)}',true)">Kaldır</button>` : ""}<button onclick="closeModal()">Vazgeç</button></div>`);
+  setTimeout(() => { const i = $("alIn"); if (i) { i.focus(); i.select(); } }, 50); }
+async function aliasSave(uid, clear) { const name = clear ? "" : String(($("alIn") || {}).value || "").trim(); const old = alOf(uid);
+  aliases = { ...aliases }; if (name) aliases[uid] = name; else delete aliases[uid]; aliasShow(); closeModal(); // ekranda hemen
+  const d = await api("conv_alias_set", { conv: uid, name }); if (d.error) { aliases = { ...aliases }; if (old) aliases[uid] = old; else delete aliases[uid]; aliasShow(); toast("❌ " + d.error, true); return; }
+  if (d.report && d.report.alias) setAliases(d.report.alias); aliasShow(); toast(d.ok || "Tamam"); }
+function aliasShow() { inboxDrawn = null; renderInbox(); if (cur && !isSys(cur)) $("chName").innerHTML = nmH(cur, curName); try { if ($("prof").classList.contains("on") && window.pfRedraw) window.pfRedraw(); } catch (e) {} }
 function sortInbox() { const pg = (x) => (pinRank(x) < 999 ? 0 : 1), un = (x) => (Number(x.u) && !isQuiet(x.id) ? 1 : 0), eat = (x) => (isMuted(x.id) ? (manchor[String(x.id)] != null ? manchor[String(x.id)] : Math.min(x.at || 0, (cmutes[String(x.id)] || {}).at || 0)) : (x.at || 0)); // sessizdeki: sessize alındığı andaki yerinde kalır
   inbox.sort((a, b) => pg(a) - pg(b) || un(b) - un(a) || eat(b) - eat(a)); } // 📌 sabitlenenler grubu üstte; her grupta önce okunmamışlar, sonra son mesaj saatine göre (en yeni üstte)
 async function convPin(id, on) { const d = await api("conv_pin", { conv: String(id), on }); if (d.error) { toast("❌ " + d.error, true); return; }
@@ -711,7 +729,7 @@ async function loadInbox() { const d = await api("bayi_inbox_get", Object.keys(v
   inbox = mergeRows(((d.report && d.report.inbox && d.report.inbox.items) || []).filter((x) => !/^300\d\d$/.test(String(x.id))));
   openRead(); // açık sohbete yeni mesaj geldiyse (sunucu listesi okunmamış diyor) okundu yap
   if (d.report && d.report.vips) { vipm = d.report.vips; vipsVer = d.report.vipsVer ?? null; try { localStorage.setItem("bw_vipm", JSON.stringify(vipm)); localStorage.setItem("bw_vipm_ver", JSON.stringify(vipsVer)); } catch (e) {} if (cur) chVip(); } // yalnız vipsVer geldiyse (değişmedi) önbellektekiler kalır // 👑 SVIP çerçevesi
-  setCpins(d.report); if (d.report) { setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
+  setCpins(d.report); if (d.report) { if (d.report.alias) setAliases(d.report.alias); setCtags(d.report.ctags); setCmutes(d.report.cmutes); if (d.report.assign) assigns = d.report.assign; if (d.report.rem) rems = d.report.rem; setTagx(d.report); }
   sortInbox(); checkNew(inbox); renderInbox(); chOnUpd();
   try { localStorage.setItem("bw_inbox", JSON.stringify(inbox.slice(0, 120))); } catch (e) {} } // sonraki açılış anında
 const SYS = [["30000", "SUGO TEAM", "📢", ""], ["30003", "Sistem Asistanı", "⚙️", "#6366f1"], ["30005", "Ajans Asistanı", "🏢", ""], ["30006", "Yayıncı Asistanı", "🎙", ""], ["30004", "Etkinlik Asistanı", "🎉", "#10b981"], ["30001", "Oyun Asistanı", "🎮", "#8b5cf6"], ["30007", "SVIP Asistanı", "👑", "#eab308"]];
@@ -732,7 +750,7 @@ function renderInbox() {
   const rallRow = lf === "unread" && unN ? `<div class="row rallrow" data-k="rallrow"><button class="go" onclick="readAll()">✓✓ Hepsini okundu yap <b>${unN}</b></button><span class="s">müşterilere "görüldü" gider</span></div>` : "";
   inboxMorph($("convs"), chips + (lf === "all" ? readAll + teamRow : rallRow) + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? `<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler${pinUn ? `<span class="pinun">${pinUn} yeni mesaj</span>` : ""}</div>` : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}${Number(x.u) && !isQuiet(x.id) ? " unr" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw${vipAttr(vipConv(x.id))}"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}${vipLab(vipConv(x.id))}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${esc(x.n || x.id)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${nmH(x.id, x.n)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
       <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own && !x.rx ? (x.rd ? '<b class="ltk rd">✓✓</b> ' : '<span class="ltk">✓</span> ') : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
@@ -761,10 +779,10 @@ function srch() { clearTimeout(srchT); const q = $("idIn").value.trim(); srchQ =
   if (!q) { $("srchRes").innerHTML = ""; return; }
   srchT = setTimeout(() => runSrch(q), 350); }
 const pRow = (uid, n, av, sub) => `<div class="row" data-uid="${esc(uid)}" onclick="pick('${esc(uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(uid)}')" title="Profili aç">${avHtml(n, av)}</div>
-  <div class="b"><div class="t"><b>${esc(n || uid)}</b><span class="s">${esc(uid)}</span></div>${sub ? `<div class="p"><span>${sub}</span></div>` : ""}${trust(uid)}</div></div>`;
+  <div class="b"><div class="t"><b>${nmH(uid, n || uid)}</b><span class="s">${esc(uid)}</span></div>${sub ? `<div class="p"><span>${sub}</span></div>` : ""}${trust(uid)}</div></div>`;
 async function runSrch(q) {
   const low = q.toLocaleLowerCase("tr"), digits = /^\d{5,12}$/.test(q);
-  const mine = inbox.filter((x) => String(x.id).includes(q) || String(x.n || "").toLocaleLowerCase("tr").includes(low)).slice(0, 8);
+  const mine = inbox.filter((x) => String(x.id).includes(q) || String(x.n || "").toLocaleLowerCase("tr").includes(low) || alOf(x.id).toLocaleLowerCase("tr").includes(low)).slice(0, 8);
   let hits = [];
   const draw = (rows) => { if (srchQ !== q) return;
     $("srchRes").innerHTML = (digits && !mine.some((x) => String(x.id) === q) && !rows.some((r) => String(r.uid) === q) ? `<div class="row" data-uid="${esc(q)}" onclick="pick('${esc(q)}')"><div class="av">💬</div><div class="b"><b>UID ${esc(q)} ile sohbet aç</b></div></div>` : "")
@@ -812,7 +830,7 @@ async function openChat(id, snap) {
   stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
   if (String(id) !== cur) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); chFresh = null; } cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
   $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
-  $("chName").textContent = sy ? "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : "") : curName; $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
+  if (sy) $("chName").textContent = "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : ""); else $("chName").innerHTML = nmH(cur, curName); $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chVip(); sendBtnUpd(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
   if (sy) $("sysTabs").innerHTML = SYS.map(([i, n, ic]) => `<button class="${i === cur ? "on" : ""}" onclick="openChat('${i}')">${ic} ${esc(n)}</button>`).join("");
@@ -1112,7 +1130,7 @@ function msgMenuOpen(mid, el) {
 let replyTo = null;
 const obText = (o) => { if (o.kind !== "reply") return String(o.body || ""); try { return String(JSON.parse(o.body).t || ""); } catch (e) { return String(o.body || ""); } };
 const qPrev = (q) => q.k === "image" ? "📷 Fotoğraf" : q.k === "voice" ? "🎤 Sesli mesaj" : q.k === "video" ? "🎬 Video" : emo(esc(String(q.t || "").slice(0, 160)));
-const qWho = (q) => String(q.m || "") === bayiMe() || q.mine ? "Siz" : esc((inbox.find((x) => String(x.id) === String(cur)) || {}).n || "Karşı taraf");
+const qWho = (q) => String(q.m || "") === bayiMe() || q.mine ? "Siz" : esc(alOf(cur) || (inbox.find((x) => String(x.id) === String(cur)) || {}).n || "Karşı taraf");
 function quoteHtml(q) { if (!q || !q.seq) return ""; return `<div class="qt" onclick="event.stopPropagation();pinGo('${esc(q.seq)}')"><b>↩️ ${qWho(q)}</b>${qPrev(q)}</div>`; }
 function replyStart(mid) { const m = findMsg(mid); if (!m || isSys(cur) || m.k === "withdraw") return;
   replyTo = { seq: String(m.id), t: String(m.t || ""), k: m.k || "text", m: m.m ? bayiMe() : String(cur), mine: !!m.m }; renderReply(); try { $("txt").focus(); } catch (e) {} }
@@ -1594,7 +1612,7 @@ function dmRow(r) { if (dmOwn(r)) return `<div class="row dmown"><div class="av"
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · bayi hesabı</div></div>
   <div style="text-align:right;color:#4ade80;font-weight:700;white-space:nowrap">+${nf(r.amount)} coin</div></div>`;
   return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
-  <div class="b"><div class="t"><b>${esc(r.nickname || "UID " + r.uid)}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="b"><div class="t"><b>${r.uid ? nmH(r.uid, r.nickname || "UID " + r.uid) : esc(r.nickname || "")}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
   <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
     : `<div style="color:var(--warn);font-weight:700">${azn(r.pay_azn)}</div><button class="go" style="padding:6px 10px;font-size:13px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}</div></div>`; }
@@ -1615,7 +1633,7 @@ function dmPeople(rows) { const m = new Map(); for (const r of rows) { const k =
 function dmPersonBoxes(rows) { return dmPeople(rows).map((p) => { if (p.rows.length === 1) return `<div class="dmsingle">${dmListHtml(p.rows)}</div>`; // tek bozum: kutu / toplam yok
   const txs = p.rows.filter((r) => !r.paid_at).map((r) => r.tx), dia = p.rows.reduce((s, r) => s + Number(r.diamonds || 0), 0);
   return `<div class="dmbox"><div class="dmhd"><div class="av" ${p.conv || p.uid ? `onclick="openChat('${esc(p.conv || p.uid)}')"` : ""}>${avHtml(p.name, p.av)}</div>
-    <div class="b"><b>${esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
+    <div class="b"><b>${p.uid ? nmH(p.uid, p.name) : esc(p.name)}</b><div class="s">${p.rows.length} bozum · ${nf(dia)} elmas${p.uid ? " · UID " + esc(p.uid) : ""}</div></div>
     <div class="dmtot"><div class="s">Toplam borç</div><div class="v">${azn(p.pay)}</div><button class="go" data-pe onclick="coinPaidAll('${esc(JSON.stringify(txs))}','${esc(p.name + " · " + p.rows.length + " bozum · " + azn(p.pay))}')">💸 Ödendi</button></div></div>
     ${dmListHtml(p.rows)}</div>`; }).join(""); }
 /** Liste: satırlar yeni→eski; grubun toplamı parçalarının altında */
@@ -1705,7 +1723,7 @@ async function relLoad(off, refresh) { const seq = ++relSeq, q = (($("relQ") || 
   $("relInfo").textContent = `${nf(r.total || 0)} kişi${q ? ` · "${q}" araması` : ""} · Sugo'dan son okuma: ${r.at ? rel(r.at) : "henüz yok (okunuyor)"}`;
   const dt = (t) => { try { return new Date(t).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "2-digit" }); } catch (e) { return ""; } };
   $("relList").innerHTML = relRows.length ? relRows.map((x) => `<div class="row" onclick="relPick('${esc(x.uid)}')"><div class="avw${vipAttr(vipOf(x.vip, x.svip))}"><div class="av">${avHtml(x.nickname || x.uid, x.avatar)}</div>${vipLab(vipOf(x.vip, x.svip))}</div>
-      <div class="b"><div class="t"><b>${esc(x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div>${relStat(x)}</div>
+      <div class="b"><div class="t"><b>${nmH(x.uid, x.nickname || x.uid)}</b><span class="s">${x.since ? dt(x.since) : ""}</span></div><div class="p"><span>UID ${esc(x.uid)}</span>${relSeen(x)}</div>${relStat(x)}</div>
       <button class="relmsg" onclick="event.stopPropagation();relMsg('${esc(x.uid)}')">💬 Mesaj</button></div>`).join("")
     + (relRows.length < (r.total || 0) ? `<div class="row more" onclick="relLoad(${relRows.length})">⬇️ Daha fazla göster <b>${nf((r.total || 0) - relRows.length)}</b></div>` : "")
     : `<div class="row s">${q ? "Bulunamadı." : "Liste boş."}</div>`; }
@@ -2403,6 +2421,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
     if (ev === "cmutes") { const m = pl.cmutes; if (m) { setCmutes(m); sortInbox(); renderInbox(); } return; }
+    if (ev === "alias") { if (pl && pl.alias) { setAliases(pl.alias); aliasShow(); } return; } // 🏷️ başka ekrandan takma ad
     if (ev === "ctags") { const m = pl.ctags; if (m) { setCtags(m); setTagx(pl); renderInbox(); renderChTags(); } return; }
     if (ev === "typing") { onTyping(pl); return; } // ✍️ başka ekip üyesi yazıyor
     if (ev === "rem") { const m = pl.rem; if (m) { rems = m; renderInbox(); } else schedInbox(); if (cur) schedChat(); return; } // ⏰ hatırlatma kuruldu / zamanı geldi
@@ -2430,6 +2449,6 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else show("login");
 </script>
-<script src="profile.js?v=2.1.59"></script>
+<script src="profile.js?v=2.1.60"></script>
 </body>
 </html>

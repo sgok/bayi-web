@@ -25,7 +25,7 @@
   window.prof = async (uid) => {
     uid = String(uid); pfUid = uid; window.__pfUid = uid;
     const k = (typeof inbox !== "undefined" && inbox.find((x) => String(x.id) === uid)) || (typeof people !== "undefined" && people[uid]) || {};
-    $("pfTitle").textContent = "👤 " + (k.n || uid);
+    $("pfTitle").textContent = "👤 " + (typeof alOf === "function" && alOf(uid) ? alOf(uid) : k.n || uid);
     if (!$("prof").classList.contains("on")) history.pushState({ p: uid }, "");
     show("prof"); $("pfBody").scrollTop = 0;
     const cached = pfCache.get(uid);
@@ -37,6 +37,7 @@
     const d = await api("profile", { uid });
     onNet(d, false);
   };
+  window.pfRedraw = () => { const c = pfUid && pfCache.get(pfUid); if (c) render(JSON.parse(c)); }; // 🏷️ takma ad değişince
   window.profClose = () => { pfUid = null; history.back(); };
   window.profPop = () => { pfUid = null; show(typeof setStack !== "undefined" && setStack.length ? "set" : cur ? "chat" : "inbox"); }; // geri tuşu (ana sayfadaki tek yönetici çağırır); ayarlardan açıldıysa ayarlara
 
@@ -141,7 +142,7 @@
     folState[uid] = ok ? on : !on; if ($("pfFol") && pfUid === uid) { $("pfFol").textContent = folTxt({ uid }); $("pfFol").className = folCls({ uid }); }
     toast(ok ? (on ? "➕ Takip edildi (bayi hesabı)" : "Takipten çıkarıldı") : "❌ " + (err || "olmadı"), !ok); };
   function render(p) {
-    $("pfTitle").textContent = "👤 " + (p.name || p.uid);
+    $("pfTitle").textContent = "👤 " + (typeof alOf === "function" && alOf(p.uid) ? alOf(p.uid) : p.name || p.uid); // 🏷️ takma ad varsa başlıkta o (asıl ad altında büyük yazılı)
     const role = p.role, r = p.room || {}, g = p.gifts || {}, b = p.buys || { recent: [] }, rv = p.recv;
     const days = []; for (let i = 13; i >= 0; i--) { const dd = new Date(Date.now() + 4 * 3600e3 - i * 86400e3).toISOString().slice(0, 10); days.push([dd, (r.per_day || {})[dd] || 0]); }
     const mx = Math.max(1, ...days.map((x) => x[1]));
@@ -160,12 +161,12 @@
     const md = $("pfBody").querySelector(".pfmore"); if (md && md.open) pfMoreOpen = true;
     const vo = sk ? null : vipOf(p.vip, p.svip); // 👑 SVIP (renkli) ya da VIP (gümüş) çerçeve, altında seviye
     $("pfBody").innerHTML = `<div class="pfhero"><div class="pfh"><div class="wav${vo ? ` vr vr-${vo.k}` : ""}" style="background:#059669${vo ? `;--vc:${vo.c}` : ""}">${vipLab(vo)}${avHtml(p.name, p.avatar)}${big ? `<span class="zoomhit" data-img="${escA(avUrl(big).split("?x-oss")[0])}"></span>` : ""}${on === null ? "" : `<i id="pfDot" class="wonl${on ? "" : " off"}"></i>`}</div>
-        <div style="flex:1;min-width:0"><div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
+        <div style="flex:1;min-width:0">${typeof alOf === "function" && alOf(p.uid) ? `<div class="pfal">🏷️ ${esc(alOf(p.uid))}</div>` : ""}<div class="pn">${p.name ? esc(p.name) : sk ? SK("8em") : "(isimsiz)"}${o ? ` <span class="pfold">(${esc(o)})</span>` : ""}${p.verified ? ' <span class="vtick" title="Yüz onaylı">✓</span>' : ""}</div>
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
           <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pftags">${sk ? `<span>${SK("3em")}</span><span>${SK("3em")}</span><span>${SK("4em")}</span>` : tags.map((t) => `<span>${/^[♂♀] /.test(t) ? genderSvg(t[0] === "♂") + esc(t.slice(2)) : esc(t)}</span>`).join("")}</div></div></div>
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
-      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}</div>
+      <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}${typeof aliasEdit === "function" && can("mesaj") ? (sk ? `<button class="pfalias" disabled>🏷️ Takma ad</button>` : `<button class="pfalias" onclick="aliasEdit('${escA(p.uid)}')">🏷️ Takma ad</button>`) : ""}</div>
       <div class="pgrid">
         ${card("💸 Bizden aldığı coin", sk ? SK("4.5em") : coin(b.coins), sk ? SK("7em") : `${b.count || 0} alım${b.last ? " · son " + tm(b.last) : ""}`, "var(--accent)")}
         ${card("🧾 Açık borç", sk ? SK("3em") : debtSum > 0.009 ? az(debtSum) : "yok", sk ? SK("5em") : (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
