@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.85">
+<meta name="build" content="2.1.86">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.85">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.85">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.85">
+<link rel="manifest" href="manifest.json?v=2.1.86">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.86">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.86">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -172,7 +172,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
     background: radial-gradient(circle at 35% 30%, #fff7c2 0 10%, #fde047 11% 42%, #f59e0b 43% 72%, #b45309 73%); box-shadow: inset 0 0 0 .07em #92400e; }
   .gc::after { content: ""; position: absolute; inset: .2em; border-radius: 50%; border: .07em solid #b4530988; }
   #hStock { color: #fbbf24; font-weight: 800; }
-  #hDia { color: #7dd3fc; font-weight: 700; font-size: 14px; margin-left: 6px; cursor: pointer; } #hDia[hidden] { display: none; } /* 💎 bayi hesabının kendi elması (sahip + yetkili) */
+  #hDia { color: #7dd3fc; font-weight: 800; font-size: 18px; margin-left: 12px; cursor: pointer; } /* coins ile aynı boy (12.11) */ #hDia[hidden] { display: none; } /* 💎 bayi hesabının kendi elması (sahip + yetkili) */
   .wcard { border-color: #38bdf8; } .wcard .v { font-size: 26px; color: #7dd3fc; } .wcard .wl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 8px; } .wcard .wl > div { min-width: 0; }
   .wcard .wl small, .wcard .wl b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .wcard .wl small { font-size: 11px; color: var(--muted); } .wcard .wl b { font-size: 15px; font-variant-numeric: tabular-nums; } /* sabit yükseklik: değer gelince kart boyu değişmez */
   .wcard .wex { width: 100%; margin-top: 10px; font-size: 16px; }
@@ -519,7 +519,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.85" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.86" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -528,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.85" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Sistem durumu · dokun: ayrıntı" onclick="sysPop()" style="cursor:pointer;padding:6px;margin:-6px;box-sizing:content-box;background-clip:content-box"></span><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.86" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Sistem durumu · dokun: ayrıntı" onclick="sysPop()" style="cursor:pointer;padding:6px;margin:-6px;box-sizing:content-box;background-clip:content-box"></span><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -586,7 +586,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.85"></script>
+<script src="emoji.js?v=2.1.86"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -1143,6 +1143,9 @@ async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
   const r = (d.report && d.report.room) || null; roomC[c] = r; roomDraw(r); }
 function roomWatch() { clearInterval(roomTimer); roomDraw(cur && !isSys(cur) ? roomC[cur] || null : null); roomCheck(); roomTimer = setInterval(roomCheck, 60_000); }
 function stopMedia() { document.querySelectorAll("#msgs video, #msgs audio").forEach((v) => { try { v.pause(); } catch (e) {} }); }
+// 🏠 Logoya dokununca: nerede olursak olalım Sohbetler listesi (açık sohbet, pencere ve ayarlar kapanır)
+function goChats() { try { if ($("modal").style.display === "flex") closeModal(); if (setOn()) setClose(); } catch (e) {}
+  if (cur) { chatStack.length = 0; stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); } tab("msg"); }
 function back() { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} if (chatStack.length) { history.back(); return; } stopMedia(); clearInterval(roomTimer); cur = null; show("inbox"); loadInbox(); loadDm(); }
 // Mesajdaki UID'ye dokununca: profil mi, mesaj mı? "Mesaj at" o kişinin sohbetini açar; geri gelince önceki sohbete, kaldığı yere döner
 let chatStack = [];
@@ -3300,7 +3303,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.85"></script>
-<script src="durum.js?v=2.1.85"></script>
+<script src="profile.js?v=2.1.86"></script>
+<script src="durum.js?v=2.1.86"></script>
 </body>
 </html>
