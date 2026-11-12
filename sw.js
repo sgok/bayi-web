@@ -63,7 +63,7 @@ self.addEventListener("push", (e) => {
     // Sayfa açık ve önündeyse ona da haber ver (ses çalar, listeyi yeniler)
     const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     cs.forEach((c) => c.postMessage({ kind: "push", data: d }));
-    await self.registration.showNotification(d.title || "Sugo Coins Bayi", { body: d.body || "", tag: d.tag || "bayi", renotify: true, icon: "icon-192.png", badge: "icon-192.png", data: { url: d.url || "./" } });
+    await self.registration.showNotification(d.title || "Sugo Coins Bayi", { body: d.body || "", tag: d.tag || "bayi", renotify: true, icon: "icon-192.png", badge: "icon-192.png", ...(typeof d.image === "string" && /^https:\/\//.test(d.image) ? { image: d.image } : {}), data: { url: d.url || "./" } }); // 📷 Android: bildirimde büyük resim (iPhone yok sayar)
   })());
 });
 self.addEventListener("notificationclick", (e) => {
