@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.82">
+<meta name="build" content="2.1.83">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.82">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.82">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.82">
+<link rel="manifest" href="manifest.json?v=2.1.83">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.83">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.83">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -519,7 +519,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.82" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.83" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -528,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.82" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Tablet"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.83" alt="" style="width:32px;height:32px;border-radius:9px;flex:none"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><span id="tabDot" class="dot" title="Sistem durumu · dokun: ayrıntı" onclick="sysPop()" style="cursor:pointer;padding:6px;margin:-6px;box-sizing:content-box;background-clip:content-box"></span><button onclick="refreshTab()">↻</button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -586,7 +586,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.82"></script>
+<script src="emoji.js?v=2.1.83"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -800,6 +800,48 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
   const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
   const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? (d.server ? "⚠️ Sugo bayi oturumu kapandı – tablette yeniden giriş yapılmalı, mesajlar gitmez." : "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez.") : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
   setTabWarn(msg); try { localStorage.setItem("bw_tabwarn", msg); } catch (e) {} }
+// 🩺 Sağlık işaretine dokununca: platform nerede (Contabo / Cloudflare / Supabase), modlar, gecikmeler (kullanıcı 12.11)
+async function sysPop() {
+  const sec = (ms) => ms == null ? "–" : ms < 60e3 ? Math.round(ms / 1000) + " sn önce" : ms < 3600e3 ? Math.round(ms / 60e3) + " dk önce" : Math.round(ms / 3600e3) + " sa önce";
+  const row = (k, v, ok) => `<div style="display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line,#ffffff14)"><span style="opacity:.75">${k}</span><b style="text-align:right">${ok === true ? "🟢 " : ok === false ? "🔴 " : ""}${v}</b></div>`;
+  const head = (t) => `<div style="margin:14px 0 2px;font-size:12px;opacity:.6;letter-spacing:.04em;text-transform:uppercase">${t}</div>`;
+  const shell = (body) => `<div style="position:relative;padding-top:4px"><button onclick="closeModal()" aria-label="Kapat" style="position:absolute;top:-6px;right:-6px;width:36px;height:36px;border-radius:18px;font-size:18px">✕</button><h3 style="margin:0 0 6px;padding-right:40px">🩺 Sistem durumu</h3>${body}</div>`;
+  openModal(shell(`<div style="padding:24px 0;text-align:center;opacity:.7">Ölçülüyor…</div>`), true);
+  const t0 = performance.now(); const [d, tb] = await Promise.all([api("sys_status"), api("tablet")]); const rtt = Math.round(performance.now() - t0);
+  if ($("modal").style.display !== "flex") return;
+  if (!d || d.error) { $("modalBox").innerHTML = shell(`<p>Durum okunamadı: ${esc(String((d && d.error) || "bağlantı yok"))}</p>`); return; }
+  const now = Date.now(), b = d.beat || {}, beatAge = b.at ? now - Date.parse(b.at) : null, beatOk = beatAge != null && beatAge < 15e3;
+  const onVps = d.host === "vps", wsOpen = onVps ? (d.vps.health && d.vps.health.ws === "open") : d.cf.ws === "open";
+  const jobs = Object.entries(d.jobs || {}).filter(([, v]) => v === "vps").map(([k]) => k);
+  const avg = STAT.api.length ? Math.round(STAT.api.reduce((x, y) => x + y, 0) / STAT.api.length) : null;
+  const tAge = now - ((tb && tb.at) || 0);
+  $("modalBox").innerHTML = shell(
+    head("Bayi Sugo bağlantısı") +
+    row("Çalışma modu", d.mode === "server" ? "🖥️ Sunucu modu" : d.mode === "tablet" ? "📱 Tablet modu" : esc(String(d.mode))) +
+    row("Bağlantıyı tutan", onVps ? "Contabo" : "Cloudflare") +
+    row("Sugo bağlantısı", wsOpen ? "açık" : esc(String((onVps ? d.vps.health && d.vps.health.ws : d.cf.ws) || "kapalı")), !!wsOpen) +
+    row("Yedek", onVps ? `Cloudflare (${esc(String(d.cf.ws || "?"))})` : "Contabo bekliyor") +
+    (d.host_by ? row("Son geçiş", `${esc(String(d.host_by))}${d.host_at ? " · " + sec(now - Date.parse(d.host_at)) : ""}`) : "") +
+    (d.need_login ? row("Uyarı", "🔑 Sugo oturumu kapandı, yeniden giriş gerekli", false) : "") +
+    head("Sunucular") +
+    row("Contabo", d.vps.ok ? `sağlıklı · ${d.vps.ms} ms` : `ulaşılamıyor${d.vps.err ? " (" + esc(d.vps.err) + ")" : ""}`, !!d.vps.ok) +
+    row("Contabo ayaktayım", beatAge == null ? "kayıt yok" : sec(beatAge), beatOk) +
+    row("Bayi bağlantısı sağlığı (Contabo)", b.link_ok === false ? "sağlıksız" : "sağlıklı", b.link_ok !== false) +
+    row("Cloudflare", d.cf.ok ? `cevap veriyor · ${d.cf.ms} ms` : "ulaşılamıyor", !!d.cf.ok) +
+    row("Supabase veritabanı", `${d.dbMs} ms`, true) +
+    row("Contabo'daki işler", jobs.length ? esc(jobs.join(", ")) : "yok (hepsi Supabase'de)") +
+    head("Bu cihaz") +
+    row("Bu ölçüm (gidiş-dönüş)", rtt + " ms") +
+    row("Panel istekleri (ortalama)", avg != null ? avg + " ms" : "–") +
+    row("Canlı kanal", STAT.rtOn ? "bağlı" + (STAT.rt != null ? " · " + STAT.rt + " ms" : "") : "bağlanıyor", !!STAT.rtOn) +
+    (STAT.live != null ? row("Son canlı mesaj", STAT.live + " ms") : "") +
+    head("Tablet ve modlar") +
+    row("Tablet", tb && tb.linked && tAge < 8 * 60e3 ? "bağlı · " + sec(tAge) : "görünmüyor" + (tb && tb.at ? " · " + sec(tAge) : ""), !!(tb && tb.linked && tAge < 8 * 60e3)) +
+    row("Sugo Bayi", d.bayi_on ? "açık" : "kapalı", d.bayi_on) +
+    row("Hafif mod 1 (Oda/Durum)", d.lite ? "açık" : "kapalı") +
+    row("Hafif mod 2 (oda istatistikleri)", d.lite2 ? "açık" : "kapalı") +
+    `<div style="margin-top:12px;font-size:12px;opacity:.55">Sürüm ${esc(String(BUILD))} · ${new Date().toLocaleTimeString("tr-TR")}</div>`);
+}
 function setTabWarn(msg) { ["tabWarn", "tabWarn2"].forEach((id) => { if ($(id).textContent !== msg) $(id).textContent = msg; $(id).style.display = msg ? "block" : "none"; }); }
 
 // ---------- sohbet listesi
@@ -3248,7 +3290,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.82"></script>
-<script src="durum.js?v=2.1.82"></script>
+<script src="profile.js?v=2.1.83"></script>
+<script src="durum.js?v=2.1.83"></script>
 </body>
 </html>
