@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.94">
+<meta name="build" content="2.1.95">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.94">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.94">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.94">
+<link rel="manifest" href="manifest.json?v=2.1.95">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.95">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.95">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -195,6 +195,31 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .msgmenu { position: absolute; left: 10px; right: 10px; bottom: 120px; z-index: 30; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px #000a; } .msgmenu[hidden] { display: none; }
   .msgmenu .mq { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; } .msgmenu .mq button { background: none; border: 0; padding: 4px; border-radius: 10px; } .msgmenu .mq button.on { background: #f59e0b44; }
   .msgmenu .ma { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; } .msgmenu .ma button { padding: 8px 12px; font-size: 15px; }
+  .msgmenu { max-height: calc(100% - 140px); overflow-y: auto; overscroll-behavior: contain; } .msgmenu .ma button.on { background: #38bdf833; border-color: #38bdf8; }
+  /* 💎→₼ Manata çevir kartı (menünün içinde; yalnız bilgi) */
+  .mcv { margin-top: 10px; padding: 10px; border-radius: 12px; background: #0ea5e914; border: 1px solid #38bdf855; } .mcv[hidden] { display: none; }
+  .mcr { display: flex; flex-direction: column; gap: 1px; padding: 4px 0; font-variant-numeric: tabular-nums; } .mcr b { font-size: 17px; color: #7dd3fc; overflow-wrap: anywhere; } .mcr.mct b { color: #4ade80; } .mcr.mcp b { color: #fde68a; font-size: 15px; }
+  .mcr .s, .mco { font-size: 12px; } .mcn { font-size: 12px; color: var(--warn); } .mco { margin-top: 4px; }
+  .mcb { display: flex; gap: 8px; margin-top: 8px; } .mcb button { flex: 1; min-height: 44px; font-size: 15px; }
+  /* 👤 Oda sohbetinde kişi menüsü (dokunulan yerin yakınında) */
+  .owbg { position: fixed; inset: 0; z-index: 59; background: transparent; } .owbg[hidden], .owm[hidden] { display: none; }
+  .owm { position: fixed; z-index: 60; width: min(270px, calc(100vw - 24px)); display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 14px; background: var(--panel2); border: 1px solid var(--line); box-shadow: 0 10px 30px #000a; box-sizing: border-box; }
+  .owm .owt { font-size: 13px; color: var(--muted); padding: 2px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .owm button { min-height: 44px; font-size: 15px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .owm .owx { text-align: center; }
+  /* ↕️ Coins alt sekmeleri + Giriş / Çıkış */
+  .csub { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 10px 8px; } .csub button { min-height: 44px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
+  .csub button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
+  #ioBox { min-height: 70vh; } .iof { display: flex; gap: 6px; margin: 0 10px 6px; flex-wrap: wrap; } .iof button { min-height: 44px; padding: 0 12px; font-size: 14px; } .iof button.on { background: #ffffff1f; border-color: var(--accent); font-weight: 700; }
+  .iof select { flex: 1 1 120px; min-width: 0; min-height: 44px; font-size: 14px; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 12px; padding: 0 8px; }
+  .iosum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 10px 8px; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); font-variant-numeric: tabular-nums; }
+  .iosum > div { min-width: 0; } .iosum small { display: block; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .iosum b { display: block; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .iosum .iobal { grid-column: 1 / -1; }
+  .ioin { color: #4ade80; } .ioout { color: #fb923c; } .ioar { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: #ffffff12; font-size: 17px; }
+  .iorow .b { min-width: 0; } .iorow .b .s { overflow-wrap: anywhere; } .ioamt { flex: none; font-variant-numeric: tabular-nums; align-self: center; }
+  /* ↩️ Geri çağrılan gönderimler (Coins): sol şerit + hafif zemin + tutar rengi; iki temada da koyu zemin üstünde okunur */
+  :root { --rc-bek: var(--warn); --rc-geldi: #22d3ee; --rc-red: var(--bad); }
+  .row.rc-bek, .row.rc-geldi, .row.rc-red { box-shadow: inset 4px 0 0 var(--rcc); background: color-mix(in srgb, var(--rcc) 9%, transparent); }
+  .row.rc-bek { --rcc: var(--rc-bek); } .row.rc-geldi { --rcc: var(--rc-geldi); } .row.rc-red { --rcc: var(--rc-red); }
+  .row.rc-bek .rcamt, .row.rc-geldi .rcamt, .row.rc-red .rcamt, .rcinfo { color: var(--rcc) !important; } .rcinfo { font-weight: 700; overflow-wrap: anywhere; }
+  .rcsum { color: var(--rc-bek); box-shadow: inset 3px 0 0 var(--rc-bek); padding-left: 7px; margin-top: 4px; }
   .msgmenu .mp { font-size: 13px; color: var(--muted); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .emopanel { border-top: 1px solid var(--line); background: var(--panel); padding: 6px 8px; } .emopanel[hidden] { display: none; }
   /* Mesaj menüsü açıkken arkadaki her şeyin üstünde şeffaf yakalayıcı: dışarı dokunuş menüyü kapatır, arkadaki öğeye geçmez */
@@ -528,7 +553,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.94" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.95" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -537,7 +562,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.94" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.95" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -595,7 +620,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.94"></script>
+<script src="emoji.js?v=2.1.95"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -724,10 +749,11 @@ function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = 
 // Ekran değişince kaydırma konumu korunur (gizlenen ekranın konumu tarayıcıda sıfırlanıyordu: profilden dönünce sohbet en üstte açılıyordu)
 let chatAnchor = null; const paneTops = {};
 function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on"); if (id === "chat" || id === "login") setStack = []; // ayarlardan sohbete geçildi: ayarlar kapanmış sayılır
-  document.querySelectorAll(".screen.on").forEach((s) => { if (s.id !== id) s.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id) paneTops[el.id] = el.scrollTop; }); });
+  document.querySelectorAll(".screen.on").forEach((s) => { if (s.id !== id) { s.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id) paneTops[el.id] = el.scrollTop; }); s.querySelectorAll(".ochs").forEach((el) => { if (el.clientHeight) el.__top = el.scrollTop; }); } }); // 💬 oda sohbeti: profilden dönünce aynı yer
   if (chatWas && id !== "chat") chatAnchor = msgAnchor();
   document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id));
   const sc = $(id); if (sc) sc.querySelectorAll(".pane.on, .list").forEach((el) => { if (el.id && paneTops[el.id] != null) el.scrollTop = paneTops[el.id]; });
+  if (sc) sc.querySelectorAll(".ochs").forEach((el) => { if (el.__top == null) return; let st = false; try { st = !!odaCh.stick; } catch (e) {} if (st) el.scrollTop = el.scrollHeight; else el.scrollTop = el.__top; el.__top = null; });
   if (id === "chat" && !chatWas && chatAnchor) msgRestore(chatAnchor); }
 // Sohbette nerede kalındı: ekranın üstündeki ilk mesaj + ekrana uzaklığı (yeni mesaj / resim yüklense de aynı yer bulunur)
 function msgAnchor() { const box = $("msgs"); if (!box || !cur) return null;
@@ -1204,7 +1230,7 @@ async function chatJump(uid) { closeModal(); uid = String(uid); if (cur === uid)
   history.pushState({ c: uid }, ""); await openChat(uid); }
 async function chatReturn() { const p = chatStack.pop(); if (!p) return; await openChat(p.c, p); }
 // Geri tuşu: önce büyütülmüş resim, sonra profil, sonra sohbet kapanır (her biri tek adım)
-window.addEventListener("popstate", () => { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} // geri hareketinde klavye açılmasın
+window.addEventListener("popstate", () => { try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {} try { odaWhoClose(); } catch (e) {} // geri hareketinde klavye açılmasın · 👤 oda kişi menüsü kapanır
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
   if (setOn()) { const d = Math.max(0, Math.min(setStack.length, Number(history.state && history.state.set) || 0)); // geçmişte kaçıncı kattayız (✕ birkaç katı tek olayda geri alır)
@@ -1504,7 +1530,7 @@ function msgMenuOpen(mid, el) {
   const prev = m.k === "image" ? "📷 Fotoğraf" : String(m.t || "").slice(0, 60);
   $("msgMenu").innerHTML = `<div class="mp">${emo(esc(prev))}</div>
     <div class="mq">${QUICK_REACT.map((c) => `<button class="${c === myE ? "on" : ""}" onclick="msgAct('react','${esc(mid)}','${c === myE ? "" : c}')">${emoSpan(c, 34)}</button>`).join("")}<button onclick="reactMore('${esc(mid)}')" style="font-size:22px;width:42px">➕</button></div>
-    <div class="ma">${m.k !== "withdraw" ? `<button onclick="msgReply('${esc(mid)}')">↩️ Yanıtla</button>` : ""}<button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${!isSahip() ? "" : hidOf(cur).has(String(mid)) ? `<button onclick="msgHide('${esc(mid)}',false)">👁️ Gizlemeyi kaldır</button>` : `<button onclick="msgHide('${esc(mid)}',true)">🙈 Mesajı gizle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>`;
+    <div class="ma">${m.k !== "withdraw" ? `<button onclick="msgReply('${esc(mid)}')">↩️ Yanıtla</button>` : ""}<button onclick="msgCopy('${esc(mid)}')">📋 Kopyala</button>${!can("duzen") ? "" : pins.some((p) => String(p.id) === String(mid)) ? `<button onclick="msgPin('${esc(mid)}',false)">📌 Sabitlemeyi kaldır</button>` : `<button onclick="msgPin('${esc(mid)}',true)">📌 Sabitle</button>`}${!isSahip() ? "" : hidOf(cur).has(String(mid)) ? `<button onclick="msgHide('${esc(mid)}',false)">👁️ Gizlemeyi kaldır</button>` : `<button onclick="msgHide('${esc(mid)}',true)">🙈 Mesajı gizle</button>`}${m.m && m.k !== "withdraw" ? `<button onclick="msgAct('withdraw','${esc(mid)}')">↩️ Geri al</button><button onclick="msgAct('delete','${esc(mid)}')" style="color:#f87171">🗑️ Sil</button>` : ""}${myE ? `<button onclick="msgAct('react','${esc(mid)}','')">✖ Tepkimi kaldır</button>` : ""}${mcvOf(m).length ? `<button id="mcvBtn" onclick="mcvToggle('${esc(mid)}')">💎→₼ Manata çevir</button>` : ""}<button onclick="msgMenuClose()" style="margin-left:auto">Kapat</button></div>${mcvOf(m).length ? '<div class="mcv" id="mcv" hidden></div>' : ""}`;
   $("msgMenu").hidden = false;
 }
 // ↩️ Yanıt: alıntı kutusu (mesaj balonunda) + yazı kutusunun üstündeki "yanıtlanıyor" şeridi
@@ -1559,6 +1585,65 @@ document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return;
 function reactMore(mid) { reactFor = mid; msgMenuClose(); emoToggle(true); toast("Tepki olarak eklemek istediğiniz emojiye dokunun"); }
 function msgCopy(mid) { const m = findMsg(mid); msgMenuClose(); if (!m) return;
   try { navigator.clipboard.writeText(String((m.k === "withdraw" ? m.orig : m.t) || "")).then(() => toast(m.k === "image" ? "📋 Fotoğraf bağlantısı kopyalandı" : "📋 Kopyalandı")); } catch (e) { toast("Kopyalanamadı", true); } }
+// <manat-oku> 💎→₼ Mesajdaki elmas miktarını bize ödenecek manata çevirir (kullanıcı 13.11: "45k kaç manat" sorusuna anında cevap). YALNIZ bilgi: göndermez, kayıt açmaz.
+// Saf işlevler; tests/manat_cevir_test.ts bu bloğu sayfadan okuyup sunucudaki purchasePayableAzn ile karşılaştırır.
+// Oran sunucudakiyle AYNI: _shared/logic.ts purchasePayableAzn (1000 coin = 33/36 ₼, round2 sonra küsurat atılır) · dashboard/actions.ts diamondOf (elmas = coin / 0.36).
+// Sunucu bu oranı ayardan değil koddan alır (varsayılan parametre); test, iki taraf ayrışırsa kalır.
+const MK = { COIN_PER_DIA: 0.36, AZN_PER_1K: 33 / 36 };
+function manatHesap(dia) { const coins = Math.floor(Math.round(dia * MK.COIN_PER_DIA * 1e6) / 1e6), exact = Math.round((coins / 1000 * MK.AZN_PER_1K + Number.EPSILON) * 100) / 100;
+  return { dia, coins, exact, pay: Math.floor(exact + 1e-6) }; }
+/** Ters: en az bu kadar manat almak için gereken elmas (1000'in katı, yukarı) */
+function manatTers(azn) { if (!(azn > 0)) return 0; let d = Math.max(1000, Math.ceil(azn * 1000 / MK.AZN_PER_1K / MK.COIN_PER_DIA / 1000) * 1000);
+  while (d > 1000 && manatHesap(d - 1000).pay >= azn) d -= 1000; while (manatHesap(d).pay < azn) d += 1000; return d; }
+const MK_MUL = /^ ?(kk|k|к|min|bin|мин|тыс(?:яч[а-я]*|\.)?|mln|milyon|million|млн|m|м)(?![\p{L}\p{N}])/u;
+const MK_CUR = /^ ?(manat|man|azn|₼|\$|usd|dollar|dolar|доллар\p{L}*|долл|tl|lira|€|eur|euro|rub|руб\p{L}*|qəpik|qepik|qapik)(?![\p{L}])/u;
+const MK_DIA = /^ ?(elmas\p{L}*|almaz\p{L}*|алмаз\p{L}*|💎|diamond\p{L}*)/u;
+/** metin → [{ ham, tur: "elmas"|"para", dia?, varsayim?, deger?, birim?, azn? }] (en çok 6; aynısı bir kez) */
+function manatOku(s) { s = String(s || "").replace(/[   ]/g, " ").toLowerCase(); const bad = [], out = [];
+  const mark = (re) => { for (const m of s.matchAll(re)) bad.push([m.index, m.index + m[0].length]); };
+  mark(CARD_RE); // kart (sohbetteki kart tanıyıcısıyla aynı)
+  mark(/\+[\d ().-]{6,}\d/g); // + ile başlayan telefon
+  mark(/(?<!\d)\(?0\d{2}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}(?!\d)/g); mark(/(?<!\d)\d{2}[ -]\d{3}[ -]\d{2}[ -]\d{2}(?!\d)/g); // 050 123 45 67 · 50 123 45 67
+  mark(/(?<!\d)\d{1,2}:\d{2}(?::\d{2})?(?!\d)/g); // saat 19:30
+  mark(/(?<!\d)\d{1,2}[./-]\d{1,2}[./-]\d{2,4}(?!\d)/g); mark(/(?<!\d)\d{1,2}\/\d{1,2}(?!\d)/g); // tarih 12.11.2026 · 12/11
+  for (const m of s.matchAll(/(?<![\d.,\p{L}])(\d{1,3}(?:([., ])\d{3}(?!\d))(?:\2\d{3}(?!\d))*|\d+)(?:[.,](\d+))?/gu)) { // harfe yapışık sayı (IBAN, kod) değil
+    const st = m.index, en = st + m[0].length; if (bad.some(([a, b]) => st < b && en > a)) continue;
+    const ip = m[1].replace(/[., ]/g, ""), grp = !!m[2], dec = m[3] || "";
+    if (ip.length >= 9 || (!grp && ip.length === 8 && !/0{5}$/.test(ip))) continue; // telefon / kart / kimlik / Sugo ID (8 hane, yuvarlak değilse)
+    let rest = s.slice(en); if (/^ ?%/.test(rest)) continue;
+    const mu = rest.match(MK_MUL); let mul = 1; if (mu) { mul = /^(kk|mln|milyon|million|млн|m|м)$/.test(mu[1]) ? 1e6 : 1e3; rest = rest.slice(mu[0].length); }
+    const cu = rest.match(MK_CUR), cuB = s.slice(Math.max(0, st - 5), st).match(/(₼|\$|€|azn|usd) ?$/), ew = !cu && MK_DIA.test(rest);
+    if (dec && !mu && !cu && !cuB) continue; // 12.11 · 2,5 (tarih / küsurat; çarpansız elmas olmaz)
+    const v = Number(ip + (dec ? "." + dec : "")) * mul, ham = (m[0] + (mu ? mu[0] : "")).trim();
+    if (!(v > 0)) continue;
+    if (cu || cuB) { const b = cu ? cu[1] : cuB[1], az = /^(manat|man|azn|₼)$/.test(b); if (!out.some((x) => x.tur === "para" && x.deger === v)) out.push({ ham, tur: "para", deger: v, birim: az ? "₼" : b, azn: az }); }
+    else { if (!mu && v < 10 && !ew) continue; // "2 dəqiqə", "1 saat": sayı ama elmas değil
+      const vars = !mu && v < 1000, dia = Math.round(vars ? v * 1000 : v); // çıplak küçük sayı "bin" sayılır (kimse 45 elmas bozdurmaz) — kartta açıkça yazılır
+      if (!out.some((x) => x.tur === "elmas" && x.dia === dia)) out.push({ ham, tur: "elmas", dia, varsayim: vars }); }
+    if (out.length >= 6) break; }
+  return out; }
+// </manat-oku>
+const mcvOf = (m) => (m && m.k !== "withdraw" && m.k !== "image" && m.t ? manatOku(m.t) : []);
+const mcvK = (n) => dk(n).replace("M", "m"); // 45k · 1,5m (cevapta)
+function mcvLines(L) { const el = L.filter((x) => x.tur === "elmas"), r = el.map((x) => `${mcvK(x.dia)} almaz = ${manatHesap(x.dia).pay} ₼`);
+  if (el.length > 1) r.push(`Cəmi: ${manatHesap(el.reduce((t, x) => t + x.dia, 0)).pay} ₼`);
+  for (const x of L) if (x.tur === "para" && x.azn) r.push(`${String(x.deger).replace(".", ",")} ₼ ≈ ${mcvK(manatTers(x.deger))} almaz`); return r; }
+function mcvHtml(L) { const el = L.filter((x) => x.tur === "elmas"); let h = "";
+  for (const x of el) { const c = manatHesap(x.dia); h += `<div class="mcr"><b>${nf(x.dia)} 💎 → ${c.pay} ₼</b><span class="s">${nf(c.coins)} coin · hesap ${azn(c.exact)}</span>${x.varsayim ? `<span class="mcn">“${esc(x.ham)}” → ${nf(x.dia)} elmas sayıldı (bin)</span>` : ""}</div>`; }
+  if (el.length > 1) { const t = manatHesap(el.reduce((a, x) => a + x.dia, 0)); h += `<div class="mcr mct"><b>Toplam ${nf(t.dia)} 💎 → ${t.pay} ₼</b><span class="s">hesap ${azn(t.exact)}</span></div>`; }
+  for (const x of L) if (x.tur === "para") h += x.azn ? `<div class="mcr mcp"><b>${esc(String(x.deger).replace(".", ","))} ₼ ≈ ${nf(manatTers(x.deger))} 💎</b><span class="s">para tutarı (elmas değil) · bu kadar manat için gereken elmas</span></div>`
+    : `<div class="mcr mcp"><b>${esc(x.ham)}</b><span class="s">para tutarı · elmas sayılmadı</span></div>`;
+  return h + `<div class="s mco">Oran: 100.000 💎 = 36.000 coin = 33 ₼ · küsurat atılır</div>`
+    + (mcvLines(L).length ? `<div class="mcb"><button onclick="mcvCopy()">📋 Kopyala</button><button class="go" onclick="mcvDraft()">✍️ Cevaba yaz</button></div>` : ""); }
+let mcvL = null;
+function mcvToggle(mid) { const L = mcvOf(findMsg(mid)), box = $("mcv"), b = $("mcvBtn"); if (!box || !L.length) return; mcvL = L;
+  const on = box.hidden; box.innerHTML = on ? mcvHtml(L) : ""; box.hidden = !on; if (b) b.classList.toggle("on", on); }
+function mcvCopy() { const t = mcvL ? mcvLines(mcvL).join("\n") : ""; msgMenuClose(); if (!t) return;
+  try { navigator.clipboard.writeText(t).then(() => toast("📋 Kopyalandı: " + t.split("\n")[0]), () => toast("Kopyalanamadı", true)); } catch (e) { toast("Kopyalanamadı", true); } }
+/** ✍️ Cevap taslağı yazı kutusuna KONUR, gönderilmez (var olan yazının altına eklenir) */
+function mcvDraft() { const t = mcvL ? mcvLines(mcvL).join("\n") : "", x = $("txt"); msgMenuClose(); if (!t || !x) return;
+  x.value = x.value.trim() ? x.value.replace(/\s*$/, "\n") + t : t; try { x.dispatchEvent(new Event("input", { bubbles: true })); } catch (e) {}
+  try { x.focus({ preventScroll: true }); const n = x.value.length; x.setSelectionRange(n, n); } catch (e) {} toast("✍️ Cevap yazı kutusunda — gönder'e siz basın"); }
 /** Tepki / geri al / sil: kuyruğa yazılır, bayi bağlantısı Sugo'da yapar; bitince sohbet yenilenir */
 async function msgAct(kind, mid, e) {
   msgMenuClose(); const m = findMsg(mid); if (!m || !cur) return;
@@ -1979,6 +2064,7 @@ async function giveCard(id) { const g = lockGate(cur); if (!g) return; // 🔒 k
 // ---------- alt sekmeler (tabletteki Sugo Bayi bölümüyle aynı)
 let curTab = localStorage.getItem("bw_tab") || "msg";
 function tab(k) { if (!document.getElementById("p-" + k)) k = "msg"; const was = curTab; curTab = k; try { if (was === "oda" && k !== "oda" && window.odaHide) odaHide(); if (k === "oda" && window.odaShow) odaShow(); } catch (e) {} try { localStorage.setItem("bw_tab", k); } catch (e) {} // bilinmeyen sekme (bozuk bağlantı) → Sohbetler; ekran boş kalmasın
+  if (k === "coin" && was !== "coin" && coinSub !== "gon") { coinSub = "gon"; renderCoins(); } // ↕️ Coins her açılışta "Gönderdiklerimiz" ile başlar (alt sekme hatırlanmaz)
   document.querySelectorAll("nav.bn button").forEach((b) => b.classList.toggle("on", b.dataset.p === k));
   document.querySelectorAll("#inbox .pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + k));
   refreshTab(); }
@@ -2047,30 +2133,91 @@ const OST = { open: ["⏳", "ödeme eşleşmedi", "#fbbf24"], complete: ["✅", 
 async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit += 40;
   const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
-  renderCoins(); } // gizliyken de çizilir: sekme açılınca hazır (yer tutucu / eski hâl yerine)
+  renderCoins(); if (coinSub === "io" && curTab === "coin") ioFresh(); } // gizliyken de çizilir: sekme açılınca hazır (yer tutucu / eski hâl yerine) · ↕️ açıksa yeni hareketler de
 function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {}, du = c.dm_unpaid || {}, db = c.debt || {}, low = c.stock != null && c.low_coin > 0 && c.stock < c.low_coin;
   if ($("hStock")) $("hStock").style.color = low ? "#f87171" : "";
-  $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div>${rcOwn() && c.recall && c.recall.pending_n > 0 ? `<div class="s" style="color:#fbbf24">↩️ İade bekleyen: <b>${nf(c.recall.pending_coins)} coin</b> (${c.recall.pending_n} sipariş)</div>` : ""}</div>
+  $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div>${c.recall && c.recall.pending_n > 0 ? `<div class="s rcsum">↩️ İade bekleyen: <b>${nf(c.recall.pending_coins)} coin</b> (${c.recall.pending_n} sipariş)</div>` : ""}</div>
       <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
       <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div>
       <div class="card" onclick="tab('dm')" style="cursor:pointer"><div class="k">💎 Ödenmemiş elmas</div><div class="v">${azn(du.pay || 0)}</div><div class="s">${du.n || 0} bozum › Elmas</div></div>
       <div class="card"><div class="k">🧾 Bize açık borç</div><div class="v">${azn(db.azn || 0)}</div><div class="s">${db.n || 0} borç</div></div></div>
-    <div style="padding:0 10px"><button class="fullbtn" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
+    <div class="csub" role="tablist">${[["gon", "📤 Gönderdiklerimiz"], ["io", "↕️ Giriş / Çıkış"]].map(([k, l]) => `<button role="tab" data-cs="${k}" class="${coinSub === k ? "on" : ""}" aria-selected="${coinSub === k}" onclick="coinSubSet('${k}')">${l}</button>`).join("")}</div>
+    ${coinSub === "io" ? `<div id="ioBox">${ioHtml()}</div>` : `<div style="padding:0 10px"><button class="fullbtn" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
     ${isYetkili() ? `<div class="s" style="padding:4px 12px">🔻 Düşük bakiye uyarısı: ${c.low_coin ? nf(c.low_coin) + " coin altı" : "kapalı"} <button style="padding:3px 10px;font-size:13px" onclick="lowCoinEdit(${Number(c.low_coin) || 0})">değiştir</button></div>` : ""}
     <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
-    ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0);
-      return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
+    ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0), rk = rcRenk(o);
+      return `<div class="row${rk ? " " + rk.c : ""}" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
         <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
-          <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
-          <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
+          <div class="s"><span class="gc"></span> <b class="rcamt" style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
+          <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
     ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
-    <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`; }
+    <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`}`; }
+// ↕️ Coins › Giriş / Çıkış (kullanıcı 13.11): bayi coin hesabının bütün hareketleri (bayi_coin_records), yeniden eskiye. Mevcut uç: bayi_coins_get { all, limit, offset } (tarih süzgeci yok:
+// aralığın başına varana kadar 200'er sayfa okunur; YALNIZ bu alt sekme açılınca). Alt sekme hatırlanmaz: Coins her açılışta "Gönderdiklerimiz" (varsayılan).
+var coinSub = "gon"; // var: tab() açılışta bu satırdan önce çağrılabilir (TDZ yok)
+const IO = { rows: [], off: 0, total: 0, end: false, busy: 0, err: "", range: "bugun", yon: "hepsi", tur: "", show: 50, at: 0 };
+const IO_PAGE = 200;
+function coinSubSet(k) { if (k === coinSub) return; coinSub = k; renderCoins(); if (k === "io") ioNeed(); }
+/** Bakü günü başı (ms); d gün önce */
+const ioDay0 = (d) => { const t = new Date(Date.now() + 4 * 3600e3); t.setUTCHours(0, 0, 0, 0); return t.getTime() - 4 * 3600e3 - d * 864e5; };
+const ioRange = () => IO.range === "dun" ? [ioDay0(1), ioDay0(0)] : IO.range === "7g" ? [ioDay0(6), Infinity] : [ioDay0(0), Infinity];
+/** Tür (gerçek döküm 13.11, son 14 gün: 1/22 hediye edilen paralar 387 · 2/17 Yükleme Yap 247 + Yükle 35 · 1/22 Değiş tokuş 7 · 1/3 ödüller 7); bilinmeyen ham adıyla */
+function ioTur(r) { const op = Number(r.op_type), fn = Number(r.function_type);
+  if (op === 1 && fn === 22) return r.uid ? ["dm", "💎 Elmas bozumu (bize gelen)"] : ["own", "🔁 Kendi elmas bozumumuz"];
+  if (op === 2 && fn === 17) return ["gon", "📤 Coin gönderimi"];
+  if (op === 1 && fn === 3) return ["odul", "🎁 Ödül"];
+  return ["x" + op + "_" + fn, r.type_name ? String(r.type_name) : `Diğer (tür ${op}/${fn})`]; }
+const ioIn = (r) => Number(r.op_type) === 1;
+/** Gönderim satırı → aynı alıcı + aynı tutar + ±3 dk içindeki sipariş (geri çağırma rengi için; yalnız yüklü siparişlerde) */
+const ioOrder = (r) => Number(r.op_type) === 2 && r.uid ? ((coinData && coinData.orders) || []).find((o) => String(o.buyer_uid) === String(r.uid) && Number(o.coins) === Number(r.amount) && Math.abs(Date.parse(o.ordered_at) - Date.parse(r.at)) < 180_000) : null;
+async function ioPage() { if (IO.busy || IO.end) return; IO.busy = 1; IO.err = ""; let d = null;
+  try { d = await api("bayi_coins_get", { all: true, limit: IO_PAGE, offset: IO.off }); } catch (e) {} IO.busy = 0;
+  if (!d || d.error || !d.report) { IO.err = (d && d.error) || "Bağlantı yok"; return; }
+  const rows = d.report.coins || [], have = new Set(IO.rows.map((x) => x.tx)); IO.total = Number(d.report.total) || 0; IO.off += rows.length;
+  for (const r of rows) if (!have.has(r.tx)) IO.rows.push(r); if (!rows.length || IO.off >= IO.total) IO.end = true; IO.at = Date.now(); }
+/** Seçili aralığın başına kadar oku (en çok 8 sayfa = 1600 satır), sonra çiz */
+async function ioNeed() { const [a] = ioRange(); ioDraw();
+  for (let i = 0; i < 8 && !IO.end && !IO.err && (!IO.rows.length || Date.parse(IO.rows[IO.rows.length - 1].at) >= a); i++) { await ioPage(); if (coinSub !== "io") return; ioDraw(); }
+  ioDraw(); }
+/** coins sinyali / yoklama: başa yeni gelenler eklenir (sayfa kayması: offset de o kadar ilerler) */
+async function ioFresh() { if (IO.busy || !IO.rows.length) { if (!IO.rows.length) ioNeed(); return; } let d = null;
+  try { d = await api("bayi_coins_get", { all: true, limit: 50, offset: 0 }); } catch (e) {} if (!d || d.error || !d.report) return;
+  const have = new Set(IO.rows.map((x) => x.tx)), add = (d.report.coins || []).filter((r) => !have.has(r.tx)); if (!add.length) return;
+  IO.rows = add.concat(IO.rows).sort((x, y) => Date.parse(y.at) - Date.parse(x.at)); IO.off += add.length; IO.total = Number(d.report.total) || IO.total; ioDraw(); }
+function ioSet(k, v) { IO[k] = v; if (k !== "show") IO.show = 50; if (k === "range") ioNeed(); else ioDraw(); }
+function ioDraw() { const b = $("ioBox"); if (b && coinSub === "io") b.innerHTML = ioHtml(); }
+function ioHtml() { const [a, z] = ioRange(), inR = IO.rows.filter((r) => { const t = Date.parse(r.at); return t >= a && t < z; });
+  const tam = IO.end || (IO.rows.length && Date.parse(IO.rows[IO.rows.length - 1].at) < a), turs = new Map(); for (const r of inR) { const [k, l] = ioTur(r); turs.set(k, l); }
+  const L = inR.filter((r) => (IO.yon === "hepsi" || (IO.yon === "giris") === ioIn(r)) && (!IO.tur || ioTur(r)[0] === IO.tur));
+  const gir = inR.filter(ioIn).reduce((t, r) => t + Number(r.amount), 0), cik = inR.filter((r) => !ioIn(r)).reduce((t, r) => t + Number(r.amount), 0);
+  const son = inR[0], ilk = inR[inR.length - 1], bas = ilk && ilk.result_amount != null ? Number(ilk.result_amount) - (ioIn(ilk) ? 1 : -1) * Number(ilk.amount) : null;
+  const ch = (k, v, l) => `<button class="${IO[k] === v ? "on" : ""}" onclick="ioSet('${k}','${v}')">${l}</button>`;
+  const yuk = !tam && (IO.busy || !IO.err);
+  const sum = `<div class="iosum"><div><small>⬇️ Giren</small><b class="ioin">+${nf(gir)}</b></div><div><small>⬆️ Çıkan</small><b class="ioout">−${nf(cik)}</b></div><div><small>Net</small><b>${gir - cik >= 0 ? "+" : "−"}${nf(Math.abs(gir - cik))}</b></div>
+    <div class="iobal"><small>Aralık başı → sonu bakiye</small><b>${bas != null && tam ? nf(bas) : "…"} → ${son && son.result_amount != null ? nf(son.result_amount) : "—"}</b></div></div>`;
+  const row = (r) => { const g = ioIn(r), [, tl] = ioTur(r), o = ioOrder(r), rk = o ? rcRenk(o) : null, t = Date.parse(r.at), nm = r.nickname || (r.uid ? "UID " + r.uid : "");
+    const when = odaDay(t) === odaDay(Date.now()) ? hm(r.at) : rcTarih(r.at);
+    return `<div class="row iorow${rk ? " " + rk.c : ""}"><div class="ioar ${g ? "ioin" : "ioout"}" aria-label="${g ? "giriş" : "çıkış"}">${g ? "⬇️" : "⬆️"}</div><div class="b"><div class="t"><b>${r.uid ? `<span class="tap" onclick="prof('${esc(r.uid)}')">${esc(nm)}</span>` : esc(nm || tl)}</b><span class="s">${when}</span></div>
+      <div class="s">${esc(tl)}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null ? " · sonra " + nf(r.result_amount) : ""}${o ? rcRozet(o) : ""}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}</div><b class="ioamt rcamt ${g ? "ioin" : "ioout"}">${g ? "+" : "−"}${nf(r.amount)}</b></div>`; };
+  return `<div class="iof">${ch("range", "bugun", "Bugün")}${ch("range", "dun", "Dün")}${ch("range", "7g", "Son 7 gün")}</div>
+    <div class="iof">${ch("yon", "hepsi", "Hepsi")}${ch("yon", "giris", "⬇️ Giriş")}${ch("yon", "cikis", "⬆️ Çıkış")}<select aria-label="Tür" onchange="ioSet('tur',this.value)"><option value="">Tüm türler</option>${[...turs].map(([k, l]) => `<option value="${esc(k)}"${IO.tur === k ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>
+    ${sum}<div class="iolist">${IO.err && !inR.length ? `<div class="row s">❌ ${esc(IO.err)} <button onclick="IO.err='';ioNeed()">↻ Yeniden dene</button></div>` : !inR.length && yuk ? SKR(6) : L.length ? L.slice(0, IO.show).map(row).join("") : '<div class="row s">Bu aralıkta hareket yok.</div>'}
+    ${L.length > IO.show ? `<div style="padding:12px;text-align:center"><button onclick="ioSet('show',${IO.show + 50})">⬇️ Daha fazla (+50)</button></div>` : yuk && inR.length ? '<div class="row s">⏳ Daha eski hareketler okunuyor…</div>' : ""}</div>
+    <div class="s" style="padding:10px 12px">Bayi coin hesabının panel kayıtları: ⬇️ giriş (elmas bozumu, ödül…) · ⬆️ çıkış (müşteriye coin gönderimi). "sonra" = hareketten sonraki bakiye.</div>`; }
 let coinPollAt = 0, coinT = 0; // 📡 13.11: "coins" sinyali gelince anında; yedek yoklama kanal sağlıklıyken 2 dk, değilse 1 dk
 setInterval(() => { if (!me || document.visibilityState !== "visible") return; let ok = false; try { ok = rtHealthy(); } catch (e) {} if (Date.now() - coinPollAt < (ok ? 120_000 : 60_000) - 1500) return; coinPollAt = Date.now(); loadCoins(); }, 60_000);
 // ↩️ Coin geri çağırma (order recall, 13.11): YALNIZ yönetici (ajans sahibi, kendi hesabında). Düğme/rozet başkasında DOM'a hiç girmez; yetkiyi sunucu ayrıca denetler.
 const rcOwn = () => isSahip() && !(me && me.switched);
 const RCB = { iade_bekleniyor: ["↩️ iade bekleniyor (inceleme)", "#fbbf24"], iade_geldi: ["↩️ geri çekildi · iade geldi", "#94a3b8"], inceleme_reddetti: ["⛔ inceleme reddetti", "#f87171"], belirsiz: ["⚠️ geri çağırma belirsiz", "#fbbf24"], gonderiliyor: ["⏳ geri çağırma gönderiliyor", "#94a3b8"] };
-function rcRozet(o) { if (!rcOwn() || !o.rc || !o.rc.state || !RCB[o.rc.state]) return ""; const b = RCB[o.rc.state];
+// 🎨 Geri çağrılan gönderim satırları ayrı renkte (kullanıcı 13.11): kehribar = iade bekleniyor · turkuaz = iade geldi (coin hesabımıza geri yattı) · kırmızı = Sugo reddetti.
+// Renk tek başına değil: ikon + metin satırı da var. Kullanıcı 13.11: "geri çağrılan coinslerin hesaba yattığını herkes görebilir" → rc kime gelirse rozet + renk + özet onda; ↩️ Geri çağır düğmesi yalnız yönetici + rc.can.
+const rcTarih = (t) => { const d = new Date(t); if (isNaN(d)) return ""; const p = (n) => String(n).padStart(2, "0"); return `${p(d.getDate())}.${p(d.getMonth() + 1)} ${p(d.getHours())}:${p(d.getMinutes())}`; }; // 13.11 20:27
+function rcRenk(o) { const s = o && o.rc && o.rc.state, n = Number(o && (o.recalled_coins || o.coins)) || 0;
+  if (s === "iade_bekleniyor") return { c: "rc-bek", t: `⏳ ↩️ ${nf(n)} coin geri çağrıldı · iade bekleniyor` };
+  if (s === "iade_geldi") return { c: "rc-geldi", t: `✅ ↩️ +${nf(n)} geri geldi · coin hesabımıza yattı${o.rc.refunded_at ? " · " + rcTarih(o.rc.refunded_at) : ""}` };
+  if (s === "inceleme_reddetti") return { c: "rc-red", t: "⛔ Sugo reddetti · iade edilmedi — satış geri açıldı" };
+  return null; }
+function rcRozet(o) { if (!o.rc || !o.rc.state || !RCB[o.rc.state]) return ""; const b = RCB[o.rc.state];
   return ` · <span class="rcr" style="color:${b[1]}">${b[0]}${o.rc.state === "iade_geldi" && o.rc.refunded_at ? " " + rel(Date.parse(o.rc.refunded_at)) : ""}</span>`; }
 let rcCur = null;
 async function rcOpen(oid) { if (!rcOwn()) return; const o = ((coinData && coinData.orders) || []).find((x) => String(x.order_id) === String(oid)); if (!o) return;
@@ -2457,6 +2604,30 @@ function odaNote(r) { const k = String(r.id), h = odaHist[k] || (odaHist[k] = {}
   if (ch) try { localStorage.setItem("bw_oda_hist", JSON.stringify(odaHist)); } catch (e) {} }
 const odaDur = (since) => { const t = Date.parse(since || ""); if (!t) return ""; const m = Math.max(0, Math.round((Date.now() - t) / 60_000)); return m < 60 ? m + " dk" : Math.floor(m / 60) + " sa " + (m % 60) + " dk"; };
 function odaPick(uid) { if (!uid) return; if (can("profil")) prof(String(uid)); else openChat(String(uid)); }
+// 👤 Oda sohbetinde kişiye (ad / avatar / hediye alıcısı) dokununca küçük menü (kullanıcı 13.11): "✍️ @Ad yaz" · "👤 Profilini aç" · Vazgeç.
+// Kendi hesabımızın satırında menü yok (kendini etiketlemek anlamsız): doğrudan profil, bugünkü gibi. Koltuklar / dinleyiciler bugünkü gibi doğrudan profil.
+let odaSelf = (() => { try { return localStorage.getItem("bw_oda_self") || ""; } catch (e) { return ""; } })();
+function odaSelfLearn(g) { for (const p of g) { const it = odaCh.items.find((x) => x.id === p.ecid); if (it && it.uid && String(it.uid) !== odaSelf) { odaSelf = String(it.uid); try { localStorage.setItem("bw_oda_self", odaSelf); } catch (e) {} } } } // panelden yazdığımız satırın sahibi = biz
+function odaWhoName(uid) { uid = String(uid); for (let i = odaCh.items.length - 1; i >= 0; i--) { const x = odaCh.items[i]; if (String(x.uid) === uid && x.n) return String(x.n); if (x.gift && String(x.gift.toUid) === uid && x.gift.to) return String(x.gift.to); }
+  const k = (people && people[uid]) || {}; return String(k.n || uid); }
+function odaWho(uid, el) { uid = String(uid || ""); if (!uid) return; if (uid === odaSelf || uid === bayiMe()) { odaPick(uid); return; }
+  let m = $("odaWhoM"); if (!m) { document.body.insertAdjacentHTML("beforeend", `<div id="odaWhoBg" class="owbg" hidden onclick="odaWhoClose()"></div><div id="odaWhoM" class="owm" role="menu" hidden></div>`); m = $("odaWhoM"); }
+  const n = odaWhoName(uid), box = isSahip() && odaChEl() && odaChEl().querySelector(".ocsin");
+  m.innerHTML = `<div class="owt">${esc(n)}</div>${box ? `<button role="menuitem" onclick="odaAt('${esc(uid)}')">✍️ @${esc(n)} yaz</button>` : `<button role="menuitem" onclick="odaAt('${esc(uid)}')">📋 @${esc(n)} kopyala</button>`}`
+    + `<button role="menuitem" onclick="odaWhoProf('${esc(uid)}')">${can("profil") ? "👤 Profilini aç" : "💬 Sohbeti aç"}</button><button role="menuitem" class="owx" onclick="odaWhoClose()">Vazgeç</button>`;
+  m.hidden = false; $("odaWhoBg").hidden = false; // yakında: dokunulan yerin altında, sığmazsa üstünde; ekran kenarına 12 px pay
+  const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : { left: 12, top: innerHeight / 2, bottom: innerHeight / 2 }, w = m.offsetWidth, h = m.offsetHeight;
+  m.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left)) + "px"; m.style.top = Math.max(12, Math.min(innerHeight - h - 12, r.bottom + 6 + h > innerHeight - 12 ? r.top - h - 6 : r.bottom + 6)) + "px"; }
+function odaWhoClose() { const m = $("odaWhoM"); if (m) m.hidden = true; const b = $("odaWhoBg"); if (b) b.hidden = true; }
+function odaWhoProf(uid) { odaWhoClose(); odaPick(uid); } // geri dönüşte oda sohbeti aynı yerde: show() .ochs konumunu saklar / geri koyar
+/** ✍️ "@Ad " oda yazı kutusuna (imlecin olduğu yere; yoksa sona); aynı kişi üst üste iki kez eklenmez. Sugo'da etiket alanı yok (room_say yalnız metin taşır) → düz metin */
+function odaAt(uid) { odaWhoClose(); const tag = "@" + odaWhoName(uid) + " ", inp = isSahip() && odaChEl() && odaChEl().querySelector(".ocsin");
+  if (!inp) { try { navigator.clipboard.writeText(tag.trim()).then(() => toast("📋 Kopyalandı: " + tag.trim()), () => toast("Kopyalanamadı", true)); } catch (e) { toast("Kopyalanamadı", true); } return; }
+  const v = inp.value, pos = inp.__sel != null && inp.__sel <= v.length ? inp.__sel : v.length, a = v.slice(0, pos), b = v.slice(pos);
+  let at = pos; if (!a.endsWith(tag) && !a.trimEnd().endsWith(tag.trim())) { const pre = a && !/\s$/.test(a) ? a + " " : a, nv = pre + tag + b.replace(/^ /, "");
+    if (Array.from(nv).length > 100) { toast("Yazı 100 harften uzun olur", true); return; } inp.value = nv; at = (pre + tag).length; }
+  inp.__sel = at; if (inp.disabled) { toast("✍️ Eklendi — tablet odaya bağlanınca gönderilebilir"); return; }
+  try { inp.focus({ preventScroll: true }); inp.setSelectionRange(at, at); } catch (e) {} }
 const odaRole = (u, role, r) => { u = String(u || ""); const own = role === "owner" || (!!u && String(r.owner_uid || "") === u), adm = !own && (role === "admin" || role === "superadmin" || (r.admins || []).map(String).includes(u)); return own ? '<i class="orl" title="Oda sahibi">👑</i>' : adm ? '<i class="orl" title="Yönetici">⭐</i>' : ""; };
 function odaSeat(s, r, p, pair, fr) { const no = esc(String(s.no ?? "")), u = s.uid ? String(s.uid) : "", mic = s.mic || (u ? "unknown" : "empty"), vid = !!p && p.kind === "vid";
   const st = p ? ` style="grid-row:${p.row};grid-column:${p.start} / span ${p.span}"` : "", k = (p && p.kind ? " o" + p.kind : "") + (p && !p.kind && p.span <= 10 ? " osm" : ""); // 6 sütunda küçük avatar
@@ -2573,17 +2744,17 @@ function odaChDays(sc) { if (!sc) return; let prev = "";
 /** Ad (renkli) + rozetler: 👑 sahip / ⭐ yönetici, SVIP/VIP, seviye */
 function odaChName(it, line) { const o = vipOf(it.vip, it.svip), c = it.role === "owner" ? "#fbbf24" : it.role === "admin" ? "#60a5fa" : o && it.svip ? o.c : "#c4b5fd";
   const bg = line ? "" : (it.role === "owner" ? '<i class="ocbg" style="--vc:#b45309">👑</i>' : it.role === "admin" ? '<i class="ocbg" style="--vc:#1d4ed8">⭐</i>' : "") + (o ? `<i class="ocbg" style="--vc:${o.c}">${o.t}</i>` : "") + (it.lv ? `<i class="ocbg oclv">Lv${it.lv}</i>` : "");
-  return `<button class="ocn" style="--ocnc:${c}" onclick="odaPick('${esc(it.uid)}')"><span>${nmH(it.uid, it.n || it.uid)}</span>${bg}</button>`; }
+  return `<button class="ocn" style="--ocnc:${c}" onclick="odaWho('${esc(it.uid)}',this)"><span>${nmH(it.uid, it.n || it.uid)}</span>${bg}</button>`; }
 // 🕒 Satır saati: cihazın yerel saati (sohbetlerdeki hm() ile aynı), saniyeli: 20:45:18
 const odaHms = (t) => { if (!(t > 0)) return ""; const d = new Date(t); return isNaN(d) ? "" : [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"); }; // gece yarısı 00 (Intl "24:00" vermesin)
 function odaChRow(it) { const id = esc(it.id) + (it.at ? `" data-d="${odaDay(it.at)}` : ""), tt = it.at ? ` title="${esc(hm(it.at))}"` : "", hs = odaHms(it.at), tm = hs ? `<i class="octm">${hs}</i>` : "";
-  const av = it.uid ? `<button class="ocav" aria-label="${esc(it.n || it.uid)}" onclick="odaPick('${esc(it.uid)}')"><div class="av">${avHtml(it.n, it.av)}</div></button>` : "";
+  const av = it.uid ? `<button class="ocav" aria-label="${esc(it.n || it.uid)}" onclick="odaWho('${esc(it.uid)}',this)"><div class="av">${avHtml(it.n, it.av)}</div></button>` : "";
   const nr = it.uid ? `<div class="ocnr">${odaChName(it)}${tm}</div>` : "", bt = it.uid ? "" : tm; // adlı satırda saat adın yanında; adsızda balonun sonunda
   if (it.kind === "enter") return `<div class="ocm ocl oce" data-id="${id}"${tt}><div class="ocln">👋 ${it.uid ? odaChName(it, true) : esc(it.n || "Biri")} odaya girdi${tm}</div></div>`;
   if (it.kind === "system") return `<div class="ocm ocl ocs" data-id="${id}"${tt}><div class="ocln">📢 ${it.uid ? odaChName(it, true) + " " : ""}${emo(esc(it.t))}${tm}</div></div>`;
   if (it.kind === "gift" || it.kind === "reward") { const g = it.gift || { name: "", icon: "", count: 1 }, ic = g.icon ? `<img class="ocgi" src="${esc(g.icon)}" alt="" loading="lazy" onerror="this.remove()">` : "🎁";
     const body = it.kind === "reward" ? `🍀 ${ic} <span class="ocgt">${nf(g.win || 0)} ${g.unit === "coins" ? "coin" : "kat"}</span> kazandı`
-      : `${g.to === "*" ? "🎉 Tüm odaya" : g.to ? `→ ${g.toUid ? `<button class="ocn" style="display:inline;--ocnc:#fde68a" onclick="odaPick('${esc(g.toUid)}')"><span>${esc(g.to)}</span></button>` : esc(g.to)}` : ""} ${ic} ${esc(g.name || "Hediye")} <span class="ocgt">×${nf(g.count || 1)}</span>`;
+      : `${g.to === "*" ? "🎉 Tüm odaya" : g.to ? `→ ${g.toUid ? `<button class="ocn" style="display:inline;--ocnc:#fde68a" onclick="odaWho('${esc(g.toUid)}',this)"><span>${esc(g.to)}</span></button>` : esc(g.to)}` : ""} ${ic} ${esc(g.name || "Hediye")} <span class="ocgt">×${nf(g.count || 1)}</span>`;
     return `<div class="ocm ocg" data-id="${id}"${tt}>${av}<div class="ocbd">${nr}<div class="ocbub">${body}${bt}</div></div></div>`; }
   return `<div class="ocm" data-id="${id}"${tt}>${av}<div class="ocbd">${nr}<div class="ocbub">${emo(esc(it.t))}${bt}</div></div></div>`; }
 const odaChEl = () => { const b = $("odaBody"); return b ? b.querySelector(":scope > .ochatw") : null; };
@@ -2663,7 +2834,8 @@ let odaSayP = []; // { cid, room, text, st: "wait"|"ok"|"err", err, ecid, tm }
 const odaSayCan = () => { const age = odaCh.t ? Date.now() - odaCh.t : 1e12, r = odaData && odaData.room; return !!odaCh.room && odaCh.inn === true && age < ODA_CH_YOK && !(r && r.live === false); };
 function odaSayUi() { const w = odaChEl(); if (!w) return; let f = w.querySelector(":scope > .ocsay"); const want = isSahip() && !!odaChRoom();
   if (!want) { if (f) f.remove(); return; }
-  if (!f) { w.insertAdjacentHTML("beforeend", `<form class="ocsay" onsubmit="event.preventDefault();odaSay()"><input class="ocsin" maxlength="100" enterkeyhint="send" autocomplete="off" autocorrect="on" aria-label="Oda sohbetine yaz"><button class="ocsgo" aria-label="Gönder">➤</button></form>`); f = w.querySelector(":scope > .ocsay"); }
+  if (!f) { w.insertAdjacentHTML("beforeend", `<form class="ocsay" onsubmit="event.preventDefault();odaSay()"><input class="ocsin" maxlength="100" enterkeyhint="send" autocomplete="off" autocorrect="on" aria-label="Oda sohbetine yaz"><button class="ocsgo" aria-label="Gönder">➤</button></form>`); f = w.querySelector(":scope > .ocsay");
+    const i0 = f.querySelector("input"); ["blur", "keyup", "click", "input"].forEach((ev) => i0.addEventListener(ev, () => { i0.__sel = i0.selectionEnd; })); } // ✍️ "@Ad yaz" imlecin olduğu yere eklesin
   const ok = odaSayCan(), inp = f.querySelector("input"), bt = f.querySelector("button"), ph = ok ? "Bir şey söyle… (Selçuk hesabından)" : odaCh.inn === false ? "Tablet odada değil" : "Tablet odaya bağlanınca yazılabilir";
   if (inp.disabled === ok) inp.disabled = !ok; if (bt.disabled === ok) bt.disabled = !ok; if (inp.placeholder !== ph) inp.placeholder = ph; if (f.classList.contains("ocoff") === ok) f.classList.toggle("ocoff", !ok); }
 window.odaSay = async function (retry) { if (!isSahip()) return; const w = odaChEl(), inp = w && w.querySelector(".ocsin"); let text = "";
@@ -2681,7 +2853,7 @@ function odaSayEnd(p, ok, err, ecid) { clearTimeout(p.tm); p.st = ok ? "ok" : "e
   odaSayDraw(); }
 /** room_say_ok: { id, room, ok, err?, cid? } (tablet) */
 window.odaSayOk = function (pl) { const p = pl && odaSayP.find((x) => x.cid === String(pl.id || "")); if (!p || p.st !== "wait") return; odaSayEnd(p, !!pl.ok, pl.err, String(pl.cid || "")); };
-function odaSayEcho() { const g = odaSayP.filter((p) => p.st === "ok" && p.ecid && odaCh.ids.has(p.ecid)); if (!g.length) return; g.forEach((p) => clearTimeout(p.tm)); odaSayP = odaSayP.filter((p) => !g.includes(p)); odaSayDraw(); } // asıl satır geldi
+function odaSayEcho() { const g = odaSayP.filter((p) => p.st === "ok" && p.ecid && odaCh.ids.has(p.ecid)); if (!g.length) return; g.forEach((p) => clearTimeout(p.tm)); odaSelfLearn(g); odaSayP = odaSayP.filter((p) => !g.includes(p)); odaSayDraw(); } // asıl satır geldi
 function odaSayDraw() { const w = odaChEl(), sc = w && w.querySelector(".ochs"); if (!sc) return; const L = odaSayP.filter((x) => x.room === odaCh.room); let pw = sc.querySelector(":scope > .ocpw");
   if (!L.length) { if (pw) pw.remove(); odaSayUi(); return; }
   if (!pw) { sc.insertAdjacentHTML("beforeend", '<div class="ocpw"></div>'); pw = sc.lastElementChild; } else if (pw !== sc.lastElementChild) sc.appendChild(pw);
@@ -3487,7 +3659,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.94"></script>
-<script src="durum.js?v=2.1.94"></script>
+<script src="profile.js?v=2.1.95"></script>
+<script src="durum.js?v=2.1.95"></script>
 </body>
 </html>
