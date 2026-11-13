@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.92">
+<meta name="build" content="2.1.93">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.92">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.92">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.92">
+<link rel="manifest" href="manifest.json?v=2.1.93">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.93">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.93">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -528,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.92" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.93" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -537,7 +537,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.92" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.93" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -595,7 +595,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.92"></script>
+<script src="emoji.js?v=2.1.93"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2048,7 +2048,7 @@ async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit 
   renderCoins(); } // gizliyken de çizilir: sekme açılınca hazır (yer tutucu / eski hâl yerine)
 function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {}, du = c.dm_unpaid || {}, db = c.debt || {}, low = c.stock != null && c.low_coin > 0 && c.stock < c.low_coin;
   if ($("hStock")) $("hStock").style.color = low ? "#f87171" : "";
-  $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div></div>
+  $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div>${rcOwn() && c.recall && c.recall.pending_n > 0 ? `<div class="s" style="color:#fbbf24">↩️ İade bekleyen: <b>${nf(c.recall.pending_coins)} coin</b> (${c.recall.pending_n} sipariş)</div>` : ""}</div>
       <div class="card"><div class="k">📅 Bugün gönderilen</div><div class="v">${nf(td.coins)}</div><div class="s">${td.n || 0} satış · ${azn(td.azn || 0)}</div></div>
       <div class="card"><div class="k">🗓️ Son 7 gün</div><div class="v">${nf(wk.coins)}</div><div class="s">${wk.n || 0} satış · ${azn(wk.azn || 0)}</div></div>
       <div class="card" onclick="tab('dm')" style="cursor:pointer"><div class="k">💎 Ödenmemiş elmas</div><div class="v">${azn(du.pay || 0)}</div><div class="s">${du.n || 0} bozum › Elmas</div></div>
@@ -2060,10 +2060,44 @@ function renderCoins() { const c = coinData; if (!c) return; const td = c.today 
       return `<div class="row" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
         <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
           <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
-          <div class="s"><span style="color:${st[2]}">${st[0]} ${st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}</div></div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
+          <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
     ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
     <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`; }
-setInterval(() => { if (me && document.visibilityState === "visible") loadCoins(); }, 120_000); // üstteki bakiye 2 dk'da bir
+let coinPollAt = 0, coinT = 0; // 📡 13.11: "coins" sinyali gelince anında; yedek yoklama kanal sağlıklıyken 2 dk, değilse 1 dk
+setInterval(() => { if (!me || document.visibilityState !== "visible") return; let ok = false; try { ok = rtHealthy(); } catch (e) {} if (Date.now() - coinPollAt < (ok ? 120_000 : 60_000) - 1500) return; coinPollAt = Date.now(); loadCoins(); }, 60_000);
+// ↩️ Coin geri çağırma (order recall, 13.11): YALNIZ yönetici (ajans sahibi, kendi hesabında). Düğme/rozet başkasında DOM'a hiç girmez; yetkiyi sunucu ayrıca denetler.
+const rcOwn = () => isSahip() && !(me && me.switched);
+const RCB = { iade_bekleniyor: ["↩️ iade bekleniyor (inceleme)", "#fbbf24"], iade_geldi: ["↩️ geri çekildi · iade geldi", "#94a3b8"], inceleme_reddetti: ["⛔ inceleme reddetti", "#f87171"], belirsiz: ["⚠️ geri çağırma belirsiz", "#fbbf24"], gonderiliyor: ["⏳ geri çağırma gönderiliyor", "#94a3b8"] };
+function rcRozet(o) { if (!rcOwn() || !o.rc || !o.rc.state || !RCB[o.rc.state]) return ""; const b = RCB[o.rc.state];
+  return ` · <span class="rcr" style="color:${b[1]}">${b[0]}${o.rc.state === "iade_geldi" && o.rc.refunded_at ? " " + rel(Date.parse(o.rc.refunded_at)) : ""}</span>`; }
+let rcCur = null;
+async function rcOpen(oid) { if (!rcOwn()) return; const o = ((coinData && coinData.orders) || []).find((x) => String(x.order_id) === String(oid)); if (!o) return;
+  rcCur = { o, prev: null };
+  openModal(`<div style="padding:4px 2px"><h3 style="margin:0 0 6px">↩️ Coin geri çağır</h3>
+    <div class="s">👤 <b style="color:var(--text)">${esc(o.buyer_name || "UID " + o.buyer_uid)}</b> · UID ${esc(o.buyer_uid)}<br>🪙 <b style="color:var(--text)">${nf(o.coins)} coin</b> · ${azn(o.expected_azn || 0)} · ${rel(Date.parse(o.ordered_at))} · sipariş …${esc(String(o.order_id).slice(-4))}</div>
+    <div id="rcBody" style="margin-top:10px;min-height:120px"><div class="s">⏳ Panel kontrol ediliyor…</div></div></div>`);
+  const d = await api("coin_recall_check", { order_id: String(oid) }); // ön kontrol: pencere açılınca BİR kez (panelde hiçbir şey göndermez)
+  if (!rcCur || rcCur.o !== o || !$("rcBody")) return;
+  if (d.error || !d.report || !d.report.recall) { $("rcBody").innerHTML = `<p style="color:#f87171">❌ ${esc(d.error || "Kontrol edilemedi")}</p><button style="width:100%" onclick="closeModal()">Kapat</button>`; return; }
+  const r = d.report.recall, pv = r.preview || {}, act = pv.actual != null ? pv.actual : o.coins; rcCur.prev = r;
+  $("rcBody").innerHTML = `<div class="card" style="margin:0 0 8px">Müşteriden düşülecek: <b>${nf(act)} coin</b>${pv.partial ? `<div style="color:#f87171;margin-top:4px">⚠️ Müşterinin bakiyesi yetmiyor: ${nf(act)} coin düşülecek, ${nf(pv.diff || 0)} coin kovalanmaz.</div>` : ""}</div>
+    <div>Bu ay kalan geri çağırma hakkı: <b>${r.remaining != null ? r.remaining : "?"}</b> <span class="s">(her deneme sayılır)</span></div>
+    <ul class="s" style="margin:6px 0 8px;padding-left:18px"><li>Coin müşteriden hemen düşülür</li><li>SUGO 1–2 iş günü içinde inceler</li><li>Onaylanırsa coin bakiyemize döner</li><li>Reddedilirse coin müşteriye geri yüklenir</li><li>Aynı sipariş yalnız bir kez geri çağrılabilir</li></ul>
+    <label for="rcReason"><b>Açıklama (zorunlu)</b> <span class="s">— panele gider</span></label>
+    <textarea id="rcReason" maxlength="300" rows="3" style="width:100%;box-sizing:border-box;margin-top:4px" placeholder="Örn: Yanlış kişiye / fazla gönderim — ödeme gelmedi"></textarea>
+    <div class="s" style="text-align:right"><span id="rcCnt">0</span>/300</div>
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:8px;margin-top:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="rcGo" disabled onclick="rcSend()">↩️ GERİ ÇAĞIR — geri alınamaz</button></div>`;
+  const t = $("rcReason"); t.addEventListener("input", () => { $("rcCnt").textContent = t.value.length; $("rcGo").disabled = t.value.trim().length < 3; }); }
+async function rcSend() { const c = rcCur; if (!c || !c.prev || !rcOwn()) return; const t = $("rcReason"), reason = t ? t.value.trim() : "";
+  if (reason.length < 3) { toast("Açıklama zorunlu (en az 3 karakter)", true); return; }
+  const o = c.o, act = c.prev.preview && c.prev.preview.actual != null ? c.prev.preview.actual : null;
+  if (!confirm(`↩️ GERİ ÇAĞIRMA — GERİ ALINAMAZ\n\nKimden: ${o.buyer_name || ""} (UID ${o.buyer_uid})\nDüşülecek: ${nf(act != null ? act : o.coins)} coin\nAçıklama: ${reason}\n\nBu ayın geri çağırma hakkından 1 düşer. Onaylıyor musunuz?`)) return;
+  $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz"); if (!pin) { rcCur = null; return; }
+  openModal(`<div style="text-align:center;padding:20px">⏳ Geri çağırılıyor…<div class="s" style="margin-top:6px">Panelin cevabı bekleniyor</div></div>`);
+  const d = await api("coin_recall", { order_id: String(o.order_id), reason, expect: act, pin }); if (d.pin === "wrong") pinCache = null; rcCur = null;
+  const msg = d.error ? (d.certain === false ? `⚠️ ${esc(d.error)}` : `❌ ${esc(d.error)}`) : `✅ ${esc(d.ok || "Geri çağırma isteği gönderildi — iade bekleniyor")}`;
+  openModal(`<div style="padding:16px"><b>↩️ Geri çağırma</b><p>${msg}</p>${d.certain === false ? `<p class="s" style="color:#fbbf24">Tekrar denemeyin: sonuç birkaç dakika içinde panelden okunacak.</p>` : ""}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
+  loadCoins(); }
 
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
 let dmLimit = 10, dmData = null;
@@ -3120,9 +3154,14 @@ async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn
       const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
     closeModal(); toast("❌ " + d.error, true); return; }
   closeModal(); if (cn && cn.uid === cur) { chX.sent = { at: new Date().toISOString(), coins: c, by: (me && me.name) || "" }; renderChat(); } // ⚡ öneriler hemen kaybolur
-  if (d.certain) { toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
+  if (d.certain) { coinIyimser(cn, c, name, d.report && d.report.order_id); toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
   else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
   cn = null; }
+
+// ⚡ 13.11: kesin gönderimde bakiye ve liste hemen (sunucu panelden okuyup sinyal gönderir; 3 sn sonra yedek okuma)
+function coinIyimser(k, c, name, oid) { try { if (coinData) { if (coinData.stock != null) { coinData.stock -= c; $("hStock").textContent = nf(coinData.stock); }
+    if (!(coinData.orders || []).some((o) => oid && String(o.order_id) === String(oid))) { coinData.orders = [{ order_id: oid || "iyimser-" + Date.now(), buyer_uid: k.uid, buyer_name: name, coins: c, recalled_coins: 0, status: "open", expected_azn: k.azn ?? c / 1000, ordered_at: new Date().toISOString(), by: (me && me.name) || "", _iyimser: true }, ...(coinData.orders || [])]; coinData.total = (coinData.total || 0) + 1; }
+    renderCoins(); } } catch (e) {} clearTimeout(coinT); coinT = setTimeout(() => { coinPollAt = Date.now(); loadCoins(); }, 3000); }
 
 // ---------- telefon bildirimi + ses
 const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
@@ -3317,6 +3356,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; if
 }
 // Gelen yayının işlenmesi (iki düzende ortak; bugünkü connectRt'nin içinden aynen taşındı)
 function rtOlay(ev, pl) {
+    if (ev === "coins") { if (pl.stock != null && can("coins")) { $("hStock").textContent = nf(pl.stock); if (coinData) coinData.stock = pl.stock; } clearTimeout(coinT); coinT = setTimeout(() => { coinPollAt = Date.now(); loadCoins(); }, 300); return; } // 🪙 13.11: panel okundu (yeni satış / bakiye / geri çağırma): üst bakiye hemen, liste kısa gecikmeyle
     if (ev === "wallet") { const w = pl.wallet || pl; if (walletOk() && (w.coin != null || w.diamond != null)) walletSet({ coin: w.coin, diamond: w.diamond, at: new Date().toISOString() }); if (cur) idLive(); return; } // 💎 bayi hesabının elması / coini değişti
     if (ev === "link") { if (pl.need_login) { STAT.needLogin = Date.now(); statLine(); } else if ("mode" in pl || "need_login" in pl) { STAT.needLogin = 0; statLine(); } if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
     if (ev === "room_seats") { if (window.odaSeatsSet) odaSeatsSet(pl); return; } // 🎤 tabletteki Selçuk oturumu odada: mikrofon / kilit / konuşuyor (Oda sekmesi açıkken)
@@ -3437,7 +3477,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.92"></script>
-<script src="durum.js?v=2.1.92"></script>
+<script src="profile.js?v=2.1.93"></script>
+<script src="durum.js?v=2.1.93"></script>
 </body>
 </html>
