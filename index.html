@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.88">
+<meta name="build" content="2.1.89">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.88">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.88">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.88">
+<link rel="manifest" href="manifest.json?v=2.1.89">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.89">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.89">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -528,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.88" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.89" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -537,7 +537,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.88" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.89" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -595,7 +595,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.88"></script>
+<script src="emoji.js?v=2.1.89"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -728,12 +728,13 @@ function msgRestore(a) { if (!a || a.c !== cur) return; const box = $("msgs"); l
     if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - a.off; else if (a.top != null) box.scrollTop = a.top; };
   go(); requestAnimationFrame(go); setTimeout(go, 250); setTimeout(go, 900); } // resimler yüklenip yükseklik değişirse yeniden
 // ℹ️ En alttaki bilgi satırı: sürüm · sunucu gecikmesi · canlı bağlantı · son canlı mesaj · Sugo bağlantısı
-const STAT = { api: [], rt: null, rtOn: false, live: null, link: "", needLogin: 0 };
+const STAT = { api: [], rt: null, rtOn: false, rtYol: "", rtAdr: "", live: null, link: "", needLogin: 0 }; // rtYol: "Contabo" | "Supabase" (yalnız sunucu adres listesi verdiğinde; yoksa boş → satır bugünkü gibi); satırda yalnız yedekte " yedek" yazar · rtAdr: bağlı adresin sunucu adı (ipucu)
 function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
   const bits = [...(STAT.needLogin && Date.now() - STAT.needLogin < 15 * 60e3 ? ["🔑 Sugo oturumu kapandı – tablet yeniden giriş yapıyor"] : []), `sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}${apiYolAd ? " " + apiYolAd : ""}`,
-    `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
-  document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); }); }
-async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); renderInbox(); if (cur) renderChat(); } }
+    `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") + (STAT.rtYol === "Supabase" ? " yedek" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
+  const ip = STAT.rtYol ? `Canlı kanal: ${STAT.rtYol === "Supabase" ? "yedek (Supabase)" : "Contabo"}${STAT.rtAdr ? " · " + STAT.rtAdr : ""}${STAT.rtYol === "Supabase" && rtYedekAt ? " · " + new Date(rtYedekAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) + "'den beri" : ""}` : ""; // ayrıntı yalnız ipucunda (satır kısa kalır: "Sugo bağlı" telefonda kesilmesin)
+  document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); if (ip) el.title = ip; else if (el.title) el.removeAttribute("title"); }); }
+async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); renderInbox(); if (cur) renderChat(); if (tok && (rtYeni(rtConf(d)) || rtYeni(rtCfg))) rtEnsure(); } } // 📡 adres listesi değiştiyse (rt_yol) yeniden bağlanır
 async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
 async function api0(action, body = {}) {
   const t0 = tok; // isteğin gönderildiği oturum: geç gelen 401 (kapanmış geçiş oturumunun eski isteği) şimdiki oturumu düşürmesin (yavaş ağ testi, 11.11)
@@ -741,7 +742,7 @@ async function api0(action, body = {}) {
   if (!r) return { error: "Bağlantı yok" };
   if (r.status === 401 && t0 !== tok) return { error: "Oturum değişti, tekrar deneyin" };
   if (r.status === 401 && swOwner() && swOwner() !== tok) { swDone(swOwner()); return { error: "Geçiş oturumu kapandı, kendi hesabınıza dönülüyor" }; } // 🔀 geçiş oturumu kapanmış: sahibin oturumuna dön
-  if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); show("login"); pushDrop(); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
+  if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); rtBitir(); show("login"); pushDrop(); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
   return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
 }
 // 🟡 Kısmen ödenmiş bozum (sunucu paid_part: ödenen kısım): "Kısmen ödendi 10/33 ₼ · kalan 23 ₼"
@@ -797,7 +798,7 @@ async function pushEndpoint() { try { if (!("serviceWorker" in navigator)) retur
 // Oturum kapandıysa (401) ya da sayfa girişsiz açıldıysa: bu tarayıcının aboneliği bırakılır (sunucuya soramayız; bildirim servisi aboneliği düşürür, sunucu ilk gönderimde kapatır)
 async function pushDrop() { const ps = await pushEndpoint(); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } }
 async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; const ps = await pushEndpoint();
-  await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
+  await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } tok = ""; ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); rtBitir(); loginMsg("Çıkış yapıldı", "wait"); show("login"); }
 
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
 async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekteki adla)
@@ -3273,13 +3274,17 @@ function schedInbox() { if (siT) return; siT = setTimeout(() => { siT = 0; loadI
 const liveFresh = (c) => Date.now() - (liveAt[c] || 0) < 5000; // canlı olay az önce uygulandı: aynı sohbet yeniden çekilmez
 // 📡 Canlı bağlantı (Supabase Realtime): kalp atışı 25 sn'de bir, 10 sn'de cevap gelmezse bağlantı düşürülür; yeniden bağlanma 0,5→1→2→4→8 sn;
 // yeniden bağlanınca kaçanlar için açık sohbet + liste bir kez yenilenir; uygulamaya dönüşte son cevap 30 sn'den eskiyse hemen yeniden bağlanılır
+// Yeni yapılandırma (`me.rt.adresler` var): önce Contabo (birincil) adresleri, olmazsa Supabase (yedek = `rt.url`); ayrıntı aşağıda "Sinyal durum makinesi".
+// Eski yapılandırma (`adresler` yok): aşağıdaki connectRt gövdesi bugünkü gibi birebir çalışır.
 let rtCfg = null, rtTry = 0, rtLast = 0, rtWasOn = false, rtTimer = 0;
 const rtConf = (m) => { const r = m && m.rt; return r && r.url && r.anon && r.topic ? r : null; };
-function rtEnsure() { const nc = rtConf(me); if (!nc) return; if (!rt || !rtCfg || nc.url !== rtCfg.url || nc.topic !== rtCfg.topic || nc.anon !== rtCfg.anon) connectRt(nc); }
+const rtYeni = (c) => !!(c && Array.isArray(c.adresler) && c.adresler.length); // sunucu yeni alanı veriyor mu (yoksa bugünkü davranış)
+const rtAnah = (c) => (c ? [c.url, c.topic, c.anon, rtYeni(c) ? c.adresler.join("|") : ""].join(" ") : "");
+function rtEnsure() { const nc = rtConf(me); if (!nc) return; if ((!rt && !rtDen) || !rtCfg || nc.url !== rtCfg.url || nc.topic !== rtCfg.topic || nc.anon !== rtCfg.anon || ((rtYeni(nc) || rtYeni(rtCfg)) && rtAnah(nc) !== rtAnah(rtCfg))) connectRt(nc); } // adres listesi değiştiyse (uzaktan kapatma rt_yol) yeniden bağlan
 function rtDown(ws) { if (ws.__down) return; ws.__down = 1; if (rt !== ws) return; rt = null; STAT.rtOn = false; statLine();
   const ms = Math.min(8000, 500 * 2 ** rtTry); rtTry++; clearTimeout(rtTimer); rtTimer = setTimeout(() => { if (!rt && tok) connectRt(); }, ms); }
-function rtWake() { if (!tok || !(rtCfg || rtConf(me))) return; if (!rt || rt.readyState !== 1 || Date.now() - rtLast > 30_000) { rtTry = 0; connectRt(); } else if (rt.__beat) rt.__beat(); }
-function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rtCfg = cfg; clearTimeout(rtTimer);
+function rtWake() { if (!tok || !(rtCfg || rtConf(me))) return; if (rtDen && rtYeni(rtCfg)) return; /* yeni düzende bağlanma denemesi sürüyor */ if (!rt || rt.readyState !== 1 || Date.now() - rtLast > 30_000) { rtTry = 0; connectRt(); } else if (rt.__beat) rt.__beat(); }
+function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; if (rtYeni(cfg)) { rtBaglan(cfg); return; } rtYeniDur(); rtNesil++; rtDen = 0; STAT.rtYol = ""; /* eski biçime dönüldüyse yeni düzenin denemeleri biter */ rtCfg = cfg; clearTimeout(rtTimer);
   const old = rt; rt = null; if (old) { old.__down = 1; try { old.close(); } catch (e) {} }
   let ws; try { ws = new WebSocket(cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(cfg.anon) + "&vsn=1.0.0"); } catch (e) { const f = { __down: 0 }; rt = f; rtDown(f); return; }
   rt = ws; let ref = 1, hb = 0, wd = 0; const hbAt = {};
@@ -3292,7 +3297,11 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (rtWasOn) { schedChat(); schedInbox(); } rtWasOn = true; }; // yeniden bağlandı: arada kaçanlar bir kez çekilir
   ws.onmessage = (m) => { if (rt !== ws) return; rtLast = Date.now(); let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); for (const k in hbAt) delete hbAt[k]; clearTimeout(wd); wd = 0; statLine(); return; }
-    if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event, pl = d.payload.payload || {};
+    if (d.event !== "broadcast" || !d.payload) return; rtOlay(d.payload.event, d.payload.payload || {}); };
+  ws.onclose = () => { clearInterval(hb); clearTimeout(wd); rtDown(ws); }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
+}
+// Gelen yayının işlenmesi (iki düzende ortak; bugünkü connectRt'nin içinden aynen taşındı)
+function rtOlay(ev, pl) {
     if (ev === "wallet") { const w = pl.wallet || pl; if (walletOk() && (w.coin != null || w.diamond != null)) walletSet({ coin: w.coin, diamond: w.diamond, at: new Date().toISOString() }); if (cur) idLive(); return; } // 💎 bayi hesabının elması / coini değişti
     if (ev === "link") { if (pl.need_login) { STAT.needLogin = Date.now(); statLine(); } else if ("mode" in pl || "need_login" in pl) { STAT.needLogin = 0; statLine(); } if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
     if (ev === "room_seats") { if (window.odaSeatsSet) odaSeatsSet(pl); return; } // 🎤 tabletteki Selçuk oturumu odada: mikrofon / kilit / konuşuyor (Oda sekmesi açıkken)
@@ -3318,9 +3327,89 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; rt
     if (ev === "outbox") { if (!onOutboxEv(pl) && cur && !liveFresh(cur)) schedChat(); return; }
     if (ev === "msg") { const cv = Array.isArray(pl.convs) ? pl.convs.map(String) : null; // yalnız açık sohbet etkilendiyse; canlı eklenen mesajın yankısı (5 sn içinde, mesaj başına bir kez) yenileme yapmaz
       if (cur && (!cv || cv.includes("b" + cur) || cv.includes(cur))) { if (liveFresh(cur) && liveEcho[cur] > 0) liveEcho[cur]--; else { liveEcho[cur] = 0; schedChat(); } } schedInbox(); return; }
-    if (ev === "inbox") schedInbox(); };
-  ws.onclose = () => { clearInterval(hb); clearTimeout(wd); rtDown(ws); }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
-}
+    if (ev === "inbox") schedInbox(); }
+// 📡 Sinyal durum makinesi (yalnız sunucu `rt.adresler` verdiğinde; docs/realtime-tasima.md 2.2):
+// BIRINCIL_BAGLAN: Contabo adresleri sırayla (her biri ≤ 5 sn: bağlan + katılım "ok") → olmazsa YEDEK_BAGLAN (listenin son öğesi = Supabase).
+// BIRINCIL: kalp atışı 10 sn, cevap 4 sn; kopunca bir kez hemen BIRINCIL_BAGLAN (kalp atışı cevapsızsa birincil + yedek aynı anda: toplam ≤ 15 sn).
+// YEDEK: kalp atışı 25 sn / 10 sn (bugünkü gibi); 60 sn'de bir `yedek_burada`; 10 sn'de bir birincil /realtime/v1/saglik (2 sn); İLK olumlu
+// yoklamada önce birincile bağlan + katıl, SONRA yedeği kapat, birincile bir kez `donus` {k, sn}. Dönülen birincil 30 sn dolmadan koparsa
+// doğrudan yedeğe ve yoklama aralığı katlanır (10 → 20 → 40 → 60 sn); birincilde 30 sn kalınca 10 sn'ye döner.
+// Her geçişte ve her yeniden bağlanmada bir kez tam yenileme (schedChat + schedInbox); tekrar gelen `live` (aynı yük) süzülür.
+let rtDen = 0, rtNesil = 0, rtSag = 0, rtSagT = 0, rtBurT = 0, rtYedekAt = 0, rtYenileme = 0; // rtDen: bağlanma denemesi sürüyor · rtNesil: eski denemelerin geç cevabı yok sayılır · rtYenileme: tam yenileme sayısı (test)
+const RT_K = "web", rtNorm = (u) => String(u || "").replace(/\/+$/, "");
+const rtBirincil = (c) => c.adresler.slice(0, -1).map(rtNorm).filter(Boolean), rtYedek = (c) => rtNorm(c.adresler[c.adresler.length - 1]); // sözleşme: listenin SON öğesi yedek (Supabase), öncekiler sırayla birincil (Contabo); tek öğeliyse yalnız yedek
+function rtYeniDur() { clearTimeout(rtSagT); rtSagT = 0; clearInterval(rtBurT); rtBurT = 0; rtSag = 0; }
+const rtSac = (ms) => Math.round(ms * (0.75 + Math.random() * 0.5)); // artan aralığa ±%25: sunucu dönünce bütün telefonlar aynı anda gelmesin
+// Tam yenileme 20 sn'de en çok bir kez (bağlantı fırtınasında dashboard/bayi-web'e istek dalgası olmasın); arada geçiş olursa süre dolunca bir kez daha
+let rtYenAt = 0, rtYenT = 0, rtDonBek = 10_000; // rtDonBek: yedekteyken birincil sağlık yoklaması aralığı (10 sn; gidip gelmede 20 → 40 → 60 sn)
+function rtYenile() { if (rtYenT) return; const kalan = rtYenAt + 20_000 - Date.now();
+  const yap = () => { rtYenT = 0; rtYenAt = Date.now(); rtYenileme++; schedChat(); schedInbox(); };
+  if (kalan <= 0) yap(); else rtYenT = setTimeout(() => { if (tok) yap(); else rtYenT = 0; }, kalan); }
+// Çıkış / oturum kapandı (401): canlı kanal kapanır, yeni düzenin zamanlayıcıları (yoklama, yedek_burada, yeniden bağlanma) durur (iki biçimde de)
+function rtBitir() { rtYeniDur(); rtNesil++; rtDen = 0; rtDonBek = 10_000; clearTimeout(rtTimer); clearTimeout(rtYenT); rtYenT = 0; rtYedekAt = 0;
+  const o = rt; rt = null; if (o) { o.__down = 1; if (o.__dur) o.__dur(); try { o.close(); } catch (e) {} } STAT.rtOn = false; STAT.rtYol = ""; STAT.rtAdr = ""; rtCfg = null; }
+function rtYay(ws, cfg, event, payload) { try { if (ws && ws.readyState === 1) ws.send(JSON.stringify({ topic: "realtime:" + cfg.topic, event: "broadcast", payload: { type: "broadcast", event, payload }, ref: String(ws.__ref++) })); } catch (e) {} }
+const rtGor = new Map(); // son 2 dk'da işlenen `live` yükleri (geri dönüşte iki bağlantı + köprü aynı olayı iki kez getirebilir)
+function rtTekrar(pl) { let k; try { k = JSON.stringify(pl); } catch (e) { return false; } const now = Date.now();
+  for (const [a, t] of rtGor) { if (now - t > 120_000 || rtGor.size > 200) rtGor.delete(a); else break; }
+  if (rtGor.has(k)) return true; rtGor.set(k, now); return false; }
+// Tek adrese bağlanır; katılım "ok" süre içinde gelirse ok(ws), gelmezse / kapanırsa / katılım reddedilirse bağlantıyı kapatıp fail()
+function rtAc(adr, cfg, bir, sure, ok, fail) { let ws, bitti = 0, t = 0;
+  const son = (iyi) => { if (bitti) return; bitti = 1; clearTimeout(t); if (iyi) { ok(ws); return; } if (ws) { ws.__down = 1; try { ws.close(); } catch (e) {} } fail(); };
+  try { ws = new WebSocket(adr.replace(/^http/, "ws") + "/realtime/v1/websocket?apikey=" + encodeURIComponent(cfg.anon) + "&vsn=1.0.0" + (bir ? "&k=" + RT_K : "")); } catch (e) { ws = null; setTimeout(() => son(false), 0); return; }
+  ws.__adr = adr; ws.__bir = bir; ws.__ref = 2; t = setTimeout(() => son(false), sure);
+  ws.onopen = () => { try { ws.send(JSON.stringify({ topic: "realtime:" + cfg.topic, event: "phx_join", payload: { config: { broadcast: { self: false }, presence: { key: "" } } }, ref: "1" })); } catch (e) {} };
+  ws.onmessage = (m) => { let d = {}; try { d = JSON.parse(m.data); } catch (e) {} if (d.event === "phx_reply" && d.ref === "1") son(!!(d.payload && d.payload.status === "ok")); };
+  ws.onclose = () => son(false); ws.onerror = () => {}; }
+// BIRINCIL_BAGLAN → YEDEK_BAGLAN; neden "zaman": birincil kalp atışına cevap vermedi (takılmış)
+function rtBaglan(cfg, neden) { rtCfg = cfg; clearTimeout(rtTimer); rtYeniDur();
+  const old = rt; rt = null; if (old) { old.__down = 1; if (old.__dur) old.__dur(); try { old.close(); } catch (e) {} STAT.rtOn = false; statLine(); }
+  const n = ++rtNesil, bir = rtBirincil(cfg), yedek = rtYedek(cfg); let i = 0, bitti = 0; rtDen = 1;
+  const kur = (ws) => { if (bitti || n !== rtNesil) { ws.__down = 1; try { ws.close(); } catch (e) {} return; } bitti = 1; rtKur(ws, cfg); };
+  const olmadi = () => { if (bitti || n !== rtNesil) return; bitti = 1; rtDen = 0; // hiçbiri olmadı: 0,5→1→2→4→8 sn sonra baştan (yoklama yedeği bu arada sürer)
+    const ms = rtSac(Math.min(8000, 500 * 2 ** rtTry)); rtTry++; rtTimer = setTimeout(() => { if (!rt && !rtDen && tok) connectRt(); }, ms); };
+  if (neden === "yedek") { rtAc(yedek, cfg, false, 10_000, kur, olmadi); return; } // gidip gelmede birincil denenmez (dönüşü sağlık yoklaması yapar)
+  if (neden === "zaman" && bir.length) { // kopma ~14 sn'de görüldü: birincile bir kez + yedeğe AYNI ANDA, ilk katılan kazanır (sırayla denense ≤ 15 sn tutmuyordu)
+    let kalan = 2; const biri = () => { if (--kalan === 0) olmadi(); };
+    rtAc(bir[0], cfg, true, 5000, kur, biri); rtAc(yedek, cfg, false, 10_000, kur, biri); return; }
+  const sonraki = () => { if (bitti || n !== rtNesil) return;
+    if (i < bir.length) { rtAc(bir[i++], cfg, true, 5000, kur, sonraki); return; }
+    rtAc(yedek, cfg, false, 10_000, kur, olmadi); };
+  sonraki(); }
+// Katılımı tamamlanmış bağlantıyı etkin yapar (BIRINCIL ya da YEDEK)
+function rtKur(ws, cfg) { const bir = !!ws.__bir; rtYeniDur(); rt = ws; rtDen = 0; ws.__at = Date.now(); rtLast = Date.now(); STAT.rtOn = true; STAT.rtYol = bir ? "Contabo" : "Supabase"; STAT.rtAdr = String(ws.__adr || "").replace(/^\w+:\/\//, "");
+  let hb = 0, wd = 0; const hbAt = {};
+  const beat = () => { if (ws.readyState !== 1 || rt !== ws) return; const r = String(ws.__ref++); hbAt[r] = performance.now();
+    try { ws.send(JSON.stringify({ topic: "phoenix", event: "heartbeat", payload: {}, ref: r })); } catch (e) {}
+    if (!wd) wd = setTimeout(() => { wd = 0; if (hbAt[r] != null && rt === ws) { ws.__neden = "zaman"; try { ws.close(); } catch (e) {} rtKopu(ws); } }, bir ? 4_000 : 10_000); };
+  ws.__beat = beat; ws.__dur = () => { clearInterval(hb); clearTimeout(wd); };
+  ws.onmessage = (m) => { if (rt !== ws) return; rtLast = Date.now(); let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
+    if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); for (const k in hbAt) delete hbAt[k]; clearTimeout(wd); wd = 0; statLine(); return; }
+    if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event, pl = d.payload.payload || {};
+    if (ev === "live" && rtTekrar(pl)) return; rtOlay(ev, pl); };
+  ws.onclose = () => { ws.__dur(); rtKopu(ws); }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
+  beat(); hb = setInterval(beat, bir ? 10_000 : 25_000);
+  if (bir) { setTimeout(() => { if (rt === ws) rtDonBek = 10_000; }, 30_000); /* birincilde 30 sn kaldı: dönüş beklemesi sıfırlanır */ if (rtYedekAt) { rtYay(ws, cfg, "donus", { k: RT_K, sn: Math.round((Date.now() - rtYedekAt) / 1000) }); rtYedekAt = 0; } } // yedekten döndü: bir kez
+  else { if (!rtYedekAt) rtYedekAt = Date.now(); const by = () => { if (rt !== ws) { clearInterval(rtBurT); return; } rtYay(ws, cfg, "yedek_burada", { k: RT_K, v: BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel" }); };
+    by(); rtBurT = setInterval(by, 60_000); rtSagBasla(cfg); }
+  if (rtWasOn) rtYenile(); rtWasOn = true; statLine(); } // geçiş / yeniden bağlanma: arada kaçanlar bir kez çekilir
+function rtKopu(ws) { if (ws.__down) return; ws.__down = 1; if (rt !== ws) return; rt = null; STAT.rtOn = false; statLine(); rtYeniDur();
+  if (ws.__donus && Date.now() - (ws.__at || 0) < 30_000) { // gidip gelme: yedekten dönülen birincil 30 sn dolmadan koptu → doğrudan yedeğe, sonraki dönüş beklemesi katlanır
+    rtDonBek = Math.min(60_000, rtDonBek * 2); clearTimeout(rtTimer); rtTimer = setTimeout(() => { if (!rt && !rtDen && tok && rtCfg) rtBaglan(rtCfg, "yedek"); }, 0); return; }
+  const uzun = Date.now() - (ws.__at || 0) >= 30_000; if (uzun) rtTry = 0; const ms = uzun ? 0 : rtSac(Math.min(8000, 500 * 2 ** rtTry)); if (!uzun) rtTry++; // hemen açılıp kapanan sunucuda döngü olmasın
+  clearTimeout(rtTimer); rtTimer = setTimeout(() => { if (!rt && !rtDen && tok && rtCfg) rtBaglan(rtCfg, ws.__neden); }, ms); }
+// YEDEK'te birincilin sağlığı: GET <birincil>/realtime/v1/saglik (2 sn); dönüşü yalnız art arda 2 olumlu yoklama başlatır
+async function rtSaglik(bir) { for (const a of bir) { const c = new AbortController(), t = setTimeout(() => c.abort(), 2000);
+    try { const r = await fetch(a + "/realtime/v1/saglik", { cache: "no-store", signal: c.signal }); const j = r.ok ? await r.json() : null; if (j && j.ok) return a; } catch (e) {} finally { clearTimeout(t); } }
+  return ""; }
+function rtSagBasla(cfg) { const bir = rtBirincil(cfg); if (!bir.length) return; const ws = rt; // rt_yol = "supabase": birincil yok, yoklama da yok
+  const yokla = async () => { rtSagT = 0; if (!tok || rt !== ws) return; const a = await rtSaglik(bir); if (!tok || rt !== ws) return; // oturum yoksa yoklama / dönüş yok
+    if (!a) { rtSagT = setTimeout(yokla, rtDonBek); return; }
+    const n = rtNesil; rtAc(a, cfg, true, 5000, (yeni) => { // ilk olumlu yoklamada: önce birincile bağlan + katıl …
+      if (n !== rtNesil || rt !== ws) { yeni.__down = 1; try { yeni.close(); } catch (e) {} return; }
+      yeni.__donus = 1; ws.__down = 1; ws.__dur(); rtKur(yeni, cfg); try { ws.close(); } catch (e) {} // … sonra yedeği kapat
+    }, () => { if (rt === ws && !rtSagT) rtSagT = setTimeout(yokla, rtDonBek); }); }; // katılım 5 sn'de olmadı: yedekte kal, sonra yine yokla
+  rtSagT = setTimeout(yokla, rtDonBek); }
 // Yedek yoklama: açık sohbette canlı bağlantı sağlıklıysa (son cevap < 40 sn) 60 sn'de bir, değilse (ve listede) 20 sn'de bir; bu arada zaten yenilendiyse sayaç baştan (gereksiz istek yok)
 let pollAt = Date.now();
 const rtHealthy = () => !!(rt && rt.readyState === 1 && STAT.rtOn && Date.now() - rtLast < 40_000);
@@ -3333,7 +3422,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.88"></script>
-<script src="durum.js?v=2.1.88"></script>
+<script src="profile.js?v=2.1.89"></script>
+<script src="durum.js?v=2.1.89"></script>
 </body>
 </html>
