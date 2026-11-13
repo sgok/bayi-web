@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.93">
+<meta name="build" content="2.1.94">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.93">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.93">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.93">
+<link rel="manifest" href="manifest.json?v=2.1.94">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.94">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.94">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -528,7 +528,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.93" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.94" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -537,7 +537,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.93" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.94" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -595,7 +595,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.93"></script>
+<script src="emoji.js?v=2.1.94"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -757,7 +757,9 @@ async function api0(action, body = {}) {
   if (r.status === 401 && t0 !== tok) return { error: "Oturum değişti, tekrar deneyin" };
   if (r.status === 401 && swOwner() && swOwner() !== tok) { swDone(swOwner()); return { error: "Geçiş oturumu kapandı, kendi hesabınıza dönülüyor" }; } // 🔀 geçiş oturumu kapanmış: sahibin oturumuna dön
   if (r.status === 401) { tok = ""; try { localStorage.removeItem("bw_tok_owner"); localStorage.removeItem("bw_sw"); } catch (e) {} document.documentElement.classList.remove("swon"); ["bw_tok", "bw_me", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); cacheClear(); rtBitir(); show("login"); pushDrop(); return { error: "Oturum kapandı, tekrar giriş yapın" }; }
-  return await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
+  const j = await r.json().catch(() => ({ error: "Yanıt okunamadı" }));
+  if (r.status >= 500 && j && typeof j === "object" && !Array.isArray(j)) j._http = r.status; // sunucu / yol hatası: yazma işlemlerinde "belirsiz" ayrımı
+  return j;
 }
 // 🟡 Kısmen ödenmiş bozum (sunucu paid_part: ödenen kısım): "Kısmen ödendi 10/33 ₼ · kalan 23 ₼"
 const partN = (x) => String(Math.round(Number(x || 0) * 100) / 100).replace(".", ",");
@@ -2092,11 +2094,13 @@ async function rcSend() { const c = rcCur; if (!c || !c.prev || !rcOwn()) return
   if (reason.length < 3) { toast("Açıklama zorunlu (en az 3 karakter)", true); return; }
   const o = c.o, act = c.prev.preview && c.prev.preview.actual != null ? c.prev.preview.actual : null;
   if (!confirm(`↩️ GERİ ÇAĞIRMA — GERİ ALINAMAZ\n\nKimden: ${o.buyer_name || ""} (UID ${o.buyer_uid})\nDüşülecek: ${nf(act != null ? act : o.coins)} coin\nAçıklama: ${reason}\n\nBu ayın geri çağırma hakkından 1 düşer. Onaylıyor musunuz?`)) return;
-  $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz"); if (!pin) { rcCur = null; return; }
+  $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz", true); if (!pin) { rcCur = null; return; } // 5 dk önbellek kullanılmaz
   openModal(`<div style="text-align:center;padding:20px">⏳ Geri çağırılıyor…<div class="s" style="margin-top:6px">Panelin cevabı bekleniyor</div></div>`);
-  const d = await api("coin_recall", { order_id: String(o.order_id), reason, expect: act, pin }); if (d.pin === "wrong") pinCache = null; rcCur = null;
-  const msg = d.error ? (d.certain === false ? `⚠️ ${esc(d.error)}` : `❌ ${esc(d.error)}`) : `✅ ${esc(d.ok || "Geri çağırma isteği gönderildi — iade bekleniyor")}`;
-  openModal(`<div style="padding:16px"><b>↩️ Geri çağırma</b><p>${msg}</p>${d.certain === false ? `<p class="s" style="color:#fbbf24">Tekrar denemeyin: sonuç birkaç dakika içinde panelden okunacak.</p>` : ""}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
+  const d = await api("coin_recall", { order_id: String(o.order_id), reason, expect: act, pin }); rcCur = null;
+  // Belirsiz: sunucu certain:false dedi, ya da istek sonucu bilinmeden koptu (yönlendirici 504 + belirsiz, ağ hatası, zaman aşımı, 5xx) → panel işlemiş olabilir
+  const bel = !d.ok && d.pin !== "wrong" && (d.certain === false || d.belirsiz || d._http >= 500 || d.error === "Bağlantı yok" || d.error === "Yanıt okunamadı");
+  const msg = d.ok ? `✅ ${esc(d.ok || "Geri çağırma isteği gönderildi — iade bekleniyor")}` : bel ? "⚠️ <b>Sonuç belirsiz — TEKRAR DENEMEYİN</b>; birkaç dakika içinde satırdaki rozetten anlaşılır." : `❌ ${esc(d.error || "Olmadı")}`;
+  openModal(`<div style="padding:16px"><b>↩️ Geri çağırma</b><p>${msg}</p>${bel && d.error ? `<p class="s">${esc(d.error)}</p>` : ""}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
   loadCoins(); }
 
 // 💎 Elmas Bozumları: ödenmemişler + son kayıtlar (5'er), ödendi yap / geri al
@@ -2862,10 +2866,10 @@ function pinChange() { sheet("pin", `<h3 style="margin:0 0 8px">🔢 İşlem PIN
   <button class="go" onclick="pinSave()">Kaydet</button><button onclick="closeModal()">Vazgeç</button></div>`); }
 async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.test(n)) { toast("PIN 4 rakam olmalı", true); return; } if (n !== $("pcNew2").value.trim()) { toast("PIN'ler aynı değil", true); return; }
   const d = await api("change_pin", { password: $("pcPw").value, new_pin: n }); if (d.error) { toast(d.error, true); return; } pinCache = null; if (me) me.has_pin = true; toast("✅ PIN değiştirildi"); closeModal(); }
-// İşlem PIN'i: 5 dakika hatırlanır (tablet gibi)
+// İşlem PIN'i: 5 dakika hatırlanır (tablet gibi). taze=true (↩️ geri çağırma, geri alınamaz): HER SEFERİNDE sorulur, önbellek ne okunur ne yazılır
 let pinCache = null;
-function askPin(title) { if (pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
-  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
+function askPin(title, taze) { if (!taze && pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
+  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v && !taze) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
     openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3>${swOn() ? `<div class="s swpin" style="margin:-4px 0 8px">👑 Kendi PIN'iniz (${esc(me.switched.by || "ajans sahibi")})</div>` : ""}<input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
     // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor)
@@ -3072,14 +3076,20 @@ const AU_ACT = { send: "Mesaj gönderdi", send_image: "Resim gönderdi", send_vo
   pcard_save: "Kart kaydetti", pcard_bulk: "Toplu kart ekledi", pcard_move: "Kart sırasını değiştirdi", pcard_reset: "Kart hakkını sıfırladı", web_user_set: "Kullanıcıyı değiştirdi", bayi_link_set: "Bayi bağlantısını değiştirdi", bayi_toggle: "Sugo Bayi aç / kapa",
   link_pause: "Sugo uygulaması (sunucu bekledi)", link_pause_request: "Sugo uygulaması onayı istedi", link_pause_decide: "Sugo uygulaması isteğine karar verdi", link_pause_cancel: "Sugo uygulaması isteğini geri aldı",
   login: "Giriş yaptı", logout: "Çıkış yaptı", change_password: "Şifresini değiştirdi", change_pin: "İşlem PIN'ini değiştirdi", push_sub: "Bildirimleri açtı", bayi_templates_save: "Hazır mesajları değiştirdi" };
-let auCat = "mesaj", auUser = (() => { try { return localStorage.getItem("bw_auUser") || ""; } catch (e) { return ""; } })(), auRows = null, auTotal = 0, auToday = {};
+let auCat = "mesaj", auUser = (() => { try { return localStorage.getItem("bw_auUser") || ""; } catch (e) { return ""; } })(), auRows = null, auTotal = 0, auToday = {}, auRc = null;
 function ownAudit() { auRows = null; sheet("oaudit", `<h3>📜 İşlem kaydı</h3><div id="auBody">${auHtml()}</div>`); (ouData ? Promise.resolve() : ouLoad()).then(() => { if (!auUser || !ouUsers().some((u) => u.name === auUser)) auUser = (ouUsers().find((u) => !ouSelf(u)) || ouUsers()[0] || {}).name || "Ülker"; auOpen(auCat); }); }
 function auDraw() { if ($("auBody")) ownFill("oaudit", "auBody", auHtml()); }
 function auPick(n) { auUser = n; try { localStorage.setItem("bw_auUser", n); } catch (e) {} auOpen(auCat); }
 async function auOpen(k, more) { auCat = k; if (!more) { auRows = null; auDraw(); } const cat = k, who = auUser;
   const d = await api("web_audit_get", { cat, user: who, limit: 30, offset: more ? (auRows || []).length : 0 }); if (cat !== auCat || who !== auUser) return; // bu arada başka sekme seçildi
   if (d.error) { toast(d.error, true); auRows = []; auDraw(); return; } const a = (d.report && d.report.audit) || {};
-  auRows = more ? (auRows || []).concat(a.rows || []) : a.rows || []; auTotal = a.total || 0; auToday = a.today || {}; auDraw(); }
+  auRows = more ? (auRows || []).concat(a.rows || []) : a.rows || []; auTotal = a.total || 0; auToday = a.today || {}; if (!more) auRc = rcOwn() && Array.isArray(a.recalls) ? a.recalls : null; auDraw(); }
+// ↩️ Geri çağırma denetim satırları (yalnız yönetici; sunucu da yalnız ona gönderir): kim, ne zaman, açıklama, durum
+const RC_DURUM = { gonderiliyor: "⏳ gönderiliyor", belirsiz: "⚠️ belirsiz", panel_reddetti: "❌ panel reddetti / gitmedi", iade_bekleniyor: "↩️ iade bekleniyor (inceleme)", iade_geldi: "✅ iade geldi", inceleme_reddetti: "⛔ inceleme reddetti" };
+function auRcHtml() { if (auCat !== "coin" || !auRc || !auRc.length || !rcOwn()) return "";
+  return `<div class="setlbl" style="margin:4px 4px 2px">↩️ Geri çağırmalar <span class="s">(herkes)</span></div>` + auRc.map((r) => `<div class="aurow"><div class="aut"><span><b>${esc(r.buyer_name || "UID " + r.buyer_uid)}</b> <span class="s">UID ${esc(r.buyer_uid)}</span></span><span>${r.requested_at ? rel(Date.parse(r.requested_at)) : ""}</span></div>
+    <div>🪙 <b>${nf(r.expected_coins != null ? r.expected_coins : r.coins)} coin</b> · ${esc(RC_DURUM[r.state] || r.state || "")} <span class="s">· ${r.source === "disaridan" ? "SugoCoins uygulamasından" : esc(r.requested_by || "?")}</span></div>
+    ${r.reason ? `<div class="s">“${esc(r.reason)}”</div>` : ""}${r.state === "panel_reddetti" && r.panel_prompt ? `<div class="s">${esc(String(r.panel_prompt).slice(0, 120))}</div>` : ""}</div>`).join("") + `<div class="setlbl" style="margin:10px 4px 2px">🪙 Gönderimler</div>`; }
 function auRow(r) { const t = `<span>${r.at ? rel(Date.parse(r.at)) : ""}</span>`, who = r.name ? `<b>${esc(r.name)}</b> <span class="s">UID ${esc(r.conv)}</span>` : r.conv ? `<span class="s">UID ${esc(r.conv)}</span>` : "";
   if (auCat === "mesaj") return `<div class="aurow"><div class="aut"><span>${who}</span>${t}</div><div>${r.kind === "image" ? "📷 Resim" : r.kind === "voice" ? "🎤 Sesli mesaj" : esc(r.body || "")} <span class="s">${r.status === "sent" ? "✓ gitti" : r.status === "failed" ? "❌ " + esc(r.error || "gitmedi") : "⏳"}</span></div></div>`;
   if (auCat === "coin") return `<div class="aurow"><div class="aut"><span>${who || esc(r.target_name || "")}</span>${t}</div><div>🪙 <b>${nf(r.coins)} coin</b>${r.azn != null ? " · " + esc(String(r.azn)) + " ₼" : ""} <span class="s">${r.ok ? "✅ gönderildi" : "❌ " + esc(r.prompt || "")}</span></div></div>`;
@@ -3089,7 +3099,7 @@ function auRow(r) { const t = `<span>${r.at ? rel(Date.parse(r.at)) : ""}</span>
 function auHtml() { const names = [...new Set([...ouUsers().map((u) => u.name), auUser || "Ülker"])];
   return `<div class="auhead"><label class="s">Kişi<select id="auWho" onchange="auPick(this.value)">${names.map((n) => `<option ${n === auUser ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label></div>
     <div class="sub">${AU_CATS.map(([k, l]) => `<button class="${k === auCat ? "on" : ""}" onclick="auOpen('${k}')">${l}${auToday[k] ? ` <b>${auToday[k]}</b>` : ""}</button>`).join("")}</div>
-    <div id="auList">${auRows === null ? SKR(6) : auRows.length ? auRows.map(auRow).join("") + (auRows.length < auTotal ? `<div style="padding:12px;text-align:center"><button onclick="auOpen(auCat,true)">Daha fazla (${auTotal - auRows.length})</button></div>` : "") + `<div class="s" style="margin:8px 4px">Toplam ${auTotal} kayıt · bugün ${auToday[auCat] || 0}</div>` : '<div class="s" style="padding:16px 4px">Bu türde kayıt yok.</div>'}</div>`; }
+    <div id="auList">${auRows === null ? SKR(6) : auRcHtml() + (auRows.length ? auRows.map(auRow).join("") + (auRows.length < auTotal ? `<div style="padding:12px;text-align:center"><button onclick="auOpen(auCat,true)">Daha fazla (${auTotal - auRows.length})</button></div>` : "") + `<div class="s" style="margin:8px 4px">Toplam ${auTotal} kayıt · bugün ${auToday[auCat] || 0}</div>` : '<div class="s" style="padding:16px 4px">Bu türde kayıt yok.</div>')}</div>`; }
 
 // 🔌 Bayi bağlantısı: hesap sunucuda (7/24) mı tablette mi; Sugo Bayi aç / kapa
 let olData = null;
@@ -3477,7 +3487,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.93"></script>
-<script src="durum.js?v=2.1.93"></script>
+<script src="profile.js?v=2.1.94"></script>
+<script src="durum.js?v=2.1.94"></script>
 </body>
 </html>
