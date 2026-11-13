@@ -218,7 +218,7 @@
       ${facts.length ? `<div class="pftags" style="margin:2px 0 10px">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
       <div class="s" style="margin:0 0 8px"><span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}
       <div class="pgrid">
-        ${ours ? card("🪑 Odamızda (30 gün)", durm(r.seat_30), `🎤 mikrofon ${durm(r.mic_30)} · 📹 kamera ${durm(r.cam_30)} · ${r.days_30 || 0} gün`) : ""}
+        ${ours ? card("🪑 Odamızda (30 gün)", durm(r.seat_30), `📹 kamera ${durm(r.cam_30)} · ${r.days_30 || 0} gün`) : ""}
         ${card("💝 Aldığı hediyeler", rv ? coin(rv.total) + " coin" : "—", recvSub, "#fbbf24")}
         ${card("🎁 Odamıza atış", coin(g.d30) + " coin", `30 gün · toplam ${coin(g.all)}${g.last ? " · son " + tm(g.last) : ""}`, "#10b981")}
         ${card("📅 Odamızda ilk / son", r.first ? tm(r.first).split(" ")[0] : "—", r.last ? "son görülme " + relTime(r.last) : "odamızda koltukta görülmedi")}
@@ -238,7 +238,7 @@
       <div class="pfsec" id="pfNames">🕘 Profil geçmişi <span class="s">(${(p.history || []).length} değişiklik)</span></div>
       ${(p.history || []).length ? `<div class="hist">${p.history.map((h) => histRow(h, p)).join("")}</div>` : '<div class="card empty">Henüz değişiklik yok. İsim, biyografi, profil resmi gibi bilgiler değişince eski hâli tarihiyle burada birikir.</div>'}
       <div class="pfsec">Tüm zamanlar</div>
-      <div class="s">${ours ? `Odamızda koltukta toplam ${durm(r.seat_all)} · mikrofon ${durm(r.mic_all)} · kamera ${durm(r.cam_all)} · ${r.days_all || 0} aktif gün · ` : ""}odamıza ${g.times || 0} kez atış${rv ? ` · aldığı hediyeler ${coin(rv.total)} coin` : ""}</div>
+      <div class="s">${ours ? `Odamızda koltukta toplam ${durm(r.seat_all)} · kamera ${durm(r.cam_all)} · ${r.days_all || 0} aktif gün · ` : ""}odamıza ${g.times || 0} kez atış${rv ? ` · aldığı hediyeler ${coin(rv.total)} coin` : ""}</div>
       </details>
       <div style="height:30px"></div>`;
   }
