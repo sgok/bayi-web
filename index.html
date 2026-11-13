@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.96">
+<meta name="build" content="2.1.97">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.96">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.96">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.96">
+<link rel="manifest" href="manifest.json?v=2.1.97">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.97">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.97">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -556,7 +556,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.96" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.97" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -565,7 +565,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.96" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.97" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -623,7 +623,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.96"></script>
+<script src="emoji.js?v=2.1.97"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2614,10 +2614,11 @@ function odaNote(r) { const k = String(r.id), h = odaHist[k] || (odaHist[k] = {}
 const odaDur = (since) => { const t = Date.parse(since || ""); if (!t) return ""; const m = Math.max(0, Math.round((Date.now() - t) / 60_000)); return m < 60 ? m + " dk" : Math.floor(m / 60) + " sa " + (m % 60) + " dk"; };
 function odaPick(uid) { if (!uid) return; if (can("profil")) prof(String(uid)); else openChat(String(uid)); }
 // 👤 Oda sohbetinde kişiye (ad / avatar / hediye alıcısı) dokununca küçük menü (kullanıcı 13.11): "✍️ @Ad yaz" · "👤 Profilini aç" · Vazgeç.
-// Kendi hesabımızın satırında menü yok (kendini etiketlemek anlamsız): doğrudan profil, bugünkü gibi. Koltuklar / dinleyiciler bugünkü gibi doğrudan profil.
+// Kendi hesabımızın satırında menü yok (kendini etiketlemek anlamsız): doğrudan profil, bugünkü gibi. Koltukta oturanlar ve dinleyiciler de aynı menüyü açar (kullanıcı 13.11 gece); boş koltukta menü yok.
 let odaSelf = (() => { try { return localStorage.getItem("bw_oda_self") || ""; } catch (e) { return ""; } })();
 function odaSelfLearn(g) { for (const p of g) { const it = odaCh.items.find((x) => x.id === p.ecid); if (it && it.uid && String(it.uid) !== odaSelf) { odaSelf = String(it.uid); try { localStorage.setItem("bw_oda_self", odaSelf); } catch (e) {} } } } // panelden yazdığımız satırın sahibi = biz
 function odaWhoName(uid) { uid = String(uid); for (let i = odaCh.items.length - 1; i >= 0; i--) { const x = odaCh.items[i]; if (String(x.uid) === uid && x.n) return String(x.n); if (x.gift && String(x.gift.toUid) === uid && x.gift.to) return String(x.gift.to); }
+  const r = odaData && odaData.room; if (r) for (const x of [...(r.seats || []), ...(r.audience || [])]) if (x && String(x.uid) === uid && x.n) return String(x.n); // 🪑 koltuk / 👂 dinleyici
   const k = (people && people[uid]) || {}; return String(k.n || uid); }
 function odaWho(uid, el) { uid = String(uid || ""); if (!uid) return; if (uid === odaSelf || uid === bayiMe()) { odaPick(uid); return; }
   let m = $("odaWhoM"); if (!m) { document.body.insertAdjacentHTML("beforeend", `<div id="odaWhoBg" class="owbg" hidden onclick="odaWhoClose()"></div><div id="odaWhoM" class="owm" role="menu" hidden></div>`); m = $("odaWhoM"); }
@@ -2647,9 +2648,9 @@ function odaSeat(s, r, p, pair, fr) { const no = esc(String(s.no ?? "")), u = s.
   if (!u) return vid ? `<div class="oseat oemp${k}" data-no="${no}"${mic === "locked" ? "" : ' data-e="1"'}${st}><div class="ovbox"><span class="oel">${mic === "locked" ? "🔒" : "📹 Boş"}</span><span class="ono">${no}</span></div><div class="onm">${mic === "locked" ? "Kilitli" : "Kamera koltuğu"}</div><div class="osn">&nbsp;</div></div>`
     : `<div class="oseat oemp${k}" data-no="${no}"${mic === "locked" ? "" : ' data-e="1"'}${st}><div class="avw"><div class="av">${mic === "locked" ? "🔒" : no}</div></div><div class="onm">${mic === "locked" ? "Kilitli" : "Boş"}</div><div class="osn">&nbsp;</div></div>`;
   const o = vipOf(s.vip, s.svip), cam = s.cam ? '<i class="ocam" title="Kamera açık">📹</i>' : "";
-  if (vid) return `<button class="oseat${k}${s.speaking ? " spk" : ""}${s.cam ? " ocamon" : ""}" data-no="${no}" data-u="${esc(u)}"${st} onclick="odaPick('${esc(u)}')"><div class="ovbox"><div class="av">${avHtml(s.n, "")}</div>${fr ? `<img class="ovim ofr" src="${esc(fr.u)}" data-img="${esc(fr.u)}" alt="" title="Son kamera karesi" loading="lazy" onerror="this.remove()">` : s.av ? `<img class="ovim" src="${esc(avUrl(s.av))}" alt="" loading="lazy" onerror="this.remove()">` : ""}<span class="ono">${no}</span>${cam}${mk}${odaRole(u, s.role, r)}</div>
+  if (vid) return `<button class="oseat${k}${s.speaking ? " spk" : ""}${s.cam ? " ocamon" : ""}" data-no="${no}" data-u="${esc(u)}"${st} onclick="odaWho('${esc(u)}',this)"><div class="ovbox"><div class="av">${avHtml(s.n, "")}</div>${fr ? `<img class="ovim ofr" src="${esc(fr.u)}" data-img="${esc(fr.u)}" alt="" title="Son kamera karesi" loading="lazy" onerror="this.remove()">` : s.av ? `<img class="ovim" src="${esc(avUrl(s.av))}" alt="" loading="lazy" onerror="this.remove()">` : ""}<span class="ono">${no}</span>${cam}${mk}${odaRole(u, s.role, r)}</div>
     <div class="onm">${nmH(u, s.n || u)}</div><div class="osn">${odaDur(s.since) || "&nbsp;"}</div>${pr}</button>`;
-  return `<button class="oseat${k}${s.speaking ? " spk" : ""}" data-no="${no}" data-u="${esc(u)}"${st} onclick="odaPick('${esc(u)}')"><span class="ono">${no}</span><div class="avw${vipAttr(o)}"><div class="av">${fr ? initial(s.n) + `<img class="ofr" src="${esc(fr.u)}" data-img="${esc(fr.u)}" alt="" title="Son kamera karesi" loading="lazy" onerror="this.remove()">` : avHtml(s.n, s.av)}</div>${vipLab(o)}${mk}${odaRole(u, s.role, r)}</div>
+  return `<button class="oseat${k}${s.speaking ? " spk" : ""}" data-no="${no}" data-u="${esc(u)}"${st} onclick="odaWho('${esc(u)}',this)"><span class="ono">${no}</span><div class="avw${vipAttr(o)}"><div class="av">${fr ? initial(s.n) + `<img class="ofr" src="${esc(fr.u)}" data-img="${esc(fr.u)}" alt="" title="Son kamera karesi" loading="lazy" onerror="this.remove()">` : avHtml(s.n, s.av)}</div>${vipLab(o)}${mk}${odaRole(u, s.role, r)}</div>
     <div class="onm">${nmH(u, s.n || u)}</div><div class="osn">${odaDur(s.since) || "&nbsp;"}</div>${pr}</button>`; }
 function odaParts() { const d = odaData, r = d && d.room;
   if (!r) return { hd: `<div class="ohd"><div class="ocv"><span class="sk" style="width:100%;height:100%"></span></div><div class="b"><b>${odaErr ? "🎙️ Oda" : '<span class="sk" style="width:9em"></span>'}</b><div class="s">${odaErr ? "❌ " + esc(odaErr) : '<span class="sk" style="width:12em"></span>'}</div><div class="s onote">&nbsp;</div></div></div>`,
@@ -2670,7 +2671,7 @@ function odaParts() { const d = odaData, r = d && d.room;
   const aud = (r.audience || []).filter((x) => x && x.uid), rank = (r.rank || []).filter((x) => x && x.uid);
   const pRow = (u, n, av, side, vip) => { const o = vipOf(vip && vip.vip, vip && vip.svip, true); return `<button class="row orow" onclick="odaPick('${esc(String(u))}')"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(n, av)}</div>${vipLab(o)}</div><div class="b"><b>${nmH(u, n || u)}</b></div>${side}</button>`; };
   const rest = (kapali ? `<div class="row s">🔴 Oda şu an kapalı: koltuklar boş. Açılınca burada canlı görünür.</div>` : "")
-    + `<h3>👂 Dinleyiciler <span class="s">(${nf(Math.max(aud.length, (Number(r.online) || 0) - on))})</span></h3>` + (aud.length ? `<div class="oaud">${aud.slice(0, 50).map((x) => { const o = vipOf(x.vip, x.svip); return `<button class="oa" onclick="odaPick('${esc(String(x.uid))}')"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${odaRole(x.uid, x.role, r)}</div><span>${nmH(x.uid, x.n || x.uid)}</span></button>`; }).join("")}</div>` : `<div class="row s">${d.viewers === false && !kapali ? "Dinleyici listesi şu an okunamadı." : on && (Number(r.online) || 0) <= on ? "Dinleyici yok: odadaki herkes koltukta." : "Dinleyici yok."}</div>`);
+    + `<h3>👂 Dinleyiciler <span class="s">(${nf(Math.max(aud.length, (Number(r.online) || 0) - on))})</span></h3>` + (aud.length ? `<div class="oaud">${aud.slice(0, 50).map((x) => { const o = vipOf(x.vip, x.svip); return `<button class="oa" onclick="odaWho('${esc(String(x.uid))}',this)"><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${odaRole(x.uid, x.role, r)}</div><span>${nmH(x.uid, x.n || x.uid)}</span></button>`; }).join("")}</div>` : `<div class="row s">${d.viewers === false && !kapali ? "Dinleyici listesi şu an okunamadı." : on && (Number(r.online) || 0) <= on ? "Dinleyici yok: odadaki herkes koltukta." : "Dinleyici yok."}</div>`);
   const pastH = `<h3>🕘 Son 1 saatte koltuktan kalkanlar</h3>` + (past.length ? past.slice(0, 20).map(([u, x]) => pRow(u, x.n, x.av, `<span class="s" style="flex:none">🪑${esc(String(x.no ?? ""))} · ${hm(x.a)}–${hm(x.b)}</span>`, x)).join("") : '<div class="row s">Son 1 saatte koltuktan kalkan olmadı.</div>');
   const frs = d.frames && typeof d.frames === "object" ? d.frames : {}, frOf = (s) => { const f = s && s.cam && s.uid ? frs[String(s.uid)] : null; const x = String((f && f.u) || ""); return /^https:\/\//.test(x) || x.startsWith(location.origin + "/") ? f : null; }; // 🖼️ kamera koltuğu: son tek kişilik kare (sunucu, sugo_shots)
   odaRank = rank.slice(0, 50); // 🏆 hediye gönderenler (kullanıcı 11.11): koltuk/video alanının sağ üstünde ilk 3, dokununca tam liste
@@ -3668,7 +3669,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.96"></script>
-<script src="durum.js?v=2.1.96"></script>
+<script src="profile.js?v=2.1.97"></script>
+<script src="durum.js?v=2.1.97"></script>
 </body>
 </html>
