@@ -59,7 +59,7 @@
     if (!$("prof").classList.contains("on")) history.pushState({ p: uid }, "");
     show("prof"); $("pfBody").scrollTop = 0;
     const cached = pfCache.get(uid);
-    pfMoreOpen = false;
+    pfMoreOpen = false; pfNamesAll = false;
     render(cached ? JSON.parse(cached) : { uid, name: k.n || "", avatar: k.av || null, __sk: true }); // önbellek yoksa aynı düzen yer tutucularla: veri gelince yalnız içerik dolar
     sync(!!pfRefreshing[uid]);
     delete pfLive[uid];
@@ -116,7 +116,65 @@
   function nmDiffers(a, b) { const x = nmLetters(a), y = nmLetters(b); if (!y) return false; if (!x) return true; if (x.includes(y) || y.includes(x)) return false;
     const bg = (t) => { const m = new Map(); for (let i = 0; i < t.length - 1; i++) { const k = t.slice(i, i + 2); m.set(k, (m.get(k) || 0) + 1); } return m; };
     const A = bg(x), B = bg(y); let c = 0; for (const [k, n] of A) c += Math.min(n, B.get(k) || 0); return (2 * c) / Math.max(1, x.length - 1 + y.length - 1) < 0.4; }
-  function oldName(p) { const cur = p.name_plain || p.name; for (const h of p.history || []) { if (h.field === "nickname" && nmLetters(h.old) && nmDiffers(cur, h.old)) return h.old; } return null; }
+  function oldName(p) { const cur = p.name_plain || p.name; for (const n of p.names || []) { if (!n.current && nmLetters(n.name) && nmDiffers(cur, n.name)) return n.name; }
+    for (const h of p.history || []) { if (h.field === "nickname" && nmLetters(h.old) && nmDiffers(cur, h.old)) return h.old; } return null; }
+  // 🏷️ Eski isimler (herkese açık, 13.11): son isimler + tarih aralığı; uzun listede "tümü"
+  const dd = (iso) => iso ? tm(iso).split(" ")[0] : "";
+  const span = (a, b) => { const x = dd(a), y = dd(b); return x && y && x !== y ? x + "–" + y : x || y; };
+  let pfNamesAll = false;
+  window.pfNamesToggle = () => { pfNamesAll = !pfNamesAll; const c = pfUid && pfCache.get(pfUid); if (c && $("pfNamesW")) $("pfNamesW").outerHTML = namesH(JSON.parse(c)); };
+  function namesH(p) {
+    const old = (p.names || []).filter((n) => !n.current && n.name !== p.name);
+    if (!old.length) return '<div id="pfNamesW"></div>';
+    const show = pfNamesAll ? old : old.slice(0, 3);
+    return `<div id="pfNamesW" class="pfnames"><span class="k">🏷️ Eski isimler:</span> ${show.map((n) => `<span class="nm"><b>${esc(n.name)}</b>${span(n.first, n.last) ? ` <small>${esc(span(n.first, n.last))}</small>` : ""}</span>`).join("")}${old.length > 3 ? `<button class="lnk" onclick="pfNamesToggle()">${pfNamesAll ? "daha az" : "tümü (" + old.length + ")"}</button>` : ""}</div>`;
+  }
+  // 🗄️ Yönetici arşivi (13.11): yalnız sunucu archive.allowed derse çizilir; içerik sekme açılınca 24'erli (profile_archive)
+  const ARC = [["avatars", "🖼️ Eski profil resimleri"], ["photos", "📷 Albüm"], ["fields", "🕘 Alan geçmişi"], ["frames", "📹 Kameradaki kareler"]];
+  let arc = { uid: null, open: false, part: null, data: {} }; // data[part] = { items, next, loading, err, not }
+  const arcFor = (uid) => { if (arc.uid !== uid) arc = { uid, open: false, part: null, data: {} }; return arc; };
+  function arcItem(part, x) {
+    const when = span(x.first, x.last), kez = x.times > 1 ? ` · ${x.times} kez` : "";
+    if (part === "avatars") return `<div${x.current ? ' class="cur"' : ""}><img src="${escA(x.src)}" loading="lazy" data-img="${escA(x.src)}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'hph',textContent:'açılmadı'}))">${x.current ? "şu an · " : ""}${esc(when)}${esc(kez)}</div>`;
+    if (part === "photos") return `<div${x.removed ? ' class="rm"' : ""}><img src="${escA(x.src)}" loading="lazy" data-img="${escA(x.src)}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'hph',textContent:'açılmadı'}))">${x.removed ? "Sugo'dan kaldırılmış · " + esc(dd(x.removed)) : "eklendi " + esc(dd(x.first))}</div>`;
+    if (part === "frames") return `<div><img src="${escA(x.url)}" loading="lazy" data-img="${escA(x.full || x.url)}">${esc(tm(x.at))}${x.room ? " · " + esc(x.room) : ""}</div>`;
+    return `<div class="hrow"><div class="hh"><b>${HF[x.field] || esc(x.field)}</b><span class="s">${esc(when)}${esc(kez)}${x.current ? " · şu an" : ""}</span></div><div class="hv">${x.value === "" ? '<span class="ho">(boş)</span>' : esc(x.value)}</div></div>`;
+  }
+  function arcBody(p) {
+    const A = arcFor(p.uid), d = A.part && A.data[A.part];
+    if (!A.part) return '<div class="s arcph">Bir bölüm seçin; içerik yalnız açınca yüklenir.</div>';
+    if (!d || (d.loading && !d.items)) return '<div class="s arcph">⏳ Yükleniyor…</div>';
+    if (d.err && !d.items) return `<div class="card empty">❌ ${esc(d.err)}</div>`;
+    const note = d.not ? `<div class="s arcnot">ℹ️ ${esc(d.not)}</div>` : "";
+    if (!d.items.length) return note + `<div class="card empty">${d.not ? "Bu bölümde kayıt yok." : "Henüz kayıt yok."}</div>`;
+    const list = d.items.map((x) => arcItem(A.part, x)).join("");
+    return note + (A.part === "fields" ? `<div class="hist">${list}</div>` : `<div class="frames arcgrid">${list}</div>`) +
+      (d.next != null ? `<button class="arcmore" onclick="pfArcMore()"${d.loading ? " disabled" : ""}>${d.loading ? "⏳ Yükleniyor…" : "Daha fazla"}</button>` : "");
+  }
+  function arcH(p) {
+    if (!p.archive || p.archive.allowed !== true) return ""; // yönetici değil: bölüm HİÇ yok
+    const A = arcFor(p.uid), c = p.archive.counts || {};
+    const n = { avatars: c.avatars, photos: c.photos, fields: c.fields, frames: c.frames };
+    return `<details class="pfmore pfarc" id="pfArc"${A.open ? " open" : ""} ontoggle="pfArcToggle(this.open)"><summary>🗄️ Arşiv <span class="s">· yalnız sizde · eski resimler, albüm, geçmiş, kareler</span></summary>
+      <div class="arctabs">${ARC.map(([k, t]) => `<button class="${A.part === k ? "on" : ""}" onclick="pfArcTab('${k}')">${t}${n[k] != null ? ` <small>${n[k]}${k === "photos" && c.removed_photos ? " · " + c.removed_photos + " kaldırılmış" : ""}</small>` : ""}</button>`).join("")}</div>
+      <div id="pfArcBody">${arcBody(p)}</div></details>`;
+  }
+  const arcPaint = () => { const c = pfUid && pfCache.get(pfUid); if (!c) return; const p = JSON.parse(c), el = $("pfArc"); if (el) { const h = arcH(p); const t = document.createElement("div"); t.innerHTML = h; const nw = t.firstElementChild; if (nw) { el.querySelector(".arctabs").innerHTML = nw.querySelector(".arctabs").innerHTML; $("pfArcBody").innerHTML = arcBody(p); } } };
+  async function arcLoad(part, more) {
+    const A = arcFor(pfUid), uid = A.uid, d = A.data[part] || (A.data[part] = { items: null, next: 0 });
+    if (d.loading || (!more && d.items)) return arcPaint();
+    d.loading = true; d.err = null; arcPaint();
+    const r = await api("profile_archive", { uid, part, off: more ? d.next : 0, limit: 24 });
+    if (arc.uid !== uid) return;
+    d.loading = false;
+    const x = r && r.report && r.report.archive;
+    if (!x) d.err = (r && r.error) || "Arşiv okunamadı";
+    else { d.items = (more ? d.items || [] : []).concat(x.items || []); d.next = x.next; d.not = x.not || null; }
+    arcPaint();
+  }
+  window.pfArcToggle = (o) => { if (pfUid) arcFor(pfUid).open = o; };
+  window.pfArcTab = (k) => { const A = arcFor(pfUid); A.part = k; arcLoad(k, false); };
+  window.pfArcMore = () => { const A = arcFor(pfUid); if (A.part) arcLoad(A.part, true); };
   function links(p) {
     const r = p.raw || {}, w = r.relationWall || {}, fam = (r.familyInfo || {}).family, un = r.unionTag || {}, b = r.basicInfo || {};
     const person = (o) => `<span class="uidl" data-uid="${escA(o.uid)}">${esc(o.nickname || o.uid)}</span>`, chips = [];
@@ -213,7 +271,8 @@
       ${sk ? `<div class="pfsec">Son alımları</div><table><tr class="h"><th>Tarih</th><th class="n">Coin</th></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr></table>` : ""}
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
       ${(p.debts || []).length ? `<div class="pfsec">Açık borçlar</div>` + p.debts.map((x) => `<div class="cause">#${x.id} · kalan <b>${az(x.remaining)}</b> · ${tm(x.at)}${x.excluded ? " · tahsil edilemez" : ""}</div>`).join("") : ""}
-      <details class="pfmore"${pfMoreOpen ? " open" : ""}><summary>Diğer bilgiler <span class="s">· oda, hediyeler, albüm, eski resimler, geçmiş, tüm Sugo bilgileri</span></summary>
+      ${namesH(p)}
+      <details class="pfmore"${pfMoreOpen ? " open" : ""}><summary>Diğer bilgiler <span class="s">· oda, hediyeler, albüm, tüm Sugo bilgileri</span></summary>
       ${p.bio ? `<div class="pfbio">${esc(p.bio)}</div>` : ""}
       ${facts.length ? `<div class="pftags" style="margin:2px 0 10px">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
       <div class="s" style="margin:0 0 8px"><span class="pfrole">${esc(role ? ROLES[role] || role : noRole)}</span></div><div class="pfrel">${relHtml(p.uid, p.rels)}</div>${links(p)}
@@ -229,19 +288,26 @@
         <div class="frames">${p.video.shots.map((f) => `<div><img src="${escA(f.url)}" loading="lazy" data-img="${escA(f.full || f.url)}">${esc(tm(f.at))}${f.room ? " · " + esc(f.room) : ""}</div>`).join("")}</div>` : ""}
       ${rv && rv.top && rv.top.length ? `<div class="pfsec">💝 Hediye duvarı <span class="s">(Sugo · aldığı en değerli hediyeler)</span></div>` + tbl([["Hediye"], ["Adet", "n"], ["Değer", "n"]], rv.top.map((x) => `<tr><td>${esc(x.name)}</td><td class="n">${x.count}</td><td class="n">${coin(x.price * x.count)}</td></tr>`), "") : ""}
       <div class="pfsec" id="pfAlbum">📷 Albüm <span class="s">(${(p.photos || []).length} fotoğraf · Sugo profilinden, silinmez)</span></div>
-      ${(p.photos || []).length ? `<div class="frames">${p.photos.map((f) => `<div${f.removed ? ' style="opacity:.55"' : ""}><img src="${escA(f.url)}" loading="lazy" data-img="${escA(f.url)}">${f.removed ? "profilden kaldırılmış" : "eklendi " + tm(f.first).split(" ")[0]}</div>`).join("")}</div>`
+      ${(p.photos || []).length ? `<div class="frames">${p.photos.map((f) => `<div${f.removed ? ' style="opacity:.55"' : ""}><img src="${escA(f.url)}" loading="lazy" data-img="${escA(f.url)}">${f.removed ? "Sugo'dan kaldırılmış" : "eklendi " + tm(f.first).split(" ")[0]}</div>`).join("")}</div>`
         : `<div class="card empty">${p.profile_at ? "Sugo profilinde herkese açık albüm fotoğrafı yok." : "Albüm Sugo'dan okunuyor; birkaç saniye içinde burada görünür."}</div>`}
-      <div class="pfsec" id="pfOldAv">🖼️ Eski profil resimleri <span class="s">(${(p.old_avatars || []).length})</span></div>
-      ${(p.old_avatars || []).length ? `<div class="frames">${p.old_avatars.map((f) => `<div><img src="${escA(f.url)}" loading="lazy" data-img="${escA(f.url)}">${tm(f.first).split(" ")[0]}</div>`).join("")}</div>` : '<div class="card empty">Henüz yok. Profil resmini değiştirirse eskisi burada saklanır.</div>'}
       <div class="pfsec" id="pfAll">📋 Tüm Sugo profil bilgileri <span class="s">${p.profile_at ? "(son okuma " + tm(p.profile_at) + ")" : ""}</span></div>
       ${allInfo(p)}
-      <div class="pfsec" id="pfNames">🕘 Profil geçmişi <span class="s">(${(p.history || []).length} değişiklik)</span></div>
-      ${(p.history || []).length ? `<div class="hist">${p.history.map((h) => histRow(h, p)).join("")}</div>` : '<div class="card empty">Henüz değişiklik yok. İsim, biyografi, profil resmi gibi bilgiler değişince eski hâli tarihiyle burada birikir.</div>'}
       <div class="pfsec">Tüm zamanlar</div>
       <div class="s">${ours ? `Odamızda koltukta toplam ${durm(r.seat_all)} · kamera ${durm(r.cam_all)} · ${r.days_all || 0} aktif gün · ` : ""}odamıza ${g.times || 0} kez atış${rv ? ` · aldığı hediyeler ${coin(rv.total)} coin` : ""}</div>
       </details>
+      ${arcH(p)}
       <div style="height:30px"></div>`;
   }
+  // 🗄️ arşiv / eski isim biçimleri (index.html'e dokunmadan, bir kez)
+  if (!document.getElementById("pfArcCss")) { const st = document.createElement("style"); st.id = "pfArcCss"; st.textContent = `
+    .pfnames { font-size: 13px; color: var(--muted); margin: 8px 2px 0; line-height: 1.7; } .pfnames .nm { display: inline-block; margin-right: 10px; } .pfnames .nm b { color: var(--text); font-weight: 600; }
+    .pfnames .lnk { background: none; border: 0; color: var(--accent); font: inherit; padding: 0; cursor: pointer; }
+    .pfarc .arctabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; } .pfarc .arctabs button { border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 11px; font: inherit; font-size: 13px; cursor: pointer; }
+    .pfarc .arctabs button.on { border-color: var(--accent); color: var(--accent); font-weight: 700; } .pfarc .arctabs small { color: var(--muted); font-weight: 400; }
+    .pfarc .arcph { padding: 14px 4px; min-height: 20px; } .pfarc .arcnot { margin: 4px 2px 10px; } .pfarc .arcgrid .rm { opacity: .55; } .pfarc .arcgrid .cur img { outline: 2px solid var(--accent); }
+    .pfarc .arcgrid .hph { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--tint); }
+    .pfarc .arcmore { display: block; width: 100%; margin: 10px 0; padding: 11px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; cursor: pointer; }`;
+    document.head.appendChild(st); }
   window.profMsg = (uid) => { pfUid = null; history.back(); setTimeout(() => (typeof pick === "function" ? pick(uid) : openChat(uid)), 60); };
   window.uidCopy = (uid) => { try { navigator.clipboard.writeText(String(uid)).then(() => toast("📋 UID kopyalandı: " + uid)); } catch (e) { toast("Kopyalanamadı", true); } };
 })();
