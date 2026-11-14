@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.98">
+<meta name="build" content="2.1.99">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.98">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.98">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.98">
+<link rel="manifest" href="manifest.json?v=2.1.99">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.99">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.99">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -85,7 +85,11 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
   .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
   .prs { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fff; background: color-mix(in srgb, #0d9488 85%, #000); border-radius: 6px; padding: 1px 6px; vertical-align: middle; white-space: nowrap; } /* 👥 sohbette olanlar (listede) */
-  #chat header h1 { position: relative; } #chPres { position: absolute; left: var(--prx, 0px); bottom: 0; max-width: calc(100% - var(--prx, 0px)); box-sizing: border-box; font-size: 12px; line-height: 15px; font-weight: 600; color: #fff; background: color-mix(in srgb, #0d9488 85%, #000); border-radius: 999px; padding: 1px 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; } #chPres[hidden] { display: none; } #chat header h1.pr.rm #chRoom .pfroom { max-width: 50%; } /* 👥 başlıkta, oda satırının ayrılmış yerinde (CLS yok) */
+  /* 👥 Başlığın 2. satırı (#chSub, 14.11 W4): ismin ALTINDA her zaman ayrılı 19 px'lik satır → solda 🏠 oda, yanında "👥 Sohbette: …" (mesajlaşma uygulamalarındaki "çevrimiçi" satırı gibi).
+     Eskiden rozet h1'in dibine mutlak konumluydu ve oda yokken oda satırı [hidden] (display:none !important) yüzünden hiç yer kaplamıyordu → rozet müşteri adının üstüne biniyordu (2.1.98, iPhone).
+     Satır her zaman var: oda / rozet belirip kaybolunca başlık boyu değişmez (CLS yok); sığmazsa önce "Sohbette:" düşer, sonra "+N", en son üç nokta — "Yükle"nin altına taşmaz. */
+  #chSub { display: flex; align-items: center; gap: 6px; height: 19px; margin-top: 2px; min-width: 0; overflow: hidden; }
+  #chPres { flex: 0 1 auto; min-width: 0; box-sizing: border-box; font-size: 12px; line-height: 15px; font-weight: 600; color: #fff; background: color-mix(in srgb, #0d9488 85%, #000); border-radius: 999px; padding: 1px 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; } #chPres[hidden] { display: none; } #chat header h1.pr.rm #chRoom { max-width: 50%; } #chat header h1.pr.rm #chRoom .eqw { display: none; } /* oda + rozet birlikteyken ses çubukları gizli: oda adına yer kalsın */
   .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: var(--brand3); background: color-mix(in srgb, var(--brand) 22%, transparent); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
   .wt { font-weight: 700; color: var(--mut, #a1a1aa); } .wt.y { color: #fbbf24; } .wt.r { color: #f87171; } /* ⏱ müşteri ne kadar süredir cevap bekliyor (saatin yerinde) */
   .typ { color: var(--brand3); font-style: italic; }
@@ -172,7 +176,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #ptr.back { transition: transform .25s ease, opacity .25s ease; } #ptr .ar { display: inline-block; transition: transform .2s; } #ptr.ready .ar { transform: rotate(180deg); }
   #ptr.spin .ar { animation: ptrspin .8s linear infinite; } @keyframes ptrspin { to { transform: rotate(360deg); } }
   #chRoom[hidden] { display: none; } /* display:block, hidden özelliğini ezmesin: önceki kişinin odası yeni sohbette kalıyordu */
-  #chRoom { display: block; margin-top: 2px; font-size: 12px; line-height: 15px; } #chRoom { min-height: 19px; } #chRoom[hidden] { display: block; visibility: hidden; } /* CLS: oda satırının yeri hep ayrılı (bilgi Sugo'dan geç gelir; başlık sonradan uzayıp mesajları itmesin) */ /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
+  #chRoom { display: flex; flex: 0 1 auto; min-width: 0; font-size: 12px; line-height: 15px; } /* CLS: yeri #chSub'da hep ayrılı (bilgi Sugo'dan geç gelir; başlık sonradan uzayıp mesajları itmesin) */ /* ismin altında: uzun isimde kesilmesin; profildeki oda kutusunun aynısı */
   #chRoom .pfroom { padding: 1px 7px; max-width: 100%; box-sizing: border-box; } #chRoom .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #chName { display: block; overflow: hidden; text-overflow: ellipsis; }
   #chRoom .note { display: inline-block; margin-left: 3px; animation: notebob 1s ease-in-out infinite; }
@@ -574,7 +578,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.98" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.99" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -583,7 +587,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.98" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.99" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -611,7 +615,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chRoom" hidden></span><span id="chPres" role="status" hidden></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chSub"><span id="chRoom" hidden></span><span id="chPres" role="status" hidden></span></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
   <div id="chTrust"></div>
   <div id="chTags" class="chtags"></div>
   <div class="warnbar" id="tabWarn2"></div>
@@ -641,7 +645,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.98"></script>
+<script src="emoji.js?v=2.1.99"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -3749,14 +3753,17 @@ function sbTik() {
   else if (sbWs && sbWs === rt && rt.readyState === 1 && !sbOk && sbRed && Date.now() - sbRed > 5 * 60_000) { sbRed = 0; const ws = sbWs; sbBiletAl(true).then((b) => sbKatil(ws, b)); } // reddedildiyse 5 dk'da bir yeniden dene
   sbCiz(); } // imza değişmediyse DOM'a dokunmaz
 setInterval(sbTik, 1000); document.addEventListener("visibilitychange", sbTik); addEventListener("pagehide", sbTik); // arka plana geçince hemen {s:null}
-// Çizim: başlık (oda satırının ayrılmış yerinde, mutlak konumlu → kayma yok) + liste (yalnız işaretler değiştiyse yeniden çizilir)
-function sbCiz() { const el = $("chPres"); if (el) { const h1 = el.parentElement, a = cur && !isSys(cur) ? sbDiger(cur) : [], room = $("chRoom"), rm = !!(room && !room.hidden);
-    const imza = a.length ? a.join("|") + (rm ? "#r" + (room.offsetWidth || 0) : "") : "";
+// Çizim: başlık (ismin altındaki hep ayrılı 2. satırda, #chSub → kayma yok) + liste (yalnız işaretler değiştiyse yeniden çizilir)
+function sbCiz() { const el = $("chPres"); if (el) { const h1 = el.closest("h1"), a = cur && !isSys(cur) ? sbDiger(cur) : [], room = $("chRoom"), rm = !!(room && !room.hidden);
+    const imza = a.length ? a.join("|") + (rm ? "#r" + (room.offsetWidth || 0) : "") + "#w" + (h1.clientWidth || 0) : ""; // genişlik değişince (döndürme) yeniden sığdır
     if (imza !== sbImza) { sbImza = imza; el.hidden = !a.length; h1.classList.toggle("pr", !!a.length); h1.classList.toggle("rm", rm);
-      if (a.length) { const pill = rm && room.querySelector(".pfroom"); h1.style.setProperty("--prx", pill ? Math.ceil(pill.offsetWidth + 6) + "px" : "0px");
-        const kisa = a.length > 1 ? `👥 ${a[0]} +${a.length - 1}` : `👤 ${a[0]}`; // oda satırı doluyken ya da sığmazsa kısa biçim (tam liste title'da)
-        el.textContent = rm ? kisa : (a.length > 1 ? "👥" : "👤") + " Sohbette: " + a.join(", "); el.title = "Bu sohbeti şu an sizinle birlikte açık tutanlar: " + a.join(", ");
-        if (!rm && el.scrollWidth > el.clientWidth + 1) el.textContent = kisa; } } }
+      if (a.length) { const ik = a.length > 1 ? "👥" : "👤", kisa = a.length > 1 ? `👥 ${a[0]} +${a.length - 1}` : `👤 ${a[0]}`; // oda satırı doluyken ya da sığmazsa kısa biçim (tam liste title'da)
+        const tasar = () => el.scrollWidth > el.clientWidth + 1;
+        el.textContent = ik + (rm ? " " : " Sohbette: ") + a.join(", "); el.title = "Bu sohbeti şu an sizinle birlikte açık tutanlar: " + a.join(", "); // oda satırı doluyken "Sohbette:" yazılmaz
+        if (!rm && tasar()) el.textContent = ik + " " + a.join(", "); // önce "Sohbette:" düşer
+        if (tasar()) el.textContent = kisa; // sonra "+N"
+        for (let n = a[0].length - 1; a.length > 1 && n >= 3 && tasar(); n--) el.textContent = `👥 ${a[0].slice(0, n)}… +${a.length - 1}`; // "+N" görünür kalsın (ilk ad kısalır)
+        if (a.length > 1 && tasar()) el.textContent = `👥 ${a.length}`; } } } // o da sığmazsa yalnız sayı (listedeki gibi; adlar title'da); tek kişide CSS üç nokta
   const li = sbAktif() && sbHarita ? Object.keys(sbHarita).map((c) => c + ":" + sbDiger(c).join(",")).filter((x) => !/:$/.test(x)).sort().join("|") : "";
   if (li !== sbListe) { sbListe = li; if (typeof renderInbox === "function" && inbox && inbox.length) renderInbox(); } }
 // ☕ Mola (14.11; sözleşme: MOLA-S mola-sozlesme.md · sunucu _shared/mola.ts). Ayarlar › "☕ Mola veriyorum": süre + neden → öteki çalışanlara bildirim →
@@ -3884,7 +3891,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.98"></script>
-<script src="durum.js?v=2.1.98"></script>
+<script src="profile.js?v=2.1.99"></script>
+<script src="durum.js?v=2.1.99"></script>
 </body>
 </html>
