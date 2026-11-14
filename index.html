@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.100">
+<meta name="build" content="2.1.101">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.100">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.100">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.100">
+<link rel="manifest" href="manifest.json?v=2.1.101">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.101">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.101">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -356,6 +356,50 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .ocsay.ocoff { opacity: .6; } .ocsay button:disabled { background: #ffffff26; }
   /* 💎 Ajans › Elmas: kendi bozumlarımız (yalnız ajans sahibi) */
   .wcard .wexr { display: flex; gap: 8px; margin-top: 10px; } .wcard .wexr .wex { margin-top: 0; flex: 1; min-width: 0; } .wcard .wexr .wexl { flex: none; min-height: 44px; font-size: 14px; white-space: nowrap; }
+  /* 💵 Ajansım › Nakit (yalnız yönetici): üstte ekibin toplamı; kişi satırı (dokun → hesaplar yerinde); hesap (dokun → hareketler sabit boy pencerede: kayma yok) */
+  .nktop { margin: 8px 10px; padding: 8px 14px; border-radius: 16px; background: var(--hero); border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line)); height: 88px; } /* alçak + sabit boy: ilk ekranda kişi satırları görünsün (Safari), veri gelince boy değişmez */
+  .nktop .k { color: var(--brand3); font-size: 13px; line-height: 18px; } .nktop .v { font-size: 26px; line-height: 32px; height: 32px; font-weight: 800; letter-spacing: -.5px; white-space: nowrap; overflow: hidden; } .nktop .s { font-size: 13px; line-height: 22px; white-space: nowrap; }
+  /* Nakit seçiliyken cüzdan kartı tek satır (elmas + Elmas boz): öbür sekmelerde aynen */
+  #p-aj.nkon .wcard { display: flex; align-items: center; gap: 10px; padding-top: 8px; padding-bottom: 8px; } #p-aj.nkon .wcard .k, #p-aj.nkon .wcard .wl, #p-aj.nkon .wcard .wexl { display: none; }
+  #p-aj.nkon .wcard .v { flex: none; font-size: 22px; } #p-aj.nkon .wcard .wexr, #p-aj.nkon .wcard > .wex { flex: 1; min-width: 0; margin-top: 0; }
+  .nkre { position: relative; min-height: 0; padding: 1px 10px; font-size: 13px; line-height: 18px; border-radius: 999px; vertical-align: 1px; } .nkre::after { content: ""; position: absolute; inset: -13px -4px; } /* görünür küçük, dokunma alanı 44 px */
+  .nkn { font-variant-numeric: tabular-nums; white-space: nowrap; } .nkn small { font-size: .72em; opacity: .75; font-weight: 600; }
+  .nkp { border-bottom: 1px solid var(--line); } .nkp.zero > .nkr { opacity: .5; }
+  .nkr, .nka { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: none; border: 0; border-radius: 0; color: inherit; }
+  .nkr { min-height: 64px; padding: 8px 10px 8px 14px; } .nka { min-height: 54px; padding: 6px 10px 6px 22px; }
+  .nkr:active, .nka:active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .nkr .b, .nka .b { flex: 1; min-width: 0; } .nkr .b b, .nka .b b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nkr .s, .nka .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nks { display: flex; align-items: center; gap: 4px; } .nks > .e, .nks > .nktag { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .nks > .z { flex: none; white-space: nowrap; } /* uzun ad / etiket kısalır, saat ve son 4 hane görünür kalır */
+  .nkr .av { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; }
+  .nkamt { font-weight: 800; font-size: 18px; text-align: right; } .nka .nkamt { font-size: 16px; font-weight: 700; } .nkamt.neg { color: var(--bad); }
+  .nkchev { flex: none; width: 14px; color: var(--muted); font-size: 20px; line-height: 1; transition: transform .15s; } .nkp.on > .nkr .nkchev { transform: rotate(90deg); }
+  .nkaccs { background: color-mix(in srgb, var(--panel2) 55%, transparent); border-top: 1px solid var(--line); }
+  .nka + .nka { border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent); } .nka.pasif { opacity: .55; }
+  .nkbi { width: 34px; height: 34px; flex: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--panel2); border: 1px solid var(--line); font-size: 17px; }
+  .nktag { display: inline-block; font-size: 11px; line-height: 17px; padding: 0 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); vertical-align: 1px; }
+  .nktag.banka { color: #4ade80; border-color: #4ade8055; } .nktag.elle { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
+  .nksh { display: flex; flex-direction: column; height: min(78vh, 660px); margin: -4px -4px 0; } /* sabit boy: içerik gelince pencere büyümez (üst kısım kaymaz) */
+  .nkshh { display: flex; align-items: flex-start; gap: 10px; padding-bottom: 6px; } .nkshh .b { flex: 1; min-width: 0; } .nkshh .b b { display: block; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nkshh .nkamt { font-size: 22px; } .nkx { flex: none; width: 44px; height: 44px; padding: 0; border-radius: 12px; }
+  .sub.nkflt { padding: 6px 0 8px; overflow: visible; } .nkflt button { min-height: 36px; position: relative; } .nkflt button::after { content: ""; position: absolute; inset: -5px -1px; } /* görünür 36 px, dokunma alanı 44 px */
+  .nkml { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; border-top: 1px solid var(--line); }
+  .nkm { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 7px 2px; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+  .nkm .b { flex: 1; min-width: 0; } .nkm .t { display: flex; gap: 8px; align-items: baseline; } .nkm .t b { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .nkm .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .nkm .nkamt { font-size: 15px; font-weight: 700; flex: none; }
+  .nkamt.in { color: #4ade80; } .nkamt.out { color: var(--bad); } .nkamt.eq { color: var(--muted); }
+  .nkbase { display: flex; align-items: center; gap: 8px; padding: 8px 2px; color: var(--muted); font-size: 12px; } .nkbase::before, .nkbase::after { content: ""; flex: 1; border-top: 1px dashed var(--line); }
+  .nkmore { display: block; width: 100%; min-height: 44px; margin: 10px 0; }
+  /* 🧾 alış ödeme kartı (yalnız yönetici): bozum kaydının içinde tek satır + rozetler; ayrıntı sabit boy pencerede */
+  .okrt { display: block; width: 100%; text-align: left; margin-top: 8px; padding: 7px 10px; min-height: 44px; border-radius: 10px; background: #00000033; border: 1px dashed color-mix(in srgb, var(--text) 25%, transparent); font-size: 13px; color: inherit; }
+  .okrt .l1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; display: flex; } .okrt .l1 > .e { min-width: 0; overflow: hidden; text-overflow: ellipsis; } .okrt .l1 > .z { flex: none; } .okrt .l1b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); font-size: 12px; }
+  .okrt .l2, .okrz { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; } .okrz { margin: 8px 0; } #okOz { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* tek satır: özet gelince başlık uzayıp listeyi itmez */
+  .okc { font-size: 11px; line-height: 17px; padding: 0 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 22%, transparent); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  .okc.u { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); } .okc.s { color: var(--muted); }
+  .okt { display: flex; gap: 8px; align-items: flex-start; padding: 8px 2px; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); font-size: 14px; }
+  .okt .okz { flex: none; width: 64px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; padding-top: 2px; } .okt .oki { flex: none; width: 22px; text-align: center; }
+  .okt .b { flex: 1; min-width: 0; overflow-wrap: anywhere; } .okt.red .b > div:first-child, .okt.geri .b > div:first-child { color: var(--warn); }
+  .nkm.tap { cursor: pointer; } .nkm.tap:active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
   .oxrow .b .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .oxmore { display: block; width: calc(100% - 20px); margin: 10px; min-height: 44px; }
   .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
   .bxdm { display: inline-block; margin-top: 3px; font-size: 12.5px; color: #c4b5fd; }
@@ -578,7 +622,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.100" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.101" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -587,7 +631,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.100" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.101" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -599,7 +643,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   <div class="pane" id="p-dm"><div id="dmBody"></div></div>
   <div class="pane" id="p-card"><div id="cardBody"></div></div>
   <div class="pane" id="p-coin"><div id="coinBody"></div></div>
-  <div class="pane" id="p-aj"><div id="ajBody"></div></div>
+  <div class="pane" id="p-aj"><div id="ajBody"></div><div id="nkBody" hidden></div></div>
   <div class="pane" id="p-oda"><div id="odaBody"></div></div>
   <div class="pane" id="p-durum"><div id="durumBody"></div></div>
   <nav class="bn"><button data-p="msg" class="on" onclick="tab('msg')"><b>💬</b>Sohbetler<i id="nMsg" hidden></i></button><button data-p="dm" onclick="tab('dm')"><b>💎</b>Elmas<i id="nDm" hidden></i></button><button data-p="card" onclick="tab('card')"><b>💳</b>Kartlar</button><button data-p="durum" class="bnc" onclick="tab('durum')" aria-label="Durumlar"><b><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="9" cy="9.5" r="1.8"/><path d="m21 15-4.5-4.5L6 21"/></svg></b>Durum</button><button data-p="oda" onclick="tab('oda')"><b>🎙️</b>Oda</button><button data-p="coin" onclick="tab('coin')"><b><span class="gc"></span></b>Coins</button><button data-p="aj" onclick="tab('aj')"><b>🏢</b>Ajans</button><div class="infol"></div></nav>
@@ -645,7 +689,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.100"></script>
+<script src="emoji.js?v=2.1.101"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -662,7 +706,7 @@ let API_YOL = /(^|\.)api\.sgok\.dev$/.test(location.hostname) ? location.origin 
 let API_VPS = API_YOL ? "https://vps.sgok.dev/f/bayi-web" : "", vpsYedekUntil = 0, apiYolAd = "";
 const VPS_KESIN = /^(kapali|hazir-degil|beat-eski)$/, VPS_BUYUK = 1_900_000; let VPS_OKU_MS = 8_000, VPS_YAZ_MS = 57_000; /* let: senaryolar kısaltabilsin */ // Caddy gövde sınırı 2 MB: büyük gövde (resim, ses) hiç Contabo'ya gönderilmez
 const webYol = () => { let m = me; if (!m) try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {} return (m && m.web_yol) || ""; };
-const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_chat_list)$|_get$/;
+const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_chat_list|nakit|nakit_hareket|odeme_karti)$|_get$/;
 // Contabo atlanırken yoklama: GET API_VPS (bayi-web'in kendi 405'i, CORS'lu, veritabanına dokunmaz; /f/health anahtarsız 403 verir ve CORS başlığı yok)
 let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0;
 function vpsDus() { if (vpsDonAt && Date.now() - vpsDonAt < 30_000) vpsBek = Math.min(60_000, vpsBek * 2); else vpsBek = 10_000; // gidip gelme: katla · ≥ 30 sn kaldıysa baştan
@@ -705,6 +749,8 @@ const SKEL = { dmBody: () => SKC(2) + SKB() + `<h3><span class="sk" style="width
   coinBody: () => SKC(5, true) + SKB() + `<h3><span class="sk" style="width:12em"></span></h3>` + SKR(6), ajBody: () => SKC(4) + SKR(5) };
 const PANES = Object.keys(SKEL);
 function paneBoot() { for (const id of PANES) { const el = $(id); if (!el || el.dataset.pb) continue; el.dataset.pb = 1; let h = null; try { h = localStorage.getItem("bw_pane_" + id); } catch (e) {}
+  if (id === "ajBody" && h && (h.includes("data-nk") || h.includes('id="oxBody"'))) { let m = null; try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {}
+    if (h.includes("data-nk") ? !nkOkMe(m) : !(m && (m.role === "sahip" || m.switched))) h = null; } // 💵 Nakit sekmesi / 💎 Elmas bozumları yalnız yöneticinin saklı çiziminde
   el.innerHTML = h || SKEL[id](); let t = 0, last = h || ""; // son çizilen hâl saklanır (yer tutucu saklanmaz)
   // Yazma boşta (requestIdleCallback; yoksa setTimeout) ve yalnız değiştiyse: kaydırma/dokunma sırasında ana iş parçacığı localStorage'a takılmasın
   new MutationObserver(() => { if (t) return; t = setTimeout(() => idleRun(() => { t = 0; if (el.querySelector(".sk")) return; const v = el.innerHTML.slice(0, 300_000); if (v === last) return; last = v;
@@ -799,7 +845,12 @@ function statLine() { const avg = STAT.api.length ? Math.round(STAT.api.reduce((
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") + (STAT.rtYol === "Supabase" ? " yedek" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   const ip = STAT.rtYol ? `Canlı kanal: ${STAT.rtYol === "Supabase" ? "yedek (Supabase)" : "Contabo"}${STAT.rtAdr ? " · " + STAT.rtAdr : ""}${STAT.rtYol === "Supabase" && rtYedekAt ? " · " + new Date(rtYedekAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) + "'den beri" : ""}` : ""; // ayrıntı yalnız ipucunda (satır kısa kalır: "Sugo bağlı" telefonda kesilmesin)
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); if (ip) el.title = ip; else if (el.title) el.removeAttribute("title"); }); }
-async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); renderInbox(); if (cur) renderChat(); if (tok && (rtYeni(rtConf(d)) || rtYeni(rtCfg))) rtEnsure(); } } // 📡 adres listesi değiştiyse (rt_yol) yeniden bağlanır
+// 🔒 Sunucunun "me" cevabı öncekinden (saklı / bellekteki) farklı kişi ya da rolse: yönetici verisi (Nakit, ödeme kartı) hemen silinir, Ajansım yeni rolle baştan çizilir
+// (yönetici değilse Nakit sekmesi ve tutarlar DOM'dan kalkar; yönetici olduysa sekme çıkar). Elmas bölümü de aynı yeniden çizimle rolüne göre gelir / gider.
+const kimAnah = (m) => (m ? [m.name || "", m.role || "", m.switched ? "sw:" + (m.switched.key || m.switched.by || 1) : ""].join("|") : "");
+function kimDegisti(eski, yeni) { if (!eski || kimAnah(eski) === kimAnah(yeni)) return; nkSifirla();
+  const b = $("ajBody"); if (b && !ajData) b.innerHTML = SKEL.ajBody(); renderAj(); if (can("ajans")) loadAj(); }
+async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { const m0 = me; me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {} swDraw(); applyPerms(); kimDegisti(m0, d); renderInbox(); if (cur) renderChat(); if (tok && (rtYeni(rtConf(d)) || rtYeni(rtCfg))) rtEnsure(); } } // 📡 adres listesi değiştiyse (rt_yol) yeniden bağlanır
 async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
 async function api0(action, body = {}) {
   const t0 = tok; // isteğin gönderildiği oturum: geç gelen 401 (kapanmış geçiş oturumunun eski isteği) şimdiki oturumu düşürmesin (yavaş ağ testi, 11.11)
@@ -858,7 +909,7 @@ async function doLogin() { if (loginBusy) return; const inp = $("pin"), btn = $(
   try { if (d.must_change) { await start(); pwChange(pw, true); } else await start(); } finally { loginBusy = false; btn.disabled = false; btn.textContent = "Giriş"; }
   if (tok && me) { loginMsg(""); toast("👋 Hoş geldiniz" + (me.name ? ", " + me.name : "")); } }
 $("pin").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-function cacheClear() { try { for (const k of Object.keys(localStorage)) if (/^bw_(pane_|ch_)/.test(k)) localStorage.removeItem(k); } catch (e) {} try { chCache.forget(); } catch (e) {} } // başka kişi girerse eski ekranlar görünmesin
+function cacheClear() { try { for (const k of Object.keys(localStorage)) if (/^bw_(pane_|ch_)/.test(k)) localStorage.removeItem(k); } catch (e) {} try { chCache.forget(); } catch (e) {} try { nkSifirla(); } catch (e) {} } // başka kişi girerse eski ekranlar görünmesin (💵 Nakit belleği de)
 // 🔕 Çıkışta bu telefonun bildirim aboneliği kapanır (kullanıcı 11.11: "çıkış yapınca da bildirim geliyor"): sunucuda kayıt kapatılır (silinmez), tarayıcıda abonelik bırakılır
 async function pushEndpoint() { try { if (!("serviceWorker" in navigator)) return null; const reg = swReg || await Promise.race([navigator.serviceWorker.getRegistration(), new Promise((r) => setTimeout(r, 1500))]);
   return reg && reg.pushManager ? await Promise.race([reg.pushManager.getSubscription(), new Promise((r) => setTimeout(() => r(null), 1500))]) : null; } catch (e) { return null; } }
@@ -881,9 +932,9 @@ async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekt
   const pInbox = loadInbox();
   if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
-  me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
-  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); molaYukle(); /* ☕ */ chCache.warm(inbox.map((x) => String(x.id)));
-  setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
+  const m0 = me || cm; me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
+  swDraw(); applyPerms(); kimDegisti(m0, d); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); molaYukle(); /* ☕ */ chCache.warm(inbox.map((x) => String(x.id)));
+  setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") { loadAj(); if (nkOk()) idleRun(nkLoad); } }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır) · 💵 Nakit de
   const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
   // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
   const navHit = (qp.get("c") || qp.get("t") || qp.get("pz") ? await navOpen(location.href) : false) | (await takeNavOpen(true)); navReady = true;
@@ -1918,7 +1969,7 @@ function renderChat(scroll) {
   for (const c of cns) items.push({ k: "c" + c.tx, at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 <b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
       ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>`
       : c.paid_part > 0 ? `<span class="partl">${partTxt(c.paid_part, c.pay_azn)}</span>${whoPaid(c.paid_note)} <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button> <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false,1)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
-      <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div></div>` });
+      <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div>${okSatir(c.odeme, c.odeme && c.batch ? cns.filter((x) => x.batch === c.batch).length : 1)}</div>` }); // 🧾 yönetici: ödeme kartı (sunucu yalnız ona koyar)
   // Bu ekrandan gönderilenler (myOut): Sugo onayına kadar soluk, hata olursa kırmızı; asıl mesaj gelince AYNI balon (düğüm) onun hâlini alır (keyAlias)
   for (const o of mine) { if (o.mid && inHist.has(o.mid)) continue;
     const stt = o.status === "failed" ? `❌ gitmedi: ${esc(o.err || "")}` : o.status === "unsure" ? "⏳ kontrol ediliyor…" : `${rel(Date.parse(o.created_at))} <span class="tk">${o.status === "sent" ? "✓" : "⏳"}</span>`; // asıl balonla aynı düzen (saat + işaret): gelince kaymaz
@@ -2186,7 +2237,7 @@ function tab(k) { if (!document.getElementById("p-" + k)) k = "msg"; const was =
     await new Promise((z) => setTimeout(z, Math.max(0, 600 - (Date.now() - t0))));
     el.classList.remove("spin"); set(0); busy = false; }, { passive: true });
 })();
-function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") { loadAj(); loadWallet(true); } else if (curTab === "coin") loadCoins(); loadTablet(); }
+function refreshTab() { if (curTab === "msg") { loadInbox(); loadDm(); } else if (curTab === "dm") loadDm(); else if (curTab === "card") loadCards(); else if (curTab === "aj") { if (nkOk()) renderAj(); loadAj(); loadWallet(true); } else if (curTab === "coin") loadCoins(); loadTablet(); }
 
 // 🪙 Coins: üstte bakiyemiz (her zaman), sekmede bugün / 7 gün satış ve son gönderilen coinler (kime, ne kadar, kim gönderdi, ödeme durumu)
 let coinLimit = 40, coinData = null;
@@ -2502,20 +2553,22 @@ function ajPick(uid) { if (!uid) return; if (can("profil")) prof(String(uid)); e
 async function loadAj() { if (!can("ajans")) return; const d = await api("union_view"); if (d.report && d.report.union) { ajData = d.report.union; renderAj(); } }
 const ajDay = (d) => { try { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { day: "numeric", month: "short", weekday: "short" }); } catch (e) { return d; } };
 const hrs = (s) => { s = Number(s) || 0; const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h} sa ${m} dk` : `${m} dk`; };
-function ajTab(k) { ajSub = k; try { localStorage.setItem("bw_aj", k); } catch (e) {} renderAj(); }
+function ajTab(k) { ajSub = k; nkIlk = true; try { localStorage.setItem("bw_aj", k); } catch (e) {} renderAj(); }
 // 🪪 Ajansım üstünde kimlikler (kullanıcı 13.11: "bayi hesabımızın sugo id si … ajansım kısmına girdiğimde görebileyim"): bayi hesabı (me.bayi_uid, sunucu "me" cevabı)
 // ve ajans (union_info.id) — ikisi ayrı şey, etiketleri ayrı. Dokununca kopyalanır. Ad: sayfada bilinirse (kişi önbelleği); "me" cevabında bayi hesabının adı yok.
 function ajKimlik(info) { const b = bayiMe(), k = b ? (inbox.find((x) => String(x.id) === b) || people[b] || {}) : {}, aid = info && info.id != null ? String(info.id) : "";
   if (!b && !aid) return ""; const nm = k.n || "";
   return `<div class="ajid">${b ? `<button class="ajidb" onclick="ajKopya('${esc(b)}','Bayi hesabı ID')" title="Kopyala"><small>Bayi hesabı${nm ? ": " + esc(nm) : ""}</small><b>ID ${esc(b)} 📋</b></button>` : ""}${aid ? `<button class="ajidb" onclick="ajKopya('${esc(aid)}','Ajans ID')" title="Kopyala"><small>Ajans${info.name ? ": " + esc(info.name) : ""}</small><b>Ajans ID ${esc(aid)} 📋</b></button>` : ""}</div>`; }
 function ajKopya(t, l) { try { navigator.clipboard.writeText(String(t)).then(() => toast("📋 " + l + " kopyalandı: " + t), () => toast("Kopyalanamadı", true)); } catch (e) { toast("Kopyalanamadı", true); } }
-function renderAj() { const u = ajData || (ajSub === "elmas" && oxOk() ? {} : null); if (!u) return; /* 💎 Elmas alt sekmesi ajans verisini beklemez */ const info = u.info || {}, days = u.days || [], d0 = days[0] || {};
+function renderAj() { if (nkOk() && !nkIlk) { nkIlk = true; ajSub = "nakit"; } /* 💵 yönetici: Ajansım her açılışta Nakit ile başlar */
+  const u = ajData || ((ajSub === "elmas" && oxOk()) || (ajSub === "nakit" && nkOk()) ? {} : null); if (!u) { nkDraw(); return; } /* 💎 Elmas ve 💵 Nakit alt sekmeleri ajans verisini beklemez */ const info = u.info || {}, days = u.days || [], d0 = days[0] || {};
   const mon = (d0.day || "").slice(0, 7), md = days.filter((x) => (x.day || "").startsWith(mon)), sum = (k) => md.reduce((s, x) => s + (Number(x[k]) || 0), 0);
   const T = u.limited || (me && me.role === "yardimci") ? [["basvuru", "📝 Başvurular"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"]] // yardımcı: başvurular ilk; özet, gün gün ve alt ajanslar yok
     : [["ozet", "📊 Özet"], ["gunluk", "📅 Gün gün"], ["yayinci", "🏆 Yayıncılar"], ["uye", "🆕 Üyeler"], ["basvuru", "📝 Başvurular"], ["alt", "🏢 Alt ajanslar"]];
   if (oxOk()) T.splice(1, 0, ["elmas", "💎 Elmas"]); // yalnız ajans sahibi (geçişte asıl kişi sahip); diğer rollerde hiç yok
+  if (nkOk()) T.unshift(["nakit", "💵 Nakit"]); // 💵 yalnız yönetici (kendi hesabında), İLK sekme; başkasında hiç çizilmez (sunucu da vermez)
   if (!T.some(([k]) => k === ajSub)) ajSub = T[0][0];
-  const wc = walletCard(); let h = wc + ajKimlik(info) + `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}" onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
+  const wc = walletCard(); let h = wc + ajKimlik(info) + `<div class="sub">${T.map(([k, l]) => `<button class="${k === ajSub ? "on" : ""}"${k === "nakit" ? " data-nk=\"1\"" : ""} onclick="ajTab('${k}')">${l}</button>`).join("")}</div>`;
   if (ajSub === "ozet") h += `<div class="card"><b>🏢 ${esc(info.name || "Ajans")}</b><div class="s">Seviye ${esc(d0.rating_level || info.rating_level || "—")} · komisyon %${esc(String(d0.rating_ratio ?? "—"))} · ${nf(u.members)} üye${u.limited ? "" : ` · ${nf(info.sub_union_count)} alt ajans`}</div></div>
     <div class="s" style="margin:0 12px">Son gün: ${d0.day ? ajDay(d0.day) : "—"} (bugünkü veri yarın gelir) · elmas</div>
     <div class="grid"><div class="card"><div class="k">💎 Toplam gelir</div><div class="v">${nf(d0.total_income)}</div></div><div class="card"><div class="k">💰 Komisyon</div><div class="v" style="color:#4ade80">${nf(d0.commission)}</div><div class="s">bu ay ${nf(u.month_commission ?? sum("commission"))}</div></div>
@@ -2527,8 +2580,9 @@ function renderAj() { const u = ajData || (ajSub === "elmas" && oxOk() ? {} : nu
   if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => `<div class="row"><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`).join("");
   if (ajSub === "alt") h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th><th class="n">Gelir</th></tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td><td class="n">${nf(x.total_income)}</td></tr>`).join("")}</table>`;
   if (ajSub === "elmas") h += `<div id="oxBody">${oxHtml()}</div>`;
-  $("ajBody").innerHTML = h; const we = $("ajWallet"); if (we) we.__h = wc;
-  if (ajSub === "elmas" && !oxBusy && (!ox || Date.now() - (ox.at || 0) > 30_000)) oxLoad(); }
+  $("ajBody").innerHTML = h; const we = $("ajWallet"); if (we) we.__h = wc; nkDraw();
+  if (ajSub === "elmas" && !oxBusy && (!ox || Date.now() - (ox.at || 0) > 30_000)) oxLoad();
+  if (ajSub === "nakit" && nkOk() && !nkBusy && (!nk || Date.now() - (nk.yuk || 0) > 20_000)) nkLoad(); }
 
 // 💎 Ajans › Elmas: bayi hesabının kendi elmas bozumları (own_exchanges; yalnız ajans sahibi). Özet (bugün / 7 gün / bu ay) + liste 20'şer; ilk sayfa telefonda saklı (anında çizilir).
 // Bozum yapılınca cevaptaki "exchanged" hemen listeye eklenir (kayıt bekleniyor), sonra sunucudan tazelenir.
@@ -2560,6 +2614,151 @@ function oxHtml() { const x = ox, S = (x && x.sums) || {}, pd = oxPend.reduce((a
     ${!x ? (oxErr ? `<div class="row s">❌ ${esc(oxErr)}</div>` : SKR(5)) : rows.length ? rows.map(oxRow).join("") : '<div class="row s">Henüz kendi elmas bozumunuz yok.</div>'}
     ${more ? `<button class="oxmore" id="oxMore" ${oxBusy ? "disabled" : ""} onclick="oxLoad(true)">${oxBusy ? "⏳ yükleniyor…" : "⬇️ Daha fazla (+20)"}</button>` : ""}
     <div class="s" style="padding:10px 12px">Bayi hesabının coin kayıtlarından · "kim bozdu" web panelinden yapılanlarda yazar</div>`; }
+
+// 💵 Ajansım › Nakit (14.11, kullanıcı: "sadece benim görebileceğim … kimde ne kadar var … kişilere basınca bankaları … bankalara tıklayınca en son giriş çıkışlar"):
+// yalnız yönetici (Ajans sahibi, kendi hesabında; sunucu da başkasına vermez: _shared/nakit.ts nakitGorur). Kişiler + hesaplar TEK çağrı (nakit), telefonda saklı
+// (bw_pane_nakit: çıkışta / geçişte silinir) → önce o çizilir, sonra tazelenir (değişmediyse sunucu yalnız { same } der, ekran yeniden çizilmez).
+// Kişiye dokun → hesapları yerinde (veri zaten elde; istek yok). Hesaba dokun → hareketler sabit boy pencerede (nakit_hareket, 30'ar, süzgeç Tümü/Satış/Alış/Diğer).
+// İçerik ajBody'nin DIŞINDA (#nkBody): sekmelerin saklanan çizimine (bw_pane_ajBody) para tutarı girmez.
+let nkRed = false; // sunucu reddettiyse (rol değişmiş) bu açılışta bir daha sorulmaz, sekme kalkar (istek döngüsü olmasın)
+const nkOk = () => isSahip() && !swOn() && !nkRed;
+const nkOkMe = (m) => !!(m && m.role === "sahip" && !m.switched);
+// 🔒 saklı Nakit verisi kimin için saklandığını taşır (kim): yalnız saklı kimlik (bw_me) aynı yöneticiyse çizilir; uyuşmazsa hiç çizilmez, kayıt silinir
+const nkKim = (m) => (nkOkMe(m) ? "sahip|" + String(m.name || "") : "");
+function nkSakli() { let x = null, m = null; try { x = JSON.parse(localStorage.getItem("bw_pane_nakit") || "null"); m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {}
+  if (x && Array.isArray(x.people) && x.kim && x.kim === nkKim(m)) return { ...x, yuk: 0 };
+  if (x) { try { localStorage.removeItem("bw_pane_nakit"); } catch (e) {} } return null; }
+let nk = nkSakli(), nkBusy = false, nkErr = "", nkIlk = false;
+const nkAc = new Set(), nkH = {}; let nkSh = null; // açık kişiler · hareket önbelleği (bellekte; hesap:süzgeç) · açık hareket penceresi { id, tur }
+// Kimlik değişince (sunucunun "me" cevabı saklıdan farklı / çıkış / başka kişi girişi): bellekteki ve saklı Nakit + ödeme kartı verisi HEMEN gider, Nakit DOM'u boşalır
+function nkSifirla() { nk = null; nkErr = ""; nkIlk = false; nkRed = false; nkAc.clear(); for (const k of Object.keys(nkH)) delete nkH[k];
+  try { if ((nkSh && $("nkSh")) || (okSh && $("okSh"))) closeModal(); } catch (e) {} nkSh = null; try { okSh = null; for (const k of Object.keys(okT)) delete okT[k]; } catch (e) {}
+  try { localStorage.removeItem("bw_pane_nakit"); } catch (e) {} const b = $("nkBody"); if (b) { b.innerHTML = ""; b.__h = ""; b.hidden = true; } }
+const nkPara = (x, isaret) => { const n = Number(x) || 0, a = Math.abs(n).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), i = a.lastIndexOf(",");
+  return `<span class="nkn">${n < 0 ? "−" : isaret && n > 0 ? "+" : ""}${a.slice(0, i)}<small>${a.slice(i)}</small>&nbsp;₼</span>`; };
+const nkSaat = (t) => { if (!t) return ""; const d = new Date(t); if (isNaN(d)) return ""; const hm = d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }), g = new Date(); g.setHours(0, 0, 0, 0);
+  if (d >= g) return hm; if (d >= g.getTime() - 86400e3) return "dün " + hm; return d.toLocaleDateString("tr-TR", { day: "numeric", month: "short" }) + " " + hm; };
+const nkBankAd = (h, kisi) => { const l = String(h.label || h.bank || ""); return kisi && l.toLocaleLowerCase("tr").startsWith(kisi.toLocaleLowerCase("tr") + " ") ? l.slice(kisi.length + 1) : l; };
+const NK_DAY = { banka: "banka bildirimi", elle: "elle bakiye", hesaplanan: "hesaplanan" };
+const nkTag = (h) => `<span class="nktag ${esc(h.src)}">${NK_DAY[h.src] || "hesaplanan"}${h.src_at ? " · " + esc(nkSaat(h.src_at)) : ""}</span>`;
+function nkHesap(h, kisi) { const l4 = (h.last4 || []).length ? `<span class="z">· ${h.last4.map((x) => "••" + esc(x)).join(" ")}</span>` : ""; // son 4 hane küçülmez (etiket kısalır)
+  return `<button class="nka${h.active ? "" : " pasif"}" data-card="${Number(h.id)}" onclick="nkBanka(${Number(h.id)})"><div class="nkbi">🏦</div><div class="b"><b>${esc(nkBankAd(h, kisi))}</b>
+    <div class="s nks">${h.active ? nkTag(h) : '<span class="nktag">pasif · toplama girmez</span>'}${l4}</div></div><div class="nkamt${h.balance < 0 ? " neg" : ""}">${nkPara(h.balance)}</div><span class="nkchev">›</span></button>`; }
+function nkKisiHtml(p) { const on = nkAc.has(p.id), sifir = Math.abs(p.total) < 0.005, n = Number(p.n) || 0;
+  return `<div class="nkp${on ? " on" : ""}${sifir ? " zero" : ""}" id="nkp-${Number(p.id)}"><button class="nkr" aria-expanded="${on}" onclick="nkKisi(${Number(p.id)})"><div class="av">${initial(p.name)}</div>
+    <div class="b"><b>${esc(p.name)}</b><div class="s nks"><span class="e">${n ? n + " hesap" : "hesap yok"}${p.son_at ? " · son hareket" : ""}</span>${p.son_at ? `<span class="z">${esc(nkSaat(p.son_at))}</span>` : ""}</div></div>
+    <div class="nkamt${p.total < 0 ? " neg" : ""}">${nkPara(p.total)}</div><span class="nkchev">›</span></button>
+    ${on ? `<div class="nkaccs">${(p.accounts || []).length ? p.accounts.map((h) => nkHesap(h, p.name)).join("") : '<div class="row s">Hesap yok</div>'}</div>` : ""}</div>`; }
+function nkHtml() { const x = nk;
+  const tekrar = `<button class="nkre" onclick="nkTekrar()">🔄 Tekrar dene</button>`; // ağ hatası: yeniden dene (satır boyu değişmez)
+  if (!x) return `<div class="nktop"><div class="k">💵 Ekibin toplam nakdi</div><div class="v">${nkErr ? "—" : '<span class="sk" style="width:6em;height:1em"></span>'}</div><div class="s">${nkErr ? "❌ " + esc(nkErr) + " " + tekrar : '<span class="sk" style="width:12em"></span>'}</div></div>` + (nkErr ? "" : SKR(5));
+  const hs = x.people.reduce((t, p) => t + (Number(p.n) || 0), 0);
+  return `<div class="nktop"><div class="k">💵 Ekibin toplam nakdi</div><div class="v${x.total < 0 ? " nkamt neg" : ""}">${nkPara(x.total)}</div><div class="s" id="nkUpd">${x.people.length ? `${x.people.length} kişi · ${hs} hesap` : "Henüz hesap yok"}${nkErr ? " · ⚠️ tazelenemedi " + tekrar : x.at ? " · " + esc(nkSaat(x.at)) + " itibarıyla" : ""}</div></div>
+    <div class="nkl">${x.people.map(nkKisiHtml).join("")}</div>
+    <div class="s" id="nkNot" style="padding:10px 14px 18px">Bakiye = son banka bildirimi ya da elle bakiye + sonraki işaretlemeler (tablet Varlık ve /varlik ile aynı hesap). Kişiye dokun: hesaplar · hesaba dokun: hareketler.</div>`; }
+function nkTekrar() { nkErr = ""; nkDraw(); nkLoad(); }
+function nkDraw() { const el = $("nkBody"); if (!el) return; const on = ajSub === "nakit" && nkOk(); el.hidden = !on; $("p-aj") && $("p-aj").classList.toggle("nkon", on);
+  if (!nkOk() && el.innerHTML) { el.innerHTML = ""; el.__h = ""; } /* 🔒 yönetici değil: tutarlar DOM'da da kalmaz */ if (!on) return; const h = nkHtml(); if (el.__h !== h) { el.innerHTML = h; el.__h = h; } }
+async function nkLoad() { if (!nkOk()) return; if (nkBusy) return; nkBusy = true; const kim = nkKim(me); let d = null; try { d = await api("nakit", nk && nk.v ? { v: nk.v } : {}); } catch (e) {} nkBusy = false;
+  if (!nkOk() || nkKim(me) !== kim) return; // istek sürerken kimlik değişti: cevap kimseye çizilmez / saklanmaz
+  if (!d || d.error || !d.report) { if (d && d.perm === "nakit") { nkRed = true; nk = null; try { localStorage.removeItem("bw_pane_nakit"); } catch (e) {} if (ajSub === "nakit") ajSub = ""; renderAj(); return; } nkErr = (d && d.error) || "Bağlantı yok"; nkDraw(); return; }
+  nkErr = ""; const r = d.report;
+  if (r.same && nk) { nk.yuk = Date.now(); nkDraw(); return; } // değişmedi: aynı çizim (yalnız "itibarıyla" saati sunucunun son hesabı)
+  nk = { people: r.people || [], total: Number(r.total) || 0, at: r.at || new Date().toISOString(), v: r.v || "", yuk: Date.now() };
+  for (const p of nk.people) for (const h of p.accounts || []) { const c = nkHc(h.id); if (c) c.hesap = h; } // açık pencerenin başlığı da güncel bakiye
+  try { localStorage.setItem("bw_pane_nakit", JSON.stringify({ people: nk.people, total: nk.total, at: nk.at, v: nk.v, kim })); } catch (e) {}
+  nkDraw(); }
+function nkKisi(id) { if (nkAc.has(id)) nkAc.delete(id); else nkAc.add(id); const p = nk && nk.people.find((x) => x.id === id), el = $("nkp-" + id);
+  if (p && el) { const t = document.createElement("div"); t.innerHTML = nkKisiHtml(p); const n = t.firstElementChild, ac = n.querySelector(".nkaccs"), es = el.querySelector(".nkaccs"); // yerinde: kişi satırı aynı düğüm kalır
+    el.className = n.className; el.querySelector(".nkr").setAttribute("aria-expanded", String(nkAc.has(id))); if (es) es.remove(); if (ac) el.appendChild(ac); const b = $("nkBody"); if (b) b.__h = nkHtml(); } }
+// ---- hesap hareketleri (pencere)
+const NK_TUR = [["hepsi", "Tümü"], ["satis", "Satış"], ["alis", "Alış"], ["diger", "Diğer"]];
+const NK_CINS = { satis: ["💰", "Satış"], alis: ["💎", "Alış"], aktarim: ["🔁", "Ekip içi aktarım"], cekis: ["👑", "Çekiş"], gider: ["🧾", "Gider"], borc: ["🤝", "Borç"], elle: ["✍️", "Elle bakiye"], banka: ["🏦", "Banka"], diger: ["•", "Diğer"] };
+const nkHc = (id) => { for (const [k, v] of Object.entries(nkH)) if (k.startsWith(id + ":")) return v; return null; };
+const nkHesapBul = (id) => { for (const p of (nk && nk.people) || []) for (const h of p.accounts || []) if (h.id === id) return { h, p }; return null; };
+function nkSatir(r) { const [ic, ad] = NK_CINS[r.cins] || NK_CINS.diger, t = r.tutar;
+  const bas = r.cins === "aktarim" ? (r.ad ? (t < 0 ? "→ " : "← ") + r.ad : "Ekip içi aktarım") : r.cins === "elle" ? "Elle bakiye" : r.cins === "banka" ? (r.not ? r.not.charAt(0).toLocaleUpperCase("tr") + r.not.slice(1) : "Banka bildirimi") : r.ad || (r.cins === "satis" ? "Satış ödemesi" : r.cins === "alis" ? "Alış ödemesi" : ad);
+  const alt = [esc(nkSaat(r.at)), esc(ad), r.cins === "aktarim" ? (t < 0 ? "kime" : "kimden") : "", r.cins !== "banka" && r.not ? esc(r.not) : "", r.bagli && !r.sayildi ? "🔗 bankada" : "", r.auto ? "🤖 otomatik" : "",
+    r.bakiye != null && r.cins === "banka" ? "bakiye " + nkPara(r.bakiye) : "", r.cins === "alis" && r.batch > 0 && okOk() ? "🧾 ödeme ›" : ""].filter(Boolean).join(" · ");
+  const amt = r.cins === "elle" ? `<div class="nkamt eq">= ${nkPara(r.bakiye)}</div>` : t == null ? `<div class="nkamt eq">${r.bakiye != null ? "= " + nkPara(r.bakiye) : "—"}</div>` : `<div class="nkamt ${t < 0 ? "out" : "in"}">${nkPara(t, true)}</div>`;
+  const tap = r.cins === "alis" && r.batch > 0 && okOk(); // 🧾 alış satırı: ödeme kartı ayrıntısı
+  return `<div class="nkm${tap ? " tap" : ""}" data-k="${esc(r.k)}"${tap ? ` role="button" onclick="okAc(${Number(r.batch)},'nk')"` : ""}><div class="nkbi">${ic}</div><div class="b"><div class="t"><b>${esc(bas)}</b>${amt}</div><div class="s">${alt}</div></div></div>`; }
+function nkListe(c) { if (!c || !c.rows) return c && c.err ? `<div class="row s" style="padding:18px 4px">❌ ${esc(c.err)} <button class="nkre" onclick="nkHTekrar()">🔄 Tekrar dene</button></div>` : SKR(8);
+  if (!c.rows.length) return `<div class="row s" style="padding:24px 4px">Bu süzgeçte hareket yok.</div>`;
+  const tb = c.taban || {}, tAt = tb.at ? Date.parse(tb.at) : 0; let base = false, h = "";
+  for (const r of c.rows) { if (tAt && !base && Date.parse(r.at) <= tAt) { base = true; h += `<div class="nkbase">Dayanak: ${NK_DAY[tb.src] || "bakiye"} ${esc(nkSaat(tb.at))}${tb.base != null ? " · " + nkPara(tb.base) : ""}</div>`; } h += nkSatir(r); }
+  return h + (c.more ? `<button class="nkmore" id="nkMore" ${c.busy ? "disabled" : ""} onclick="nkHLoad(true)">${c.busy ? "⏳ yükleniyor…" : "⬇️ Daha eski"}</button>` : `<div class="s" style="text-align:center;padding:12px">— daha eski hareket yok —</div>`); }
+function nkShHtml() { const S = nkSh, f = nkHesapBul(S.id), c = nkH[S.id + ":" + S.tur], h = (c && c.hesap) || (f && f.h) || {};
+  return `<div class="nksh" id="nkSh"><div class="nkshh"><div class="b"><b>${esc(h.label || "Hesap")}</b><div class="s">${h.src ? nkTag(h) : ""}</div></div><div class="nkamt${h.balance < 0 ? " neg" : ""}" id="nkShAmt">${h.balance != null ? nkPara(h.balance) : ""}</div>
+    <button class="nkx" onclick="closeModal()" aria-label="Kapat">✕</button></div>
+    <div class="sub nkflt" style="padding-left:0;padding-right:0">${NK_TUR.map(([k, l]) => `<button class="${k === S.tur ? "on" : ""}" data-tur="${k}" onclick="nkTur('${k}')">${l}</button>`).join("")}</div>
+    <div class="nkml" id="nkMl">${nkListe(c)}</div></div>`; }
+function nkShDraw() { if (!nkSh || !$("nkSh")) return; const c = nkH[nkSh.id + ":" + nkSh.tur], ml = $("nkMl"), h = nkListe(c);
+  if (ml && ml.__h !== h) { ml.innerHTML = h; ml.__h = h; }
+  const hs = (c && c.hesap) || (nkHesapBul(nkSh.id) || {}).h, a = $("nkShAmt"); if (a && hs) { const x = nkPara(hs.balance); if (a.innerHTML !== x) a.innerHTML = x; a.classList.toggle("neg", hs.balance < 0); }
+  document.querySelectorAll("#nkSh .nkflt button").forEach((b) => b.classList.toggle("on", b.dataset.tur === nkSh.tur)); }
+function nkHTekrar() { if (!nkSh) return; const c = nkH[nkSh.id + ":" + nkSh.tur]; if (c) c.err = ""; nkShDraw(); nkHLoad(false); }
+function nkBanka(id) { if (!nkOk()) return; nkSh = { id, tur: "hepsi" }; openModal(nkShHtml()); nkHLoad(false); }
+function nkTur(t) { if (!nkSh || nkSh.tur === t) return; nkSh.tur = t; const ml = $("nkMl"); if (ml) ml.scrollTop = 0; nkShDraw(); const c = nkH[nkSh.id + ":" + t]; if (!c || !c.rows || Date.now() - (c.at || 0) > 20_000) nkHLoad(false); }
+async function nkHLoad(more) { if (!nkSh) return; const S = { ...nkSh }, key = S.id + ":" + S.tur, c = (nkH[key] = nkH[key] || {}); if (c.busy) return; if (more && !(c.rows && c.more)) return;
+  c.busy = true; if (more) nkShDraw(); let d = null; const kim = nkKim(me);
+  try { d = await api("nakit_hareket", { card_id: S.id, tur: S.tur, ...(more ? { once: c.once, ok: c.ok } : {}) }); } catch (e) {} c.busy = false;
+  if (nkKim(me) !== kim || nkH[key] !== c) return; // kimlik değişti (önbellek sıfırlandı): cevap atılır
+  const r = d && d.report; if (!r || d.error) { if (d && d.perm === "nakit") { closeModal(); nkRed = true; nk = null; try { localStorage.removeItem("bw_pane_nakit"); } catch (e) {} if (ajSub === "nakit") ajSub = ""; renderAj(); return; } if (!c.rows) c.err = (d && d.error) || "Bağlantı yok"; else if (more) toast("❌ " + ((d && d.error) || "Bağlantı yok"), true); nkShDraw(); return; }
+  c.err = ""; c.hesap = r.hesap; c.taban = r.taban;
+  if (more) { const have = new Set(c.rows.map((x) => x.k)); c.rows = [...c.rows, ...(r.rows || []).filter((x) => !have.has(x.k))]; c.more = !!r.more; c.once = r.once; c.ok = r.ok; }
+  else { const fresh = r.rows || []; // tazeleme: ilk sayfa değiştiyse yerine; daha önce yüklenmiş eski sayfalar korunmaz (sıra / imleç tutarlı kalsın)
+    if (!c.rows || JSON.stringify(c.rows.slice(0, fresh.length)) !== JSON.stringify(fresh) || c.rows.length < fresh.length) { c.rows = fresh; c.more = !!r.more; c.once = r.once; c.ok = r.ok; } c.at = Date.now(); }
+  if (nkSh && nkSh.id === S.id && nkSh.tur === S.tur) nkShDraw(); }
+
+// 🧾 Alış ödeme kartı (15.11, yalnız yönetici — kullanıcı: "Ülker Ödendi(Birbank) Ülker web bayiden işaretledi gibi"): sohbetteki bozum kaydının altında tek satır
+// (ödeyen hesap · tutar · işaretleyen · yol · saat) + uyarı rozetleri. Veri sohbetin zaten yaptığı çağrıda gelir (c.odeme; sunucu yalnız yöneticiye koyar → ek istek yok,
+// sohbet önbelleğiyle birlikte saklanır: sonradan eklenip sohbeti itmez). Dokununca zaman çizelgesi sabit boy pencerede (odeme_karti, tembel): kayma yok.
+// Aynı pencere Nakit › hesap hareketlerindeki alış satırından da açılır.
+const okOk = () => isSahip() && !swOn();
+const OK_YOL = { web: "Web Bayi", telegram: "Telegram", tablet: "Tablet", otomatik: "Otomatik (sistem)", devir: "Elle düzeltme", bilinmiyor: "yol bilinmiyor" };
+const okPara = (x) => { const n = Math.round((Number(x) || 0) * 100) / 100; return (Number.isInteger(n) ? String(n) : n.toFixed(2).replace(".", ",")) + "\u00a0₼"; }; // sayı ile ₼ arası bölünmez
+function okRozet(o) { const r = [];
+  if (o.oto) r.push(["🤖 otomatik bağlandı", ""]);
+  if (o.bagsiz) r.push(["⚠️ banka çıkışına bağlı değil", "u"]); else if ((o.parcalar || []).some((p) => p.bagli)) r.push(["🔗 banka çıkışına bağlı", ""]);
+  if (o.parcalar && o.parcalar.length) r.push(o.dekont ? ["🧾 dekont " + nkSaat(o.dekont), ""] : ["dekont yok", "s"]);
+  if (o.geri) r.push([`↩️ ${o.geri} kez geri alındı`, "u"]);
+  if (o.durum === "fazla") r.push(["⚠️ fazla ödeme", "u"]);
+  if (o.red) r.push([`🚫 ${o.red} reddedilen deneme`, o.parcalar && o.parcalar.length ? "s" : "u"]);
+  if (o.ad_yeni) r.push(["ad değişmiş: " + o.ad_yeni, "u"]);
+  return r.map(([t, k]) => `<span class="okc${k ? " " + k : ""}">${esc(t)}</span>`).join(""); }
+function okParca(o, n) { const p = (o.parcalar || [])[0], tp = n > 1 ? `${n} parça · toplam ` : ""; // [hesap + tutar, işaretleyen · yol · saat] · n: sohbetteki bozum parçası sayısı (>1: tutar alışın TOPLAMI)
+  if (!p) return [`⏳ Ödenmedi · ${tp}${okPara(o.odenecek)}`, ""];
+  const ek = o.parcalar.length > 1 ? ` +${o.parcalar.length - 1} hesap` : "", kim = p.kaynak === "otomatik" ? "sistem bağladı" : (p.kim === "bilinmiyor" ? "işaretleyen bilinmiyor" : p.kim + " işaretledi");
+  return [`<span class="e">${o.durum === "kismi" ? "🟡" : o.durum === "fazla" ? "⚠️" : "✅"} ${esc(p.hesap)}${ek}</span><span class="z">&nbsp;· ${tp}${o.durum === "kismi" ? okPara(o.odenen) + " / " + okPara(o.odenecek) : okPara(o.odenen)}</span>`, `${esc(kim)} · ${esc(OK_YOL[p.kaynak] || p.kaynak)} · ${esc(nkSaat(p.at))}`]; }
+const okBas = (o) => okParca(o).filter(Boolean).join(" · ");
+const okSatir = (o, n) => !o || !okOk() ? "" : `<button class="okrt" data-ok="${Number(o.batch)}" onclick="event.stopPropagation();okAc(${Number(o.batch)})"><div class="l1">${okParca(o, n)[0]}</div>${okParca(o)[1] ? `<div class="l1b">${okParca(o)[1]}</div>` : ""}<div class="l2">${okRozet(o)}<span class="okc s">🔒 yalnız siz · ayrıntı ›</span></div></button>`;
+let okSh = null; const okT = {}; // açık pencere { batch, geri } · zaman çizelgesi önbelleği (bellekte)
+const OK_IC = { bozum: "💎", red: "🚫", dekont: "🧾", isaret: "✅", geri: "↩️", banka: "🔗", devir: "🔁", coz: "⛓️" };
+function okOlay(e) { const alt = [e.kim ? esc(e.kim) : "", e.kaynak ? esc(OK_YOL[e.kaynak] || e.kaynak) : "", e.hesap ? esc(e.hesap) : "", e.tutar != null ? okPara(e.tutar) : ""].filter(Boolean).join(" · ");
+  return `<div class="okt ${esc(e.tur)}"><div class="okz">${esc(nkSaat(e.at))}</div><div class="oki">${OK_IC[e.tur] || "•"}</div><div class="b"><div>${esc(String(e.metin || "").replace(/^\p{Extended_Pictographic}\uFE0F?\s+/u, ""))}</div>${alt ? `<div class="s">${alt}</div>` : ""}</div></div>`; }
+function okIc() { const x = okT[okSh.batch];
+  if (!x || x.busy && !x.r) return SKR(6); if (x.err && !x.r) return `<div class="row s">❌ ${esc(x.err)}</div>`;
+  const ol = x.r.olaylar || [], rz = x.r.ozet ? `<div class="okrz" id="okRz">${okRozet(x.r.ozet)}</div>` : ""; // rozetler kaydırılan alanın başında: gelince liste kutusunu itmez
+  return rz + (ol.length ? ol.map(okOlay).join("") : '<div class="row s">Kayıt yok.</div>'); }
+const okBaslik = (m) => `🧾 Alış #${Number(okSh.batch)}${m ? " · " + esc(m) : ""}`;
+function okShHtml() { const x = okT[okSh.batch], o = x && x.r && x.r.ozet, m = x && x.r && x.r.musteri;
+  return `<div class="nksh oksh" id="okSh"><div class="nkshh">${okSh.geri ? `<button class="nkx" onclick="okGeri()" aria-label="Hesaba dön">‹</button>` : ""}<div class="b"><b id="okBb">${okBaslik(m)}</b><div class="s" id="okOz">${o ? okBas(o) : "&nbsp;"}</div></div>
+    <button class="nkx" onclick="closeModal()" aria-label="Kapat">✕</button></div><div class="nkml" id="okMl">${okIc()}</div>
+    <div class="s" style="padding:8px 2px 0">🔒 Yalnız yönetici görür · zaman eskiden yeniye · işaretleyen bulunamazsa "bilinmiyor"</div></div>`; }
+function okDraw() { if (!okSh || !$("okSh")) return; const x = okT[okSh.batch], o = x && x.r && x.r.ozet;
+  const set = (id, h) => { const el = $(id); if (el && el.__h !== h) { el.innerHTML = h; el.__h = h; } };
+  set("okMl", okIc()); set("okBb", okBaslik(x && x.r && x.r.musteri)); set("okOz", o ? okBas(o) : "&nbsp;"); }
+// Nakit › hesap hareketlerinden açılınca o pencerenin DÜĞÜMÜ ve kaydırma konumu saklanır: "‹" ile aynı düğüm geri konur (yüklenmiş satırlar, süzgeç, konum aynı; yeniden çizim yok)
+function okAc(batch, geri) { if (!okOk() || !(batch > 0)) return; const ns = geri === "nk" ? $("nkSh") : null, ml = ns && $("nkMl");
+  okSh = { batch, geri: geri || "", nkDom: ns, nkTop: ml ? ml.scrollTop : 0 }; openModal(okShHtml()); okYukle(); }
+function okGeri() { if (!(okSh && okSh.geri === "nk" && nkSh)) { closeModal(); return; } const { nkDom, nkTop } = okSh; okSh = null;
+  if (nkDom) { const b = $("modalBox"); b.replaceChildren(nkDom); $("modal").style.display = "flex"; modalLayout(false); } else openModal(nkShHtml());
+  nkShDraw(); const ml = $("nkMl"); if (ml) ml.scrollTop = nkTop || 0; }
+async function okYukle() { const b = okSh.batch, x = (okT[b] = okT[b] || {}); if (x.busy) return; x.busy = true; okDraw(); let d = null;
+  try { d = await api("odeme_karti", { batch_id: b }); } catch (e) {} x.busy = false;
+  if (!d || d.error || !d.report) { if (d && d.perm === "odeme_karti") { closeModal(); return; } x.err = (d && d.error) || "Bağlantı yok"; } else { x.err = ""; x.r = d.report; }
+  if (okSh && okSh.batch === b) okDraw(); }
 
 // 💎 Bayi hesabının kendi elmasları (yalnız ajans sahibi + Bayi Yetkilisi): başlıkta "💎 1.915", Ajans'ın üstünde kart; bozmayı yalnız ajans sahibi yapar
 // Önce telefondaki son değer çizilir; sonra açılışta bir kez, 5 dk'da bir, "wallet" canlı olayıyla ve Ajans açılınca (taze, Sugo'dan) güncellenir
@@ -3898,7 +4097,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.100"></script>
-<script src="durum.js?v=2.1.100"></script>
+<script src="profile.js?v=2.1.101"></script>
+<script src="durum.js?v=2.1.101"></script>
 </body>
 </html>
