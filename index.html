@@ -12,11 +12,11 @@
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.97">
+<meta name="build" content="2.1.98">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.97">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.97">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.97">
+<link rel="manifest" href="manifest.json?v=2.1.98">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.98">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.98">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -47,6 +47,22 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
   .dot.ok { background: #22c55e; } .dot.bad { background: var(--bad); }
+  .sdg { padding: 14px; border-radius: 14px; font-size: 16px; } .sdg .sds { margin-top: 4px; font-size: 14px; opacity: .85; } .sdb { margin-top: 10px; padding: 4px 12px 6px; border-radius: 14px; background: #ffffff0d; } .sdh { font-weight: 700; font-size: 14px; padding: 8px 0 4px; opacity: .9; } details.sdx > summary { cursor: pointer; min-height: 32px; } /* 🩺 sistem durumu (14.11) */
+  .sdr { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-top: 1px solid #ffffff10; } .sdr:first-of-type { border-top: 0; } .sdr > i { flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; } .sdm { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; } .sda { font-size: 14px; } .sdd { font-size: 14px; text-align: right; margin-left: auto; overflow-wrap: anywhere; } .sdy { opacity: .6; } .sdn { margin: 12px 2px 0; font-size: 13px; line-height: 1.45; opacity: .8; } .sdz { margin: 8px 2px 4px; font-size: 12px; opacity: .5; }
+  /* ☕ Mola (14.11): üst kartlar (sabit konum → kayma yok), tam ekran mola görünümü, ⚙️ üzerinde rozet */
+  #molaUst { position: fixed; left: 8px; right: 8px; top: 64px; z-index: 60; display: flex; flex-direction: column; gap: 4px; pointer-events: none; overflow-y: auto; } #molaUst[hidden] { display: none; } /* top / max-height: molaKonum() (başlığın altı → alt menü / yazı kutusunun üstü) */
+  .mlk { pointer-events: auto; background: color-mix(in srgb, var(--panel) 90%, #0d9488); border: 1px solid #0d948899; border-radius: 14px; padding: 4px 4px 4px 12px; box-shadow: 0 4px 16px rgba(0,0,0,.4); font-size: 14px; line-height: 1.3; }
+  .mlk .mlo { display: flex; align-items: center; gap: 6px; min-height: 44px; } .mlk .mlt { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; } .mlk .mlo button { flex: none; min-height: 44px; min-width: 44px; padding: 6px 10px; font-size: 14px; } .mlk .mlv { min-width: 44px; }
+  .mlk .mld { padding: 2px 8px 8px 0; font-size: 14px; opacity: .95; } .mlk .mlb { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; } .mlk .mlb button { flex: 1 1 30%; min-height: 44px; font-size: 15px; } .mlk.ben { border-color: #f59e0b99; background: color-mix(in srgb, var(--panel) 90%, #f59e0b); }
+  #molaEkran .mlkapat { min-height: 44px; background: #ffffff1a; color: #fff; border-color: #ffffff55; }
+  #molaEkran { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; align-items: stretch; gap: 14px; padding: calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 16px); background: radial-gradient(circle at 50% 20%, #134e4a, #0b1220 70%); color: #fff; text-align: center; } #molaEkran[hidden] { display: none; }
+  #molaEkran.gec { background: radial-gradient(circle at 50% 20%, #7f1d1d, #1a0b0b 70%); } #molaEkran .mlust { font-size: 18px; opacity: .9; } #molaEkran .mlsay { font-size: 64px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; } #molaEkran .mlalt { font-size: 15px; opacity: .85; min-height: 40px; }
+  #molaEkran .mldon { flex: 1; min-height: 240px; border-radius: 28px; border: 0; font-size: 34px; font-weight: 800; color: #fff; background: linear-gradient(160deg, #22c55e, #15803d); box-shadow: 0 10px 30px rgba(34,197,94,.35); } #molaEkran .mldon:active { transform: scale(.98); }
+  #molaEkran .mluz { display: flex; gap: 8px; } #molaEkran .mluz[hidden] { display: none; } #molaEkran .mluz button { flex: 1; min-height: 44px; background: #ffffff1a; color: #fff; border-color: #ffffff33; }
+  .molaroz { position: absolute; top: -7px; left: -12px; background: #0d9488; color: #fff; font-size: 11px; font-weight: 700; line-height: 16px; padding: 1px 6px; border-radius: 999px; white-space: nowrap; box-shadow: 0 0 0 2px var(--hdr); } .molaroz[hidden] { display: none; }
+  .mlsure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; } .mlsure button, .mlned button { min-height: 48px; font-size: 16px; } .mlsure button.on, .mlned button.on { background: #0d9488; border-color: #0d9488; color: #fff; }
+  .mlned { display: flex; gap: 8px; flex-wrap: wrap; } .mlned button { flex: 1 1 30%; font-size: 15px; } .mlgo { width: 100%; min-height: 56px; font-size: 18px; font-weight: 800; margin-top: 12px; }
+  .mlsat { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; } .mlsat:first-child { border-top: 0; } .mlsat button { min-height: 44px; flex: none; } .mlsat .gec { color: #f87171; font-weight: 700; } .mlsat .s { display: block; margin-top: 2px; } .mlsat [data-kalan] { white-space: nowrap; }
   /* 🩺 Sistem durumu düğmesi (sağ üst): basılabilir hap görünümü, nokta yanıp söner */
   header .sysb { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px 0 9px; border-radius: 16px; font-size: 13px; font-weight: 600;
     border: 1px solid var(--line); background: #ffffff10; color: inherit; flex: none; cursor: pointer; }
@@ -68,6 +84,8 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #replyBar .rq b { color: #7dd3fc; display: block; font-size: 12px; } #replyBar button { border: 0; background: none; font-size: 18px; padding: 4px 6px; color: var(--muted); }
   /* 📌 Sabitlenen sohbetler: turuncu sol çizgi + hafif turuncu zemin + başlık; sabit mesaj balonu: turuncu çerçeve */
   .row.pinned { background: rgba(245,158,11,.10); box-shadow: inset 4px 0 0 #f59e0b; } .pinic { font-size: 13px; margin-right: 4px; }
+  .prs { margin-left: 6px; font-size: 11px; font-weight: 600; color: #fff; background: color-mix(in srgb, #0d9488 85%, #000); border-radius: 6px; padding: 1px 6px; vertical-align: middle; white-space: nowrap; } /* 👥 sohbette olanlar (listede) */
+  #chat header h1 { position: relative; } #chPres { position: absolute; left: var(--prx, 0px); bottom: 0; max-width: calc(100% - var(--prx, 0px)); box-sizing: border-box; font-size: 12px; line-height: 15px; font-weight: 600; color: #fff; background: color-mix(in srgb, #0d9488 85%, #000); border-radius: 999px; padding: 1px 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; } #chPres[hidden] { display: none; } #chat header h1.pr.rm #chRoom .pfroom { max-width: 50%; } /* 👥 başlıkta, oda satırının ayrılmış yerinde (CLS yok) */
   .asg { margin-left: 6px; font-size: 11px; font-weight: 600; color: var(--brand3); background: color-mix(in srgb, var(--brand) 22%, transparent); border-radius: 6px; padding: 1px 6px; vertical-align: middle; } /* 🙋 kim bakıyor */
   .wt { font-weight: 700; color: var(--mut, #a1a1aa); } .wt.y { color: #fbbf24; } .wt.r { color: #f87171; } /* ⏱ müşteri ne kadar süredir cevap bekliyor (saatin yerinde) */
   .typ { color: var(--brand3); font-style: italic; }
@@ -556,7 +574,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.97" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.98" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -565,7 +583,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.97" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()">⚙️</button></header>
+  <header><img src="icon-192.png?v=2.1.98" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -593,7 +611,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a></div>
 <section class="screen" id="chat">
-  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chRoom" hidden></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chRoom" hidden></span><span id="chPres" role="status" hidden></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
   <div id="chTrust"></div>
   <div id="chTags" class="chtags"></div>
   <div class="warnbar" id="tabWarn2"></div>
@@ -623,7 +641,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.97"></script>
+<script src="emoji.js?v=2.1.98"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -860,7 +878,7 @@ async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekt
   if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   me = d; try { localStorage.setItem("bw_me", JSON.stringify(d)); } catch (e) {}
-  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); chCache.warm(inbox.map((x) => String(x.id)));
+  swDraw(); applyPerms(); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); molaYukle(); /* ☕ */ chCache.warm(inbox.map((x) => String(x.id)));
   setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") loadAj(); }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır)
   const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
   // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
@@ -876,8 +894,43 @@ async function loadTablet() { const d = await api("tablet"); const age = Date.no
   const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
   const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? (d.server ? "⚠️ Sugo bayi oturumu kapandı – tablette yeniden giriş yapılmalı, mesajlar gitmez." : "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez.") : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
   setTabWarn(msg); try { localStorage.setItem("bw_tabwarn", msg); } catch (e) {} }
-// 🩺 Sağlık işaretine dokununca: sade kartlarla sistem durumu (kullanıcı 12.11: anlaşılır olsun, ✕ hep görünsün, GitHub da olsun)
-async function sysPop() {
+// 🩺 Sistem durumu (14.11, güncel yapı): Contabo birincil · Supabase hafif yedek · hakem · Sugo bağlantıları · sinyal / depo · tablet · banka telefonları · sürümler.
+// Veri: bayi-web `sistem_durumu` (_shared/sistemdurumu.ts; yalnız okuma, sunucuda 15 sn önbellek). Önce bu cihazdaki son görünüm (bw_pane_sd: çıkışta silinir),
+// sonra sunucu; ekran açıkken 15 sn'de bir tazelenir. Sunucu bu işlemi bilmiyorsa (eski sürüm) eski görünüm (sysPopEski) açılır.
+let sdT = 0;
+const SD_RENK = { iyi: "#22c55e", uyari: "#f59e0b", hata: "#ef4444", bilgi: "#94a3b8", bilinmiyor: "#64748b" };
+function sdYas(sn, fark) { if (sn == null) return ""; const x = Math.max(0, Math.round(sn + fark)); return x < 20 ? "az önce" : x < 60 ? x + " sn önce" : x < 3600 ? Math.round(x / 60) + " dk önce" : x < 86400 ? Math.round(x / 3600) + " sa önce" : Math.round(x / 86400) + " gün önce"; }
+function sdSatir(x, fark) { const r = SD_RENK[x.d] || SD_RENK.bilgi, bas = /^(az önce|\d+ (sn|dk|sa|gün) önce)/, y = x.yas_sn != null && !/önce\b/.test(x.deger) ? sdYas(x.yas_sn, fark) : "";
+  const dg = x.yas_sn != null && bas.test(x.deger) ? x.deger.replace(bas, sdYas(x.yas_sn, fark)) : x.deger; // "2 dk önce" ile başlayan değer bu cihazın saatine göre yaşlanır (önbellekten açılışta bayat kalmasın)
+  return `<div class="sdr"><i style="background:${r}"></i><div class="sdm"><span class="sda">${esc(x.ad)}</span><span class="sdd">${esc(dg)}${y ? ` <span class="sdy">· ${esc(y)}</span>` : ""}</span></div></div>`; }
+function sdCiz(d, alinan) { const fark = (Date.now() - alinan) / 1000, g = d.genel || {}, gr = g.d === "iyi" ? "#22c55e1f" : g.d === "yedek" ? "#f59e0b24" : "#ff4d4f1f";
+  const gi = g.d === "iyi" ? "✅" : g.d === "yedek" ? "🟠" : "⚠️";
+  const ek = { altyapi: [{ ad: "Bu cihazın sinyali", deger: STAT.rtOn ? "Bağlı · " + (STAT.rtYol || "Supabase") : "Bağlanıyor…", d: STAT.rtOn ? (STAT.rtYol === "Supabase" && d.yer === "contabo" ? "uyari" : "iyi") : "uyari" }],
+    surum: [{ ad: "Web paneli (bu cihaz)", deger: String(BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"), d: "bilgi" }] };
+  const bol = (d.bolumler || []).map((b) => ({ ...b, satirlar: [...(b.satirlar || []), ...(ek[b.k] || [])] }));
+  if (!bol.some((b) => b.k === "surum")) bol.push({ k: "surum", baslik: "🏷️ Sürümler", satirlar: ek.surum });
+  return `<div id="sdKok"><div class="sdg" style="background:${gr}"><b>${gi} ${esc(g.metin || "")}</b>${(g.sorunlar || []).length > (g.d === "dikkat" ? 1 : 0) ? `<div class="sds">${g.sorunlar.map((x) => "• " + esc(x)).join("<br>")}</div>` : g.d === "iyi" ? `<div class="sds">Mesajlar, coin ve bildirimler normal çalışıyor.</div>` : ""}</div>`
+    + bol.map((b) => `<div class="sdb"><div class="sdh">${esc(b.baslik)}</div>${b.satirlar.map((x) => sdSatir(x, fark)).join("")}</div>`).join("")
+    + (Array.isArray(d.ayrinti) && d.ayrinti.length ? `<details class="sdb sdx"><summary class="sdh">👑 Yönetici ayrıntısı</summary>${d.ayrinti.map((x) => sdSatir(x, fark)).join("")}</details>` : "")
+    + `<div class="sdn"><b>Bir sorun görürsen:</b> sayfayı aşağı çekip yenile. Birkaç dakikada düzelmezse yöneticiye haber ver. Contabo bozulursa sistem kendiliğinden yedeğe geçer (≈15 sn) ve düzelince geri döner; senin bir şey yapman gerekmez.</div>`
+    + `<div class="sdz">${new Date(alinan).toLocaleTimeString("tr-TR")} itibarıyla · açıkken 15 sn'de bir yenilenir</div></div>`; }
+async function sysPop() { clearTimeout(sdT);
+  const shell = (body) => `<div style="position:sticky;top:-16px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-16px -16px 6px;padding:10px 12px 10px 16px;background:var(--panel);border-bottom:1px solid var(--line)">
+      <h3 style="margin:0;font-size:19px">Sistem durumu</h3>
+      <button onclick="closeModal()" aria-label="Kapat" style="flex:none;width:44px;height:44px;border-radius:22px;font-size:20px;line-height:1;padding:0">✕</button></div>${body}`;
+  let onceki = null; try { onceki = JSON.parse(localStorage.getItem("bw_pane_sd") || "null"); } catch (e) {}
+  openModal(shell(onceki && onceki.d ? sdCiz(onceki.d, onceki.at) : `<div id="sdKok" style="padding:30px 0;text-align:center;opacity:.7">Kontrol ediliyor…</div>`), true);
+  const al = async (ilk) => { sdT = 0; if ($("modal").style.display !== "flex" || !$("sdKok")) return; // kapandı ya da başka pencere açıldı: tazeleme biter
+    const d = await api("sistem_durumu"); if ($("modal").style.display !== "flex" || !$("sdKok")) return;
+    if (d && /Bilinmeyen işlem/.test(String(d.error || "")) && ilk) { sysPopEski(); return; } // YALNIZ sunucu bu işlemi bilmiyorsa eski görünüm
+    if (!d || d.error || !Array.isArray(d.bolumler)) { const k = $("sdKok"); if (k) { if (!k.querySelector(".sdb")) k.innerHTML = ""; let u = k.querySelector(".sdg"); if (!u) { u = document.createElement("div"); u.className = "sdg"; k.prepend(u); } // genel kart yerinde değişir (altındaki bölümler kaymaz)
+        u.classList.add("sdhata"); u.style.background = "#ff4d4f1f"; u.innerHTML = `<b>⚠️ Durum alınamadı</b><div class="sds">Son bilinen gösteriliyor · <button onclick="sysPop()" style="min-height:0;padding:0 2px;border:0;background:none;color:inherit;font:inherit;text-decoration:underline">Tekrar dene</button></div>`; /* genel kartla aynı boy: 2 satır */ } } // 503 / ağ: önbellekteki son görünüm korunur
+    else { const at = Date.now(); try { localStorage.setItem("bw_pane_sd", JSON.stringify({ d, at })); } catch (e) {} const h = sdCiz(d, at), k = $("sdKok");
+      if (k && k.outerHTML !== h) { const det = k.querySelector("details.sdx"), acik = !!(det && det.open); k.outerHTML = h; if (acik) { const n = document.querySelector("#sdKok details.sdx"); if (n) n.open = true; } } }
+    sdT = setTimeout(() => al(false), 15_000); };
+  al(true); }
+// Eski görünüm (sunucu `sistem_durumu` bilmiyorsa; 12.11 yapısı)
+async function sysPopEski() {
   const ago = (ms) => ms == null || !isFinite(ms) ? "–" : ms < 60e3 ? Math.max(0, Math.round(ms / 1000)) + " sn önce" : ms < 3600e3 ? Math.round(ms / 60e3) + " dk önce" : Math.round(ms / 3600e3) + " sa önce";
   const pill = (t, ok) => `<span style="flex:none;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:${ok === false ? "#ff4d4f26" : ok === true ? "#22c55e24" : "#ffffff14"};color:${ok === false ? "#ff6b6b" : ok === true ? "#4ade80" : "inherit"}">${t}</span>`;
   const card = (ic, title, line, sub, ok, right) => `<div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:14px;background:#ffffff0d;margin-top:8px">
@@ -892,6 +945,7 @@ async function sysPop() {
   if ($("modal").style.display !== "flex") return;
   if (!d || d.error) { $("modalBox").innerHTML = shell(card("⚠️", "Durum okunamadı", esc(String((d && d.error) || "bağlantı yok")), "", false)); return; }
   const now = Date.now(), b = d.beat || {}, beatAge = b.at ? now - Date.parse(b.at) : null;
+  d.vps = d.vps || {}; d.cf = d.cf || {}; d.github = d.github || {}; d.web = d.web || {}; // R10: eksik alanlarda sayfa hatası olmasın
   const onVps = d.host === "vps", ws = onVps ? d.vps.health && d.vps.health.ws : d.cf.ws, wsOpen = ws === "open";
   const server = d.mode === "server", tabOk = !!(tb && tb.linked && now - (tb.at || 0) < 8 * 60e3);
   const jobs = Object.entries(d.jobs || {}).filter(([, v]) => v === "vps").map(([k]) => k);
@@ -1105,7 +1159,7 @@ function renderInbox() {
   const rallRow = lf === "unread" && unN ? `<div class="row rallrow" data-k="rallrow"><button class="go" onclick="readAll()">✓✓ Hepsini okundu yap <b>${unN}</b></button><span class="s">müşterilere "görüldü" gider</span></div>` : "";
   inboxMorph($("convs"), chips + (lf === "all" ? readAll + teamRow : rallRow) + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? `<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler${pinUn ? `<span class="pinun">${pinUn} yeni mesaj</span>` : ""}</div>` : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}${Number(x.u) && !isQuiet(x.id) ? " unr" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw${vipAttr(vipConv(x.id))}"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}${vipLab(vipConv(x.id))}</div>
-    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${nmH(x.id, x.n)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}</b>${timeSlot(x)}</div>
+    <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${nmH(x.id, x.n)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}${sbSatir(x.id)}</b>${timeSlot(x)}</div>
       <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : `<span>${x.own && !x.rx ? (x.rd ? '<b class="ltk rd">✓✓</b> ' : '<span class="ltk">✓</span> ') : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
     : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
@@ -1185,7 +1239,7 @@ async function openChat(id, snap) {
   if (!snap && cur === String(id) && $("chat").classList.contains("on")) { loadChat(); return; } // aynı sohbet zaten açık (bildirime dokunma vb.): sıfırlanmaz, çalan ses durmaz; yalnız tazelenir
   stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
   if (String(id) !== cur) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); chFresh = null; } cur = String(id); const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
-  $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
+  $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); sbCiz(); sbTik(); /* 👥 yeni sohbetin "sohbette olanlar"ı hemen (öncekinin adı kalmasın) */ if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   if (sy) $("chName").textContent = "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : ""); else $("chName").innerHTML = nmH(cur, curName); $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chVip(); sendBtnUpd(); lockShow(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
@@ -1212,7 +1266,7 @@ async function openChat(id, snap) {
 let roomTimer = 0;
 // CLS: kişinin son bilinen odası (bu oturumda) sohbet açılınca hemen çizilir; başlık sonradan büyüyüp mesajları itmesin
 const roomC = {};
-function roomDraw(r) { const el = $("chRoom"); if (!el) return; el.hidden = !r; const h = r ? `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>` : ""; if (r && el.innerHTML !== h) el.innerHTML = h; } // profildeki gibi, "Şu an" yazısı olmadan
+function roomDraw(r) { const el = $("chRoom"); if (!el) return; el.hidden = !r; const h = r ? `<span class="pfroom">🏠 <span class="rt">${esc(r.title || "oda " + r.id)}</span> <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>` : ""; if (r && el.innerHTML !== h) el.innerHTML = h; sbCiz(); } // profildeki gibi, "Şu an" yazısı olmadan · 👥 oda satırı değişti: "sohbette" rozeti yer değiştirir / kısalır
 async function roomCheck() { const c = cur, el = $("chRoom"); if (!el) return;
   if (!c || isSys(c)) { el.hidden = true; return; } if (document.hidden) return;
   const d = await api("room_now", { uid: c }); if (c !== cur || d.error) return;
@@ -3011,6 +3065,7 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
   const nm = (me && me.name) || "";
   return (`<div class="sethead"><div class="sav">${esc(nm.slice(0, 1).toLocaleUpperCase("tr") || "?")}</div><div style="min-width:0"><b>${esc(nm)}</b><span class="s">${esc((me && me.role_label) || "")}</span></div></div>
   <div class="setlbl" style="margin-top:0">Görünüm</div><div class="seg"><button class="${themeNow() === "sugo" ? "on" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "on" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
+  ${mola ? grp("Mola", [row("☕", "", "Mola veriyorum", molaAltYazi(), "molaSayfa()")]) : ""}
   ${grp("Bayi hesabı", [can("mesaj") && !(me && me.role === "yardimci") ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
     can("uygulama") && !(me && me.role === "yardimci") ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : ""])}
   ${grp("Yönetim", isYetkili() ? [row("🤖", "", "Otomatik mesajlar", "karşılama · meşgul · kart sonrası · elmas", "autoMsgs()"), row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()")] : [])}
@@ -3408,6 +3463,7 @@ async function navReset(toChat) { if ($("modal").style.display === "flex") { if 
   for (let i = 0; i < 4 && ($("prof").classList.contains("on") || setOn()); i++) await popWait(() => ($("prof").classList.contains("on") || !setOn() ? history.back() : history.go(-setStack.length))); // profil / ayarlar geçmişten düşer
   if (!toChat) for (let i = 0; i < 4 && $("chat").classList.contains("on"); i++) await popWait(() => history.back()); } // sekmeye: sohbetten listeye
 async function navOpen(url) { let u; try { u = new URL(url, location.href); } catch (e) { return false; } const c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz");
+  if (!c && !t && !pz && u.hash === "#mola") { if (navLast.k === "mola" && Date.now() - navLast.at < 5000) return true; navLast = { k: "mola", at: Date.now() }; molaSayfa(); return true; } // ☕ mola bildirimi
   if (!c && !t && !pz) return false; const k = c ? "c" + c : t ? "t" + t : "pz" + pz; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
   if (pz) { pzLoad(pz); return true; } // onay bandı her ekranın üstünde: ekran değişmez
   // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
@@ -3555,6 +3611,7 @@ function rtOlay(ev, pl) {
     if (ev === "room_msgs") { if (window.odaMsgsSet) odaMsgsSet(pl); return; } // 💬 tabletteki Selçuk oturumu odada: oda sohbeti (açılınca son 50, sonra yalnız yeniler)
     if (ev === "room_say_ok") { if (window.odaSayOk) odaSayOk(pl); return; } // ✍️ panelden oda sohbetine yazma: tablet gönderdi / gönderemedi
     if (ev === "room_mode") { if (window.odaModeSet) odaModeSet(pl); return; } // 📹 bayi odası kamera / sesli moda geçti (sunucu dakikada bir bakar)
+    if (ev === "mola") { molaYukle(pl && pl.at); return; } // ☕ mola durumu değişti (içerik taşımaz): mola_durum yeniden okunur
     if (ev === "pausereq") { onPauseReq(pl); return; } // 📨 Sugo uygulaması onay isteği (yeni / onaylandı / reddedildi / süresi doldu)
     if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
     if (ev === "perms") { permsRefresh(); return; } // yönetici tabletten rol / izin / erişim değiştirdi
@@ -3632,10 +3689,11 @@ function rtKur(ws, cfg) { const bir = !!ws.__bir; rtYeniDur(); rt = ws; rtDen = 
   ws.__beat = beat; ws.__dur = () => { clearInterval(hb); clearTimeout(wd); };
   ws.onmessage = (m) => { if (rt !== ws) return; rtLast = Date.now(); let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); for (const k in hbAt) delete hbAt[k]; clearTimeout(wd); wd = 0; statLine(); return; }
+    if (d.topic === SB_KONU) { sbMesaj(ws, d); return; } // 👥 sohbette olanlar (ayrı konu)
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event, pl = d.payload.payload || {};
     if (ev === "live" && rtTekrar(pl)) return; rtOlay(ev, pl); };
   ws.onclose = () => { ws.__dur(); rtKopu(ws); }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
-  beat(); hb = setInterval(beat, bir ? 10_000 : 25_000);
+  beat(); hb = setInterval(beat, bir ? 10_000 : 25_000); sbBasla(ws); // 👥 yalnız birincil (Contabo sugo-sinyal) bağlantıda
   if (bir) { setTimeout(() => { if (rt === ws) rtDonBek = 10_000; }, 30_000); /* birincilde 30 sn kaldı: dönüş beklemesi sıfırlanır */ if (rtYedekAt) { rtYay(ws, cfg, "donus", { k: RT_K, sn: Math.round((Date.now() - rtYedekAt) / 1000) }); rtYedekAt = 0; } } // yedekten döndü: bir kez
   else { if (!rtYedekAt) rtYedekAt = Date.now(); const by = () => { if (rt !== ws) { clearInterval(rtBurT); return; } rtYay(ws, cfg, "yedek_burada", { k: RT_K, v: BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel" }); };
     by(); rtBurT = setInterval(by, 60_000); rtSagBasla(cfg); }
@@ -3657,6 +3715,163 @@ function rtSagBasla(cfg) { const bir = rtBirincil(cfg); if (!bir.length) return;
       yeni.__donus = 1; ws.__down = 1; ws.__dur(); rtKur(yeni, cfg); try { ws.close(); } catch (e) {} // … sonra yedeği kapat
     }, () => { if (rt === ws && !rtSagT) rtSagT = setTimeout(yokla, rtDonBek); }); }; // katılım 5 sn'de olmadı: yedekte kal, sonra yine yokla
   rtSagT = setTimeout(yokla, rtDonBek); }
+// 👥 Sohbette olanlar (14.11): aynı müşteri sohbetini ŞU AN açık tutan öteki ekip üyeleri — başlıkta "👥 Sohbette: Ülker, Zara", listede "👤 Ülker" / "👥 2".
+// Durum yalnız Contabo sugo-sinyal belleğinde (vps/sinyal/sohbetteler.ts; veritabanı / fonksiyon yoklaması YOK). Ayrı konu "realtime:sohbetteler",
+// katılım sunucunun imzaladığı biletle (bayi-web `sohbet_bileti`: ad oturumdan; saatte bir). Sayfa: sohbet değişince / görünürlük değişince hemen,
+// açık ve görünürken 15 sn'de bir "bura" {s}; arka planda / kilitliyken {s:null}. Kopuk / yedekte (Supabase) / eski sunucu → gösterge GİZLİ (bayat ad yok).
+var SB_KONU = "realtime:sohbetteler"; // var: liste ilk çizimi bu satırdan önce de çalışabilir (TDZ hatası olmasın)
+var sbWs = null, sbOk = 0, sbBen = "", sbHarita = null, sbBilet = null, sbIstek = 0, sbRed = 0, sbSon = null, sbSonAt = 0, sbNabiz = 15_000, sbImza = "", sbListe = "";
+function sbAktif() { return !!(sbOk && sbWs && sbWs === rt && rt.readyState === 1 && sbHarita); }
+function sbDiger(c) { if (!c || !sbAktif()) return []; const md = mola && Array.isArray(mola.molada) ? mola.molada : []; return (sbHarita[String(c)] || []).filter((x) => x && x.k !== sbBen && x.a && !md.includes(x.k)).map((x) => String(x.a)); } // ☕ moladaki kişi "sohbette" sayılmaz
+function sbSatir(id) { const a = sbDiger(id); return a.length ? `<span class="prs" title="Şu an bu sohbette: ${esc(a.join(", "))}">${a.length > 1 ? "👥 " + a.length : "👤 " + esc(a[0].length > 12 ? a[0].slice(0, 11) + "…" : a[0])}</span>` : ""; }
+async function sbBiletAl(zorla) { if (!tok || !me || !can("mesaj")) return null;
+  if (!zorla && sbBilet && sbBilet.tok === tok && sbBilet.bitis - Date.now() > 5 * 60_000) return sbBilet;
+  if (Date.now() - sbIstek < 60_000) return null; sbIstek = Date.now(); // saatte bir yeterli; hata olursa dakikada en çok bir kez
+  try { const d = await api0("sohbet_bileti"); if (d && d.bilet) { sbBilet = { ...d, tok }; if (d.nabiz_sn) sbNabiz = Math.max(5, Number(d.nabiz_sn)) * 1000; return sbBilet; } } catch (e) {} return null; }
+function sbKatil(ws, b) { if (!b || ws !== sbWs || rt !== ws || ws.readyState !== 1) return; try { ws.send(JSON.stringify({ topic: SB_KONU, event: "phx_join", payload: { bilet: b.bilet }, ref: "sb" + (ws.__ref++) })); } catch (e) {} }
+function sbBasla(ws) { const eski = sbAktif(); sbWs = null; sbOk = 0; sbHarita = null; sbSon = null; if (eski) sbCiz();
+  if (!ws || !ws.__bir) return; sbWs = ws; sbRed = 0; sbBiletAl().then((b) => sbKatil(ws, b)); }
+function sbMesaj(ws, d) { if (ws !== sbWs) return; const p = d.payload || {};
+  if (d.event === "phx_reply") { const r = p.response || {};
+    if (p.status === "ok" && r.sohbetteler) { sbOk = 1; sbBen = String(r.sohbetteler.ben || ""); if (r.sohbetteler.nabiz_sn) sbNabiz = Math.max(5, Number(r.sohbetteler.nabiz_sn)) * 1000; sbSon = null; sbTik(); }
+    else if (p.status === "error") { sbOk = 0; sbHarita = null; sbRed = Date.now(); if (r.reason === "bilet") sbBilet = null; sbCiz(); } // eski sunucu ("unknown topic") / kapalı / bilet: gizli kalır
+    return; }
+  if (d.event === "broadcast" && p.event === "sohbettekiler") { const s = p.payload && p.payload.s; sbHarita = s && typeof s === "object" ? s : {}; sbCiz(); } }
+function sbYolla(s) { const ws = sbWs; if (!ws || ws.readyState !== 1) return; sbSon = s; sbSonAt = Date.now();
+  try { ws.send(JSON.stringify({ topic: SB_KONU, event: "broadcast", payload: { type: "broadcast", event: "bura", payload: { s } }, ref: "sb" + (ws.__ref++) })); } catch (e) {} }
+// Saniyede bir (yalnız yerel karşılaştırma; ağa yalnız değişince ya da 15 sn'lik nabızda gider)
+function sbTik() {
+  if (sbOk && sbWs && sbWs === rt && rt.readyState === 1) {
+    if (!can("mesaj")) { try { sbWs.send(JSON.stringify({ topic: SB_KONU, event: "phx_leave", payload: {}, ref: "sb" + (sbWs.__ref++) })); } catch (e) {} sbOk = 0; sbHarita = null; }
+    else { const s = cur && !document.hidden && !isSys(cur) && !molaBen() ? String(cur) : null; // ☕ moladayken sohbette sayılmam
+      if (s !== sbSon || (s && Date.now() - sbSonAt >= sbNabiz)) sbYolla(s);
+      if (sbBilet && sbBilet.bitis - Date.now() < 5 * 60_000) { const ws = sbWs; sbBiletAl(true).then((b) => sbKatil(ws, b)); } } } // bilet yenileme (aynı kişi: sunucu sohbeti korur)
+  else if (sbWs && sbWs === rt && rt.readyState === 1 && !sbOk && sbRed && Date.now() - sbRed > 5 * 60_000) { sbRed = 0; const ws = sbWs; sbBiletAl(true).then((b) => sbKatil(ws, b)); } // reddedildiyse 5 dk'da bir yeniden dene
+  sbCiz(); } // imza değişmediyse DOM'a dokunmaz
+setInterval(sbTik, 1000); document.addEventListener("visibilitychange", sbTik); addEventListener("pagehide", sbTik); // arka plana geçince hemen {s:null}
+// Çizim: başlık (oda satırının ayrılmış yerinde, mutlak konumlu → kayma yok) + liste (yalnız işaretler değiştiyse yeniden çizilir)
+function sbCiz() { const el = $("chPres"); if (el) { const h1 = el.parentElement, a = cur && !isSys(cur) ? sbDiger(cur) : [], room = $("chRoom"), rm = !!(room && !room.hidden);
+    const imza = a.length ? a.join("|") + (rm ? "#r" + (room.offsetWidth || 0) : "") : "";
+    if (imza !== sbImza) { sbImza = imza; el.hidden = !a.length; h1.classList.toggle("pr", !!a.length); h1.classList.toggle("rm", rm);
+      if (a.length) { const pill = rm && room.querySelector(".pfroom"); h1.style.setProperty("--prx", pill ? Math.ceil(pill.offsetWidth + 6) + "px" : "0px");
+        const kisa = a.length > 1 ? `👥 ${a[0]} +${a.length - 1}` : `👤 ${a[0]}`; // oda satırı doluyken ya da sığmazsa kısa biçim (tam liste title'da)
+        el.textContent = rm ? kisa : (a.length > 1 ? "👥" : "👤") + " Sohbette: " + a.join(", "); el.title = "Bu sohbeti şu an sizinle birlikte açık tutanlar: " + a.join(", ");
+        if (!rm && el.scrollWidth > el.clientWidth + 1) el.textContent = kisa; } } }
+  const li = sbAktif() && sbHarita ? Object.keys(sbHarita).map((c) => c + ":" + sbDiger(c).join(",")).filter((x) => !/:$/.test(x)).sort().join("|") : "";
+  if (li !== sbListe) { sbListe = li; if (typeof renderInbox === "function" && inbox && inbox.length) renderInbox(); } }
+// ☕ Mola (14.11; sözleşme: MOLA-S mola-sozlesme.md · sunucu _shared/mola.ts). Ayarlar › "☕ Mola veriyorum": süre + neden → öteki çalışanlara bildirim →
+// en az biri "Tamam git, ben buradayım" deyince mola başlar (onaylayan nöbetçi) → tam ekran geri sayım + KOCAMAN "✅ Geri döndüm" (tek dokunuş) → herkese bildirim.
+// Durum sunucuda (`mola_durum`): açılışta, `mola` sinyalinde, mola sayfası açılınca; yazma yanıtları güncel durumu getirir. Geri sayım bu cihazda (saniyelik istek yok);
+// sinyal kopuksa ve açık istek / mola varsa (yoklama_sn) en çok 30 sn'de bir, sayfa arka plandayken hiç. Sunucu bilmiyorsa (eski) her şey gizli kalır.
+var mola = null, molaAt = 0, molaSecim = { sure: 15, tur: "kisa" }, molaMesgul = 0, molaYokAt = 0, molaIlk = 1; // var: menü / liste bu satırdan önce çizilebilir
+var molaGordum = (() => { try { return JSON.parse(localStorage.getItem("bw_mola_gor") || "[]"); } catch (e) { return []; } })(); // gösterilip kapatılan "son" mesajları
+function molaBen() { return mola && mola.ben && mola.ben.durum === "molada" ? mola.ben.mola : null; }
+const molaKalan = (sn) => Number(sn || 0) - (Date.now() - molaAt) / 1000;
+const molaMmss = (sn) => { const a = Math.max(0, Math.round(Math.abs(sn))), m = Math.floor(a / 60), x = a % 60; return `${m}:${String(x).padStart(2, "0")}`; };
+const saatDk = (ms) => { try { return new Date(ms).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+function molaAltYazi() { const b = mola && mola.ben; if (!b) return ""; if (b.durum === "molada") return "moladasın · dönünce «Geri döndüm»"; if (b.durum === "bekliyor") return "isteğin onay bekliyor";
+  const n = (mola.moladakiler || []).length; return (b.nobet && b.nobet.length ? `🛡️ nöbet sende (${b.nobet.map((x) => x.ad).join(", ")}) · ` : "") + (n ? `şu an molada ${n} kişi` : "hazır süre seç, ekip onaylasın"); }
+async function molaYukle(after) { if (!tok) return; const d = await api0("mola_durum", after ? { after } : {}).catch(() => null);
+  if (d && d.ok && d.ben) molaUygula(d); else if (d && d.error && !d.down && !mola) molaCiz(); }
+function molaUygula(d) { if (!d || !d.ben) return; const eski = mola; mola = d; molaAt = Date.now();
+  if (eski && !molaIlk) { const benK = d.ben.k, e = new Map((eski.moladakiler || []).map((x) => [x.id, x])), y = new Map((d.moladakiler || []).map((x) => [x.id, x]));
+    for (const [id, x] of y) if (!e.has(id) && x.k !== benK) toast(`☕ ${x.ad} molaya çıktı (${x.sure_dk} dk) · nöbetçi: ${x.nobetci || "Ajans sahibi"}`);
+    for (const [id, x] of e) if (!y.has(id) && x.k !== benK) toast(`✅ ${x.ad} geri döndü`); }
+  molaIlk = 0; molaCiz(); if (location.hash === "#mola") { try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {} molaSayfa(); } }
+// Sabit üst kartlar: başkalarının istekleri (onay / şimdi olmaz), benim bekleyen isteğim, sonuç mesajı, uzatma istekleri (nöbetçiye)
+// Üst şeritler (R10, 14.11): başlık şeridinin HEMEN ALTINDA, tek satır (sabit konum → içerik kaymaz; başlık / geri / coin / alt menü / yazı kutusu örtülmez).
+// ▾ ile açılır kart (ayrıntı + tüm düğmeler); yeni gelen kart 5 sn açık görünür, sonra kendiliğinden tek satıra iner. "Sonra" = yalnız bu cihazda küçült (ret DEĞİL).
+var molaAcik = {}, molaIlkGor = {}, molaKapali = 0, molaDonHata = 0;
+function molaAc(k, v) { molaAcik[k] = v === undefined ? !molaAcikMi(k) : !!v; molaUstCiz(); }
+function molaAcikMi(k) { if (k in molaAcik) return molaAcik[k]; const t = molaIlkGor[k]; return !!t && Date.now() - t < 5000; }
+function molaSeritler() { if (!mola || !mola.ben) return []; const b = mola.ben, h = [];
+  const m = molaBen(); if (m && molaKapali === m.id) h.push({ k: "hala", ben: 1, ozet: "⚠️ Hâlâ molada görünüyorsun", kisa: `<button class="go" onclick="molaDon()">✅ Geri döndüm'ü tekrar dene</button>`, detay: "Sunucu dönüşünü kaydedemedi; mola ekranını yalnız bu cihazda kapattın. Tekrar dene." });
+  if (b.durum === "bekliyor" && b.istek) { const i = b.istek, rd = (i.reddedenler || []).map((r) => `✋ ${esc(r.ad)}: şimdi olmaz${r.neden ? " (" + esc(r.neden) + ")" : ""}`).join("<br>");
+    h.push({ k: "ben" + i.id, ben: 1, ozet: `⏳ Mola onayı bekleniyor · ${i.alici_sayisi ? `${esc(i.alici_sayisi)} kişiye soruldu` : "panelde kimse görünmüyor"} · <span data-za="${esc(i.zaman_asimi_kalan_sn)}"></span>`, kisa: "", tam: `<button onclick="molaIptal()">↩️ İsteği geri al</button><button onclick="molaAc('ben${Number(i.id)}', false)">Küçült</button>`,
+      detay: `${esc(i.sure_dk)} dk mola${rd ? `<br>${rd}` : ""}${i.uyari ? `<br>⚠️ ${esc(i.uyari)}` : ""}${i.alici_sayisi ? "" : "<br>Şu an panelde başka kimse görünmüyor; onay gelmeyebilir."}` }); }
+  if (b.son && (b.son.durum === "reddedildi" || b.son.durum === "zaman_asimi") && !molaGordum.includes(b.son.id)) // geri alma / dönüş kişinin kendi işi: ayrıca şerit yok (bilgi balonu yeter)
+    h.push({ k: "son" + b.son.id, ben: 1, ozet: b.son.durum === "reddedildi" ? "❌ Mola isteğin reddedildi" : "⌛ Kimse onaylamadı", kisa: `<button class="go" onclick="molaSonKapat(${Number(b.son.id)});molaSayfa()">☕ Yeniden iste</button><button onclick="molaSonKapat(${Number(b.son.id)})" aria-label="Kapat">✕</button>`, detay: b.son.mesaj ? esc(b.son.mesaj) : "" });
+  for (const i of mola.istekler || []) { if (i.benim_cevabim === "ret") continue;
+    h.push({ k: "i" + i.id, ozet: `☕ ${esc(i.ad)} ${esc(i.sure_dk)} dk mola istiyor`, kisa: "", // R10: küçük şeritte onay düğmesi YOK (liste kaydırırken yanlışlıkla basılmasın); onay yalnız açık kartta
+      detay: `${i.neden ? `Neden: ${esc(i.neden)}<br>` : ""}${(i.nobet_devri || []).length ? `🛡️ Onaylarsan ${esc(i.nobet_devri.join(", "))} nöbeti de sana geçer<br>` : ""}${(i.reddedenler || []).length ? `✋ ${esc(i.reddedenler.join(", "))}: şimdi olmaz<br>` : ""}${i.cevaplayabilirim ? "" : "Moladayken onay veremezsin"}`,
+      tam: `<button class="go" ${i.cevaplayabilirim ? "" : "disabled"} onclick="molaCevap(${Number(i.id)}, true)">✅ Tamam git, ben buradayım</button><button ${i.cevaplayabilirim ? "" : "disabled"} onclick="molaCevap(${Number(i.id)}, false)">Şimdi olmaz</button><button onclick="molaAc('i${Number(i.id)}', false)">Sonra</button>` }); }
+  for (const x of mola.moladakiler || []) if (x.uzatma && x.uzatma.durum === "bekliyor" && x.uzatma_cevaplayabilirim)
+    h.push({ k: "u" + x.id, ozet: `➕ ${esc(x.ad)} ${esc(x.uzatma.dk)} dk uzatma istiyor`, kisa: "", detay: `Onaylarsan dönüş ${saatDk(Number(x.bitis) + x.uzatma.dk * 60_000)} olur`,
+      tam: `<button class="go" onclick="molaUzatCevap(${Number(x.id)}, true)">✅ Onayla</button><button onclick="molaUzatCevap(${Number(x.id)}, false)">Hayır</button><button onclick="molaAc('u${Number(x.id)}', false)">Sonra</button>` });
+  return h; }
+function molaKartlar() { const now = Date.now(), ss = molaSeritler(); for (const x of ss) if (!molaIlkGor[x.k]) molaIlkGor[x.k] = now;
+  return ss.map((x) => { const ac = molaAcikMi(x.k) && !!(x.detay || x.tam);
+    return `<div class="mlk${x.ben ? " ben" : ""}${ac ? " acik" : ""}" data-k="${esc(x.k)}"><div class="mlo"><span class="mlt">${x.ozet}</span>${ac && x.tam ? "" : x.kisa}${x.detay || x.tam ? `<button class="mlv" onclick="molaAc('${esc(x.k)}')" aria-label="${ac ? "Küçült" : "Aç"}" aria-expanded="${ac}">${ac ? "▴" : "▾ Aç"}</button>` : ""}</div>${ac ? `<div class="mld">${x.detay || ""}${x.tam ? `<div class="mlb">${x.tam}</div>` : ""}</div>` : ""}</div>`; }).join(""); }
+// Şerit kabı görünen ekranın başlığının hemen altına konur (başlık yüksekliği ekrana göre değişir; saniyelik tikte de düzeltilir)
+function molaKonum() { const u = $("molaUst"); if (!u || u.hidden) return; const sc = document.querySelector(".screen.on"), h = sc && sc.querySelector(":scope > header");
+  const y = h ? Math.round(h.getBoundingClientRect().bottom) + 4 : 8, t = y + "px"; if (u.style.top !== t) u.style.top = t;
+  const alt = document.querySelector(".screen.on #compWrap, .screen.on nav.bn"), ab = alt && alt.getClientRects().length ? Math.round(alt.getBoundingClientRect().top) : innerHeight, mh = Math.max(60, ab - y - 8) + "px"; if (u.style.maxHeight !== mh) u.style.maxHeight = mh; }
+// R10 (2. tur): herhangi bir pencere (#modal: Yükle, PIN, şifre, onay…), büyük resim (#lb) ya da tam ekran mola görünümü açıkken şerit GİZLİ (görünmez + dokunulamaz;
+// yalnız z-index değil). Pencere açıkken gelen istek kaydedilmez → pencere kapanınca "yeni gelmiş" sayılır ve 5 sn açık kart olarak görünür.
+function molaOrtulu() { const m = $("modal"), lb = $("lb"), e = $("molaEkran"), ow = $("odaWhoM"), mm = $("msgMenu"); // + Oda kişi menüsü, sohbet mesaj menüsü (R10 3. tur)
+  return !!((m && m.style.display === "flex") || (lb && !lb.hidden) || (e && !e.hidden) || (ow && !ow.hidden) || (mm && !mm.hidden)); }
+function molaUstCiz() { let u = $("molaUst"); if (!u) { u = document.createElement("div"); u.id = "molaUst"; u.setAttribute("role", "status"); u.setAttribute("aria-live", "polite"); u.hidden = true; document.body.appendChild(u); }
+  if (molaOrtulu()) { if (!u.hidden) u.hidden = true; return; }
+  const kh = tok ? molaKartlar() : ""; if (u.dataset.h !== kh) { u.dataset.h = kh; u.innerHTML = kh; } u.hidden = !kh; molaKonum(); }
+{ const ORT = new Set(["modal", "lb", "odaWhoM", "msgMenu"]); // odaWhoM sonradan eklenir: gövde altında yalnız bu kimliklerin görünürlük değişimi dinlenir
+  const izle = () => { try { const o = new MutationObserver((ms) => { if (mola && ms.some((x) => x.target && ORT.has(x.target.id))) molaUstCiz(); }); o.observe(document.body, { subtree: true, attributes: true, attributeFilter: ["style", "hidden"] }); } catch (e) {} };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", izle); else izle(); } // pencere açılır / kapanır açılmaz (saniyelik tiki beklemeden)
+function molaCiz() { const m0 = molaBen(); if (!m0) { molaKapali = 0; molaDonHata = 0; } molaUstCiz();
+  const r = $("molaRoz"), n = mola ? (mola.moladakiler || []).length : 0; if (r) { r.hidden = !n; const t = "☕ " + n; if (r.textContent !== t) r.textContent = t; }
+  let e = $("molaEkran"); const m = tok ? molaBen() : null;
+  if (m && !e) { e = document.createElement("div"); e.id = "molaEkran"; e.setAttribute("role", "dialog"); e.setAttribute("aria-label", "Moladasın"); e.hidden = true; document.body.appendChild(e); }
+  if (e) { if (m) { const ic = `<div class="mlust">☕ Moladasın · ${esc(m.sure_dk)} dk${m.neden ? " · " + esc(m.neden) : ""}</div><div class="mlsay" id="mlSay"></div><div class="mlalt" id="mlAlt"></div>
+      <div class="mlalt">${m.nobetci ? `Nöbetçi: <b>${esc(m.nobetci)}</b>` : "Onay gerekmedi"} · dönüş ${saatDk(m.bitis)}${m.uzatma ? ` · uzatma ${esc(m.uzatma.dk)} dk: ${m.uzatma.durum === "bekliyor" ? "onay bekliyor" : m.uzatma.durum === "onay" ? "onaylandı" : "onaylanmadı"}` : ""}</div>
+      ${m.uzatilabilir && !m.uzatma ? `<div class="mluz">${(mola.uzatmalar || [5, 10]).map((d) => `<button onclick="molaUzat(${Number(d)})">➕ ${Number(d)} dk uzat</button>`).join("")}</div>` : ""}
+      <button class="mldon" id="mlDon" onclick="molaDon()">✅ Geri döndüm</button>${molaDonHata === m.id ? `<div class="mlalt">Dönüşün kaydedilemedi (sunucu cevap vermedi). Tekrar dene ya da paneli aç; durumun "molada" kalır.</div><button class="mlkapat" id="mlKapat" onclick="molaYerelKapat()">Yine de kapat (panele dön)</button>` : ""}`;
+      if (e.dataset.h !== ic) { e.dataset.h = ic; e.innerHTML = ic; } e.hidden = molaKapali === m.id; } else e.hidden = true; }
+  if (setOn() && setStack.length && setStack[setStack.length - 1].key === "mola") { const d = $("mlDurum"); if (d) { const h = molaDurumHtml(); if (d.dataset.h !== h) { d.dataset.h = h; d.innerHTML = h; } } const f = $("mlForm"); if (f) f.hidden = !!(mola && mola.ben && mola.ben.durum !== "yok"); }
+  molaUstCiz(); molaTik(); } // mola ekranı açıldıysa şerit hemen gizlenir
+// Saniyelik yerel güncelleme (geri sayım / zaman aşımı); ağ yok — yalnız sinyal kopukken ve açık iş varken 30 sn'de bir mola_durum
+function molaTik() { const m = molaBen(), e = $("molaEkran");
+  if (m && e && !e.hidden) { const k = molaKalan(m.kalan_sn), gec = k < 0, say = $("mlSay"), alt = $("mlAlt"); e.classList.toggle("gec", gec); const uz = e.querySelector(".mluz"); if (uz && uz.hidden !== gec) uz.hidden = gec; // süre dolunca uzatma istenemez (sözleşme: doldu)
+    if (say) { const t = (gec ? "+" : "") + molaMmss(k); if (say.textContent !== t) say.textContent = t; }
+    if (alt) { const t = gec ? `⏰ Süren doldu · ${Math.max(1, Math.floor(-k / 60))} dk gecikti — döndüysen aşağıdaki düğmeye bas` : "kalan süre"; if (alt.textContent !== t) alt.textContent = t; } }
+  document.querySelectorAll("#molaUst [data-za], #mlDurum [data-za]").forEach((x) => { const k = molaKalan(x.dataset.za), t = k > 0 ? `onay için ${molaMmss(k)} kaldı` : "süre doldu"; if (x.textContent !== t) x.textContent = t; });
+  document.querySelectorAll("#mlDurum [data-kalan]").forEach((x) => { const k = molaKalan(x.dataset.kalan), t = k >= 0 ? `${molaMmss(k)} kaldı` : `⏰ ${Math.max(1, Math.floor(-k / 60))} dk gecikti`; x.classList.toggle("gec", k < 0); if (x.textContent !== t) x.textContent = t; }); }
+setInterval(() => { if (!mola || document.hidden) return; molaTik(); molaUstCiz(); // 5 sn'lik ilk açık hâl kendiliğinden tek satıra iner
+  if (Number(mola.yoklama_sn) > 0 && !rtHealthy() && Date.now() - molaYokAt >= Math.max(30, Number(mola.yoklama_sn)) * 1000 && Date.now() - molaAt >= 30_000) { molaYokAt = Date.now(); molaYukle(); } }, 1000);
+function molaSonKapat(id) { molaGordum = [...molaGordum.filter((x) => x !== id).slice(-20), id]; try { localStorage.setItem("bw_mola_gor", JSON.stringify(molaGordum)); } catch (e) {} molaCiz(); }
+function molaDurumHtml() { if (!mola || !mola.ben) return ""; const b = mola.ben, h = [];
+  if (b.nobet && b.nobet.length) h.push(`<div class="mlsat"><span>🛡️ Nöbet sende: <b>${b.nobet.map((x) => `${esc(x.ad)} (dönüş ${saatDk(x.bitis)})`).join(", ")}</b><span class="s">Mola istersen, onaylayan kişi bu nöbeti de devralır.</span></span></div>`);
+  if (b.durum === "bekliyor" && b.istek) h.push(`<div class="mlsat"><span>⏳ İsteğin onay bekliyor · ${esc(b.istek.sure_dk)} dk<span class="s" data-za="${esc(b.istek.zaman_asimi_kalan_sn)}"></span></span><button onclick="molaIptal()">↩️ Geri al</button></div>`);
+  if (b.durum === "molada") h.push(`<div class="mlsat"><span>☕ Moladasın</span><button class="go" onclick="molaCiz()">Mola ekranı</button></div>`);
+  const md = mola.moladakiler || [];
+  h.push(`<div class="setlbl">Şu an molada${md.length ? ` (${md.length})` : ""}</div>` + (md.length ? md.map((m) => `<div class="mlsat"><span><b>${esc(m.ad)}</b> · ${esc(m.sure_dk)} dk${m.neden ? " · " + esc(m.neden) : ""}<span class="s">${m.nobetci ? `Nöbetçi: ${esc(m.nobetci)}${m.ben_nobetciyim ? " (sen)" : ""}` : "Onay gerekmedi"} · dönüş ${saatDk(m.bitis)}</span></span><span style="display:flex;gap:6px;align-items:center"><span data-kalan="${esc(m.kalan_sn)}"></span>${m.bitirebilirim ? `<button onclick="molaBitir(${Number(m.id)}, '${esc(m.ad)}')">🛑 Bitir</button>` : ""}</span></div>`).join("") : `<div class="mlsat"><span class="s">Kimse molada değil</span></div>`));
+  return h.join(""); }
+function molaSayfa() { if (!tok) return; if (!mola) { molaYukle(); toast("☕ Mola bilgisi yükleniyor…"); return; } if (!setOn()) setOpen();
+  const b = mola.ben, sahipOnaysiz = b.sahip && !(b.nobet && b.nobet.length);
+  setPage("mola", `<h3>☕ Mola</h3><div class="setlist" style="padding:4px 14px" id="mlDurum"></div>
+    <div id="mlForm"${b.durum !== "yok" ? " hidden" : ""}><div class="setlbl">Ne kadar?</div><div class="mlsure">${(mola.sureler || [5, 10, 15, 20, 30, 45, 60]).map((d) => `<button class="${molaSecim.sure === d ? "on" : ""}" onclick="molaSec('sure', ${Number(d)})">${Number(d)} dk</button>`).join("")}</div>
+    <div class="setlbl">Neden?</div><div class="mlned">${(mola.nedenler || []).map((n) => `<button class="${molaSecim.tur === n.k ? "on" : ""}" onclick="molaSec('tur', '${esc(n.k)}')">${esc(n.ad)}</button>`).join("")}</div>
+    <input id="mlNeden" maxlength="60" placeholder="Kısa not (isteğe bağlı)" style="width:100%;box-sizing:border-box;margin-top:8px;min-height:44px">
+    <button class="go mlgo" id="mlIste" onclick="molaIste()">${sahipOnaysiz ? "☕ Molaya çık (onay gerekmez)" : "☕ Mola iste"}</button>
+    <div class="s" style="margin:8px 2px 0">${sahipOnaysiz ? "Ajans sahibi olarak molan hemen başlar; ekibe bilgi gider." : "Ekipten en az bir kişi «Tamam git, ben buradayım» deyince molan başlar. Dönünce ekrandaki büyük «Geri döndüm» düğmesine bas."}</div></div>`);
+  const d = $("mlDurum"); if (d) { d.dataset.h = ""; } molaCiz(); molaYukle(); }
+function molaSec(k, v) { molaSecim[k] = v; document.querySelectorAll(k === "sure" ? ".mlsure button" : ".mlned button").forEach((x) => x.classList.toggle("on", x.getAttribute("onclick").includes(k === "sure" ? `, ${v})` : `'${v}'`))); }
+async function molaIs(fn) { if (molaMesgul) return null; molaMesgul = 1; try { return await fn(); } finally { molaMesgul = 0; } }
+async function molaIste() { await molaIs(async () => { const neden = String(($("mlNeden") || {}).value || "").trim().slice(0, 60);
+  const d = await api("mola_iste", { sure_dk: molaSecim.sure, neden_tur: molaSecim.tur, ...(neden ? { neden } : {}) });
+  if (d.durum) molaUygula(d.durum); if (d.error) { toast("❌ " + d.error, true); return; }
+  toast(d.basladi ? "☕ Molan başladı · ekibe haber verildi" : d.uyari ? "⚠️ " + d.uyari : `⏳ İstek gönderildi${d.alici_sayisi ? ` (${d.alici_sayisi} kişiye)` : ""} · onay bekleniyor`, !!d.uyari); }); }
+async function molaCevap(id, onay) { await molaIs(async () => { const d = await api("mola_cevap", { id, onay }); if (d.durum) molaUygula(d.durum); if (d.error) { toast("❌ " + d.error, true); return; }
+  toast(d.sonuc === "onaylandi" ? "✅ Tamam — nöbet sende" : d.sonuc === "reddedildi" ? "✋ İstek kapandı" : "✋ Cevabın iletildi (başkaları hâlâ onaylayabilir)"); }); }
+async function molaIptal() { await molaIs(async () => { const d = await api("mola_iptal", {}); if (d.durum) molaUygula(d.durum); if (d.error) { toast("❌ " + d.error, true); return; } toast("↩️ Mola isteğin geri alındı"); }); }
+async function molaDon() { await molaIs(async () => { const e = $("molaEkran"); if (e) e.hidden = true; // tek dokunuş: ekran hemen kalkar (hata olursa geri gelir)
+  const m = molaBen(), d = await api("mola_don", {}); if (d.durum) molaUygula(d.durum); if (d.error) { if (m) molaDonHata = m.id; molaKapali = 0; toast("❌ " + d.error, true); molaCiz(); return; } // hata: mola ekranı geri gelir + "Yine de kapat"
+  toast(`✅ Hoş geldin! Molan bitti (${Number(d.gercek_dk) || 0} dk${Number(d.gecikme_dk) ? ` · ${d.gecikme_dk} dk gecikme` : ""}) · ekibe haber verildi`); }); }
+async function molaUzat(dk) { await molaIs(async () => { const d = await api("mola_uzat", { dk }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : `➕ ${dk} dk uzatma istendi · nöbetçi onaylayınca uzar`, !!d.error); }); }
+async function molaUzatCevap(id, onay) { await molaIs(async () => { const d = await api("mola_uzat_cevap", { id, onay }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : onay ? "✅ Uzatma onaylandı" : "✋ Uzatma onaylanmadı", !!d.error); }); }
+async function molaBitir(id, ad) { if (!confirm(`${ad} adlı kişinin molası kapatılsın mı? (kayıt düzeltme — kişiye bildirim gider)`)) return;
+  await molaIs(async () => { const d = await api("mola_don", { id }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : `🛑 ${ad} molası kapatıldı`, !!d.error); }); }
+function molaYerelKapat() { const m = molaBen(); if (m) molaKapali = m.id; molaCiz(); } // yalnız bu cihazda: sunucuda hâlâ molada; şeritte "tekrar dene"
+addEventListener("hashchange", () => { if (location.hash === "#mola" && tok) molaSayfa(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && tok && mola && (Number(mola.yoklama_sn) > 0 || !rtHealthy())) molaYukle(); }); // geri gelince bir kez (geri sayım yerelde)
 // Yedek yoklama: açık sohbette canlı bağlantı sağlıklıysa (son cevap < 40 sn) 60 sn'de bir, değilse (ve listede) 20 sn'de bir; bu arada zaten yenilendiyse sayaç baştan (gereksiz istek yok)
 let pollAt = Date.now();
 const rtHealthy = () => !!(rt && rt.readyState === 1 && STAT.rtOn && Date.now() - rtLast < 40_000);
@@ -3669,7 +3884,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.97"></script>
-<script src="durum.js?v=2.1.97"></script>
+<script src="profile.js?v=2.1.98"></script>
+<script src="durum.js?v=2.1.98"></script>
 </body>
 </html>
