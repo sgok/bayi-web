@@ -86,10 +86,10 @@
     old.forEach((e) => e.remove()); }
 
   // ---- ekran iskeleti
-  function shell() { const b = $("durumBody"); if (!b || b.dataset.on) return; b.dataset.on = 1;
+  function shell() { const b = $("durumBody"); if (!b || b.dataset.on) return false; b.dataset.on = 1;
     b.innerHTML = `<div class="dhead"><div class="dtabs" role="tablist">${TABS.map(([k, t]) => `<button data-t="${k}" role="tab" class="${k === dtab ? "on" : ""}">${t}</button>`).join("")}</div><div class="dstat" id="dStat"></div></div>
       <div id="dPost"></div>${TABS.map(([k]) => `<div class="dlist" data-t="${k}"${k === dtab ? "" : " hidden"}><div class="dcards"></div><div class="dtail"></div></div>`).join("")}`;
-    b.addEventListener("click", onClick); postBtn(); statDraw(); }
+    if (!b.__dl) { b.addEventListener("click", onClick); b.__dl = 1; } postBtn(); statDraw(); return true; } // 🔐 rol değişince kabuk yeniden kurulabilir: dinleyici bir kez
   // Üst şerit (yer baştan ayrılmış, tek satır): okunuyor / yeni durum var / kaç kişinin akışı
   function statDraw() { const el = $("dStat"); if (!el) return; const s = S(dtab);
     const ld = s.loading > 0 ? `<span class="dspin">🔄</span> ${nf0(s.loading)} kişinin durumları okunuyor…` : "";
@@ -195,10 +195,10 @@
     if (e.target.closest("video,button,a")) return; const c = e.target.closest(".dcard[data-id]"); if (c && !c.classList.contains("dsk")) durumAc(c.dataset.id); }
   window.durumDaha = (t) => load(t, true);
   window.durumYenile = (t) => { const s = S(t), more = !!(s.items && s.items.length && s.next); s.err = null; s.items = s.items || []; draw(t); load(t, more); }; // sonraki sayfa hata verdiyse o sayfa yeniden
-  function show(force) { shell(); postBtn(); draw(dtab); const s = S(dtab); if (force || !s.at || Date.now() - s.at > STALE) load(dtab); }
+  function show(force) { if (!(typeof yonOk !== "function" || yonOk())) return; /* 🔐 ⭕ Durum yalnız yöneticide */ const yeni = shell(); postBtn(); draw(dtab); if (yeni) TABS.forEach(([k]) => { if (k !== dtab) draw(k); }); /* rol yöneticiye dönünce kabuk yeniden kuruldu: gizli sekmeler de hazır */ const s = S(dtab); if (force || !s.at || Date.now() - s.at > STALE) load(dtab); }
   window.durumShow = show;
   // Gizli alt sekmeler (ve sekme açılmadan önce akış) boşta önbellekten çizilir: dokununca hazır
-  function boot() { shell(); draw(dtab); idleRun(() => TABS.forEach(([k]) => { if (k !== dtab) draw(k); })); }
+  function boot() { if (typeof me !== "undefined" && me && !(typeof yonOk !== "function" || yonOk())) return; shell(); draw(dtab); idleRun(() => TABS.forEach(([k]) => { if (k !== dtab) draw(k); })); }
   window.__durumReset = () => { for (const k of Object.keys(st)) delete st[k]; const b = $("durumBody"); if (b) { b.innerHTML = ""; delete b.dataset.on; } boot(); }; // senaryolar: telefonda saklı akıştan yeniden açılış
 
   // ---- ana sayfaya kancalar: sekme yetkisi (mesaj), aşağı çekip yenile, rol değişince paylaş düğmesi
@@ -337,11 +337,11 @@
       + bar("🏢", "Ekip paylaşımları", u ? u.team_bytes || 0 : 0, u ? u.files_limit : 0, u ? `${nf0(u.team_posts || 0)} paylaşım · ${nf0(u.team_files || 0)} dosya` : "")
       + bar("🗄️", "Veritabanı", u ? u.db_bytes || 0 : 0, u ? u.db_limit : 0, u ? `%${Math.round(((u.db_bytes || 0) / (u.db_limit || 1)) * 100)} dolu` : "")
       + `<div class="s" style="margin-top:10px">Ücretsiz plan: 1 GB dosya, ayda 5 GB indirme. Akışta resimlerin küçük hâli gelir, ekip videoları yalnız dokununca iner.${u && u.at ? ` · Ölçüm ${new Date(u.at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}` : ""}</div>`; }
-  window.durumDepo = async () => { if (typeof sheet !== "function") return; sheet("depo", `<h3 style="margin:0 0 8px">💾 Depo kullanımı</h3><div id="dDepo">${depoH(depoC())}</div><button class="fullbtn" style="margin-top:12px" onclick="closeModal()">Kapat</button>`);
+  window.durumDepo = async () => { if (typeof sheet !== "function" || !(typeof yonOk !== "function" || yonOk())) return; /* 🔐 depo kullanımı yalnız yöneticide */ sheet("depo", `<h3 style="margin:0 0 8px">💾 Depo kullanımı</h3><div id="dDepo">${depoH(depoC())}</div><button class="fullbtn" style="margin-top:12px" onclick="closeModal()">Kapat</button>`);
     let d; try { d = await api("storage_usage", {}); } catch (e) { d = { error: "Bağlantı yok" }; } const el = $("dDepo"); if (!el) return;
     if (d.error || !d.report) { if (!depoC()) el.innerHTML = depoH(null).replace(/&nbsp;/, "❌ " + esc(d.error || "Okunamadı")); else toast("❌ " + (d.error || "Depo bilgisi okunamadı"), true); return; }
     lsSet("bw_pane_depo", d.report); el.innerHTML = depoH(d.report); const o = $("dDepoS"); if (o) o.textContent = depoOzet(d.report); };
-  try { const mh0 = menuHtml; menuHtml = function () { const h = mh0.apply(this, arguments), i = h.lastIndexOf('<button class="setout"'); if (i < 0 || (typeof can === "function" && !can("mesaj"))) return h;
+  try { const mh0 = menuHtml; menuHtml = function () { const h = mh0.apply(this, arguments), i = h.lastIndexOf('<button class="setout"'); if (i < 0 || (typeof can === "function" && !can("mesaj")) || !(typeof yonOk !== "function" || yonOk())) return h; /* 🔐 yalnız yönetici */
     return h.slice(0, i) + `<div class="setlbl">Depolama</div><div class="setlist"><button class="setrow" onclick="durumDepo()"><span class="si">💾</span><span class="st">Depo kullanımı<small id="dDepoS">${esc(depoOzet(depoC()))}</small></span><span class="chev">›</span></button></div>` + h.slice(i); }; } catch (e) {}
 
   // ---- profil: "📸 Durumlar (n)" şeridi (sabit yükseklik: veri gelince yalnız içerik dolar)
@@ -359,7 +359,7 @@
     const v = x.items.slice(0, GRID); return v.map(tileH).join("") + bos(GRID - v.length); }
   const allBtn = (uid) => { const x = pfmGet(uid); return x.items && (x.next || x.items.length > GRID) ? "" : " hidden"; };
   const countOf = (uid) => { const x = pfmGet(uid), l = (window.__pfLiveOf && __pfLiveOf(uid)) || {}; const n = l.moments_count ?? x.total ?? (x.items ? x.items.length + (x.next ? "+" : "") : null); return n == null ? "" : `(${n})`; };
-  window.durumPfHtml = (uid) => { uid = String(uid); setTimeout(() => pfLoad(uid), 0);
+  window.durumPfHtml = (uid) => { if (!(typeof yonOk !== "function" || yonOk())) return ""; uid = String(uid); setTimeout(() => pfLoad(uid), 0);
     return `<div class="pfsec dpfh">📸 Durumlar <span class="s" id="dpfN">${countOf(uid)}</span><button class="dpfall" id="dpfAll" data-all="${escA(uid)}"${allBtn(uid)}>Tümü ›</button></div><div class="dpg" id="dpfStrip" data-uid="${escA(uid)}">${stripH(uid)}</div>`; };
   window.durumPfCount = (uid) => { const n = $("dpfN"); if (n && String(window.__pfUid) === String(uid)) n.textContent = countOf(String(uid)); };
   function pfDraw(uid) { const el = $("dpfStrip"); if (!el || el.dataset.uid !== uid) return; const h = stripH(uid); if (el.__h !== h) { el.__h = h; el.innerHTML = h; } const a = $("dpfAll"); if (a) a.hidden = !!allBtn(uid); window.durumPfCount(uid); }
