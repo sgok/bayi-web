@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.103">
+<meta name="build" content="2.1.104">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.103">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.103">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.103">
+<link rel="manifest" href="manifest.json?v=2.1.104">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.104">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.104">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -149,6 +149,15 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .payadd { width: 100%; min-height: 44px; margin-top: 10px; font-size: 15px; border-style: dashed; }
   .paysum { margin-top: 8px; font-size: 14.5px; font-weight: 700; min-height: 20px; } .paysum.left { color: #facc15; } .paysum.over { color: #f87171; } .paysum.done { color: #4ade80; }
   .partl { color: #facc15; font-weight: 700; } /* 🟡 kısmen ödendi */
+  /* 🧾 Mahsup: bu kişiye verilen coin (açık satış) ya da eski borcu alış ödemesinden düşülür — "Alışı kim ödedi?" penceresinin görsel dili */
+  .mhbox { margin: 0 0 12px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; } .mhh { font-size: 15px; font-weight: 700; } .mhh .s { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; }
+  .mhrow { display: flex; gap: 6px; align-items: stretch; min-width: 0; margin-top: 6px; } .mhrow .mhsel { flex: 1; min-width: 0; min-height: 44px; padding: 5px 10px; text-align: left; font-size: 14.5px; line-height: 1.3; border-radius: 12px; overflow-wrap: anywhere; }
+  .mhrow .mhsel .s { font-size: 12.5px; font-weight: 400; } .mhrow.on .mhsel { border-color: var(--go); box-shadow: inset 0 0 0 1px var(--go); font-weight: 700; }
+  .mhrow input { flex: none; width: 84px; min-height: 44px; margin: 0; font-size: 17px; text-align: right; box-sizing: border-box; } .mhrow input.bad { border-color: #f87171; color: #f87171; }
+  .mhnote { margin: 3px 0 0 4px; font-size: 12.5px; color: #facc15; min-height: 0; } .mhnote:empty { display: none; }
+  .mhara { display: flex; gap: 6px; margin-top: 8px; } .mhara input { flex: 1; min-width: 0; min-height: 44px; margin: 0; font-size: 16px; box-sizing: border-box; } .mhara button { flex: none; min-height: 44px; padding: 0 14px; }
+  .mhsum { margin: 8px 0 0; font-size: 14.5px; font-weight: 700; color: #4ade80; overflow-wrap: anywhere; } .mhsum.over { color: #f87171; } .mhsum:empty { display: none; }
+  .mhlink { margin-top: 8px; min-height: 40px; font-size: 14px; }
   .lmsg { min-height: 22px; max-width: 300px; text-align: center; font-size: 15px; font-weight: 600; } .lmsg.ok { color: #4ade80; } .lmsg.err { color: #f87171; } .lmsg.wait { color: var(--muted); }
   #loginBtn:disabled { opacity: .75; } .shake { animation: shake .4s; } @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
   #pauseBar { position: fixed; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + var(--swh, 0px) + 64px); z-index: 70; background: linear-gradient(135deg, #f5b40b, #ffd84d); color: #2b1700; font-weight: 600; font-size: 14px; border-radius: 14px; padding: 10px 12px; box-shadow: 0 8px 24px #0008; }
@@ -634,7 +643,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.103" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.104" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -643,7 +652,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.103" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.104" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -701,7 +710,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.103"></script>
+<script src="emoji.js?v=2.1.104"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -718,7 +727,7 @@ let API_YOL = /(^|\.)api\.sgok\.dev$/.test(location.hostname) ? location.origin 
 let API_VPS = API_YOL ? "https://vps.sgok.dev/f/bayi-web" : "", vpsYedekUntil = 0, apiYolAd = "";
 const VPS_KESIN = /^(kapali|hazir-degil|beat-eski)$/, VPS_BUYUK = 1_900_000; let VPS_OKU_MS = 8_000, VPS_YAZ_MS = 57_000; /* let: senaryolar kısaltabilsin */ // Caddy gövde sınırı 2 MB: büyük gövde (resim, ses) hiç Contabo'ya gönderilmez
 const webYol = () => { let m = me; if (!m) try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {} return (m && m.web_yol) || ""; };
-const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_chat_list|nakit|nakit_hareket|odeme_karti)$|_get$/;
+const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_chat_list|nakit|nakit_hareket|odeme_karti|mahsup_ara)$|_get$/;
 // Contabo atlanırken yoklama: GET API_VPS (bayi-web'in kendi 405'i, CORS'lu, veritabanına dokunmaz; /f/health anahtarsız 403 verir ve CORS başlığı yok)
 let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0;
 function vpsDus() { if (vpsDonAt && Date.now() - vpsDonAt < 30_000) vpsBek = Math.min(60_000, vpsBek * 2); else vpsBek = 10_000; // gidip gelme: katla · ≥ 30 sn kaldıysa baştan
@@ -1906,24 +1915,27 @@ function payAsk(np, body, pin, okMsg, label) { const ppl = np.people || [];
   if (!ppl.length) { toast("Kişi listesi boş — sunucudan kişi gelmedi", true); return; }
   const has = (id) => id != null && ppl.some((p) => String(p.id) === String(id)), last = payLs("bw_pay_person");
   const person = String(has(last) ? last : has(np.me) ? np.me : ppl[0].id);
-  paySt = { np, body, pin, okMsg, parts: [{ person, bank: "", amt: payN(np.amount) }], cur: 0, split: false, busy: false, sig: "" }; paySt.parts[0].bank = payDefBank(person);
+  paySt = { np, body, pin, okMsg, parts: [{ person, bank: "", amt: payN(np.amount) }], cur: 0, split: false, busy: false, sig: "", mh: mhInit(np), idem: mhIdem() }; paySt.parts[0].bank = payDefBank(person);
   const before = Number(np.paid_before) || 0;
   openModal(`<h3 style="margin:0 0 4px">💸 Alışı kim ödedi?</h3>
     <div class="s" style="margin-bottom:10px;overflow-wrap:anywhere">${esc(np.what || label || "")} · <b>${payAzn(np.amount)}</b>${before > 0 ? `<div class="partl" style="margin-top:4px">🟡 Önceden ${payN(before)}/${payN(np.full || before + Number(np.amount))} ₼ ödendi · kalan ${payN(np.amount)} ₼</div>` : ""}</div>
-    <div class="payparts" id="payParts" hidden></div>
+    <div id="mhWrap"></div>
+    <div id="payBank"><div class="payparts" id="payParts" hidden></div>
     <div class="s" style="margin-bottom:6px" id="payWho">Kişi</div><div class="paychips" id="payPpl">${ppl.map((p) => `<button data-id="${esc(String(p.id))}" onclick="payPerson(this.dataset.id)">${esc(p.name)}</button>`).join("")}</div>
     <div class="s" style="margin:12px 0 6px">Banka</div><div class="paychips" id="payCards"></div>
     <select id="payOther" onchange="payBank(this.value)" style="width:100%;height:44px;margin-top:8px;font-size:16px;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 10px"></select>
     <div id="payAmtBox"></div>
     <button class="payadd" id="payAdd" onclick="payAdd()">＋ Başka hesaptan ekle</button>
-    <div class="paysum" id="paySum"></div>
-    <div style="display:grid;gap:8px;margin-top:14px"><button class="go" id="payGo" onclick="payGo()" style="padding:14px;font-size:16px;overflow-wrap:anywhere"></button><button onclick="payCancel()">Vazgeç</button></div>`);
+    <div class="paysum" id="paySum"></div></div>
+    ${Array.isArray(np.mahsup) && !np.mahsup.length ? `<button class="payadd mhlink" id="mhLink" onclick="mhAraAc()">🧾 Coin / eski borçtan mahsup…</button>` : ""}
+    <div id="payBtns" style="display:grid;gap:8px;margin-top:14px"><button class="go" id="payGo" onclick="payGo()" style="padding:14px;font-size:16px;overflow-wrap:anywhere"></button><button id="payNo" onclick="payCancel()">Vazgeç</button></div>`);
   payDraw(); }
 /** Durum: tutarlar, toplam, kalan, düğme yazısı */
-function payState() { const st = paySt, total = Number(st.np.amount) || 0, on = payAmtOn();
+function payState() { const st = paySt, m = mhState(), full = Number(st.np.amount) || 0, total = payR2(Math.max(0, full - (m.bad ? 0 : m.sum))), on = payAmtOn();
   const amts = on ? st.parts.map((p) => payNum(p.amt)) : [total], sum = payR2(amts.reduce((t, v) => t + (Number.isFinite(v) ? v : 0), 0)), left = payR2(total - sum);
   const noBank = st.parts.findIndex((p) => !p.bank), bad = amts.some((v) => !Number.isFinite(v) || !(v > 0));
-  return { total, on, amts, sum, left, noBank, bad, over: left < -0.009, part: left > 0.009 }; }
+  if (m.sum > 0 && !m.bad && total <= 0.009) return { total: 0, full, on: false, amts: [], sum: 0, left: 0, noBank: -1, bad: false, over: false, part: false, m, mOnly: true }; // 🧾 tamamı mahsup: banka adımı yok
+  return { total, full, on, amts, sum, left, noBank, bad: bad || m.bad, over: left < -0.009, part: left > 0.009, m }; }
 /** Yapı (satırlar, tek tutar alanı) yalnız değişince yeniden çizilir: yazılan tutar alanı odağını kaybetmez */
 function payStruct() { const st = paySt, on = payAmtOn(), multi = st.parts.length > 1;
   const sig = JSON.stringify([multi, on, st.parts.map((p) => [p.person, p.bank])]); if (sig === st.sig) return; st.sig = sig; // seçili satır (cur) yalnız sınıfla: odak kaybolmaz
@@ -1932,9 +1944,10 @@ function payStruct() { const st = paySt, on = payAmtOn(), multi = st.parts.lengt
     + `<input class="payramt" data-i="${i}" inputmode="decimal" autocomplete="off" aria-label="${i + 1}. ödemenin tutarı" value="${esc(p.amt)}" oninput="payRowAmt(this)" onfocus="payPick(${i})"><button class="payx" aria-label="${i + 1}. ödemeyi kaldır" onclick="payDel(${i})">✕</button></div>`).join("") : "";
   $("payAmtBox").innerHTML = !multi && on ? `<label class="s" style="display:block;margin-top:12px">Tutar (₼)<input id="payAmt" inputmode="decimal" autocomplete="off" value="${esc(st.parts[0].amt)}" oninput="paySingleAmt(this)" onfocus="setTimeout(() => { const g = $('payGo'); if (g) g.scrollIntoView({ block: 'nearest' }); }, 350)" style="margin-top:4px;font-size:18px"></label>` : ""; }
 function payDraw() { if (!paySt || !$("payGo")) return; const st = paySt, P = payP(), cards = payCards(P.person), inCards = cards.some((c) => String(c.bank) === P.bank);
-  payStruct();
+  mhDraw(); payStruct();
   document.querySelectorAll("#payParts .payrow").forEach((r, i) => r.classList.toggle("on", i === st.cur));
   document.querySelectorAll("#payParts input.payramt").forEach((i) => { const v = st.parts[Number(i.dataset.i)].amt; if (document.activeElement !== i && i.value !== v) i.value = v; });
+  { const pa = $("payAmt"); if (pa && document.activeElement !== pa && pa.value !== st.parts[0].amt) pa.value = st.parts[0].amt; } // 🧾 mahsup değişince kalan tutar
   $("payWho").textContent = st.parts.length > 1 ? `Kişi — ${st.cur + 1}. ödeme` : "Kişi";
   document.querySelectorAll("#payPpl button").forEach((b) => b.classList.toggle("on", b.dataset.id === P.person));
   $("payCards").innerHTML = cards.length ? cards.map((c) => `<button data-b="${esc(String(c.bank))}" class="${String(c.bank) === P.bank ? "on" : ""}" onclick="payBank(this.dataset.b)">${esc(c.label || payBankName(c.bank))} ${c.l4.map((x) => "···" + esc(String(x))).join(", ")}</button>`).join("")
@@ -1944,9 +1957,12 @@ function payDraw() { if (!paySt || !$("payGo")) return; const st = paySt, P = pa
   sm.hidden = !s.on; sm.className = "paysum" + (s.over ? " over" : s.part ? " left" : " done");
   sm.textContent = s.on ? `Toplam ${payN(s.sum)} ₼ · kalan ${payN(Math.max(0, s.left))} ₼${s.over ? ` · ${payN(-s.left)} ₼ fazla` : ""}` : "";
   ad.hidden = st.parts.length >= PAY_MAX; ad.disabled = st.busy;
-  g.textContent = st.busy ? "⏳ Kaydediliyor…" : s.noBank >= 0 ? (st.parts.length > 1 ? `Banka seçin (${s.noBank + 1}. ödeme)` : "Banka seçin") : s.bad ? "Tutarı yazın"
+  const pb = $("payBank"); if (pb && pb.hidden !== !!s.mOnly) pb.hidden = !!s.mOnly; // 🧾 tamamı mahsupla kapanıyorsa kişi / banka gizlenir
+  const mt = s.m.sum > 0 && !s.m.bad ? ` + 🧾 ${payN(s.m.sum)} ₼` : "";
+  if (s.mOnly) { g.textContent = st.busy ? "⏳ Kaydediliyor…" : `🧾 Mahsupla kapat · ${payAzn(s.m.sum)}`; g.disabled = st.busy; return; }
+  g.textContent = st.busy ? "⏳ Kaydediliyor…" : s.m.bad ? "Mahsup tutarını düzeltin" : s.noBank >= 0 ? (st.parts.length > 1 ? `Banka seçin (${s.noBank + 1}. ödeme)` : "Banka seçin") : s.bad ? "Tutarı yazın"
     : s.over ? `Toplam fazla (${payN(s.sum)}/${payN(s.total)} ₼)` : s.part ? `💸 Kısmen öde (${payN(s.sum)}/${payN(s.total)} ₼)`
-    : st.parts.length > 1 ? `✅ Ödendi · ${payAzn(s.sum)} · ${st.parts.length} hesaptan` : `✅ Ödendi · ${payAzn(s.sum)} · ${payPName(P.person)} ${payBankName(P.bank)}`;
+    : st.parts.length > 1 ? `✅ Ödendi · ${payAzn(s.sum)} · ${st.parts.length} hesaptan${mt}` : `✅ Ödendi · ${payAzn(s.sum)} · ${payPName(P.person)} ${payBankName(P.bank)}${mt}`;
   g.disabled = st.busy || s.noBank >= 0 || s.bad || s.over; }
 function payPerson(id) { if (!paySt || paySt.busy) return; const P = payP(); P.person = String(id); P.bank = payDefBank(P.person); payDraw(); }
 function payBank(code) { if (!paySt || paySt.busy) return; const P = payP(); if (code) P.bank = String(code); else if (!payCards(P.person).some((c) => String(c.bank) === P.bank)) P.bank = ""; payDraw(); }
@@ -1963,21 +1979,79 @@ function payAdd() { if (!paySt || paySt.busy || paySt.parts.length >= PAY_MAX) r
 /** ✕ satırı kaldır: tutarı bir önceki satıra eklenir (toplam değişmez) */
 function payDel(i) { if (!paySt || paySt.busy || paySt.parts.length <= 1) return; const st = paySt, a = payNum(st.parts[i].amt);
   st.parts.splice(i, 1); const j = Math.max(0, i - 1); st.parts[j].amt = payN(payR2((Number.isFinite(payNum(st.parts[j].amt)) ? payNum(st.parts[j].amt) : 0) + (Number.isFinite(a) ? a : 0))); st.cur = j; payDraw(); }
+// 🧾 Mahsup adımı (W10): sunucu need_pay.mahsup ile bu müşterinin (aynı UID) açık coin satışlarını ve bize borçlarını verir; kullanıcı seçer, tutarı
+// görür / düzeltir (varsayılan: en büyük olası). "Başka kişiden" (ekip başı vb.): UID ya da adla arama → seçilen eklenir; OTOMATİK EŞLEME YOK.
+// Kural: mahsup EN SON alışa (en büyük alış numarası) yazılır, artarsa bir öncekine — sunucudaki mahsupAta ile aynı; ekranda gösterilir.
+// Hiç aday yoksa kutu çizilmez (akış bugünkü gibi); yalnız alttaki "🧾 Coin / eski borçtan mahsup…" bağlantısı aramayı açar.
+const mhKey = (x) => x.tur + ":" + x.ref;
+const mhNum = (s) => { const t = String(s ?? "").trim(); return /^\d+([.,]\d+)?$/.test(t) ? Number(t.replace(",", ".")) : NaN; }; // yalnız rakam + tek ondalık ayırıcı ("1e1", "-5", boş → geçersiz)
+function mhBlur(el) { const st = paySt; if (!st || !st.mh) return; const x = st.mh.list[Number(el.dataset.i)], v = mhNum(el.value); if (!x || !Number.isFinite(v)) return; x.amt = payN(payR2(v)); el.value = x.amt; mhSync(); payDraw(); } // kutudan çıkınca kuruşa yuvarlanmış değer
+const mhIdem = () => { try { return [...crypto.getRandomValues(new Uint8Array(12))].map((b) => b.toString(16).padStart(2, "0")).join(""); } catch (e) { return (Date.now().toString(36) + Math.random().toString(36).slice(2)).slice(0, 24).padEnd(12, "0"); } };
+function mhInit(np) { const l = Array.isArray(np.mahsup) ? np.mahsup : null; if (!l) return null; return { list: l.map((x) => ({ ...x, on: false, amt: "" })), ara: false, q: "", araMsg: "", busy: false, sig: "" }; }
+/** Seçili kalemler, toplam ve satır başına üst sınır: min(kalemin açığı, alış toplamı − öteki seçililer) */
+function mhState() { const st = paySt, M = st && st.mh, full = Number(st && st.np.amount) || 0; if (!M) return { items: [], sum: 0, bad: false, max: () => 0, badOf: () => false };
+  const on = M.list.filter((x) => x.on), vals = on.map((x) => ({ x, v: payR2(mhNum(x.amt)) })), sumOf = (ex) => payR2(vals.reduce((t, y) => t + (y.x === ex || !Number.isFinite(y.v) ? 0 : y.v), 0));
+  const max = (x) => payR2(Math.max(0, Math.min(Number(x.kalan) || 0, full - sumOf(x)))), badOf = (y) => !Number.isFinite(y.v) || !(y.v > 0) || y.v > max(y.x) + 0.009;
+  const sum = payR2(vals.reduce((t, y) => t + (Number.isFinite(y.v) ? y.v : 0), 0));
+  return { items: vals.map((y) => ({ tur: y.x.tur, ref: y.x.ref, v: y.v, bad: badOf(y) })), sum, bad: vals.some(badOf) || sum > full + 0.009, max, badOf: (x) => { const y = vals.find((z) => z.x === x); return !!y && badOf(y); } }; }
+/** Hangi alışa yazılır (en son alış önce) — ekrandaki açıklama satırı */
+function mhAtama(sum) { const bs = (paySt.np.batches || []).slice().sort((a, b) => Number(b.id) - Number(a.id)), out = []; let k = payR2(sum);
+  for (const b of bs) { if (k <= 0.009) break; const al = payR2(Math.min(Number(b.amount) || 0, k)); if (al > 0.009) { out.push([b.id, al]); k = payR2(k - al); } } return out; }
+const mhSatir = (x, i) => { const sat = x.tur === "satis", ic = sat ? "🪙" : "🧾", zaman = x.at ? " · " + nkSaat(x.at) : "";
+  return `<div class="mhrow${x.on ? " on" : ""}" data-k="${esc(mhKey(x))}"><button class="mhsel" onclick="mhSec(${i})">${ic} ${esc(x.etiket || (sat ? "coin satışı" : "eski borç"))}${esc(zaman)}<div class="s">${esc(x.ad || "")}${x.dis ? " · 👤 başka kişi" : ""} · ${sat ? "açık" : "kalan"} ${esc(payN(x.kalan))} ₼</div></button>`
+    + (x.on ? `<input class="mhamt" data-i="${i}" inputmode="decimal" autocomplete="off" aria-label="Mahsup tutarı" value="${esc(x.amt)}" oninput="mhAmt(this)" onblur="mhBlur(this)">` : "") + `</div><div class="mhnote" id="mhN${i}"></div>`; };
+function mhDraw() { const st = paySt, M = st && st.mh, w = $("mhWrap"); if (!w) return;
+  if (!M || (!M.list.length && !M.ara)) { if (w.innerHTML) w.innerHTML = ""; return; }
+  const sig = JSON.stringify([M.list.map((x) => [mhKey(x), x.on]), M.ara, M.araMsg, M.busy]);
+  if (sig !== M.sig) { M.sig = sig; // yapı yalnız değişince: yazılan tutar alanı odağını kaybetmez
+    w.innerHTML = `<div class="mhbox" id="mhBox"><div class="mhh">🧾 Mahsup<span class="s">Bu kişiye verdiğiniz coinleri ya da eski borcunu bu ödemeden düşebilirsiniz</span></div>`
+      + M.list.map(mhSatir).join("")
+      + (M.ara ? `<div class="mhara"><input id="mhQ" placeholder="UID ya da ad" autocomplete="off" value="${esc(M.q)}" oninput="paySt.mh.q=this.value" onkeydown="if(event.key==='Enter')mhAra()"><button onclick="mhAra()" ${M.busy ? "disabled" : ""}>${M.busy ? "⏳" : "Ara"}</button></div>${M.araMsg ? `<div class="s" style="margin-top:6px">${esc(M.araMsg)}</div>` : ""}`
+        : `<button class="payadd mhlink" onclick="mhAraAc()">＋ Başka kişinin satışından / borcundan</button>`)
+      + `<div class="mhsum" id="mhSum"></div><div class="s" id="mhKural" style="margin-top:2px"></div></div>`;
+    const l = $("mhLink"); if (l) l.hidden = true; }
+  const m = mhState(), full = Number(st.np.amount) || 0;
+  document.querySelectorAll("#mhBox input.mhamt").forEach((el) => { const x = M.list[Number(el.dataset.i)]; if (document.activeElement !== el && el.value !== x.amt) el.value = x.amt; el.classList.toggle("bad", m.badOf(x)); });
+  M.list.forEach((x, i) => { const n = $("mhN" + i); if (!n) return; const v = payR2(mhNum(x.amt)), rest = payR2((Number(x.kalan) || 0) - (Number.isFinite(v) ? v : 0));
+    const t = !x.on ? "" : m.badOf(x) ? (!(mhNum(x.amt) > 0) ? "0'dan büyük bir tutar yazın" : `En çok ${payN(m.max(x))} ₼ düşülebilir`) : rest > 0.009 ? (x.tur === "satis" ? `Satışın kalan ${payN(rest)} ₼'si açık kalır (sonra ödenir ya da "Borç olarak kalsın")` : `Borcun kalan ${payN(rest)} ₼'si açık kalır`) : "";
+    if (n.textContent !== t) n.textContent = t; });
+  const sm = $("mhSum"), kr = $("mhKural"); if (!sm) return;
+  const t = m.bad ? "Mahsup tutarını düzeltin" : m.sum > 0 ? `Alış toplamı ${payN(full)} ₼ · mahsup ${payN(m.sum)} ₼ · bankadan / karttan ödenecek ${payN(Math.max(0, full - m.sum))} ₼` : "";
+  if (sm.textContent !== t) sm.textContent = t; sm.classList.toggle("over", m.bad);
+  const at = m.sum > 0 && !m.bad ? mhAtama(m.sum) : [], kt = at.length ? `Mahsubun yazılacağı alış: ${at.map(([b, v]) => `#${b} (${payN(v)} ₼)`).join(", ")} — en son alış önce${full - m.sum <= 0.009 ? " · banka adımı yok" : ""}` : "";
+  if (kr.textContent !== kt) kr.textContent = kt; }
+function mhSync() { const st = paySt; if (!st) return; const s0 = mhState(), full = Number(st.np.amount) || 0; // tek hesaplı ödemede tutar = kalan (mahsup düşülmüş)
+  if (st.parts.length === 1 && !st.split) st.parts[0].amt = payN(Math.max(0, full - (s0.bad ? 0 : s0.sum))); }
+function mhSec(i) { const st = paySt; if (!st || st.busy || !st.mh) return; const x = st.mh.list[i]; if (!x) return;
+  if (x.on) { x.on = false; x.amt = ""; } else { x.on = true; const m = mhState().max(x); if (!(m > 0.009)) { x.on = false; toast("Alışın tamamı zaten mahsup edildi", true); return; } x.amt = payN(m); }
+  mhSync(); payDraw(); }
+function mhAmt(el) { const st = paySt; if (!st || !st.mh) return; const x = st.mh.list[Number(el.dataset.i)]; if (!x) return; x.amt = el.value; mhSync(); payDraw(); }
+function mhAraAc() { const st = paySt; if (!st || st.busy) return; if (!st.mh) st.mh = { list: [], ara: true, q: "", araMsg: "", busy: false, sig: "" }; st.mh.ara = true; payDraw(); setTimeout(() => { const q = $("mhQ"); if (q) q.focus(); }, 50); }
+async function mhAra() { const st = paySt; if (!st || !st.mh || st.mh.busy) return; const M = st.mh, q = String(M.q || "").trim();
+  if (q.length < 2) { M.araMsg = "UID ya da en az 2 harf yazın"; payDraw(); return; }
+  M.busy = true; M.araMsg = ""; payDraw(); let d = null; try { d = await api("mahsup_ara", { q }); } catch (e) {} if (paySt !== st) return; M.busy = false;
+  if (!d || d.error) { M.araMsg = (d && d.error) || "Bağlantı yok"; payDraw(); return; }
+  const gel = (d.report && d.report.mahsup) || [], var0 = new Set(M.list.map(mhKey)), yeni = gel.filter((x) => !var0.has(mhKey(x))).map((x) => ({ ...x, on: false, amt: "", dis: true }));
+  M.list.push(...yeni); M.araMsg = yeni.length ? `${yeni.length} kayıt eklendi — mahsup edilecek olanı seçin` : gel.length ? "Bulunanlar zaten listede" : "Açık satış ya da borç bulunamadı"; payDraw(); }
 function payCancel() { paySt = null; closeModal(); }
 async function payGo() { const st = paySt; if (!st || st.busy) return; const s = payState();
-  if (s.noBank >= 0) { toast("Banka seçin", true); return; } if (s.bad || s.over) { toast(s.over ? "Toplam, ödenecek tutarı aşıyor" : "Tutar geçersiz", true); return; }
+  if (s.m.bad) { toast("Mahsup tutarı geçersiz ya da açık tutardan büyük", true); return; }
+  if (!s.mOnly && s.noBank >= 0) { toast("Banka seçin", true); return; } if (s.bad || s.over) { toast(s.over ? "Toplam, ödenecek tutarı aşıyor" : "Tutar geçersiz", true); return; }
   if (s.part && !confirm(`Kısmen ödenecek: ${payN(s.sum)}/${payN(s.total)} ₼\nKalan ${payN(s.left)} ₼ ödenmedi olarak kalır, sonra "Ödendi yap" ile ödenir.\nDevam edilsin mi?`)) return;
   st.busy = true; payDraw();
   const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
   const pid = (x) => isNaN(Number(x)) ? x : Number(x), one = (st.np.batches || []).length === 1;
-  const body = { ...st.body, paid: true, pin, ask: true, ...(st.parts.length === 1 && !s.part // tek hesaptan tamamı: eski biçim (eski sunucu da anlar)
+  const mh = s.m.sum > 0 ? { mahsup: s.m.items.map((x) => ({ tur: x.tur, ref: x.ref, tutar: x.v })), idem: st.idem } : {}; // idem: aynı pencerenin yeniden denemesi aynı mahsup (sunucu ikinci kez yazmaz) // 🧾 sunucu açık olduğunu ve tutarı kendisi doğrular
+  const body = { ...st.body, paid: true, pin, ask: true, ...mh, ...(s.mOnly ? {} : st.parts.length === 1 && !s.part // tek hesaptan tamamı: eski biçim (eski sunucu da anlar)
     ? { person_id: pid(st.parts[0].person), bank: st.parts[0].bank, ...(one ? { amount: s.sum } : {}) }
     : { parts: st.parts.map((p, i) => ({ person_id: pid(p.person), bank: p.bank, amount: payR2(s.amts[i]) })) }) };
-  let d; try { d = await api("bayi_coin_paid", body); } catch (e) { d = { error: "Bağlantı hatası: " + (e && e.message || e) }; }
+  let d, ag = false; try { d = await api("bayi_coin_paid", body); } catch (e) { ag = true; d = { error: "Bağlantı hatası: " + (e && e.message || e) }; }
+  // 🧾 R32b: sunucu KESİN hata dediyse (işlenmedi / geri sarıldı) yeni idem; yanıt alınamadıysa (ağ / 5xx / okunamadı) aynısı kalır — ilk istek işlenmiş olabilir
+  if (d && d.error && !ag && !d._http && !/^(Bağlantı yok|Yanıt okunamadı)/.test(String(d.error)) && !/yarım kaldı/.test(String(d.error))) st.idem = mhIdem(); // yarım kayıt: aynı idem (sunucu yeniden denemeyi durdurur)
   if (paySt !== st) return; // bu arada kapatıldı
   if (d.pin === "wrong") pinCache = null;
   if (d.error || (d.report && d.report.need_pay)) { st.busy = false; payDraw(); toast(d.error || "Ödeme kaydedilemedi, tekrar deneyin", true); return; }
-  payLs("bw_pay_person", st.parts[0].person); const m = payBankMap(); for (const p of st.parts.slice().reverse()) m[p.person] = p.bank; payLs("bw_pay_bank", JSON.stringify(m));
+  if (!s.mOnly) { payLs("bw_pay_person", st.parts[0].person); const m = payBankMap(); for (const p of st.parts.slice().reverse()) m[p.person] = p.bank; payLs("bw_pay_bank", JSON.stringify(m)); }
   paySt = null; closeModal(); coinPaidDone(typeof d.ok === "string" ? d.ok : st.okMsg); }
 // En alta yapışma: sohbet açılınca ve kullanıcı en alttayken yeni içerik/resim yüklenince en alta iner; yukarı kaydırınca bırakır
 let stick = true;
@@ -2074,12 +2148,21 @@ function renderChat(scroll) {
   if (scroll) { toBottom(); requestAnimationFrame(toBottom); setTimeout(() => { if (stick) toBottom(); }, 300); setTimeout(() => { if (stick) toBottom(); }, 1200); }
   else if (atBottom && changed) { toBottom(); requestAnimationFrame(() => { if (stick) toBottom(); }); }
 }
+/** "Geri al" onayı: sunucunun verdiği gerçek dökümle önceden doğruyu söyler. Mahsupsuz ödemede (ya da döküm alınamazsa) metin bugünkü gibi. */
+function geriAlSoru(oz, part) { const eski = part ? "Kısmi ödeme geri alınsın mı?\n\nAlışa yazılan tüm parçalar geçersiz sayılır." : "Ödendi işareti geri alınsın mı?\n\nAlışa yazılan ödeme de geri alınır.";
+  if (!oz) return eski; const m = Number(oz.mahsup) || 0, b = Number(oz.banka) || 0, e = Number(oz.elle) || 0, al = oz.tur === "alacak";
+  const ne = al ? `eski borcun (${oz.etiket || "eski borç"})` : `verdiğiniz coinin (${oz.etiket || "coin satışı"})`;
+  if (m > 0 && b > 0) return `🧾 Mahsup geri alınsın mı?\n\nÖnce 🧾 mahsup (${payN(m)} ₼) geri alınır: ${ne} ödemesi yeniden açılır. Bankadan ödenen ${payN(b)} ₼ yerinde kalır; onu da açmak için sonra yeniden "Geri al"a basın.`;
+  if (m > 0) return `🧾 Mahsup geri alınsın mı?\n\n🧾 Mahsup (${payN(m)} ₼) geri alınır: alış ve o ${al ? "eski borç" : "coin satışı"} yeniden açılır.`;
+  if (part && e > 0) return `Kısmi ödeme geri alınsın mı?\n\nBu kayda elle yazılan ${payN(e)} ₼ ödeme geçersiz sayılır; alış yeniden ödenecek olur.${b - e > 0.009 ? ` Otomatik banka eşleşmesi (${payN(b - e)} ₼) yerinde kalır.` : ""}`;
+  return eski; }
 async function coinPaid(tx, paid, part) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
   if (paid) { coinPaySend({ tx }, "✅ Ödendi işaretlendi"); return; }
-  if (!confirm(part ? "Kısmi ödeme geri alınsın mı?\n\nAlışa yazılan tüm parçalar geçersiz sayılır." : "Ödendi işareti geri alınsın mı?\n\nAlışa yazılan ödeme de geri alınır.")) return;
+  let oz = null; try { const r = await api("geri_al_onizle", { tx }); oz = (r && r.report && r.report.onizle) || null; } catch (e) {} // 🧾 gerçek ödeme dökümü (mahsup / banka)
+  if (!confirm(geriAlSoru(oz, part))) return;
   const pin = await askPin("Geri almak için işlem PIN'iniz"); if (!pin) return;
   const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
-  if (d.error) toast(d.error, true); else { toast(paid ? "✅ Ödendi işaretlendi" : "Geri alındı"); if (cur) { loadChat(); idRefresh(cur); } loadDm(); } }
+  if (d.error) toast(d.error, true); else { toast(typeof d.ok === "string" ? d.ok : "Geri alındı"); if (cur) { loadChat(); idRefresh(cur); } loadDm(); } }
 
 // ---------- gönderme (mesajları tablet Sugo'ya gönderir)
 // Yazı kutusu yüksekliği: kutuyu küçültmeden (gizli kopyada) ölçülür — küçülüp büyümesi iPhone'da sayfayı zıplatıyordu
@@ -2818,6 +2901,7 @@ const OK_YOL = { web: "Web Bayi", telegram: "Telegram", tablet: "Tablet", otomat
 const okPara = (x) => { const n = Math.round((Number(x) || 0) * 100) / 100; return (Number.isInteger(n) ? String(n) : n.toFixed(2).replace(".", ",")) + "\u00a0₼"; }; // sayı ile ₼ arası bölünmez
 function okRozet(o) { const r = [];
   if (o.oto) r.push(["🤖 otomatik bağlandı", ""]);
+  { const mp = (o.parcalar || []).filter((p) => p.mahsup); if (mp.length) r.push([`🧾 ${okPara(mp.reduce((t, p) => t + Number(p.tutar || 0), 0))} mahsup (kart değişmedi)`, ""]); }
   if (o.bagsiz) r.push(["⚠️ banka çıkışına bağlı değil", "u"]); else if ((o.parcalar || []).some((p) => p.bagli)) r.push(["🔗 banka çıkışına bağlı", ""]);
   if (o.parcalar && o.parcalar.length) r.push(o.dekont ? ["🧾 dekont " + nkSaat(o.dekont), ""] : ["dekont yok", "s"]);
   if (o.geri) r.push([`↩️ ${o.geri} kez geri alındı`, "u"]);
@@ -2825,14 +2909,14 @@ function okRozet(o) { const r = [];
   if (o.red) r.push([`🚫 ${o.red} reddedilen deneme`, o.parcalar && o.parcalar.length ? "s" : "u"]);
   if (o.ad_yeni) r.push(["ad değişmiş: " + o.ad_yeni, "u"]);
   return r.map(([t, k]) => `<span class="okc${k ? " " + k : ""}">${esc(t)}</span>`).join(""); }
-function okParca(o, n) { const p = (o.parcalar || [])[0], tp = n > 1 ? `${n} parça · toplam ` : ""; // [hesap + tutar, işaretleyen · yol · saat] · n: sohbetteki bozum parçası sayısı (>1: tutar alışın TOPLAMI)
+function okParca(o, n) { const p = (o.parcalar || []).find((x) => !x.mahsup) || (o.parcalar || [])[0], tp = n > 1 ? `${n} parça · toplam ` : ""; // [hesap + tutar, işaretleyen · yol · saat] · n: sohbetteki bozum parçası sayısı (>1: tutar alışın TOPLAMI)
   if (!p) return [`⏳ Ödenmedi · ${tp}${okPara(o.odenecek)}`, ""];
-  const ek = o.parcalar.length > 1 ? ` +${o.parcalar.length - 1} hesap` : "", kim = p.kaynak === "otomatik" ? "sistem bağladı" : (p.kim === "bilinmiyor" ? "işaretleyen bilinmiyor" : p.kim + " işaretledi");
+  const nm = o.parcalar.filter((x) => x.mahsup && x !== p).length, nh = o.parcalar.length - 1 - nm, ek = (nh > 0 ? ` +${nh} hesap` : "") + (nm > 0 ? " + 🧾 mahsup" : ""), kim = p.kaynak === "otomatik" ? "sistem bağladı" : (p.kim === "bilinmiyor" ? "işaretleyen bilinmiyor" : p.kim + " işaretledi");
   return [`<span class="e">${o.durum === "kismi" ? "🟡" : o.durum === "fazla" ? "⚠️" : "✅"} ${esc(p.hesap)}${ek}</span><span class="z">&nbsp;· ${tp}${o.durum === "kismi" ? okPara(o.odenen) + " / " + okPara(o.odenecek) : okPara(o.odenen)}</span>`, `${esc(kim)} · ${esc(OK_YOL[p.kaynak] || p.kaynak)} · ${esc(nkSaat(p.at))}`]; }
 const okBas = (o) => okParca(o).filter(Boolean).join(" · ");
 const okSatir = (o, n) => !o || !okOk() ? "" : `<button class="okrt" data-ok="${Number(o.batch)}" onclick="event.stopPropagation();okAc(${Number(o.batch)})"><div class="l1">${okParca(o, n)[0]}</div>${okParca(o)[1] ? `<div class="l1b">${okParca(o)[1]}</div>` : ""}<div class="l2">${okRozet(o)}<span class="okc s">🔒 yalnız siz · ayrıntı ›</span></div></button>`;
 let okSh = null; const okT = {}; // açık pencere { batch, geri } · zaman çizelgesi önbelleği (bellekte)
-const OK_IC = { bozum: "💎", red: "🚫", dekont: "🧾", isaret: "✅", geri: "↩️", banka: "🔗", devir: "🔁", coz: "⛓️" };
+const OK_IC = { bozum: "💎", red: "🚫", dekont: "🧾", isaret: "✅", mahsup: "🧾", geri: "↩️", banka: "🔗", devir: "🔁", coz: "⛓️" };
 function okOlay(e) { const alt = [e.kim ? esc(e.kim) : "", e.kaynak ? esc(OK_YOL[e.kaynak] || e.kaynak) : "", e.hesap ? esc(e.hesap) : "", e.tutar != null ? okPara(e.tutar) : ""].filter(Boolean).join(" · ");
   return `<div class="okt ${esc(e.tur)}"><div class="okz">${esc(nkSaat(e.at))}</div><div class="oki">${OK_IC[e.tur] || "•"}</div><div class="b"><div>${esc(String(e.metin || "").replace(/^\p{Extended_Pictographic}\uFE0F?\s+/u, ""))}</div>${alt ? `<div class="s">${alt}</div>` : ""}</div></div>`; }
 function okIc() { const x = okT[okSh.batch];
@@ -4212,7 +4296,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.103"></script>
-<script src="durum.js?v=2.1.103"></script>
+<script src="profile.js?v=2.1.104"></script>
+<script src="durum.js?v=2.1.104"></script>
 </body>
 </html>
