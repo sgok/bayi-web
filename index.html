@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.105">
+<meta name="build" content="2.1.106">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.105">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.105">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.105">
+<link rel="manifest" href="manifest.json?v=2.1.106">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.106">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.106">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -164,6 +164,21 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .dkrow > button.on { border-color: var(--go); box-shadow: inset 0 0 0 1px var(--go); font-weight: 700; } .dkrow > .dkx { flex: none; width: 44px; padding: 0; }
   .dkth { width: 44px; height: 44px; object-fit: cover; border-radius: 10px; flex: none; background: var(--panel2); } .dkad { flex: 1; min-width: 0; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dkpick { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; align-items: center; min-height: 44px; } .dkpick button { flex: none; width: 44px; height: 44px; padding: 0; border-radius: 10px; overflow: hidden; } .dkpick img { width: 100%; height: 100%; object-fit: cover; display: block; } .dkpick .s { white-space: nowrap; font-size: 13px; }
+  /* 📎 parça parça dekont: yatay parça şeridi (küçük resim + ✕ + isteğe bağlı tutar), ➕ Parça, sarı tutar uyarısı; parça varken Vazgeç alt satırda */
+  .dkalt.cok { flex-direction: column; } .dkalt.cok > #dkWrap, .dkalt.cok > #payNo { flex: none; width: 100%; }
+  .dkrow.dkpar { flex-direction: column; align-items: stretch; gap: 6px; }
+  .dkser { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; padding: 2px 0 4px; min-width: 0; scrollbar-width: none; } .dkser::-webkit-scrollbar { display: none; }
+  .dkp { flex: none; width: 78px; display: flex; flex-direction: column; gap: 4px; position: relative; }
+  .dkp .dkpi { display: block; width: 78px; height: 66px; padding: 0; margin: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel2); box-sizing: border-box; }
+  .dkp .dkpi img { width: 100%; height: 100%; object-fit: cover; display: block; } .dkp .dkpb { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 26px; }
+  .dkp.on .dkpi { border-color: var(--go); box-shadow: inset 0 0 0 2px var(--go); }
+  .dkp .dkpx { position: absolute; top: 3px; right: 3px; width: 30px; height: 30px; min-height: 0; padding: 0; border: 0; border-radius: 999px; background: #000b; color: #fff; font-size: 14px; line-height: 30px; }
+  .dkp input { width: 100%; min-height: 36px; margin: 0; padding: 0 6px; font-size: 16px; text-align: right; box-sizing: border-box; } .dkp input.bad { border-color: #f87171; color: #f87171; }
+  .dkp .dkpn { display: block; font-size: 13px; text-align: center; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 18px; }
+  .dkpe { flex: none; width: 66px; height: 66px; min-height: 0; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 18px; border-radius: 10px; } .dkpe span { font-size: 12.5px; }
+  .dkpalt { display: flex; gap: 6px; align-items: center; min-height: 44px; } .dkpalt > button { flex: 1 1 0; min-width: 0; min-height: 44px; padding: 0 6px; font-size: 14.5px; white-space: nowrap; } .dkpalt > button.on { border-color: var(--go); box-shadow: inset 0 0 0 1px var(--go); font-weight: 700; }
+  .dkuy { font-size: 13px; color: #facc15; overflow-wrap: anywhere; } .dkuy:empty { display: none; }
+  .dkpick button.on { box-shadow: inset 0 0 0 3px var(--go); } .dkpsay { margin-top: 4px; } .dktas { margin-top: 6px; padding: 8px; border: 1px dashed var(--line); border-radius: 12px; }
   .dkbar { display: block; width: 100%; height: 40px; margin: 0; padding: 0 12px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: #3a2f12; color: #ffe9b0; font-size: 14.5px; line-height: 39px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .dkbar[hidden] { display: none; } .dkbar.gec { background: #3b1414; color: #fecaca; } .dkbar.bos { background: transparent; color: var(--muted); font-size: 13.5px; }
   .dktabs { display: flex; gap: 6px; margin: 4px 0 8px; } .dktabs button { flex: 1; min-width: 0; min-height: 40px; padding: 0 4px; font-size: 14px; } .dktabs button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   .dkli { padding: 10px 0; border-top: 1px solid var(--line); } .dkl1 { font-size: 15px; overflow-wrap: anywhere; } .dkla { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; } .dkla button { min-height: 40px; padding: 0 12px; font-size: 14px; } .dkgec { color: var(--bad); font-weight: 700; }
@@ -683,7 +698,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.105" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.106" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -692,7 +707,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.105" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.106" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -751,7 +766,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.105"></script>
+<script src="emoji.js?v=2.1.106"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -2084,6 +2099,7 @@ function payCancel() { paySt = null; closeModal(); }
 async function payGo() { const st = paySt; if (!st || st.busy) return; const s = payState();
   if (s.m.bad) { toast("Mahsup tutarı geçersiz ya da açık tutardan büyük", true); return; }
   if (!s.mOnly && s.noBank >= 0) { toast("Banka seçin", true); return; } if (s.bad || s.over) { toast(s.over ? "Toplam, ödenecek tutarı aşıyor" : "Tutar geçersiz", true); return; }
+  if (st.dk && st.dk.items.some((x) => Number.isNaN(dkTutar(x.tutar)))) { toast("📎 Parça tutarı geçersiz (boş bırakın ya da sayı yazın)", true); return; }
   if (s.part && !confirm(`Kısmen ödenecek: ${payN(s.sum)}/${payN(s.total)} ₼\nKalan ${payN(s.left)} ₼ ödenmedi olarak kalır, sonra "Ödendi yap" ile ödenir.\nDevam edilsin mi?`)) return;
   st.busy = true; payDraw();
   const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
@@ -2101,7 +2117,7 @@ async function payGo() { const st = paySt; if (!st || st.busy) return; const s =
   if (!s.mOnly) { payLs("bw_pay_person", st.parts[0].person); const m = payBankMap(); for (const p of st.parts.slice().reverse()) m[p.person] = p.bank; payLs("bw_pay_bank", JSON.stringify(m)); }
   const dkx = st.dk, dek = d.report && d.report.dekont; // 📎 ödendi KAYDEDİLDİ; dekont ayrı istekle (hatası ödemeyi etkilemez)
   paySt = null; closeModal(); coinPaidDone(typeof d.ok === "string" ? d.ok : st.okMsg);
-  if (dek && dkx && (dkx.file || dkx.msg)) dkGonder(dek, dkx); else if (dek) dkOzetYenile(); }
+  if (dek && dkx && dkx.items.length) dkGonder(dek, dkx); else if (dek) dkOzetYenile(); }
 // 📎 Dekont (W12, 1. paket: alış). Ödendi penceresinde dekont adımı (mahsup ve banka seçiminin altında; tamamı mahsupsa yok), üst şerit (sayaç),
 // "Dekont bekleyenler" listesi, sohbetteki resmi dekont olarak bağlama. İşaretleme ASLA beklemez: dekont ödendi kaydından SONRA ayrı istekle gider;
 // yüklenemezse ödeme kayıtlı kalır, istek "bekliyor" olur. Yetki sunucuda (dekont.ts); burada yalnız görünürlük. Satır içi onclick'e veri konmaz:
@@ -2135,106 +2151,184 @@ const dkKb = (n) => Math.max(1, Math.round(Number(n || 0) / 1024)).toLocaleStrin
 /** Açık sohbetteki son 2 günün resimleri (yenisi önce): "Sohbetten seç" */
 const dkSohbetResim = (conv) => conv && String(cur) === String(conv) ? hist.filter((m) => m.k === "image" && /^https:\/\//.test(String(m.t || "")) && Date.now() - Date.parse(m.at) < 2 * 86400_000).slice(-12).reverse() : [];
 
+// ---------- 📎 parça parça dekont: büyük ödeme bankadan birkaç parça gider, her parçanın dekontu ayrı. Bir ödemeye en çok DK_PARCA parça; her parçaya
+// isteğe bağlı tutar (toplam ödemeden farklıysa sarı uyarı, engel yok). Ortak parça kartı (küçük resim + ✕ + tutar) üç yerde: ödendi penceresi, sohbetten
+// bağlama, "Dekont bekleyenler". Tutar girişi yeniden çizimsiz güncellenir (document "input" dinleyicisi, data-dkt); veri hep data-* (satır içi onclick yok).
+const DK_PARCA = 10;
+/** Parça tutarı: boş → null, "150,5" → 150.5, geçersiz → NaN */
+const dkTutar = (v) => { const t = String(v ?? "").trim(); if (!t) return null; const n = payNum(t); return Number.isFinite(n) && n > 0 && n <= 1e6 ? Math.round(n * 100) / 100 : NaN; };
+/** Yazılan parça tutarlarının toplamı ödemeden farklıysa uyarı metni (hiç tutar yazılmadıysa / ödeme bilinmiyorsa boş) */
+function dkUyari(tutarlar, odeme) { const t = tutarlar.map(dkTutar).filter((x) => x != null && !Number.isNaN(x)); if (!t.length || !(odeme > 0)) return "";
+  const top = Math.round(t.reduce((a, x) => a + x, 0) * 100) / 100; return Math.abs(top - odeme) >= 0.01 ? `⚠️ Parçalar toplamı ${payN(top)} ₼ / ödeme ${payN(odeme)} ₼` : ""; }
+/** Parça kartı: yer = pay | bag | tas (taslak) | kayit (kayıtlı parça); kayıtlı parçada tutar yazı olarak, ✕ yalnız izin varsa */
+function dkKart(o) { const yer = esc(o.yer), i = esc(String(o.i));
+  const res = o.src ? `<img src="${esc(o.src)}" alt="Dekont parçası ${esc(String(o.no))}" loading="lazy">` : `<span class="dkpb">🧾</span>`;
+  const ust = o.gor ? `<button type="button" class="dkpi" data-dk="${esc(o.gor)}" data-i="${esc(String(o.gorI ?? o.i))}" aria-label="Parça ${esc(String(o.no))}: aç">${res}</button>` : `<span class="dkpi">${res}</span>`;
+  const x = o.sil ? `<button type="button" class="dkpx" data-dk="${esc(o.sil)}" data-i="${i}" data-y="${yer}" aria-label="Parça ${esc(String(o.no))}: çıkar">✕</button>` : "";
+  const alt = o.kayit ? `<span class="dkpn">${o.tutar != null ? esc(payN(o.tutar)) + " ₼" : esc(o.kim || "—")}</span>`
+    : `<input type="text" inputmode="decimal" autocomplete="off" placeholder="₼ tutar" data-dkt="${yer}" data-i="${i}" value="${esc(o.tutar || "")}" aria-label="Parça ${esc(String(o.no))} tutarı (isteğe bağlı)">`;
+  return `<div class="dkp${o.on ? " on" : ""}">${ust}${x}${alt}</div>`; }
+
 // ---------- ödendi penceresindeki kutu
-function dkYeni() { return dkAcik() && can("elmas") ? { file: null, msg: null, sec: false, pick: false, send: true, busy: false, sig: "" } : null; }
-/** Kutu "Vazgeç"in solunda, aynı satırda (pencere uzamaz; mahsuplu en uzun hâlde de "Ödendi" ekranda kalır): 📎 Dekont ekle → 📷 / 💬 seçimi →
- *  küçük resim + 📤 Gönder (müşterinin sohbetine; açık, kapatılabilir; 390 px'te kırpılmayan kısa metin) + ✕. Seçim yoksa dekont sonra (istek "bekliyor"). Tamamı mahsupsa kutu yok. */
-function dkDraw(s) { const w = $("dkWrap"), no = $("payNo"), dk = paySt && paySt.dk; if (!w) return;
-  if (!dk || s.mOnly) { if (!w.hidden) w.hidden = true; if (no && no.hidden) no.hidden = false; return; } if (w.hidden) w.hidden = false;
-  const uid = paySt.np.uid ? String(paySt.np.uid) : "", acik = dk.sec || dk.pick, imgs = dk.pick ? dkSohbetResim(uid) : [], gond = !!(dk.file && uid);
-  if (no && no.hidden !== !!acik) no.hidden = !!acik; // seçim açıkken satırın tamamı seçeneklere
-  const sig = JSON.stringify([!!dk.file, dk.msg && dk.msg.mid, dk.sec, dk.pick, dk.send, dk.busy, uid, imgs.map((m) => m.id)]); if (sig === dk.sig) return; dk.sig = sig;
+function dkYeni() { return dkAcik() && can("elmas") ? { items: [], sec: false, pick: false, send: true, busy: false, sig: "" } : null; }
+const dkPayUy = (s) => { const dk = paySt && paySt.dk, u = $("dkUy"); if (!dk || !u) return; const t = dkUyari(dk.items.map((x) => x.tutar), s ? s.sum : payState().sum); if (u.textContent !== t) u.textContent = t; };
+/** Kutu "Vazgeç"in solunda, aynı satırda (parça yokken pencere uzamaz): 📎 Dekont ekle → 📷 (çoklu seçim) / 💬 (sohbetten, çoklu) → parça şeridi
+ *  (yatay: küçük resim + ✕ + isteğe bağlı tutar, ➕ Parça) + 📤 Gönder (müşterinin sohbetine) + parça sayısı + tutar uyarısı; parça varken Vazgeç alt satırda.
+ *  Seçim yoksa dekont sonra (istek "bekliyor"). Tamamı mahsupsa kutu yok. */
+function dkDraw(s) { const w = $("dkWrap"), no = $("payNo"), dk = paySt && paySt.dk, alt = w && w.parentNode; if (!w) return;
+  if (!dk || s.mOnly) { if (!w.hidden) w.hidden = true; if (no && no.hidden) no.hidden = false; if (alt) alt.classList.remove("cok"); return; } if (w.hidden) w.hidden = false;
+  const uid = paySt.np.uid ? String(paySt.np.uid) : "", n = dk.items.length, acik = dk.sec || dk.pick, imgs = dk.pick ? dkSohbetResim(uid) : [], gond = !!(uid && dk.items.some((x) => x.k === "f"));
+  const cok = n > 0; if (alt && alt.classList.contains("cok") !== cok) alt.classList.toggle("cok", cok); w.classList.toggle("dkpar", cok && !acik); // parça varken kutu tam satır (seçenekler de), Vazgeç altta
+  if (no && no.hidden !== (acik && !n)) no.hidden = acik && !n; // ilk seçim açıkken satırın tamamı seçeneklere
+  const sig = JSON.stringify([dk.items.map((x) => x.k + (x.mid || x.data.length)), dk.sec, dk.pick, dk.send, dk.busy, uid, imgs.map((m) => m.id)]);
+  if (sig === dk.sig) { dkPayUy(s); return; } dk.sig = sig;
+  const secili = new Set(dk.items.filter((x) => x.k === "m").map((x) => x.mid));
   w.innerHTML = dk.busy ? `<span class="dkad">⏳ Resim hazırlanıyor…</span>`
-    : dk.file || dk.msg ? `<img class="dkth" src="${esc(dk.file ? dk.file.data : dk.msg.src)}" alt="Dekont">${gond ? `<button type="button" data-dk="gonder" class="${dk.send ? "on" : ""}" aria-pressed="${dk.send}" aria-label="Dekont müşterinin sohbetine de gönderilsin" title="Dekont müşterinin sohbetine de gönderilsin">📤 Gönder${dk.send ? " ✓" : ""}</button>` : `<span class="dkad">${dk.file ? dkKb(dk.file.size) : "Sohbetten"}</span>`}<button type="button" class="dkx" data-dk="sil" aria-label="Dekontu kaldır">✕</button>`
-    : dk.pick ? `<div class="dkpick">${imgs.length ? imgs.map((m) => `<button type="button" data-dk="msec" data-mid="${esc(String(m.id))}" aria-label="Bu resmi seç"><img src="${esc(String(m.t))}" alt="" loading="lazy"></button>`).join("") : `<span class="s">Son 2 günde resim yok</span>`}</div><button type="button" class="dkx" data-dk="geri" aria-label="Geri">‹</button>`
+    : dk.pick ? `<div class="dkpick">${imgs.length ? imgs.map((m) => `<button type="button" data-dk="msec" data-mid="${esc(String(m.id))}" class="${secili.has(String(m.id)) ? "on" : ""}" aria-pressed="${secili.has(String(m.id))}" aria-label="Bu resmi parça olarak seç"><img src="${esc(String(m.t))}" alt="" loading="lazy"></button>`).join("") : `<span class="s">Son 2 günde resim yok</span>`}</div><button type="button" class="dkx" data-dk="geri" aria-label="${n ? "Tamam" : "Geri"}">${n ? "✓" : "‹"}</button>`
     : dk.sec ? `<button type="button" data-dk="foto">📷 Çek / seç</button><button type="button" data-dk="sohbet"${uid && String(cur) === uid ? "" : " disabled"}>💬 Sohbetten</button><button type="button" class="dkx" data-dk="geri" aria-label="Geri">‹</button>`
+    : n ? `<div class="dkser">${dk.items.map((x, i) => dkKart({ yer: "pay", i, no: i + 1, src: x.k === "f" ? x.data : x.src, sil: "psil", tutar: x.tutar })).join("")}${n < DK_PARCA ? `<button type="button" class="dkpe" data-dk="ac" aria-label="Parça ekle">➕<span>Parça</span></button>` : ""}</div>
+      <div class="dkpalt"><span class="dkad">📎 ${n} parça${n >= DK_PARCA ? " (en çok)" : ""}</span>${gond ? `<button type="button" data-dk="gonder" class="${dk.send ? "on" : ""}" aria-pressed="${dk.send}" aria-label="Dekont müşterinin sohbetine de gönderilsin" title="Dekont müşterinin sohbetine de gönderilsin">📤 Gönder${dk.send ? " ✓" : ""}</button>` : ""}</div><div class="dkuy" id="dkUy"></div>`
     : `<button type="button" data-dk="ac">📎 Dekont ekle</button>`;
-  w.insertAdjacentHTML("beforeend", `<input type="file" id="dkFile" accept="image/*" hidden>`); }
-const dkEkli = () => !!(paySt && paySt.dk && (paySt.dk.file || paySt.dk.msg));
-/** Ödendi kaydedildikten sonra: dekont ayrı istekle; hata ödemeyi etkilemez */
+  w.insertAdjacentHTML("beforeend", `<input type="file" id="dkFile" accept="image/*" multiple hidden>`); dkPayUy(s); }
+const dkEkli = () => !!(paySt && paySt.dk && paySt.dk.items.length);
+/** Seçilen dosyaları sırayla küçültür ve parça listesine ekler (en çok DK_PARCA; aynı resim ikinci kez eklenmez) */
+async function dkDosyalar(files, liste, sinir) { let ayni = 0, fazla = 0, hata = "";
+  for (const f of [...files]) { if (liste.length >= sinir) { fazla++; continue; }
+    try { const x = await dkKucult(f); if (liste.some((y) => y.data === x.data)) { ayni++; continue; } liste.push({ k: "f", ...x, tutar: "" }); } catch (er) { hata = String(er && er.message || er); } }
+  if (hata) toast("❌ " + hata, true); else if (fazla) toast(`En çok ${DK_PARCA} parça — ${fazla} resim eklenmedi`, true); else if (ayni) toast("Aynı resim zaten eklendi", true); }
+/** Parçaları sırayla gönderir (her biri ayrı istek: biri yüklenemezse ötekiler yine kaydedilir). Döner: { n, cift, hata[] , gonderim } */
+async function dkParcaGonder(batches, items, conv) { const o = { n: 0, cift: 0, hata: [], gond: 0, gondHata: "" };
+  for (const x of items) { const tutar = dkTutar(x.tutar); let r;
+    try { r = x.k === "f" ? await api("dekont_yukle", { batches, data: x.data, ...(tutar != null ? { tutar } : {}), gonder: !!(x.send && conv), conv: conv ? String(conv) : "" })
+      : await api("dekont_sohbetten", { batches, conv: x.conv, mid: x.mid, ...(tutar != null ? { tutar } : {}) }); } catch (e) { r = { error: "Bağlantı yok" }; }
+    if (r.error) o.hata.push(r.error); else if (r.report && r.report.cift) o.cift++; else o.n++;
+    if (r.gonderim) { if (r.gonderim.error) o.gondHata = r.gonderim.error; else o.gond++; } }
+  return o; }
+const dkSonucMetni = (o, top) => { const p = [];
+  if (o.n) p.push(top > 1 ? `📎 ${o.n}/${top} parça kaydedildi` : "📎 Dekont kaydedildi"); if (o.cift) p.push(`${o.cift} resim zaten bağlıydı`);
+  if (o.hata.length) p.push(`${o.hata.length} parça yüklenemedi: ${o.hata[0]}`); if (o.gond) p.push("müşteriye de gönderildi"); if (o.gondHata) p.push("müşteriye gönderilemedi: " + o.gondHata);
+  return p.join(" · "); };
+/** Ödendi kaydedildikten sonra: dekont parçaları ayrı isteklerle; hata ödemeyi etkilemez */
 async function dkGonder(dek, dk) {
-  let r; try { r = dk.file ? await api("dekont_yukle", { batches: dek.batches, data: dk.file.data, gonder: !!(dk.send && dek.uid), conv: dek.uid ? String(dek.uid) : "" })
-    : await api("dekont_sohbetten", { batches: dek.batches, conv: dk.msg.conv, mid: dk.msg.mid }); } catch (e) { r = { error: "Bağlantı yok" }; }
-  if (r.error) toast("✅ Ödeme kaydedildi · 📎 dekont yüklenemedi: " + r.error + " — üstteki 📎 şeridinden tekrar ekleyin", true);
-  else toast((typeof r.ok === "string" ? r.ok : "📎 Dekont kaydedildi") + (r.gonderim ? (r.gonderim.error ? " · müşteriye gönderilemedi: " + r.gonderim.error : " · müşteriye de gönderildi") : ""), false);
+  const o = await dkParcaGonder(dek.batches, dk.items.map((x) => ({ ...x, send: dk.send })), dek.uid);
+  if (o.hata.length) toast("✅ Ödeme kaydedildi · " + dkSonucMetni(o, dk.items.length) + " — üstteki 📎 şeridinden tekrar ekleyin", true);
+  else toast(dkSonucMetni(o, dk.items.length) || "📎 Dekont kaydedildi", false);
   dkOzetYenile(); }
 
-// ---------- sohbetteki resmi bağla
+// ---------- sohbetteki resmi (ve aynı sohbetin diğer parça resimlerini) bağla
 async function dkBagAc(conv, mid) { if (!dkAcik() || !can("elmas")) return; const m = findMsg(mid);
   if (!m || m.k !== "image") { toast("Yalnız resim mesajı dekont olabilir", true); return; }
-  dkBag = { conv: String(conv), mid: String(mid), src: String(m.t || ""), list: null, sec: new Set(), busy: false };
-  openModal(`<h3 style="margin:0 0 4px">📎 Dekont olarak bağla</h3><div class="s" style="margin-bottom:10px">Bu resim hangi alışın dekontu? (bir dekont birden çok alışı kapsayabilir)</div>
-    <div class="dkrow" style="margin-bottom:10px"><img class="dkth" src="${esc(dkBag.src)}" alt="Seçilen resim"><span class="dkad">Sohbetteki resim</span></div>
-    <div id="dkBagList" class="paychips" style="min-height:44px"><span class="s">⏳ Alışlar okunuyor…</span></div>
+  const res = dkSohbetResim(conv).map((x) => ({ mid: String(x.id), src: String(x.t || ""), on: false, tutar: "" }));
+  if (!res.some((x) => x.mid === String(mid))) res.unshift({ mid: String(mid), src: String(m.t || ""), on: false, tutar: "" });
+  res.find((x) => x.mid === String(mid)).on = true;
+  dkBag = { conv: String(conv), mid: String(mid), src: String(m.t || ""), res, list: null, sec: new Set(), busy: false, sig: "" };
+  openModal(`<h3 style="margin:0 0 4px">📎 Dekont olarak bağla</h3><div class="s" style="margin-bottom:8px">Bu resim hangi alışın dekontu? Para parça parça gönderildiyse diğer parçaların resimlerini de seçin (tutar yazmak isteğe bağlı).</div>
+    <div id="dkBagRes" class="dkser"></div><div class="dkuy" id="dkBagUy"></div>
+    <div id="dkBagList" class="paychips" style="min-height:44px;margin-top:8px"><span class="s">⏳ Alışlar okunuyor…</span></div>
     <div style="display:grid;gap:8px;margin-top:14px"><button class="go" type="button" data-dk="bgo" id="dkBagGo" disabled style="padding:14px;font-size:16px">Alış seçin</button><button type="button" data-dk="kapat">Vazgeç</button></div>`);
-  const d = await api("dekont_liste", { sekme: "bekleyen" }); if (!dkBag || dkBag.mid !== String(mid)) return;
-  const bek = ((d.report && d.report.dekontlar && d.report.dekontlar.satirlar) || []).filter((x) => String(x.uid) === String(conv));
-  const list = bek.map((x) => ({ batch: Number(x.batch), ad: x.ad, tutar: Number(x.tutar), bek: true }));
+  dkBagDraw();
+  const [d, d2] = await Promise.all([api("dekont_liste", { sekme: "bekleyen" }), api("dekont_liste", { sekme: "tamam" }).catch(() => null)]); if (!dkBag || dkBag.mid !== String(mid)) return;
+  const sat = (x) => ((x && x.report && x.report.dekontlar && x.report.dekontlar.satirlar) || []).filter((y) => String(y.uid) === String(conv));
+  const list = sat(d).map((x) => ({ batch: Number(x.batch), ad: x.ad, tutar: Number(x.tutar), bek: true, n: 0, toplam: 0 }));
+  for (const x of sat(d2)) if (!list.some((y) => y.batch === Number(x.batch))) list.push({ batch: Number(x.batch), ad: x.ad, tutar: Number(x.tutar), bek: false, n: (x.parca && x.parca.n) || (x.dekontlar || []).length, toplam: (x.parca && x.parca.toplam) || 0 }); // parçası gelmiş: yeni parça eklemek için
   if (d.report && d.report.dekontlar && d.report.dekontlar.hepsi) { const t3 = Date.now() - 3 * 86400_000; // yönetici / Bayi Yetkilisi: son 3 günün ödenmiş alışları da (dekontu sonradan eklemek için)
-    for (const c of coins) if (c.batch && !c.other && (c.paid_at || c.paid_part > 0) && Date.parse(c.at) >= t3 && !list.some((x) => x.batch === Number(c.batch))) list.push({ batch: Number(c.batch), ad: null, tutar: Number(c.pay_azn) || 0, bek: false }); }
+    for (const c of coins) if (c.batch && !c.other && (c.paid_at || c.paid_part > 0) && Date.parse(c.at) >= t3 && !list.some((x) => x.batch === Number(c.batch))) list.push({ batch: Number(c.batch), ad: null, tutar: Number(c.pay_azn) || 0, bek: false, n: 0, toplam: 0 }); }
   dkBag.list = list; for (const x of list) if (x.bek) dkBag.sec.add(x.batch); dkBagDraw(); }
-function dkBagDraw() { const b = dkBag, el = $("dkBagList"), go = $("dkBagGo"); if (!b || !el || !b.list) return;
-  el.innerHTML = b.list.length ? b.list.map((x) => `<button type="button" data-dk="bsec" data-b="${esc(String(x.batch))}" class="${b.sec.has(x.batch) ? "on" : ""}">${x.bek ? "⏳ " : ""}Alış #${esc(String(x.batch))} · ${esc(payN(x.tutar))} ₼</button>`).join("")
+function dkBagUyGuncelle() { const b = dkBag, u = $("dkBagUy"); if (!b || !u || !b.list) return; const sec = b.list.filter((x) => b.sec.has(x.batch));
+  const t = sec.length === 1 ? dkUyari([...(sec[0].toplam ? [String(sec[0].toplam)] : []), ...b.res.filter((x) => x.on).map((x) => x.tutar)], sec[0].tutar) : ""; if (u.textContent !== t) u.textContent = t; }
+function dkBagDraw() { const b = dkBag, el = $("dkBagList"), go = $("dkBagGo"), rs = $("dkBagRes"); if (!b) return;
+  const sig = JSON.stringify(b.res.map((x) => x.on)); if (rs && sig !== b.sig) { b.sig = sig; rs.innerHTML = b.res.map((x, i) => x.on
+      ? dkKart({ yer: "bag", i, no: i + 1, src: x.src, gor: "rsec", sil: "rsec", tutar: x.tutar, on: true })
+      : `<div class="dkp"><button type="button" class="dkpi" data-dk="rsec" data-i="${i}" aria-label="Bu resmi de parça olarak seç"><img src="${esc(x.src)}" alt="" loading="lazy"></button><span class="dkpn">seç</span></div>`).join(""); }
+  const nr = b.res.filter((x) => x.on).length; dkBagUyGuncelle();
+  if (!el || !go || !b.list) return;
+  el.innerHTML = b.list.length ? b.list.map((x) => `<button type="button" data-dk="bsec" data-b="${esc(String(x.batch))}" class="${b.sec.has(x.batch) ? "on" : ""}">${x.bek ? "⏳ " : x.n ? `📎 ${esc(String(x.n))} · ` : ""}Alış #${esc(String(x.batch))} · ${esc(payN(x.tutar))} ₼</button>`).join("")
     : `<span class="s">Bu kişinin dekont bekleyen alışı yok</span>`;
-  const n = b.sec.size; go.disabled = b.busy || !n; go.textContent = b.busy ? "⏳ Bağlanıyor…" : n ? `📎 Bağla · ${n} alış` : "Alış seçin"; }
+  const n = b.sec.size; go.disabled = b.busy || !n || !nr; go.textContent = b.busy ? "⏳ Bağlanıyor…" : !nr ? "Resim seçin" : n ? `📎 Bağla · ${nr > 1 ? nr + " resim · " : ""}${n} alış` : "Alış seçin"; }
 
 // ---------- "Dekont bekleyenler"
-async function dkListeAc(sekme) { if (!dkAcik()) return; dkListeSt = { sekme: sekme || "bekleyen", d: null };
+let dkUrl = new Map(); // dekont id → { url, at }: küçük resim adresi 8 dk aynı kalır (liste her yenilendiğinde resim yeniden indirilmez)
+const dkUrlAl = (x) => { const o = dkUrl.get(x.id); if (o && Date.now() - o.at < 8 * 60_000) return o.url; if (x.url) { dkUrl.set(x.id, { url: x.url, at: Date.now() }); return x.url; } return ""; };
+async function dkListeAc(sekme) { if (!dkAcik()) return; dkListeSt = { sekme: sekme || "bekleyen", d: null, tas: null };
   openModal(`<h3 style="margin:0 0 6px">📎 Dekont bekleyenler</h3><div class="dktabs">${[["bekleyen", "Bekleyen"], ["tamam", "Bugün eklenen"], ["kapatilan", "Kapatılan"]].map(([k, t]) => `<button type="button" data-dk="lsek" data-i="${k}" class="${k === dkListeSt.sekme ? "on" : ""}">${t}</button>`).join("")}</div>
-    <div id="dkList" style="height:min(52vh,440px);overflow-y:auto;overscroll-behavior:contain"><div class="s">⏳ Okunuyor…</div></div><input type="file" id="dkLFile" accept="image/*" hidden>
+    <div id="dkList" style="height:min(52vh,440px);overflow-y:auto;overscroll-behavior:contain"><div class="s">⏳ Okunuyor…</div></div><input type="file" id="dkLFile" accept="image/*" multiple hidden>
     <div style="display:grid;margin-top:12px"><button type="button" data-dk="kapat">Kapat</button></div>`, true);
   await dkListeYukle(); }
 async function dkListeYukle() { const st = dkListeSt; if (!st) return; const d = await api("dekont_liste", { sekme: st.sekme }); if (dkListeSt !== st || !$("dkList")) return;
-  if (d.error) { $("dkList").innerHTML = `<div class="s">❌ ${esc(d.error)}</div>`; return; } st.d = d.report.dekontlar; dkListeDraw(); }
+  if (d.error) { $("dkList").innerHTML = `<div class="s">❌ ${esc(d.error)}</div>`; return; } st.d = d.report.dekontlar; if (!st.tas) dkListeDraw(); } // taslak açıkken yeniden çizilmez (yazılan tutar kaybolmasın)
 const dkSure = (r) => { const ms = Date.parse(r.son_tarih) - Date.now(), dk = Math.round(Math.abs(ms) / 60_000), t = dk >= 120 ? Math.floor(dk / 60) + " sa" : dk + " dk"; return ms > 0 ? `⏳ ${t} kaldı` : `<span class="dkgec">⏰ ${t} gecikti</span>`; };
+const dkOdeme = (r) => (r.parca && r.parca.odeme) || (r.hesaplar || []).reduce((a, h) => a + Number(h.tutar || 0), 0);
+function dkTasUy() { const st = dkListeSt, T = st && st.tas, u = $("dkTasUy"); if (!T || !u) return; const r = ((st.d && st.d.satirlar) || []).find((x) => Number(x.batch) === T.batch) || {};
+  const once = (r.dekontlar || []).filter((x) => x.tutar != null && !x.cok_alis).map((x) => String(x.tutar)); const t = dkUyari([...once, ...T.items.map((x) => x.tutar)], dkOdeme(r)); if (u.textContent !== t) u.textContent = t; }
 function dkListeDraw() { const st = dkListeSt, D = st && st.d, el = $("dkList"); if (!D || !el) return;
   document.querySelectorAll(".dktabs button").forEach((b) => b.classList.toggle("on", b.dataset.i === st.sekme));
   if (!D.satirlar.length) { el.innerHTML = `<div class="s" style="padding:16px 0">${st.sekme === "bekleyen" ? "✅ Dekont bekleyen alış yok" : "Kayıt yok"}</div>`; return; }
   el.innerHTML = D.satirlar.map((r) => { const hs = (r.hesaplar || []).map((h) => `${h.hesap} ${payN(h.tutar)} ₼${h.bagli ? " 🔔" : ""}`).join(" + ");
     const ust = `<div class="dkl1">💸 <b>${esc(r.ad || (r.uid ? "UID " + r.uid : "Alış #" + r.batch))}</b> · ${esc(payAzn(r.tutar))}</div><div class="s">${esc(hs || "—")} · 👤 ${esc(r.sorumlu || "?")}${r.benim ? " (siz)" : ""}</div>`;
+    const ps = r.dekontlar || [], n = ps.length, ekle = (r.benim || D.hepsi) && n < DK_PARCA, T = st.tas && st.tas.batch === Number(r.batch) ? st.tas : null;
+    const tas = T ? `<div class="dktas"><div class="dkser">${T.items.map((x, i) => dkKart({ yer: "tas", i, no: n + i + 1, src: x.data, sil: "tsil", tutar: x.tutar })).join("")}${n + T.items.length < DK_PARCA ? `<button type="button" class="dkpe" data-dk="lyukle" data-b="${esc(String(r.batch))}" aria-label="Parça ekle">➕<span>Parça</span></button>` : ""}</div>
+      <div class="dkuy" id="dkTasUy"></div><div class="dkla"><button type="button" class="go" data-dk="tgo"${T.busy || !T.items.length ? " disabled" : ""}>${T.busy ? "⏳ Yükleniyor…" : `📤 Yükle · ${T.items.length} parça`}</button><button type="button" data-dk="tvaz"${T.busy ? " disabled" : ""}>Vazgeç</button></div></div>` : "";
     let alt = "";
-    if (st.sekme === "bekleyen") alt = `<div class="s" style="margin-top:2px">${dkSure(r)}</div><div class="dkla">${r.benim || D.hepsi ? `<button type="button" class="go" data-dk="lyukle" data-b="${esc(String(r.batch))}">📷 Dekont ekle</button>` : ""}${r.uid ? `<button type="button" data-dk="lsohbet" data-i="${esc(String(r.uid))}">💬 Sohbet</button>` : ""}${D.yonetici ? `<button type="button" data-dk="lkapat" data-i="${esc(String(r.id))}">✖ Alınamadı</button>` : ""}</div>`;
-    else if (st.sekme === "tamam") alt = `<div class="dkla">${(r.dekontlar || []).map((x) => `${x.gorur ? `<button type="button" data-dk="lgor" data-i="${esc(String(x.id))}">👁 Dekont · ${esc(x.kim || "")}</button>` : `<span class="s">📎 ${esc(x.kim || "")} ekledi</span>`}${x.gorur && (D.yonetici || x.kim === (me && me.name)) ? `<button type="button" data-dk="liptal" data-i="${esc(String(x.id))}">↩️ İptal</button>` : ""}`).join("")}</div>`;
+    if (st.sekme === "bekleyen") alt = `<div class="s" style="margin-top:2px">${dkSure(r)}</div>${tas}${T ? "" : `<div class="dkla">${ekle ? `<button type="button" class="go" data-dk="lyukle" data-b="${esc(String(r.batch))}">📷 Dekont ekle</button>` : ""}${r.uid ? `<button type="button" data-dk="lsohbet" data-i="${esc(String(r.uid))}">💬 Sohbet</button>` : ""}${D.yonetici ? `<button type="button" data-dk="lkapat" data-i="${esc(String(r.id))}">✖ Alınamadı</button>` : ""}</div>`}`;
+    else if (st.sekme === "tamam") { const p = r.parca || {}, uy = p.uyari ? `⚠️ Parçalar toplamı ${payN(p.toplam)} ₼ / ödeme ${payN(p.odeme)} ₼` : "";
+      alt = `<div class="s dkpsay">📎 ${n} parça${p.yazili ? ` · yazılan ${payN(p.toplam)} ₼` : ""}${p.cok_alis ? " · bazı parçalar birden çok alışı kapsıyor" : ""}</div>
+        <div class="dkser">${ps.map((x, i) => dkKart({ yer: "kayit", i: x.bag, no: i + 1, src: x.gorur ? dkUrlAl(x) : "", gor: x.gorur ? "lgor" : "", gorI: x.id, sil: x.cikar && x.bag ? "pcik" : "", kayit: true, tutar: x.tutar, kim: x.kim })).join("")}</div>
+        <div class="dkuy">${esc(uy)}</div>${tas}${T || !ekle ? "" : `<div class="dkla"><button type="button" data-dk="lyukle" data-b="${esc(String(r.batch))}">➕ Parça ekle</button></div>`}`; }
     else alt = `<div class="s" style="margin-top:2px">✖ ${esc(r.kapatan || "")}: ${esc(r.kapat_neden || "")}</div>`;
-    return `<div class="dkli">${ust}${alt}</div>`; }).join(""); }
+    return `<div class="dkli">${ust}${alt}</div>`; }).join(""); dkTasUy(); }
 
 // ---------- tek dinleyici
 async function dkTik(k, t) {
   const dk = paySt && paySt.dk;
   if (k === "liste") { dkListeAc("bekleyen"); return; }
   if (k === "kapat") { dkBag = null; dkListeSt = null; closeModal(); return; }
-  if (k === "ac" && dk) { dk.sec = true; payDraw(); return; }
+  if (k === "ac" && dk) { if (dk.items.length >= DK_PARCA) { toast(`En çok ${DK_PARCA} parça`, true); return; } dk.sec = true; payDraw(); return; }
   if (k === "foto" && dk) { const f = $("dkFile"); if (f) { f.value = ""; f.click(); } return; }
   if (k === "sohbet" && dk) { dk.pick = true; dk.sec = false; payDraw(); return; }
-  if (k === "geri" && dk) { if (dk.pick) { dk.pick = false; dk.sec = true; } else dk.sec = false; payDraw(); return; }
+  if (k === "geri" && dk) { if (dk.pick && !dk.items.length) { dk.pick = false; dk.sec = true; } else { dk.pick = false; dk.sec = false; } payDraw(); return; }
   if (k === "gonder" && dk) { dk.send = !dk.send; payDraw(); return; }
-  if (k === "sil" && dk) { dk.file = null; dk.msg = null; payDraw(); return; }
-  if (k === "msec" && dk) { const m = findMsg(t.dataset.mid); if (!m) return; dk.msg = { conv: String(paySt.np.uid), mid: String(m.id), src: String(m.t || "") }; dk.file = null; dk.pick = false; dk.sec = false; payDraw(); return; }
+  if (k === "psil" && dk) { dk.items.splice(Number(t.dataset.i), 1); payDraw(); return; }
+  if (k === "msec" && dk) { const m = findMsg(t.dataset.mid); if (!m) return; const i = dk.items.findIndex((x) => x.k === "m" && x.mid === String(m.id));
+    if (i >= 0) dk.items.splice(i, 1); else if (dk.items.length >= DK_PARCA) { toast(`En çok ${DK_PARCA} parça`, true); return; } else dk.items.push({ k: "m", conv: String(paySt.np.uid), mid: String(m.id), src: String(m.t || ""), tutar: "" });
+    payDraw(); return; }
   if (k === "lb") { const c = dkLb; if (!c) return; await popWait(() => history.back()); dkBagAc(c.conv, c.mid); return; }
   if (k === "mbag") { const mid = t.dataset.mid; msgMenuClose(); dkBagAc(cur, mid); return; }
+  if (k === "rsec" && dkBag) { const x = dkBag.res[Number(t.dataset.i)]; if (!x) return; if (!x.on && dkBag.res.filter((y) => y.on).length >= DK_PARCA) { toast(`En çok ${DK_PARCA} parça`, true); return; } x.on = !x.on; dkBagDraw(); return; }
   if (k === "bsec" && dkBag) { const b = Number(t.dataset.b); if (dkBag.sec.has(b)) dkBag.sec.delete(b); else dkBag.sec.add(b); dkBagDraw(); return; }
-  if (k === "bgo" && dkBag && !dkBag.busy) { const b = dkBag; b.busy = true; dkBagDraw();
-    const r = await api("dekont_sohbetten", { batches: [...b.sec], conv: b.conv, mid: b.mid }); if (dkBag !== b) return;
-    b.busy = false; if (r.error) { dkBagDraw(); toast("❌ " + r.error, true); return; }
-    dkBag = null; closeModal(); toast(typeof r.ok === "string" ? r.ok : "📎 Dekont bağlandı"); dkOzetYenile(); return; }
-  if (k === "lsek" && dkListeSt) { dkListeSt.sekme = t.dataset.i; dkListeSt.d = null; $("dkList").innerHTML = `<div class="s">⏳ Okunuyor…</div>`; dkListeDraw(); dkListeYukle(); return; }
+  if (k === "bgo" && dkBag && !dkBag.busy) { const b = dkBag, sec = b.res.filter((x) => x.on); if (sec.some((x) => Number.isNaN(dkTutar(x.tutar)))) { toast("Parça tutarı geçersiz (boş bırakın ya da sayı yazın)", true); return; }
+    b.busy = true; dkBagDraw();
+    const o = await dkParcaGonder([...b.sec], sec.map((x) => ({ k: "m", conv: b.conv, mid: x.mid, tutar: x.tutar })), ""); if (dkBag !== b) return;
+    b.busy = false; if (!o.n && !o.cift) { dkBagDraw(); toast("❌ " + (o.hata[0] || "Bağlanamadı"), true); return; }
+    dkBag = null; closeModal(); toast(sec.length > 1 || o.cift || o.hata.length ? dkSonucMetni(o, sec.length) : "📎 Dekont bağlandı", !!o.hata.length); dkOzetYenile(); return; }
+  if (k === "lsek" && dkListeSt) { dkListeSt.sekme = t.dataset.i; dkListeSt.d = null; dkListeSt.tas = null; $("dkList").innerHTML = `<div class="s">⏳ Okunuyor…</div>`; dkListeDraw(); dkListeYukle(); return; }
   if (k === "lsohbet") { const u = t.dataset.i; dkListeSt = null; closeModal(); openChat(u); return; }
   if (k === "lyukle") { const f = $("dkLFile"); if (f) { f.dataset.b = t.dataset.b; f.value = ""; f.click(); } return; }
+  if (k === "tsil" && dkListeSt && dkListeSt.tas) { dkListeSt.tas.items.splice(Number(t.dataset.i), 1); if (!dkListeSt.tas.items.length) dkListeSt.tas = null; dkListeDraw(); return; }
+  if (k === "tvaz" && dkListeSt) { dkListeSt.tas = null; dkListeDraw(); return; }
+  if (k === "tgo" && dkListeSt && dkListeSt.tas && !dkListeSt.tas.busy) { const st = dkListeSt, T = st.tas; if (T.items.some((x) => Number.isNaN(dkTutar(x.tutar)))) { toast("Parça tutarı geçersiz (boş bırakın ya da sayı yazın)", true); return; }
+    T.busy = true; dkListeDraw(); const o = await dkParcaGonder([T.batch], T.items, ""); if (dkListeSt !== st) return;
+    st.tas = null; toast(dkSonucMetni(o, T.items.length) || "📎 Dekont kaydedildi", !!o.hata.length); dkListeDraw(); dkOzetYenile(); return; } // şerit + açık liste birlikte yenilenir
   if (k === "lgor") { const r = await api("dekont_adres", { id: Number(t.dataset.i) }); if (r.error) { toast("❌ " + r.error, true); return; } lbOpen(r.report.url); return; }
+  if (k === "pcik") { if (!confirm("Bu parça bu ödemeden çıkarılsın mı?\n\nResim silinmez; yalnız bu ödemeyle bağı kaldırılır (kayıtta kalır).")) return; const n = prompt("Neden? (isteğe bağlı)") || "";
+    const r = await api("dekont_parca_cikar", { bag: Number(t.dataset.i), neden: n.trim() }); toast(r.error ? "❌ " + r.error : r.ok || "Parça çıkarıldı", !!r.error); if (!r.error) dkOzetYenile(); return; }
   if (k === "lkapat") { const n = prompt("Dekont neden alınamadı? (gerekçe yazın)"); if (n == null) return; if (n.trim().length < 3) { toast("Gerekçe en az 3 harf", true); return; }
     const r = await api("dekont_kapat", { id: Number(t.dataset.i), neden: n.trim() }); toast(r.error ? "❌ " + r.error : r.ok || "Kapatıldı", !!r.error); if (!r.error) dkOzetYenile(); return; }
-  if (k === "liptal") { if (!confirm("Bu dekont iptal edilsin mi? (silinmez, iptal işareti konur; alış yeniden dekont bekler)")) return; const n = prompt("İptal nedeni (isteğe bağlı)") || "";
-    const r = await api("dekont_iptal", { id: Number(t.dataset.i), neden: n.trim() }); toast(r.error ? "❌ " + r.error : r.ok || "İptal edildi", !!r.error); if (!r.error) dkOzetYenile(); return; }
 }
 document.addEventListener("click", (e) => { const t = e.target.closest && e.target.closest("[data-dk]"); if (!t || t.disabled) return;
   e.stopPropagation(); e.preventDefault(); dkTik(t.dataset.dk, t); }, true);
+// parça tutarı: durum güncellenir, yalnız uyarı satırı değişir (giriş yeniden çizilmez, odak / imleç yerinde kalır)
+document.addEventListener("input", (e) => { const t = e.target, y = t && t.dataset && t.dataset.dkt; if (!y) return; const i = Number(t.dataset.i);
+  if (y === "pay" && paySt && paySt.dk && paySt.dk.items[i]) { paySt.dk.items[i].tutar = t.value; dkPayUy(); }
+  else if (y === "bag" && dkBag && dkBag.res[i]) { dkBag.res[i].tutar = t.value; dkBagUyGuncelle(); }
+  else if (y === "tas" && dkListeSt && dkListeSt.tas && dkListeSt.tas.items[i]) { dkListeSt.tas.items[i].tutar = t.value; dkTasUy(); }
+  t.classList.toggle("bad", Number.isNaN(dkTutar(t.value))); }, true);
 document.addEventListener("change", async (e) => { const t = e.target;
-  if (t && t.id === "dkFile" && paySt && paySt.dk && t.files && t.files[0]) { const dk = paySt.dk; dk.busy = true; payDraw();
-    try { dk.file = await dkKucult(t.files[0]); dk.msg = null; dk.sec = false; } catch (er) { toast("❌ " + (er && er.message || er), true); } dk.busy = false; if (paySt && paySt.dk === dk) payDraw(); return; }
-  if (t && t.id === "dkLFile" && t.files && t.files[0]) { const b = Number(t.dataset.b); let f;
-    try { f = await dkKucult(t.files[0]); } catch (er) { toast("❌ " + (er && er.message || er), true); return; }
-    toast("⏳ Dekont yükleniyor…"); const r = await api("dekont_yukle", { batches: [b], data: f.data });
-    toast(r.error ? "❌ " + r.error : r.ok || "📎 Dekont kaydedildi", !!r.error); if (!r.error) dkOzetYenile(); }
+  if (t && t.id === "dkFile" && paySt && paySt.dk && t.files && t.files.length) { const dk = paySt.dk, fs = [...t.files]; dk.busy = true; payDraw();
+    await dkDosyalar(fs, dk.items, DK_PARCA); dk.sec = false; dk.busy = false; if (paySt && paySt.dk === dk) payDraw(); return; }
+  if (t && t.id === "dkLFile" && dkListeSt && t.files && t.files.length) { const st = dkListeSt, b = Number(t.dataset.b), fs = [...t.files];
+    const r = ((st.d && st.d.satirlar) || []).find((x) => Number(x.batch) === b), var0 = r ? (r.dekontlar || []).length : 0;
+    if (!st.tas || st.tas.batch !== b) st.tas = { batch: b, items: [], busy: false };
+    const T = st.tas; await dkDosyalar(fs, T.items, DK_PARCA - var0); if (dkListeSt !== st) return; if (!T.items.length) st.tas = null; dkListeDraw(); }
 }, true);
 // En alta yapışma: sohbet açılınca ve kullanıcı en alttayken yeni içerik/resim yüklenince en alta iner; yukarı kaydırınca bırakır
 let stick = true;
@@ -4569,7 +4663,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.105"></script>
-<script src="durum.js?v=2.1.105"></script>
+<script src="profile.js?v=2.1.106"></script>
+<script src="durum.js?v=2.1.106"></script>
 </body>
 </html>
