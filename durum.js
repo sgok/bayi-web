@@ -7,6 +7,8 @@
 //    Silme yok: ⋯ › 🙈 Gizle (yazan ya da sahip). ⚙️ Ayarlar › 💾 Depo kullanımı.
 // Akış sunucuda kişilerin kendi durumları birleştirilerek kurulur: report.loading > 0 iken üstteki şeritte "🔄 N kişinin durumları okunuyor…", 20 sn'de bir sessiz tazeleme.
 // Sıra: önce bu cihazdaki son akış (anında, kayma yok) → sunucu (bayi-web → Sugo). Değişmeyen kart yeniden çizilmez; gizli alt sekmeler boşta çizilir.
+// 📸 r42 (15.11): durum işçisi açıksa sunucu akışı veritabanından verir (Sugo'ya 0 istek, loading 0) ve report.guncel gelir → şeritte
+// "son güncelleme: N dk önce" (önbellekte de saklanır; açılışta aynı satır hemen çizilir). guncel yoksa bugünkü görünüm aynen.
 (function () {
   const TABS = [["following", "Takip ettiklerim"], ["friends", "Arkadaşlarım"], ["all", "Genel"], ["team", "🏢 Ekip"]];
   const LSK = "bw_pane_durum_"; // "bw_pane_" öneki: çıkışta (cacheClear) silinir
@@ -18,7 +20,7 @@
   const MOM = {}; // id → gönderi (akış, profil, detay ortak)
   const st = {}; // alt sekme → { items, next, at, busy, err }
   let dtab = (() => { try { const t = localStorage.getItem("bw_durum_tab"); return TABS.some((x) => x[0] === t) ? t : "following"; } catch (e) { return "following"; } })();
-  const S = (t) => st[t] || (st[t] = (() => { const c = lsGet(LSK + t); return { items: c && Array.isArray(c.items) ? c.items : null, next: c ? c.next || null : null, people: c ? c.people ?? null : null, loading: 0, fresh: 0, at: 0, busy: false, err: null }; })());
+  const S = (t) => st[t] || (st[t] = (() => { const c = lsGet(LSK + t); return { items: c && Array.isArray(c.items) ? c.items : null, next: c ? c.next || null : null, people: c ? c.people ?? null : null, guncel: c && typeof c.guncel === "string" ? c.guncel : null, loading: 0, fresh: 0, at: 0, busy: false, err: null }; })());
 
   // ---- biçim
   const ago = (iso) => { const t = Date.parse(iso); if (!t) return ""; const s = (Date.now() - t) / 1000;
@@ -93,7 +95,9 @@
   // Üst şerit (yer baştan ayrılmış, tek satır): okunuyor / yeni durum var / kaç kişinin akışı
   function statDraw() { const el = $("dStat"); if (!el) return; const s = S(dtab);
     const ld = s.loading > 0 ? `<span class="dspin">🔄</span> ${nf0(s.loading)} kişinin durumları okunuyor…` : "";
-    const h = s.fresh > 0 ? `<button class="dfresh" onclick="durumUst()">⬆️ ${nf0(s.fresh)} yeni durum · göster</button>${ld ? " " + ld : ""}` : ld || (dtab === "team" ? "🏢 Ekip içi paylaşımlar · Sugo'da görünmez" : s.people ? `👥 ${nf0(s.people)} kişinin durumları` : "");
+    // 📸 r42: akış durum işçisinin kaydından geldiyse (report.guncel) "son güncelleme: …" — aynı tek satır (yükseklik sabit, kayma yok)
+    const gn = dtab !== "team" && s.guncel ? ` · son güncelleme: ${esc(ago(s.guncel))}` : "";
+    const h = s.fresh > 0 ? `<button class="dfresh" onclick="durumUst()">⬆️ ${nf0(s.fresh)} yeni durum · göster</button>${ld ? " " + ld : ""}` : ld || (dtab === "team" ? "🏢 Ekip içi paylaşımlar · Sugo'da görünmez" : s.people ? `👥 ${nf0(s.people)} kişinin durumları${gn}` : gn ? gn.slice(3) : "");
     if (el.__h !== h) { el.__h = h; el.innerHTML = h; } }
   window.durumUst = () => { const p = $("p-durum"); S(dtab).fresh = 0; statDraw(); if (p) p.scrollTop = 0; };
   function postBtn() { const el = $("dPost"); if (!el) return; const h = canPost() ? `<button class="dpostb" onclick="durumYaz()"><span class="dpav">🏢</span><span class="dpt">Ekibe durum paylaş…<small>resim · video · yazı — ekip içi, Sugo'da görünmez</small></span><span class="dpplus">＋</span></button>` : "";
@@ -109,7 +113,7 @@
   const errH = (t) => `<div class="dempty">❌ ${esc(S(t).err)} <button onclick="durumYenile('${t}')">Tekrar dene</button></div>`;
   const tailSet = (el, h) => { if (el && el.__h !== h) { el.__h = h; el.innerHTML = h; } };
   // Kendi (yerel, resmi data:) paylaşımımız saklanmaz; diğerleri resimleriyle aynen saklanır (önbellekten çizilen kart sonra büyümesin)
-  const save = (t) => { const s = S(t); if (!s.items) return; lsSet(LSK + t, { items: s.items.filter((m) => !m.__local).slice(0, PAGE_KEEP), next: s.items.length > PAGE_KEEP ? null : s.next, people: s.people, at: Date.now() }); };
+  const save = (t) => { const s = S(t); if (!s.items) return; lsSet(LSK + t, { items: s.items.filter((m) => !m.__local).slice(0, PAGE_KEEP), next: s.items.length > PAGE_KEEP ? null : s.next, people: s.people, guncel: s.guncel, at: Date.now() }); };
 
   // ---- sunucu
   async function load(t, more) { const s = S(t); if (s.busy) return; if (more && !s.next) return; s.busy = true; if (more) draw(t);
@@ -117,7 +121,7 @@
     s.busy = false; const r = d && d.report;
     if (!r || !Array.isArray(r.items)) { s.err = (d && d.error) || "Durumlar okunamadı"; if (!s.items) s.items = []; draw(t); return; }
     s.err = null; s.at = Date.now(); const got = r.items.filter((m) => m && m.id != null);
-    if (!more) { s.loading = Number(r.loading) || 0; if (r.people != null) s.people = r.people; } const oldIds = new Set((s.items || []).map((m) => String(m.id)));
+    if (!more) { s.loading = Number(r.loading) || 0; if (r.people != null) s.people = r.people; s.guncel = typeof r.guncel === "string" && Date.parse(r.guncel) ? r.guncel : null; } const oldIds = new Set((s.items || []).map((m) => String(m.id)));
     if (more) { const ids = new Set(s.items.map((m) => String(m.id))); s.items = s.items.concat(got.filter((m) => !ids.has(String(m.id)))); s.next = r.next || null; }
     else { const old = s.items || [], ids = new Set(got.map((m) => String(m.id))), loc = old.filter((m) => m.__local && !ids.has(String(m.id))); // derin kaydırılmışsa eski sayfalar korunur (imleç yine geçerli)
       const deep = old.length > got.length + loc.length && got.length, lastAt = got.length ? Date.parse(got[got.length - 1].at) || 0 : 0;
@@ -214,7 +218,7 @@
   const tick = () => { const p = $("p-durum"); if (document.visibilityState !== "visible" || !p || !p.classList.contains("on") || !$("inbox").classList.contains("on")) return false;
     const s = S(dtab); if (!(s.loading > 0) || s.busy) return false; load(dtab); return true; };
   window.__durumTick = tick; setInterval(tick, TICK);
-  setInterval(() => { if (document.visibilityState === "visible") { const p = $("p-durum"); if (p && p.classList.contains("on")) fillTimes(p); } }, 60_000);
+  setInterval(() => { if (document.visibilityState === "visible") { const p = $("p-durum"); if (p && p.classList.contains("on")) { fillTimes(p); statDraw(); } } }, 60_000); // "son güncelleme: N dk önce" de tazelenir
 
   // ---- gönderi detayı: beğenenler + yorumlar (sayfalı)
   let dd = null;
