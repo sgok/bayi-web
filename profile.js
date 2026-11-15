@@ -65,13 +65,14 @@
     render(cached ? JSON.parse(cached) : { uid, name: k.n || "", avatar: k.av || null, __sk: true }); // önbellek yoksa aynı düzen yer tutucularla: veri gelince yalnız içerik dolar
     sync(!!pfRefreshing[uid]);
     delete pfLive[uid];
-    api("profile_live", { uid }).then(onLive);
+    pfLiveSeq++; pfLiveUcan = null; api("profile_live", { uid }).then(onLive);
+    clearInterval(pfLiveT); pfLiveT = setInterval(() => liveTazele(false), PF_LIVE_MS); pfLiveSon = Date.now();
     const d = await api("profile", { uid });
     onNet(d, false);
   };
   window.pfRedraw = () => { const c = pfUid && pfCache.get(pfUid); if (c) render(JSON.parse(c)); }; // 🏷️ takma ad değişince
-  window.profClose = () => { pfUid = null; history.back(); };
-  window.profPop = () => { pfUid = null; show(typeof setStack !== "undefined" && setStack.length ? "set" : cur ? "chat" : "inbox"); }; // geri tuşu (ana sayfadaki tek yönetici çağırır); ayarlardan açıldıysa ayarlara
+  window.profClose = () => { pfUid = null; clearInterval(pfLiveT); pfLiveT = 0; history.back(); };
+  window.profPop = () => { pfUid = null; clearInterval(pfLiveT); pfLiveT = 0; show(typeof setStack !== "undefined" && setStack.length ? "set" : cur ? "chat" : "inbox"); }; // geri tuşu (ana sayfadaki tek yönetici çağırır); ayarlardan açıldıysa ayarlara
 
   function onNet(d, noRefresh) {
     const p = d && d.report && d.report.profile;
@@ -84,6 +85,29 @@
       api("profile_refresh", { uid: p.uid }).then(async () => { delete pfRefreshing[p.uid]; if (pfUid !== p.uid) return; sync(false); onNet(await api("profile", { uid: p.uid }), true); });
     }
   }
+  // 🟢 Ç2 (15.11): profil açıkken anlık durum (çevrimiçi / son görülme / şu an hangi odada) 30 sn'de bir ve öne gelince yinelenir. Yalnız o satır ve
+  // avatar noktası güncellenir (sayfa yeniden çizilmez); profil kapanınca zamanlayıcı durur. Rol kuralı sunucuda aynen (yönetici olmayana liveTemel alanları).
+  const PF_LIVE_MS = 30_000, PF_LIVE_YEDEK_MS = 60_000; // AM: yedekte / hafif modda 60 sn (Ç1 ile aynı kural: window.yoklamaYedekte); boşta durur (window.bostaMi)
+  const pfAralik = () => (window.yoklamaYedekte && window.yoklamaYedekte()) ? PF_LIVE_YEDEK_MS : PF_LIVE_MS;
+  let pfLiveT = 0, pfLiveSeq = 0, pfLiveUcan = null, pfLiveSon = 0;
+  window.__pfLiveDurum = () => ({ zamanlayici: !!pfLiveT, ms: pfAralik() });
+  window.pfUyandir = () => { if (pfUid) liveTazele(true); };
+  window.__pfLiveTik = () => liveTazele(false); window.__pfLiveYaslandir = (ms) => { pfLiveSon -= ms; }; // senaryolar: 30 sn beklemeden zamanlayıcı adımı
+  async function liveTazele(hemen) {
+    const uid = pfUid, ac = $("prof") && $("prof").classList.contains("on");
+    if (!uid || !ac) { clearInterval(pfLiveT); pfLiveT = 0; return; }
+    if (document.hidden || pfLiveUcan === uid) return;
+    if (!hemen && ((window.bostaMi && window.bostaMi()) || Date.now() - pfLiveSon < pfAralik() - 1500)) return;
+    const n = ++pfLiveSeq; pfLiveUcan = uid; pfLiveSon = Date.now(); let d;
+    try { d = await api("profile_live", { uid }); } finally { if (pfLiveUcan === uid) pfLiveUcan = null; }
+    if (n !== pfLiveSeq || pfUid !== uid) return; // eski cevap yenisini ezmez
+    const l = d && d.report && d.report.live; if (!l || l.uid !== uid || l.error) return; // hata: son bilinen durum kalır
+    const o = pfLive[uid] || { uid }; for (const k of ["online", "room", "last_online_sec"]) if (k in l) o[k] = l[k]; delete o.error; pfLive[uid] = o;
+    const el = $("pfLive"); if (el) { const h = liveHtml(uid); if (el.innerHTML !== h) el.innerHTML = h; }
+    const dot = $("pfDot"); if (dot) { const c = "wonl" + (o.online || o.room ? "" : " off"); if (dot.className !== c) dot.className = c; }
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && pfUid) liveTazele(true); });
+  addEventListener("pageshow", () => { if (pfUid) liveTazele(true); });
   function liveHtml(uid) {
     const l = pfLive[uid];
     if (!l) return '<span class="s">📡 Anlık durum okunuyor…</span>';
