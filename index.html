@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.107">
+<meta name="build" content="2.1.108">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.107">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.107">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.107">
+<link rel="manifest" href="manifest.json?v=2.1.108">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.108">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.108">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -645,6 +645,10 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .dmstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #2a2210; border: 1px solid #a16207; font-size: 14px; }
   .apstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #10243a; border: 1px solid #2563eb; font-size: 14px; cursor: pointer; }
   .row.bek { box-shadow: inset 3px 0 0 #3b82f6; }
+  /* ✔ Başvuru "Onayladım" (15.11): düğme ve "geri al" aynı yükseklik, durum satırı tek satır (basınca satır boyu oynamaz) */
+  .row .aps { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .row .aps.ok { color: #4ade80; }
+  .apbtn { flex: none; min-height: 34px; padding: 6px 10px; font-size: 13px; border-radius: 10px; white-space: nowrap; } .apbtn.on { background: #10243a; border-color: #2563eb; color: #93c5fd; font-weight: 700; }
+  .apbtn.geri { background: none; border-color: transparent; color: var(--muted); text-decoration: underline; padding: 6px 4px; }
   .systabs { display: flex; gap: 6px; overflow-x: auto; padding: 6px 10px; border-bottom: 1px solid var(--line); }
   .systabs button { white-space: nowrap; flex: none; font-size: 13px; padding: 6px 10px; } .systabs button.on { background: #db2777; border-color: #db2777; color: #fff; }
   .ro { text-align: center; padding: 14px; color: var(--muted); border-top: 1px solid var(--line); }
@@ -700,7 +704,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.107" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.108" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -709,7 +713,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.107" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.108" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -769,7 +773,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.107"></script>
+<script src="emoji.js?v=2.1.108"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -1010,12 +1014,26 @@ function oturumSil() { try { IO.yonVeri = true; } catch (e) {} /* çıkışta Gi
 /* 📝 Bekleyen ajans başvurusu şeridi (kullanıcı 15.11): Ajans Asistanı'ndan gelen "Yüz Doğrulamasını gönderdi" başvurusu, üye olmadan AP_SAAT saat geçmediyse "yeni" sayılır.
    Sayı panelin zaten çektiği union_view verisinden (ajData) çıkar: EK İSTEK YOK. Sunucu "bekliyor" bilgisini veremez (yalnız Sugo uygulamasında): reddedilen de pencere dolana dek sayılır. */
 const AP_SAAT = 48;
-const apBekle = (u) => ((u && u.applications) || []).filter((a) => a && !a.joined_at && a.status !== "joined" && Date.now() - Date.parse(a.at) <= AP_SAAT * 3600e3 && Date.now() - Date.parse(a.at) > -3600e3);
+/* ✔ Elle "Onayladım" (kullanıcı 15.11: "başvuru sayfasından onayladım yapabileyim (biz taraftan onayladım)"): sunucu işareti a.isaret { kim, at } (union_view; 0180) +
+   basılıp sunucu cevabı gelmemiş iyimser yerel hâl apYerel (anahtar ad + an). İşaretli başvuru şeritte sayılmaz; listeden silinmez. */
+const apYerel = new Map(), apAnahtar = (a) => String((a && a.name) || "").trim() + "\u0000" + Date.parse(a && a.at), apNonce = Math.random().toString(36).slice(2, 10);
+const apIsaret = (a) => { const k = apAnahtar(a); return apYerel.has(k) ? apYerel.get(k) : (a && a.isaret) || null; };
+const apBekle = (u) => ((u && u.applications) || []).filter((a) => a && !a.joined_at && a.status !== "joined" && !apIsaret(a) && Date.now() - Date.parse(a.at) <= AP_SAAT * 3600e3 && Date.now() - Date.parse(a.at) > -3600e3);
 function setApStrip(h) { const el = $("apStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_apstrip", h); } catch (e) {} }
 function apStripCiz() { const n = can("ajans") && me ? apBekle(ajData).length : 0;
   setApStrip(n ? `<div class="apstrip" data-ap="1" role="button">📝 <b>${n} yeni ajans başvurusu</b> · onayla ›</div>` : ""); }
 function apGit() { if (!can("ajans")) return; if (typeof setOn === "function" && setOn()) setClose(); ajTab("basvuru"); tab("aj"); requestAnimationFrame(() => requestAnimationFrame(() => { const r = document.querySelector("#ajBody .row[data-bek]"); if (r) r.scrollIntoView({ block: "center" }); })); }
 document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest("#apStrip [data-ap]")) apGit(); });
+// ✔ Onayladım / geri al: satırdaki data-ad + data-at (delege dinleyici; satır içi onclick yok). İyimser: hemen düşer; hata olursa geri gelir + kısa uyarı.
+document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("#ajBody [data-apis]"); if (!b) return; const r = b.closest("[data-ad]"); if (r && can("ajans")) apIsaretle(r.dataset.ad, r.dataset.at, b.dataset.apis === "1"); });
+async function apIsaretle(ad, at, on) { const a = { name: ad, at }, k = apAnahtar(a); if (!ad || !at || !can("ajans") || apIsaretle.bek.has(k)) return; apIsaretle.bek.add(k);
+  apYerel.set(k, on ? { kim: (me && me.name) || "", at: new Date().toISOString(), yerel: 1 } : null); apCiz();
+  try { const r = await api(on ? "basvuru_isaret" : "basvuru_isaret_geri", { ad, at, n: apNonce }); if (!r || r.error || !r.ok) throw new Error((r && r.error) || "kaydedilemedi");
+    const x = ((ajData && ajData.applications) || []).find((y) => apAnahtar(y) === k); if (x) x.isaret = r.isaret || null; }
+  catch (err) { toast((on ? "Onay işareti" : "Geri alma") + " kaydedilemedi: " + String((err && err.message) || err).slice(0, 80), true); }
+  finally { apYerel.delete(k); apIsaretle.bek.delete(k); apCiz(); } }
+apIsaretle.bek = new Set();
+function apCiz() { if (curTab === "aj" && ajSub === "basvuru") renderAj(); apStripCiz(); }
 let apInboxAt = null; /* Ajans Asistanı satırının son mesaj zamanı: değişince (yeni başvuru mesajı) ajans verisi bir kez tazelenir; ayrı yoklama yok */
 function apInboxIzle(its) { const x = (its || []).find((y) => String(y.id) === "30005"); if (!x) return; const k = String(x.at || "") + "|" + String(x.u || 0); if (apInboxAt !== null && apInboxAt !== k && ajData && can("ajans")) loadAj(); apInboxAt = k; }
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
@@ -3050,7 +3068,9 @@ function renderAj() { if (nkOk() && !nkIlk) { nkIlk = true; ajSub = "nakit"; } /
   if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div>${G ? "" : `<div style="font-weight:700">${nf(x.total_income)}</div>`}</div>`).join("") || (G ? '<div class="row s">Bu gün için yayıncı kaydı yok.</div>' : ""); /* 🔐 AA: kişi başı gelir yalnız yöneticide; sıra sunucuda aktif süreye göre */
   if (ajSub === "uye") h += (G ? "" : `<h3>📆 Bu ay en çok kazananlar</h3>` + (u.month_top || []).filter((x) => Number(x.income_this_month) > 0).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">${nf(x.active_days_this_month)} gün aktif · geçen ay ${nf(x.income_last_month)}</div></div><div style="font-weight:700">${nf(x.income_this_month)}</div></div>`).join("") || '<div class="row s">Bu ay kazanç kaydı yok.</div>') /* 🔐 AA: "en çok kazananlar" (gelir sıralaması) yalnız yöneticide */
     + `<h3>🆕 Son 14 gün katılanlar</h3>` + ((u.new_members || []).map((x) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("") || '<div class="row s">Son 14 günde katılan yok.</div>');
-  if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Burada başvuranların sonucu yazar.</div>` + (u.applications || []).map((a) => { const bek = apBekle({ applications: [a] }).length > 0; return `<div class="row${bek ? " bek" : ""}"${bek ? " data-bek=\"1\"" : ""}><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b><div class="s">başvuru ${rel(Date.parse(a.at))}</div></div><div>${a.joined_at ? '<span style="color:#4ade80">✅ Katıldı</span>' : bek ? '<span style="color:#60a5fa">⏳ Yeni · onayla</span>' : '<span class="s">✖ Üye değil</span>'}</div></div>`; }).join("");
+  if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Sugo'da onayladıysanız "✔ Onayladım" deyin: üstteki bildirim kalkar, herkeste görünür.</div>` + (u.applications || []).map((a) => { const bek = apBekle({ applications: [a] }).length > 0, is = !a.joined_at && a.status !== "joined" ? apIsaret(a) : null, uye = !!a.joined_at || a.status === "joined";
+    const durum = is ? `<div class="s aps ok">✔ onaylandı (bizden)${is.kim ? " · " + esc(is.kim) : ""} · ${rel(Date.parse(is.at))}</div>` : `<div class="s aps">başvuru ${rel(Date.parse(a.at))}${uye ? "" : bek ? ' · <span style="color:#60a5fa">⏳ yeni</span>' : " · ✖ üye değil"}</div>`;
+    return `<div class="row${bek ? " bek" : ""}"${bek ? " data-bek=\"1\"" : ""}${uye ? "" : ` data-ad="${esc(a.name)}" data-at="${esc(a.at)}"`}><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b>${durum}</div>${uye ? '<div><span style="color:#4ade80">✅ Katıldı</span></div>' : is ? '<button class="apbtn geri" data-apis="0">geri al</button>' : '<button class="apbtn on" data-apis="1">✔ Onayladım</button>'}</div>`; }).join("");
   if (ajSub === "alt" && yonOk()) h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th>${G ? "" : `<th class="n">Gelir</th>`}</tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td>${G ? "" : `<td class="n">${nf(x.total_income)}</td>`}</tr>`).join("")}</table>`;
   if (ajSub === "elmas") h += `<div id="oxBody">${oxHtml()}</div>`;
   $("ajBody").innerHTML = h; const we = $("ajWallet"); if (we) we.__h = wc; nkDraw();
@@ -4378,6 +4398,7 @@ function rtOlay(ev, pl) {
     if (ev === "room_msgs") { if (window.odaMsgsSet) odaMsgsSet(pl); return; } // 💬 tabletteki Selçuk oturumu odada: oda sohbeti (açılınca son 50, sonra yalnız yeniler)
     if (ev === "room_say_ok") { if (window.odaSayOk) odaSayOk(pl); return; } // ✍️ panelden oda sohbetine yazma: tablet gönderdi / gönderemedi
     if (ev === "room_mode") { if (window.odaModeSet) odaModeSet(pl); return; } // 📹 bayi odası kamera / sesli moda geçti (sunucu dakikada bir bakar)
+    if (ev === "apisaret") { if (me && can("ajans") && pl.n !== apNonce) { clearTimeout(apIsaretle.t); apIsaretle.t = setTimeout(loadAj, 400); } return; } // ✔ başka ekranda başvuru "Onayladım" / geri al (içerik taşımaz): ajans verisi yeniden okunur
     if (ev === "mola") { molaYukle(pl && pl.at); return; } // ☕ mola durumu değişti (içerik taşımaz): mola_durum yeniden okunur
     if (ev === "pausereq") { onPauseReq(pl); return; } // 📨 Sugo uygulaması onay isteği (yeni / onaylandı / reddedildi / süresi doldu)
     if (ev === "pcards") { loadCards(); if ($("ocBody") && ocEdit === null && !ocBulk) ocLoad(); return; } // kartlar değişti (tablet / ajans sahibi)
@@ -4677,7 +4698,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.107"></script>
-<script src="durum.js?v=2.1.107"></script>
+<script src="profile.js?v=2.1.108"></script>
+<script src="durum.js?v=2.1.108"></script>
 </body>
 </html>
