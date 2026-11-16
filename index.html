@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.112">
+<meta name="build" content="2.1.113">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.112">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.112">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.112">
+<link rel="manifest" href="manifest.json?v=2.1.113">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.113">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.113">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -666,7 +666,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .apstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #10243a; border: 1px solid #2563eb; font-size: 14px; cursor: pointer; }
   .row.bek { box-shadow: inset 3px 0 0 #3b82f6; }
   /* ✔ Başvuru "Onayladım" (15.11): düğme ve "geri al" aynı yükseklik, durum satırı tek satır (basınca satır boyu oynamaz) */
-  .row .aps { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .row .aps.ok { color: #4ade80; }
+  .row .aps { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .row .aps.ok { color: #4ade80; } .row .apo { color: #a3e635; overflow-wrap: anywhere; } /* W14: muhtemel üyenin adı + UID kırpılmaz (iki satıra iner) */
   .apbtn { flex: none; min-height: 34px; padding: 6px 10px; font-size: 13px; border-radius: 10px; white-space: nowrap; } .apbtn.on { background: #10243a; border-color: #2563eb; color: #93c5fd; font-weight: 700; }
   .apbtn.geri { background: none; border-color: transparent; color: var(--muted); text-decoration: underline; padding: 6px 4px; }
   .systabs { display: flex; gap: 6px; overflow-x: auto; padding: 6px 10px; border-bottom: 1px solid var(--line); }
@@ -724,7 +724,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.112" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.113" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -733,7 +733,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.112" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.113" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -793,56 +793,100 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.112"></script>
+<script src="emoji.js?v=2.1.113"></script>
 <script>
+// <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
-// Vekile ulaşılamazsa (ağ hatası · 502 {"error":"ag"} · 404/530) 5 dk doğrudan Supabase'e geçilir; yalnız okuma işleri o an doğrudan adrese bir kez tekrarlanır
+// Vekile ulaşılamazsa (ağ hatası · 502 {"error":"ag"} · 404/530) 5 dk doğrudan Supabase'e geçilir (W15: Contabo yoklaması sağlıklı görülünce hemen biter); yalnız okuma işleri o an doğrudan adrese bir kez tekrarlanır
 // (yazma işleri – gönder, coin, ödendi… – çift işlem olmasın diye tekrarlanmaz, kullanıcı elle yeniden dener). Supabase'in kendi 500/503/504'ü tekrarlanmaz.
 let API_YOL = /(^|\.)api\.sgok\.dev$/.test(location.hostname) ? location.origin + "/sugo-bayi-web/api" : "", apiYedekUntil = 0;
 // 🖥️ Birincil yol (12.11): tarayıcıdan DOĞRUDAN Contabo (Caddy vps.sgok.dev → sugo-isler → bayi-web; Cloudflare'in iki Worker atlaması yok, bağlantı açık kalır).
 // Sıra: Contabo → vekil (API_YOL) → doğrudan Supabase. Contabo düşerse vekil yolu; 10 sn'de bir hafif yoklama (GET API_VPS, 2 sn, HTTP < 500 = ayakta),
-// ilk sağlıklıda Contabo'ya dönülür; dönülen Contabo 30 sn dolmadan yine düşerse yoklama aralığı katlanır (10 → 20 → 40 → 60 sn). Uzaktan kapatma: me.web_yol = "vekil".
-// Contabo'ya doğrudan istekte zaman aşımı (13.11): cevap okuma işinde 8 sn, yazmada 57 sn içinde başlamazsa vazgeçilir; okuma sıradaki yoldan tekrarlanır,
-// yazma "belirsiz" gösterilir ve TEKRARLANMAZ (Contabo işlemiş olabilir).
+// ilk sağlıklıda Contabo'ya dönülür; dönülen Contabo 30 sn dolmadan yine düşerse yoklama aralığı katlanır (10 → 20 → 30 sn; W15 öncesi 60). Uzaktan kapatma: me.web_yol = "vekil".
+// Contabo'ya doğrudan istekte zaman aşımı (13.11): cevap okuma işinde 8 sn (W15: yavaş okumalarda VPS_YAVAS_OKU), yazmada 57 sn içinde başlamazsa vazgeçilir;
+// okuma sıradaki yoldan tekrarlanır, yazma "belirsiz" gösterilir ve TEKRARLANMAZ (Contabo işlemiş olabilir).
 // İşlenmediği KESİN cevaplar (503 x-yerel kapali|hazir-degil|beat-eski · 404 · 413 · x-vps: ulasilamadi) her işte sıradaki yola gider; belirsizler
 // (ağ / CORS hatası – istek sunucuya ulaştı mı bilinmez –, 502/504, x-yerel 503 dışı) yalnız OKUMADA (API_OKU) tekrarlanır; yazma tekrar EDİLMEZ, hata gösterilir.
+// 🛡️ W15 (16.11) – tek kısa olayda yedeğe düşülmez:
+//  • "kesin işlenmedi + geçici" (vpsGecici) cevapta aynı Contabo isteği 1,2 sn arayla en çok 2 kez yeniden denenir (yazmada da güvenli: işlenmedi);
+//  • okumanın belirsiz hatası / zaman aşımı yolu değiştirmez (o istek bir kez sıradaki yoldan); 10 sn içinde ikinci olay ya da hemen atılan arka
+//    yoklamanın kötü çıkması yedeğe geçirir; bu "şüphe" penceresinde yazma Contabo'ya gönderilmez (sıradaki yoldan – W15 öncesi o an zaten yedekteydi);
+//  • yazmanın belirsiz sonucu ve tekrar etmeme kuralı AYNEN (hemen yedek yol, "Sonuç belirsiz");
+//  • 15 sn'den kısa yedek durumu durum satırında görünmez (apiYolGoster).
+// Geri alma: YOL_TOLERANS = false → 2.1.112 davranışı birebir. Uzaktan: settings.web_yol = "vekil" (Contabo hiç denenmez) değişmedi.
 let API_VPS = API_YOL ? "https://vps.sgok.dev/f/bayi-web" : "", vpsYedekUntil = 0, apiYolAd = "";
 const VPS_KESIN = /^(kapali|hazir-degil|beat-eski)$/, VPS_BUYUK = 1_900_000; let VPS_OKU_MS = 8_000, VPS_YAZ_MS = 57_000; /* let: senaryolar kısaltabilsin */ // Caddy gövde sınırı 2 MB: büyük gövde (resim, ses) hiç Contabo'ya gönderilmez
+const YOL_TOLERANS = true;
+let VPS_TEKRAR_MS = 1_200, VPS_TEKRAR_SAYI = YOL_TOLERANS ? 2 : 0, VPS_SUPHE_MS = YOL_TOLERANS ? 10_000 : 0, VPS_BEK_TAVAN = YOL_TOLERANS ? 30_000 : 60_000, YEDEK_GIZLE_MS = YOL_TOLERANS ? 15_000 : 0;
+// Yavaş okumalar: yönlendiricinin BAYI_WEB_YAVAS_OKUMA tablosuyla aynı (cloudflare/yonlendirici/src/karar.ts; linkQ 15 sn, moments_feed 25 sn)
+const VPS_YAVAS_OKU = YOL_TOLERANS ? { moments_feed: 27_000, moments_user: 17_000, moment_likes: 17_000, moment_comments: 17_000, room_live: 17_000 } : {};
+// "Kesin işlenmedi + geçici": istek işleyiciye hiç varmadı (vps/sugo-isler/main.ts red(): işleyici çağrılmadan 503) ve birkaç saniyede geçer —
+// x-yerel beat-eski (ayaktayım 15 sn'den eski ya da bekçi kilidi / açılışta "ilk karar bekleniyor": x-yerel-neden db-kilitli; main.ts:731, 734),
+// x-yerel hazir-degil NEDENSİZ (işçi henüz yüklenmedi, main.ts:736; neden sir-yok / anahtar kalıcı → hariç), Caddy x-vps: ulasilamadi (istek sugo-isler'e
+// hiç gitmedi: yeniden başlatma; vps/caddy/Caddyfile:13, 272). kapali / 404 / 413 kalıcıdır: yeniden denenmez, hemen sıradaki yol.
+const vpsGecici = (r) => !!r && ((r.status === 503 && (r.headers.get("x-yerel") === "beat-eski" || (r.headers.get("x-yerel") === "hazir-degil" && !r.headers.get("x-yerel-neden")))) || r.headers.get("x-vps") === "ulasilamadi");
 const webYol = () => { let m = me; if (!m) try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {} return (m && m.web_yol) || ""; };
 const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_list|room_chat_list|room_person_frames|nakit|nakit_hareket|odeme_karti|mahsup_ara|dekont_ozet|dekont_liste|dekont_adres)$|_get$/;
 // Contabo atlanırken yoklama: GET API_VPS (bayi-web'in kendi 405'i, CORS'lu, veritabanına dokunmaz; /f/health anahtarsız 403 verir ve CORS başlığı yok)
-let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0;
-function vpsDus() { if (vpsDonAt && Date.now() - vpsDonAt < 30_000) vpsBek = Math.min(60_000, vpsBek * 2); else vpsBek = 10_000; // gidip gelme: katla · ≥ 30 sn kaldıysa baştan
-  vpsDonAt = 0; vpsYedekUntil = Infinity; apiYolAd = ""; clearTimeout(vpsYokT); vpsYokT = setTimeout(vpsYokla, vpsBek); }
+let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0, vpsSupheAt = 0, yolYedekAt = 0; const vpsOkuyan = new Set(); // Contabo'da bekleyen OKUMALAR (yol düşünce hemen sıradaki yola)
+const vpsUyku = (ms) => new Promise((r) => setTimeout(r, ms));
+function vpsDus() { if (YOL_TOLERANS && Date.now() < vpsYedekUntil) return; // zaten yedekte (paralel istekler katlamayı / yoklamayı bozmasın)
+  if (vpsDonAt && Date.now() - vpsDonAt < 30_000) vpsBek = Math.min(VPS_BEK_TAVAN, vpsBek * 2); else vpsBek = 10_000; // gidip gelme: katla · ≥ 30 sn kaldıysa baştan
+  vpsDonAt = 0; vpsSupheAt = 0; vpsYedekUntil = Infinity; apiYolAd = ""; yolYedekAt = Date.now(); clearTimeout(vpsYokT); vpsYokT = setTimeout(vpsYokla, vpsBek);
+  if (YOL_TOLERANS) for (const c of vpsOkuyan) c.abort(); // asılı okumalar 8 sn beklemesin (yazmalar ASLA kesilmez: belirsiz olurdu)
+  if (YEDEK_GIZLE_MS) setTimeout(() => { if (yolYedekAt && Date.now() < vpsYedekUntil) statLine(); }, YEDEK_GIZLE_MS + 50); } // 15 sn dolunca "yedek" satırda görünsün
+async function vpsSaglam() { const c = new AbortController(), t = setTimeout(() => c.abort(), 2000); let r = null; // hafif yoklama (2 sn); cevap ya da null
+  try { r = await fetch(API_VPS, { cache: "no-store", signal: c.signal }); try { await r.body?.cancel(); } catch (e) {} } catch (e) { r = null; } finally { clearTimeout(t); }
+  return r; }
+async function vpsSaglamMi() { for (let i = 0; ; i++) { const r = await vpsSaglam(); if (r && r.status < 500) return true; // geçici red'de (yeniden başlatma) yoklama da kısa arayla tekrarlanır
+  if (i >= VPS_TEKRAR_SAYI || !vpsGecici(r)) return false; await vpsUyku(VPS_TEKRAR_MS); } }
+function vpsSuphe() { if (Date.now() < vpsYedekUntil) return; const t = Date.now(); // okumada tek belirsiz olay: yol değişmez
+  if (vpsSupheAt && t - vpsSupheAt < VPS_SUPHE_MS) { vpsDus(); return; } // 10 sn içinde ikinci olay → yedek
+  vpsSupheAt = t; vpsSaglamMi().then((iyi) => { if (!iyi && vpsSupheAt === t && Date.now() >= vpsYedekUntil) vpsDus(); }); } // arka yoklama kötü → yedek (gerçek arızada beklemeden)
 async function vpsYokla() { vpsYokT = 0; if (!API_VPS || Date.now() >= vpsYedekUntil) return; // başka yoldan zaten dönüldü
   if (!tok || document.hidden) { vpsYokT = setTimeout(vpsYokla, vpsBek); return; } // oturum yok / arka planda: istek atılmaz
-  const c = new AbortController(), t = setTimeout(() => c.abort(), 2000); let iyi = false;
-  try { const r = await fetch(API_VPS, { cache: "no-store", signal: c.signal }); iyi = r.status < 500; try { await r.body?.cancel(); } catch (e) {} } catch (e) {} finally { clearTimeout(t); }
+  const r = await vpsSaglam(), iyi = !!r && r.status < 500;
   if (Date.now() >= vpsYedekUntil) return;
-  if (iyi) { vpsYedekUntil = 0; vpsDonAt = Date.now(); } else vpsYokT = setTimeout(vpsYokla, vpsBek); } // ilk sağlıklıda Contabo yolu (sonraki istek)
-async function apiFetch(action, init) {
-  if (API_VPS && webYol() !== "vekil" && Date.now() >= vpsYedekUntil && !(init.body && init.body.length > VPS_BUYUK)) {
-    const c = new AbortController(); let zaman = false; const zt = setTimeout(() => { zaman = true; c.abort(); }, API_OKU.test(action) ? VPS_OKU_MS : VPS_YAZ_MS);
-    const r = await fetch(API_VPS, { ...init, signal: c.signal }).catch(() => null), xy = (r && r.headers.get("x-yerel")) || ""; clearTimeout(zt); // süre yalnız cevabın başlamasına (gövde okunurken kesilmez)
+  if (iyi) { vpsYedekUntil = 0; vpsDonAt = Date.now(); yolYedekAt = 0; if (YOL_TOLERANS) apiYedekUntil = 0; } else vpsYokT = setTimeout(vpsYokla, vpsBek); } // ilk sağlıklıda Contabo yolu (sonraki istek); vekil düşüşünün 5 dk'sı da biter
+const apiYolGoster = () => (YEDEK_GIZLE_MS && yolYedekAt && apiYolAd !== "Contabo" && Date.now() - yolYedekAt < YEDEK_GIZLE_MS ? "" : apiYolAd); // kısa yedek satırda görünmez
+async function apiFetch(action, init) { const oku = API_OKU.test(action);
+  if (API_VPS && webYol() !== "vekil" && Date.now() >= vpsYedekUntil && !(init.body && init.body.length > VPS_BUYUK) && (oku || !vpsSupheAt || Date.now() - vpsSupheAt >= VPS_SUPHE_MS)) {
+    const sure = oku ? (VPS_YAVAS_OKU[action] || VPS_OKU_MS) : VPS_YAZ_MS; let r = null, zaman = false, erken = false, xy = "";
+    for (let i = 0; ; i++) {
+      const c = new AbortController(); let bitti = false; zaman = false; erken = false; const zt = setTimeout(() => { zaman = true; c.abort(); }, sure); if (oku) vpsOkuyan.add(c);
+      // yavaş okuma 8 sn'yi geçti: arka yoklama; Contabo gerçekten kötüyse beklemeden vazgeç (gerçek arızada geçiş 27 sn'ye uzamasın)
+      const et = sure > VPS_OKU_MS ? setTimeout(() => vpsSaglamMi().then((iyi) => { if (!iyi && !bitti) { erken = zaman = true; c.abort(); } }), VPS_OKU_MS) : 0;
+      r = await fetch(API_VPS, { ...init, signal: c.signal }).catch(() => null); bitti = true; clearTimeout(zt); clearTimeout(et); vpsOkuyan.delete(c); // süre yalnız cevabın başlamasına (gövde okunurken kesilmez)
+      if (i < VPS_TEKRAR_SAYI && vpsGecici(r) && Date.now() >= vpsYedekUntil) { try { await r.body?.cancel(); } catch (e) {} await vpsUyku(VPS_TEKRAR_MS); if (Date.now() >= vpsYedekUntil && webYol() !== "vekil") continue; }
+      break; }
+    xy = (r && r.headers.get("x-yerel")) || "";
     const kesin = !!r && ((r.status === 503 && VPS_KESIN.test(xy)) || r.status === 404 || r.status === 413 || r.headers.get("x-vps") === "ulasilamadi");
     const belirsiz = !r || (r.status >= 502 && r.status <= 504 && !kesin);
     if (!kesin && !belirsiz) { apiYolAd = "Contabo"; return r; }
+    if (YOL_TOLERANS && belirsiz && oku) { // okuma: tek olay yolu değiştirmez; bu istek bir kez sıradaki yoldan
+      try { await r?.body?.cancel(); } catch (e) {}
+      if (erken) vpsDus(); else vpsSuphe();
+      return await apiYedek(action, init); }
     vpsDus();
-    if (belirsiz && !API_OKU.test(action)) { // yazma: Contabo işlemiş olabilir → tekrar yok
+    if (belirsiz && !oku) { // yazma: Contabo işlemiş olabilir → tekrar yok
       if (!r && !zaman) return null; // ağ / CORS hatası: "Bağlantı yok" (kullanıcı elle yeniden dener; sonraki deneme vekil yolundan)
       if (r && r.status === 503 && !xy) { try { const j = await r.clone().json(); if (j && j.error) return r; } catch (e) {} } // bayi-web'in kendi 503'ü (Supabase kesintisi): mesajı aynen
       try { await r?.body?.cancel(); } catch (e) {} // zaman aşımı (r yok) da buraya: "belirsiz"
       return new Response(JSON.stringify({ error: "Sonuç belirsiz — tekrar göndermeden önce kontrol edin", belirsiz: true }), { status: 504, headers: { "content-type": "application/json" } }); }
     try { await r?.body?.cancel(); } catch (e) {}
   }
-  if (!API_YOL || Date.now() < apiYedekUntil) { apiYolAd = "Supabase"; return await fetch(API, init).catch(() => null); }
-  apiYolAd = "vekil";
+  return await apiYedek(action, init); }
+// Sıradaki yol (vekil → doğrudan Supabase). Contabo hâlâ birincilken (tek seferlik tekrar / şüphe penceresindeki yazma) yol adı (gösterge) değişmez.
+async function apiYedek(action, init) { const gecici = YOL_TOLERANS && !!API_VPS && webYol() !== "vekil" && Date.now() >= vpsYedekUntil, ad = (a) => { if (!gecici) apiYolAd = a; };
+  if (!API_YOL || Date.now() < apiYedekUntil) { ad("Supabase"); return await fetch(API, init).catch(() => null); }
+  ad("vekil");
   const r = await fetch(API_YOL, init).catch(() => null); let down = !r || r.status === 404 || r.status === 530;
   if (r && r.status === 502) { try { const j = await r.clone().json(); down = !!j && j.error === "ag"; } catch (e) { down = false; } }
   if (!down) return r;
-  apiYedekUntil = Date.now() + 5 * 60_000; apiYolAd = "Supabase"; // oturum boyunca (5 dk) doğrudan adres; sonra vekil yeniden denenir
+  apiYedekUntil = Date.now() + 5 * 60_000; ad("Supabase"); // 5 dk doğrudan adres; sonra vekil yeniden denenir (W15: Contabo yoklaması sağlıklıysa hemen biter)
   return API_OKU.test(action) ? await fetch(API, init).catch(() => null) : null; }
+// </panel-yol>
 const OSS = "https://oss-image.erikujnzxcgaer.xyz/";
 const ASSET_V = encodeURIComponent((document.querySelector('meta[name="build"]') || {}).content || ""); // kod içinden yüklenen dosyalar (emoji resimleri) sürüm etiketiyle: önbellek eskiyi vermesin
 // ⬜ Önceden çizili ekranlar: sekmeler son hâlleriyle (telefonda saklı) ya da aynı düzende yer tutucularla açılır; veri gelince yalnız içerik dolar
@@ -949,7 +993,7 @@ const STAT = { api: [], rt: null, rtOn: false, rtYol: "", rtAdr: "", live: null,
 function statLine() { if (!yonOk()) { const t = STAT.needLogin && Date.now() - STAT.needLogin < 15 * 60e3 ? "🔑 Sugo oturumu kapandı – tablet yeniden giriş yapıyor" : ""; // 🔐 sürüm / sunucu / ms / kanal ayrıntısı yalnız yöneticide
     document.querySelectorAll(".infol").forEach((el) => { if (el.textContent !== t) el.textContent = t; if (el.title) el.removeAttribute("title"); }); return; }
   const avg = STAT.api.length ? Math.round(STAT.api.reduce((s, x) => s + x, 0) / STAT.api.length) : null;
-  const bits = [...(STAT.needLogin && Date.now() - STAT.needLogin < 15 * 60e3 ? ["🔑 Sugo oturumu kapandı – tablet yeniden giriş yapıyor"] : []), `sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}${apiYolAd ? " " + apiYolAd : ""}`,
+  const bits = [...(STAT.needLogin && Date.now() - STAT.needLogin < 15 * 60e3 ? ["🔑 Sugo oturumu kapandı – tablet yeniden giriş yapıyor"] : []), `sürüm ${BUILD && BUILD !== "__BUILD__" ? BUILD : "yerel"}`, `sunucu ${avg != null ? avg + " ms" : "–"}${apiYolGoster() ? " " + apiYolGoster() : ""}`,
     `canlı ${STAT.rtOn ? "✓" + (STAT.rt != null ? " " + STAT.rt + " ms" : "") + (STAT.rtYol === "Supabase" ? " yedek" : "") : "✗ bağlanıyor…"}`, ...(STAT.live != null ? [`son mesaj ${STAT.live} ms`] : []), `Sugo ${STAT.link || "–"}`];
   const ip = STAT.rtYol ? `Canlı kanal: ${STAT.rtYol === "Supabase" ? "yedek (Supabase)" : "Contabo"}${STAT.rtAdr ? " · " + STAT.rtAdr : ""}${STAT.rtYol === "Supabase" && rtYedekAt ? " · " + new Date(rtYedekAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) + "'den beri" : ""}` : ""; // ayrıntı yalnız ipucunda (satır kısa kalır: "Sugo bağlı" telefonda kesilmesin)
   document.querySelectorAll(".infol").forEach((el) => { el.textContent = bits.join(" · "); if (ip) el.title = ip; else if (el.title) el.removeAttribute("title"); }); }
@@ -1038,7 +1082,7 @@ const AP_SAAT = 48;
    basılıp sunucu cevabı gelmemiş iyimser yerel hâl apYerel (anahtar ad + an). İşaretli başvuru şeritte sayılmaz; listeden silinmez. */
 const apYerel = new Map(), apAnahtar = (a) => String((a && a.name) || "").trim() + "\u0000" + Date.parse(a && a.at), apNonce = Math.random().toString(36).slice(2, 10);
 const apIsaret = (a) => { const k = apAnahtar(a); return apYerel.has(k) ? apYerel.get(k) : (a && a.isaret) || null; };
-const apBekle = (u) => ((u && u.applications) || []).filter((a) => a && !a.joined_at && a.status !== "joined" && !apIsaret(a) && Date.now() - Date.parse(a.at) <= AP_SAAT * 3600e3 && Date.now() - Date.parse(a.at) > -3600e3);
+const apBekle = (u) => ((u && u.applications) || []).filter((a) => a && !a.joined_at && a.status !== "joined" && a.status !== "likely" && !apIsaret(a) && Date.now() - Date.parse(a.at) <= AP_SAAT * 3600e3 && Date.now() - Date.parse(a.at) > -3600e3);
 function setApStrip(h) { const el = $("apStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_apstrip", h); } catch (e) {} }
 function apStripCiz() { const n = can("ajans") && me ? apBekle(ajData).length : 0;
   setApStrip(n ? `<div class="apstrip" data-ap="1" role="button">📝 <b>${n} yeni ajans başvurusu</b> · onayla ›</div>` : ""); }
@@ -3190,9 +3234,9 @@ function renderAj() { if (nkOk() && !nkIlk) { nkIlk = true; ajSub = "nakit"; } /
   if (ajSub === "yayinci") h += `<h3>🏆 ${u.anchors_day ? ajDay(u.anchors_day) : ""}</h3>` + (u.top || []).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · aktif ${hrs(x.active_sec)}${x.is_valid ? " · ✔ geçerli" : ""}</div></div>${G ? "" : `<div style="font-weight:700">${nf(x.total_income)}</div>`}</div>`).join("") || (G ? '<div class="row s">Bu gün için yayıncı kaydı yok.</div>' : ""); /* 🔐 AA: kişi başı gelir yalnız yöneticide; sıra sunucuda aktif süreye göre */
   if (ajSub === "uye") h += (G ? "" : `<h3>📆 Bu ay en çok kazananlar</h3>` + (u.month_top || []).filter((x) => Number(x.income_this_month) > 0).map((x, i) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${i + 1}. ${esc(x.nickname || x.uid)}</b><div class="s">${nf(x.active_days_this_month)} gün aktif · geçen ay ${nf(x.income_last_month)}</div></div><div style="font-weight:700">${nf(x.income_this_month)}</div></div>`).join("") || '<div class="row s">Bu ay kazanç kaydı yok.</div>') /* 🔐 AA: "en çok kazananlar" (gelir sıralaması) yalnız yöneticide */
     + `<h3>🆕 Son 14 gün katılanlar</h3>` + ((u.new_members || []).map((x) => `<div class="row tap"${ajTap(x.uid)}><div class="av">${avHtml(x.nickname, x.avatar)}</div><div class="b"><b>${esc(x.nickname || x.uid)}</b><div class="s">UID ${esc(x.uid)} · ${rel(Date.parse(x.joined_at))}</div></div></div>`).join("") || '<div class="row s">Son 14 günde katılan yok.</div>');
-  if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Sugo'da onayladıysanız "✔ Onayladım" deyin: üstteki bildirim kalkar, herkeste görünür.</div>` + (u.applications || []).map((a) => { const bek = apBekle({ applications: [a] }).length > 0, is = !a.joined_at && a.status !== "joined" ? apIsaret(a) : null, uye = !!a.joined_at || a.status === "joined";
-    const durum = is ? `<div class="s aps ok">✔ onaylandı (bizden)${is.kim ? " · " + esc(is.kim) : ""} · ${rel(Date.parse(is.at))}</div>` : `<div class="s aps">başvuru ${rel(Date.parse(a.at))}${uye ? "" : bek ? ' · <span style="color:#60a5fa">⏳ yeni</span>' : " · ✖ üye değil"}</div>`;
-    return `<div class="row${bek ? " bek" : ""}"${bek ? " data-bek=\"1\"" : ""}${uye ? "" : ` data-ad="${esc(a.name)}" data-at="${esc(a.at)}"`}><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b>${durum}</div>${uye ? '<div><span style="color:#4ade80">✅ Katıldı</span></div>' : is ? '<button class="apbtn geri" data-apis="0">geri al</button>' : '<button class="apbtn on" data-apis="1">✔ Onayladım</button>'}</div>`; }).join("");
+  if (ajSub === "basvuru") h += `<div class="s" style="margin:8px 12px">Onay bekleyenler sadece Sugo uygulamasında görünür. Sugo'da onayladıysanız "✔ Onayladım" deyin: üstteki bildirim kalkar, herkeste görünür.</div>` + (u.applications || []).map((a) => { const bek = apBekle({ applications: [a] }).length > 0, uye = !!a.joined_at || a.status === "joined", ol = !uye && a.status === "likely" && a.likely ? a.likely : null, is = !uye && !ol ? apIsaret(a) : null; /* W14: katılım (kesin / muhtemelen) elle işaretin önüne geçer */
+    const durum = ol ? `<div class="s aps">başvuru ${rel(Date.parse(a.at))}</div><div class="s apo">👤 ${esc(ol.name || "?")} · UID ${esc(ol.uid)}</div>` : is ? `<div class="s aps ok">✔ onaylandı (bizden)${is.kim ? " · " + esc(is.kim) : ""} · ${rel(Date.parse(is.at))}</div>` : `<div class="s aps">başvuru ${rel(Date.parse(a.at))}${uye ? "" : bek ? ' · <span style="color:#60a5fa">⏳ yeni</span>' : " · ✖ üye değil"}</div>`;
+    return `<div class="row${bek ? " bek" : ""}${ol ? " tap" : ""}"${bek ? " data-bek=\"1\"" : ""}${ol ? ajTap(ol.uid) : ""}${uye || ol ? "" : ` data-ad="${esc(a.name)}" data-at="${esc(a.at)}"`}><div class="av">${initial(a.name)}</div><div class="b"><b>${esc(a.name)}</b>${durum}</div>${uye ? '<div><span style="color:#4ade80">✅ Katıldı</span></div>' : ol ? '<div><span style="color:#a3e635">✅ Muhtemelen katıldı</span></div>' : is ? '<button class="apbtn geri" data-apis="0">geri al</button>' : '<button class="apbtn on" data-apis="1">✔ Onayladım</button>'}</div>`; }).join("");
   if (ajSub === "alt" && yonOk()) h += `<table><tr><th>Alt ajans</th><th class="n">Üye</th>${G ? "" : `<th class="n">Gelir</th>`}</tr>${(u.subs || []).map((x) => `<tr><td><b>${esc(x.name || x.union_id)}</b><div class="s">${esc(x.leader_nickname || "")}</div></td><td class="n">${nf(x.anchor_count)}</td>${G ? "" : `<td class="n">${nf(x.total_income)}</td>`}</tr>`).join("")}</table>`;
   if (ajSub === "elmas") h += `<div id="oxBody">${oxHtml()}</div>`;
   $("ajBody").innerHTML = h; const we = $("ajWallet"); if (we) we.__h = wc; nkDraw();
@@ -4404,7 +4448,7 @@ try { const bc = new BroadcastChannel("bw-nav"); bc.onmessage = (e) => { const m
 // 🔔 Bildirime dokunma → ilgili yer (?c= sohbet, ?t= sekme, ?pz= onay isteği). iPhone'da uyuyan sayfaya SW mesajı kaybolabiliyor: SW hedefi önbelleğe de yazar
 // (caches "bw-nav" ./__open {url, at}); sayfa açılınca / öne gelince okur (2 dk geçerli), siler ve açar. Aynı hedef 5 sn içinde iki kez açılmaz. Kaldığı yere dönüşten (resume) önce gelir.
 let navLast = { k: "", at: 0 }, navReady = false, navBusy = false;
-const navKey = (url) => { try { const u = new URL(url, location.href), c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz"); return c ? "c" + c : t ? "t" + t : pz ? "pz" + pz : u.hash === "#mola" ? "mola" : ""; } catch (e) { return ""; } };
+const navKey = (url) => { try { const u = new URL(url, location.href), c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz"); const s = u.searchParams.get("s"); return c ? "c" + c : t ? "t" + t + (s ? ":" + s : "") : pz ? "pz" + pz : u.hash === "#mola" ? "mola" : ""; } catch (e) { return ""; } };
 // hedef açıldı: önbellekteki kopya (aynı hedefse) silinir; bu arada yeni bir bildirime dokunulduysa onunki kalır
 async function navDone(k) { try { if (!window.caches) return; const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return; const x = await r.json().catch(() => ({}));
   if (!x || !x.url || navKey(x.url) === k || Date.now() - (Number(x.at) || 0) >= 120_000) await ch.delete("./__open"); } catch (e) {} }
@@ -4422,7 +4466,7 @@ async function navOpen(url) { let u; try { u = new URL(url, location.href); } ca
   try { if (k === "mola") molaSayfa(); // ☕ mola bildirimi
     else if (pz) pzLoad(pz); // onay bandı her ekranın üstünde: ekran değişmez
     // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
-    else { await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } }
+    else { await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); if (t === "aj" && u.searchParams.get("s") === "basvuru" && typeof ajTab === "function") ajTab("basvuru"); tab(t); } } // 🆕 W14: ?t=aj&s=basvuru → Ajansım › Başvurular
   } catch (e) { navLast = { k: "", at: 0 }; return false; } // yarıda kaldı: sonraki deneme (öne gelme yoklaması) yeniden açabilsin
   await navDone(k); return true; }
 async function takeNavOpen(force) { if (!tok || !(force || navReady) || navBusy || !window.caches) return false; navBusy = true;
@@ -4871,7 +4915,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.112"></script>
-<script src="durum.js?v=2.1.112"></script>
+<script src="profile.js?v=2.1.113"></script>
+<script src="durum.js?v=2.1.113"></script>
 </body>
 </html>
