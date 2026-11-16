@@ -25,8 +25,8 @@
     localStorage.setItem("pfl_keys", JSON.stringify(k)); localStorage.setItem("pfl_" + uid, JSON.stringify(v)); } catch (e) {} };
   const liveOf = (uid) => { const l = pfLive[uid]; return l && (l.badges || "family" in l) ? l : pflGet(uid) || (l && !l.error ? l : null); };
   window.__pfLiveOf = liveOf;
-  const rawFam = (p) => { if (p.temel) return p.family === undefined ? undefined : p.family ? { name: p.family.name || "", level: p.family.level, icon: p.family.icon || null, members: p.family.members ?? null } : null; // 🔐 temel profil: aile sunucudan hazır
-    const r = p.raw; if (!r) return undefined; const f = (r.familyInfo || {}).family; return f ? { name: f.familyName || "", level: f.familyLevel, icon: f.familyIcon || f.icon || null, members: f.memberCount ?? f.memberNum ?? null } : null; };
+  const rawFam = (p) => { if (p.temel) return p.family === undefined ? undefined : p.family ? { name: p.family.name || "", level: p.family.level, icon: p.family.icon || null, members: p.family.members ?? null, online: p.family.online ?? null } : null; // 🔐 temel profil: aile sunucudan hazır (<sugo-veri> online: W20 A1 </sugo-veri>)
+    const r = p.raw; if (!r) return undefined; const fi = r.familyInfo || {}, f = fi.family; return f ? { name: f.familyName || "", level: f.familyLevel, icon: f.familyIcon || f.icon || null, members: f.memberCount ?? f.memberNum ?? fi.memberNum ?? null, online: f.onlineNum ?? fi.onlineNum ?? null } : null; }; // <sugo-veri> W20 A1: çevrimiçi sayısı </sugo-veri>
   function badgesH(p) {
     if (p.__sk && !liveOf(p.uid)) return `<span class="bg-sk"><span class="sk" style="width:2.2em"></span></span><span class="bg-sk"><span class="sk" style="width:2em"></span></span><span class="bg-sk"><span class="sk" style="width:2em"></span></span><span class="bg-sk"><span class="sk" style="width:3em"></span></span>`;
     const L = liveOf(p.uid) || {}, b = L.badges || {}, out = [];
@@ -49,7 +49,8 @@
   function famH(p) { const L = liveOf(p.uid), f = L && "family" in L ? L.family : rawFam(p);
     if (f === undefined) return `<div class="pffam"><span class="sk" style="width:22px;height:22px;border-radius:6px"></span><span class="sk" style="width:12em"></span></div>`;
     if (!f || !f.name) return `<div class="pffam none">👨‍👩‍👧 Ailesi yok</div>`;
-    return `<div class="pffam">${f.icon ? `<img src="${escA(avUrl(f.icon))}" alt="" onerror="this.remove()">` : "👨‍👩‍👧"}<span class="fn">Ailesi: <b>${esc(f.name)}</b>${f.members != null ? ` (${esc(f.members)} üye)` : ""}${f.level_name ? ` · ${esc(f.level_name)}` : f.level ? ` · Lv${esc(f.level)}` : ""}</span></div>`; }
+    const fo = f.online != null ? f.online : (rawFam(p) || {}).online; // <sugo-veri> W20 A1: canlı aile verisinde yoksa saklı profilden </sugo-veri>
+    return `<div class="pffam">${f.icon ? `<img src="${escA(avUrl(f.icon))}" alt="" onerror="this.remove()">` : "👨‍👩‍👧"}<span class="fn">Ailesi: <b>${esc(f.name)}</b>${f.members != null ? ` (${esc(f.members)} üye${fo != null && fo !== "" ? " · " + esc(fo) + " çevrimiçi" : ""})` : fo != null && fo !== "" ? ` (${esc(fo)} çevrimiçi)` : ""}${f.level_name ? ` · ${esc(f.level_name)}` : f.level ? ` · Lv${esc(f.level)}` : ""}</span></div>`; }
   let pfUid = null, pfMoreOpen = false; // "Diğer bilgiler" açıksa güncellemede kapanmasın
   const sync = (on) => { const el = $("pfSync"); if (el) el.hidden = !on; };
 
@@ -286,7 +287,7 @@
           ${p.name_plain && p.name_plain !== p.name ? `<div class="pfplain">Okunuşu: <b>${esc(p.name_plain)}</b></div>` : ""}
           <div class="s">UID <b class="pfuid">${esc(p.uid)}</b> <button class="pfcopy" onclick="uidCopy('${escA(p.uid)}')" aria-label="UID kopyala">📋</button></div>
           <div class="pflive" id="pfLive">${liveHtml(p.uid)}</div><div class="pfbadges" id="pfBadges">${badgesH(p)}</div></div></div>
-      <div id="pfFamW">${famH(p)}</div>
+      <div id="pfFamW">${famH(p)}</div>${window.svProfilH ? svProfilH(p) : "" /* <sugo-veri> risk, bu ay coin, ailemizde, yakınlık (yalnız yönetici) </sugo-veri> */}
       ${trust(p.uid).replace('class="trust', 'style="font-size:14px" class="trust')}</div>
       <div class="pfacts"><button class="pfmsg" onclick="profMsg('${escA(p.uid)}')">💬 Mesaj at</button>${T || p.uid === String((me && me.bayi_uid) || "109476943") || !can("mesaj") ? "" : (sk ? `<button class="pffol wait" id="pfFol" disabled>${SK("5em")}</button>` : `<button class="${folCls(p)}" id="pfFol" onclick="pfFollow('${escA(p.uid)}')">${folTxt(p)}</button>`)}${typeof aliasEdit === "function" && can("mesaj") ? (sk ? `<button class="pfalias" disabled>🏷️ Takma ad</button>` : `<button class="pfalias" onclick="aliasEdit('${escA(p.uid)}')">🏷️ Takma ad</button>`) : ""}</div>
       <div class="pgrid">
