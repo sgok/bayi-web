@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.110">
+<meta name="build" content="2.1.111">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.110">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.110">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.110">
+<link rel="manifest" href="manifest.json?v=2.1.111">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.111">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.111">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -168,7 +168,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .dkalt.cok { flex-direction: column; } .dkalt.cok > #dkWrap, .dkalt.cok > #payNo { flex: none; width: 100%; }
   .dkrow.dkpar { flex-direction: column; align-items: stretch; gap: 6px; }
   .dkser { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; padding: 2px 0 4px; min-width: 0; scrollbar-width: none; } .dkser::-webkit-scrollbar { display: none; }
-  .dktop { display: grid; gap: 6px; margin-top: 8px; min-width: 0; } .dktop .paychips button { font-size: 14px; padding: 7px 10px; }
+  .dktop { display: grid; gap: 6px; margin-top: 8px; min-width: 0; } .dktop > * { min-width: 0; } /* ızgara öğesi içeriği kadar genişlemesin: uzun adlı çip kartın dışına taşıyordu (16.11 görsel bakış) */ .dktop .paychips button { font-size: 14px; padding: 7px 10px; }
   .dkp { flex: none; width: 78px; display: flex; flex-direction: column; gap: 4px; position: relative; }
   .dkp .dkpi { display: block; width: 78px; height: 66px; padding: 0; margin: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel2); box-sizing: border-box; }
   .dkp .dkpi img { width: 100%; height: 100%; object-fit: cover; display: block; } .dkp .dkpb { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 26px; }
@@ -327,6 +327,14 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .omode { display: inline-block; margin-right: 6px; padding: 0 7px; border-radius: 999px; font-size: 11px; line-height: 18px; font-weight: 700; vertical-align: 2px; background: #33415599; color: var(--muted); } .omode.ovm { background: #dc262633; color: #fecaca; }
   .oseats.omchg > * { animation: omchg .45s ease; } @keyframes omchg { from { opacity: .2; } }
   .oselr { display: flex; align-items: center; min-height: 60px; } .oselr .osel { flex: 1; min-width: 0; } .owset { flex: none; width: 44px; height: 44px; padding: 0; margin-right: 10px; font-size: 18px; }
+  /* 📋 Oda Listesi (W12): çarkın yerinde düğme; başka odaya göz atarken çipler yerine ‹ geri + oda adı */
+  .olistb { flex: none; height: 44px; padding: 0 12px; margin-right: 10px; font-size: 14px; white-space: nowrap; }
+  .ogoz .ogeri { flex: none; width: 44px; height: 44px; padding: 0; margin: 0 8px 0 10px; font-size: 24px; line-height: 1; }
+  .ogozt { flex: 1; min-width: 0; display: flex; flex-direction: column; } .ogozt b, .ogozt .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .olist { max-height: 62vh; overflow-y: auto; margin: 0 -4px; } .olrow { width: 100%; text-align: left; align-items: center; gap: 10px; min-height: 52px; }
+  .olrow .b { flex: 1; min-width: 0; } .olrow .b b, .olrow .b .s { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .olrow .olnum { flex: none; } .olown { box-shadow: inset 3px 0 0 #fbbf24; } .olrow.on { background: #7c3aed33; } .olbiz { color: #fbbf24; }
+  #odaBody.goz > .ochatw { display: none !important; } #odaBody.goz > .opast::before { content: "💬 Bu odanın sohbeti buradan görülemiyor"; display: block; padding: 10px 14px; color: var(--muted); font-size: 13px; }
   .oseat .avw .av { width: 50px; height: 50px; } .oemp .av { background: transparent; border: 2px dashed var(--line); color: var(--muted); font-weight: 600; }
   .onm { width: 100%; margin-top: 7px; font-size: 12px; line-height: 15px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .onm .alo, .oa .alo, .orow .alo { display: none; }
   .osn { font-size: 11px; line-height: 14px; color: var(--muted); white-space: nowrap; }
@@ -716,7 +724,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.110" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.111" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -725,7 +733,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.110" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.111" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -785,7 +793,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.110"></script>
+<script src="emoji.js?v=2.1.111"></script>
 <script>
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
 // 🌐 Sayfa api.sgok.dev'den açıldıysa API aynı kökten (Cloudflare vekili → bayi-web: ayrı bağlantı/TLS yok, iPhone'da daha hızlı).
@@ -802,7 +810,7 @@ let API_YOL = /(^|\.)api\.sgok\.dev$/.test(location.hostname) ? location.origin 
 let API_VPS = API_YOL ? "https://vps.sgok.dev/f/bayi-web" : "", vpsYedekUntil = 0, apiYolAd = "";
 const VPS_KESIN = /^(kapali|hazir-degil|beat-eski)$/, VPS_BUYUK = 1_900_000; let VPS_OKU_MS = 8_000, VPS_YAZ_MS = 57_000; /* let: senaryolar kısaltabilsin */ // Caddy gövde sınırı 2 MB: büyük gövde (resim, ses) hiç Contabo'ya gönderilmez
 const webYol = () => { let m = me; if (!m) try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {} return (m && m.web_yol) || ""; };
-const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_chat_list|room_person_frames|nakit|nakit_hareket|odeme_karti|mahsup_ara|dekont_ozet|dekont_liste|dekont_adres)$|_get$/;
+const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_list|room_chat_list|room_person_frames|nakit|nakit_hareket|odeme_karti|mahsup_ara|dekont_ozet|dekont_liste|dekont_adres)$|_get$/;
 // Contabo atlanırken yoklama: GET API_VPS (bayi-web'in kendi 405'i, CORS'lu, veritabanına dokunmaz; /f/health anahtarsız 403 verir ve CORS başlığı yok)
 let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0;
 function vpsDus() { if (vpsDonAt && Date.now() - vpsDonAt < 30_000) vpsBek = Math.min(60_000, vpsBek * 2); else vpsBek = 10_000; // gidip gelme: katla · ≥ 30 sn kaldıysa baştan
@@ -1577,6 +1585,7 @@ window.addEventListener("popstate", () => { try { if (document.activeElement && 
   if (typeof galS !== "undefined" && galS) { galHide(); return; } // 📸 Oda kişi galerisi (geri tuşu kapatır)
   if (!$("lb").hidden) { $("lb").hidden = true; $("lbImg").src = ""; return; }
   if ($("prof").classList.contains("on")) { if (window.profPop) profPop(); return; }
+  if (typeof odaGoz !== "undefined" && odaGeriKarar(odaGoz, history.state)) { odaGozBit(); return; } // 👀 W12: başka odaya göz atarken geri → bizim oda
   if (setOn()) { const d = Math.max(0, Math.min(setStack.length, Number(history.state && history.state.set) || 0)); // geçmişte kaçıncı kattayız (✕ birkaç katı tek olayda geri alır)
     if (d > 0) { setStack.length = d; setRender(); } else { setStack = []; show(setPrev || "inbox"); } return; } // ⚙️ alt sayfa → üst sayfa; kök → kapat
   if (cur && chatStack.length) { stopMedia(); clearInterval(roomTimer); chatReturn(); return; } // UID'den açılan sohbetten önceki sohbete
@@ -3433,12 +3442,12 @@ window.odaHide = function () { odaOn = false; clearTimeout(odaT); odaT = 0; };
 const odaVis = () => odaOn && document.visibilityState === "visible" && !!$("p-oda") && $("p-oda").getClientRects().length > 0;
 async function odaTick() { clearTimeout(odaT); odaT = 0; if (!odaOn) return; if (odaVis() && !odaBusy) await odaLoad(); odaMicApply(); odaChHead(); odaChDbMaybe(); if (odaOn) odaT = setTimeout(odaTick, 5000); }
 document.addEventListener("visibilitychange", () => { if (odaOn && document.visibilityState === "visible") odaTick(); }); // geri gelince beklemeden
-async function odaLoad() { odaBusy = true; let d = null; const sel = odaSel, rw = yonOk() && Date.now() - odaRwAt >= 29_000; // rw: "oda izle" (30 sn'de bir; tablet odayı açık tutar) · S: yalnız yönetici
-  try { d = await api("room_live", { ...(sel ? { room: sel } : {}), ...(rw ? { rw: 1 } : {}) }); } catch (e) {} odaBusy = false; if (rw && d && !d.error) { odaRwAt = Date.now(); if (!odaRwBek) odaRwBek = odaRwAt; } /* W11: yalnız rw GERÇEKTEN gittiyse (kimlik doğrulanmadan açılan Oda 30 sn beklemesin) */
+async function odaLoad() { odaBusy = true; let d = null; const sel = odaSel, goz = !!odaGoz, rw = !goz && yonOk() && Date.now() - odaRwAt >= 29_000; // rw: "oda izle" (30 sn'de bir; tablet odayı açık tutar) · S: yalnız yönetici
+  try { d = await api("room_live", { ...(sel ? { room: sel } : {}), ...(rw ? { rw: 1 } : {}), ...(goz ? { goz: 1 } : {}) }); /* 👀 göz atma: tablete "oda izle" gitmez */ } catch (e) {} odaBusy = false; if (rw && d && !d.error) { odaRwAt = Date.now(); if (!odaRwBek) odaRwBek = odaRwAt; } /* W11: yalnız rw GERÇEKTEN gittiyse (kimlik doğrulanmadan açılan Oda 30 sn beklemesin) */
   if (!d || d.error || !d.report || !d.report.room) { odaErr = (d && d.error) || (d && d.report && !d.report.room ? "Oda bulunamadı" : "Bağlantı yok"); odaDraw(); return; }
   if (sel !== odaSel) return; odaErr = ""; odaData = d.report; odaNote(d.report.room);
   const ow = (d.report.rooms || []).find((x) => x && x.own); if (ow && String(ow.id) === String(d.report.room.id) && d.report.room.mode) odaModeSet({ room: ow.id, mode: d.report.room.mode, live: d.report.room.live !== false });
-  try { localStorage.setItem("bw_oda", JSON.stringify(odaData)); } catch (e) {} odaDraw(); }
+  if (!odaGoz) try { localStorage.setItem("bw_oda", JSON.stringify(odaData)); } catch (e) {} odaDraw(); } // göz atılan oda saklanmaz (yeniden açılınca bizim oda)
 function odaNote(r) { const k = String(r.id), h = odaHist[k] || (odaHist[k] = {}), t = Date.now(); let ch = false;
   for (const s of r.seats || []) if (s && s.uid) { const u = String(s.uid), x = h[u]; if (!x || t - x.b > 60_000) ch = true; h[u] = { n: s.n || (x && x.n) || "", av: s.av || (x && x.av) || "", no: s.no, a: x && t - x.b < 15 * 60_000 ? x.a : Date.parse(s.since || "") || t, b: t }; }
   for (const kk of Object.keys(odaHist)) for (const u of Object.keys(odaHist[kk])) if (t - odaHist[kk][u].b > 3600_000) { delete odaHist[kk][u]; ch = true; }
@@ -3493,7 +3502,7 @@ function odaFrame(uid, f) { if (!f || !uid) return null; const key = String(f.k 
 window.odaFrErr = function (im) { try { odaFrBad.add(im.getAttribute("src")); } catch (e) {} im.remove(); };
 function odaParts() { const d = odaData, r = d && d.room;
   if (!r) return { hd: `<div class="ohd"><div class="ocv"><span class="sk" style="width:100%;height:100%"></span></div><div class="b"><b>${odaErr ? "🎙️ Oda" : '<span class="sk" style="width:9em"></span>'}</b><div class="s">${odaErr ? "❌ " + esc(odaErr) : '<span class="sk" style="width:12em"></span>'}</div><div class="s onote">&nbsp;</div></div></div>`,
-    chips: `<div class="oselr"><div class="sub osel"><button disabled><span class="sk" style="width:8em"></span></button></div>${odaGear()}</div>`, top: '<div class="otopr"></div>', lay: odaLay(null, ODA_SEATS).key,
+    chips: odaGoz ? odaGozBar(null) : `<div class="oselr"><div class="sub osel"><button disabled><span class="sk" style="width:8em"></span></button></div>${odaGear()}</div>`, top: '<div class="otopr"></div>', lay: odaLay(null, ODA_SEATS).key,
     seats: (() => { const L = odaLay(null, ODA_SEATS); return Array.from({ length: ODA_SEATS }, (_, i) => { const p = L.pos[i]; return `<div class="oseat oemp" data-no="${i + 1}" style="grid-row:${p.row};grid-column:${p.start} / span ${p.span}"><div class="avw"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div></div><div class="onm">&nbsp;</div><div class="osn">&nbsp;</div></div>`; }); })(), rest: "", past: "" };
   const rooms = (d.rooms || []).filter((x) => x && x.id), seats = (r.seats || []).filter((s) => s).slice().sort((a, b) => Number(a.no) - Number(b.no)), kapali = r.live === false;
   for (let no = seats.length + 1; no <= Math.min(40, Number(r.seat_count) || 0); no++) seats.push({ no, uid: "", mic: "empty" }); // koltuk dizisi kısa geldiyse: oda koltuk sayısı kadar
@@ -3503,7 +3512,7 @@ function odaParts() { const d = odaData, r = d && d.room;
   const hd = `<div class="ohd"><div class="ocv">${r.cover ? `<img src="${esc(avUrl(r.cover))}" alt="" loading="lazy" onerror="this.remove()">` : "🎙️"}</div><div class="b"><b>${mp}${esc(r.title || "Oda " + r.id)}</b>
     <div class="s">${kapali ? '<b style="color:#f87171">🔴 Oda kapalı</b>' : `👥 <b style="color:var(--text)">${nf(r.online)}</b> çevrimiçi${vw} · 🪑 ${on}/${seats.length}`} · ID ${esc(String(r.id))}${r.locked ? " · 🔒 şifreli" : ""}${r.tag ? " · " + esc(r.tag) : ""}${odaErr ? ` · <span style="color:var(--warn)">⚠️ ${esc(odaErr)}</span>` : kapali ? "" : ' · <span class="olive">● canlı</span>'}</div>
     <div class="s onote">${r.notice ? "📢 " + esc(r.notice) : "&nbsp;"}</div></div></div>`;
-  const chips = `<div class="oselr"><div class="sub osel">${rooms.map((x) => `<button class="${String(x.id) === String(r.id) ? "on" : ""}" onclick="odaPickRoom('${esc(String(x.id))}')">${x.own ? "🏠 " : ""}${esc(x.title || x.id)}</button>`).join("")}</div>${odaGear()}</div>`; // her zaman (yer baştan ayrılı)
+  const chips = odaGoz ? odaGozBar(r) : `<div class="oselr"><div class="sub osel">${rooms.map((x) => `<button class="${String(x.id) === String(r.id) ? "on" : ""}" onclick="odaPickRoom('${esc(String(x.id))}')">${x.own ? "🏠 " : ""}${esc(x.title || x.id)}</button>`).join("")}</div>${odaGear()}</div>`; // her zaman (yer baştan ayrılı) · 👀 başka odadayken: ‹ geri + oda adı
   const now = new Set(seats.filter((s) => s.uid).map((s) => String(s.uid))), h = odaHist[String(r.id)] || {};
   const past = Array.isArray(r.recent) ? r.recent.filter((x) => x && x.uid).map((x) => [String(x.uid), { n: x.n, av: x.av, no: x.no, a: Date.parse(x.from) || 0, b: Date.parse(x.to) || 0, vip: x.vip, svip: x.svip }]).filter(([, x]) => Date.now() - x.b < 3600_000).sort((a, b) => b[1].b - a[1].b) // sunucudan
     : Object.entries(h).filter(([u, x]) => !now.has(u) && Date.now() - x.b < 3600_000).sort((a, b) => b[1].b - a[1].b); // yedek: bu telefonda görülenler
@@ -3519,11 +3528,46 @@ function odaParts() { const d = odaData, r = d && d.room;
 let odaRank = [];
 window.odaRankOpen = function () { const rows = odaRank.map((x, i) => { const o = vipOf(x.vip, x.svip, true); return `<button class="row orow" onclick="closeModal();odaPick('${esc(String(x.uid))}')"><span class="ornk r${i + 1}">${i + 1}</span><div class="avw${vipAttr(o)}"><div class="av">${avHtml(x.n, x.av)}</div>${vipLab(o)}</div><div class="b"><b>${nmH(x.uid, x.n || x.uid)}</b></div><b style="color:#fbbf24;flex:none">${nf(x.value)}</b></button>`; }).join("");
   openModal(`<h3 style="margin:0 0 8px">🏆 Bugün en çok hediye gönderenler</h3>${rows || '<div class="row s">Henüz hediye gönderen yok.</div>'}<button style="width:100%;margin-top:12px" onclick="closeModal()">Kapat</button>`); };
-function odaGear() { return isYetkili() ? `<button class="owset" aria-label="İzlenen odalar" title="İzlenen odalar" onclick="odaWatchEdit()">⚙️</button>` : ""; } // ⚙️ izlenen odalar: üstte, oda çiplerinin sağında (sahip / yetkili)
+// 📋 W12 (kullanıcı 16.11: "çark simgesi yerine Oda Listesi butonu olsun"): çarkın yerinde herkese "Oda Listesi"; ⚙️ izlenen odalar ayarı listenin altında (sahip / yetkili)
+function odaGear() { return `<button class="olistb" aria-label="Oda Listesi" title="Oda Listesi" onclick="odaListOpen()">📋 Oda Listesi</button>`; }
+// <oda-liste> (saf işlevler: tests/odalistesi_test.ts metin olarak çalıştırır)
+/** Oda listesi sırası: en çok kişi → en az; eşitlikte kamerası açık önce, sonra ad */
+function odaLSirala(L) { return (L || []).filter((x) => x && x.id).slice().sort((a, b) => (Number(b.online) || 0) - (Number(a.online) || 0) || Number(!!b.video) - Number(!!a.video) || String(a.title || "").localeCompare(String(b.title || ""), "tr")); }
+/** "az önce" / "5 dk önce" / "3 sa önce" / "1 gün önce" */
+function odaOnce(iso, now) { const t = Date.parse(iso || ""); if (!t) return ""; const dk = Math.max(0, Math.floor((now - t) / 60000)); return dk < 1 ? "az önce" : dk < 60 ? dk + " dk önce" : dk < 1440 ? Math.floor(dk / 60) + " sa önce" : Math.floor(dk / 1440) + " gün önce"; }
+/** Bir satır: oda adı, kişi sayısı, 📹 kamera açık, 🖼️ görüntü (ne kadar taze), bizim oda belirgin; şu an açık olan oda "on" */
+function odaLSatir(x, now, acik) { const id = String(x.id), own = !!x.own, ek = [];
+  if (own) ek.push('<b class="olbiz">⭐ bizim oda</b>'); if (x.video) ek.push("📹 kamera açık" + (Number(x.cam) ? ` (${Number(x.cam)})` : "")); if (x.kare) ek.push("🖼️ görüntü " + odaOnce(x.kare, now)); if (!ek.length) ek.push("🎙️ sesli");
+  return `<button class="row olrow${own ? " olown" : ""}${String(acik) === id ? " on" : ""}" data-oda="${esc(id)}" onclick="odaListPick('${esc(id)}')"><div class="b"><b>${own ? "🏠 " : ""}${esc(x.title || "Oda " + id)}</b><div class="s">${ek.join(" · ")}</div></div><b class="olnum">👥 ${nf(Number(x.online) || 0)}</b></button>`; }
+/** Listeden seçim: bizim oda → göz atma biter; başka oda → göz atma (ilk geçişte geçmişe bir kayıt: geri tuşu bizim odaya döndürür) */
+function odaLSec(goz, x) { return !x || x.own ? { tur: "kendi" } : { tur: "goz", goz: { id: String(x.id), title: String(x.title || ""), online: Number(x.online) || 0 }, push: !goz }; }
+/** Geri hareketi (popstate): göz atılırken geçmişteki göz kaydından çıkıldıysa → bizim odaya dön */
+function odaGeriKarar(goz, st) { return !!goz && !(st && st.odaGoz); }
+// </oda-liste>
+let odaGoz = null, odaL = (() => { try { const x = JSON.parse(localStorage.getItem("bw_oda_list") || "null"); return x && Array.isArray(x.rooms) ? x : null; } catch (e) { return null; } })(); // 👀 göz atılan oda (bellekte; yeniden açılınca bizim oda) · 📋 son liste (telefonda saklı → anında çizilir)
+function odaLHtml() { const now = Date.now(), L = odaLSirala(odaL && odaL.rooms), acik = odaData && odaData.room ? odaData.room.id : "";
+  return L.length ? L.map((x) => odaLSatir(x, now, acik)).join("") : `<div class="row s">${odaL ? "Listede oda yok." : "⏳ Liste yükleniyor…"}</div>`; }
+function odaLAt() { return odaL && odaL.at ? `Sugo önerilen odaları · ${hm(Date.parse(odaL.at))} kaydı (15 dk'da bir) · 🖼️ = elimizde görüntüsü var` : "Sugo önerilen odaları"; }
+async function odaListOpen() { let son = odaLHtml();
+  openModal(`<h3 style="margin:0 0 4px">📋 Oda Listesi</h3><div class="s" id="odaLAt" style="margin-bottom:8px">${odaLAt()}</div><div class="olist" id="odaLList">${son}</div>
+    ${isYetkili() ? `<button style="width:100%;margin-top:10px;min-height:44px" onclick="closeModal();odaWatchEdit()">⚙️ İzlenen odalar (ayar)</button>` : ""}<button style="width:100%;margin-top:8px;min-height:44px" onclick="closeModal()">Kapat</button>`);
+  let d = null; try { d = await api("room_list", {}); } catch (e) {} const box = $("odaLList"); if (!box) return;
+  if (!d || d.error || !d.report) { if (!odaL) box.innerHTML = `<div class="row s">❌ ${esc((d && d.error) || "Bağlantı yok")}</div>`; return; }
+  odaL = { at: d.report.at || null, rooms: (d.report.rooms || []).slice(0, 200) }; try { localStorage.setItem("bw_oda_list", JSON.stringify(odaL)); } catch (e) {}
+  const h = odaLHtml(); if (h !== son) box.innerHTML = h; const a = $("odaLAt"); if (a) a.textContent = odaLAt(); } // değişmeyen liste yeniden çizilmez
+function odaListPick(id) { const x = ((odaL && odaL.rooms) || []).find((r) => String(r.id) === String(id)); closeModal(); const k = odaLSec(odaGoz, x || { id, own: false });
+  if (k.tur === "kendi") { if (odaGoz) odaGeriBas(); else odaPickRoom(x && x.own ? String(x.id) : ""); return; } // bizim oda: göz atma biter (geçmiş kaydı da düşer)
+  if (k.push) history.pushState({ odaGoz: 1 }, ""); odaGoz = k.goz; odaSel = k.goz.id; odaRwAt = 0; odaRwBek = 0; odaData = null; odaErr = ""; odaDraw(); odaTick(); } // odaSel saklanmaz
+function odaGozBit() { if (!odaGoz) return; const own = (((odaData && odaData.rooms) || []).find((x) => x && x.own) || ((odaL && odaL.rooms) || []).find((x) => x && x.own) || {}).id;
+  odaGoz = null; odaData = (() => { try { const x = JSON.parse(localStorage.getItem("bw_oda") || "null"); return x && x.room ? x : null; } catch (e) { return null; } })(); odaDraw(); odaPickRoom(own ? String(own) : ""); }
+function odaGeriBas() { if (history.state && history.state.odaGoz) history.back(); else odaGozBit(); } // ekrandaki ‹: geçmişteki kaydı da düşür
+function odaGozBar(r) { const t = (r && r.title) || (odaGoz && odaGoz.title) || "Oda " + (odaGoz ? odaGoz.id : ""), n = r && typeof r.online === "number" ? r.online : odaGoz ? odaGoz.online : 0;
+  return `<div class="oselr ogoz"><button class="ogeri" aria-label="Bizim odaya dön" title="Bizim odaya dön" onclick="odaGeriBas()">‹</button><div class="ogozt"><b>👀 ${esc(t)}</b><span class="s">Bizim oda değil · 👥 ${nf(n)} · ‹ ile bizim odaya</span></div>${odaGear()}</div>`; }
 /** Bölüm bölüm, yalnız değişeni yenile; koltuk ızgarasında yalnız değişen koltuk (yeni oturan kısa vurgulanır) */
 function odaDraw() { const box = $("odaBody"); if (!box) return; const p = odaParts();
   if (!box.querySelector(":scope > .oselw + .ohdw + .otopw + .oseats + .otbn + .orest" + (yonOk() ? " + .ochatw" : "") + " + .opast")) { box.innerHTML = `<div class="oselw"></div><div class="ohdw"></div><div class="otopw"></div><div class="oseats"></div><div class="otbn">&nbsp;</div><div class="orest"></div>${odaChShell()}<div class="opast"></div>`; odaDrawn = {}; } // oda seçici + ⚙️ en üstte · 💬 sohbet dinleyicilerin altında
   const put = (sel, k, h) => { if (odaDrawn[k] !== h) { const el = box.querySelector(sel); if (odaDrawn[k] === undefined) el.innerHTML = h; else morph(el, h); odaDrawn[k] = h; } }; // ilk çizim innerHTML; sonrası yerinde yama (değişmeyen düğüm / resim yerinde kalır)
+  if (box.classList.contains("goz") !== (!!odaGoz && yonOk())) box.classList.toggle("goz", !!odaGoz && yonOk()); // 👀 göz atılan odada sohbet kutusu yerine tek satır (tablet o odaya girmez)
   put(":scope > .ohdw", "hd", p.hd); put(":scope > .oselw", "chips", p.chips); put(":scope > .otopw", "top", p.top); put(":scope > .opast", "past", p.past);
   if (odaDrawn.rest !== p.rest) odaChKeep(() => { const re = box.querySelector(":scope > .orest"), rid = odaChRoom();
     if (re.__rid !== rid || !odaDrawn.seen) { re.__rid = rid; re.style.minHeight = ""; } else if (box.offsetParent) { const h0 = Math.ceil(re.getBoundingClientRect().height); if (h0 > (parseInt(re.style.minHeight) || 0)) re.style.minHeight = h0 + "px"; }
@@ -3880,9 +3924,10 @@ async function checkUpdate() { if (!BUILD || BUILD === "__BUILD__" || updCheckin
 function updBusy() { const a = document.activeElement, typing = a && a.matches && a.matches("input, textarea, [contenteditable]") && String(a.value || a.textContent || "").trim();
   return !!(typing || ($("txt") && $("txt").value.trim()) || ($("modal") && $("modal").style.display === "flex") || ($("lb") && !$("lb").hidden) || loginBusy || (typeof replyTo !== "undefined" && replyTo)); }
 function safeReload() { clearTimeout(updT); if (updBusy()) { updT = setTimeout(safeReload, 8000); return; }
-  try { localStorage.setItem("bw_resume", JSON.stringify({ at: Date.now(), cur: cur && $("chat").classList.contains("on") ? cur : null, tab: curTab, a: cur ? msgAnchor() : null })); } catch (e) {}
+  // W13: kaldığı yer YENİLEME ANINDA yazılır (önceden çağrı anında yazılıyordu: arada bildirimden açılan sohbet yenilemede kayboluyordu)
+  const keep = () => { try { localStorage.setItem("bw_resume", JSON.stringify({ at: Date.now(), cur: cur && $("chat").classList.contains("on") ? cur : null, tab: curTab, a: cur ? msgAnchor() : null })); } catch (e) {} };
   // Telefon önbelleğindeki eski uygulama kabuğu silinir: yenileme kesin yeni sürümü ağdan alır (sw.js "önce önbellek" verir)
-  let gone = false; const go = () => { if (!gone) { gone = true; location.reload(); } }; setTimeout(go, 1500);
+  let gone = false; const go = () => { if (!gone) { gone = true; keep(); location.reload(); } }; keep(); setTimeout(go, 1500);
   try { caches.keys().then((ks) => Promise.all(ks.filter((k) => /^bw-shell/.test(k)).map((k) => caches.delete(k)))).then(go, go); } catch (e) { go(); } }
 function takeResume() { try { const r = JSON.parse(localStorage.getItem("bw_resume") || "null"); localStorage.removeItem("bw_resume"); return r && Date.now() - r.at < 120_000 ? r : null; } catch (e) { return null; } }
 setTimeout(statLine, 0); setInterval(checkUpdate, 45_000); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); }); setTimeout(checkUpdate, 8000);
@@ -4314,30 +4359,45 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("mess
     if (cur && (!pc || pc === cur)) { if (!liveFresh(cur)) schedChat(); idLive(); } else { schedInbox(); if (!cur) loadDm(); } }
   if (m.kind === "open" && m.url) navMsg(m.url); });
 try { navigator.serviceWorker.startMessages(); } catch (e) {} // SW mesaj kuyruğu açık (yalnız addEventListener ile bazı tarayıcılar kuyruğu bekletebiliyor)
+// <bildirim-git>
 // Uygulama ÖNDEYKEN bildirime dokunma (kullanıcı 11.11, Oda / Durum'dayken): sayfa zaten görünür → görünür olma / odak olayı gelmez, tek yol SW mesajı.
 // O da kaybolursa diye SW ikinci kanaldan (BroadcastChannel "bw-nav") da söyler; aynı hedef navLast ile bir kez açılır.
-function navMsg(url) { navOpen(url); try { caches.open("bw-nav").then((ch) => ch.delete("./__open")).catch(() => 0); } catch (x) {} } // önbellekteki kopya ikinci kez açmasın
+// W13 (16.11): önbellekteki hedef ancak sohbet GERÇEKTEN açıldıktan sonra silinir (navDone). Önceden mesaj gelir gelmez siliniyordu: uygulamaya
+// dönüşte sürüm denetimi sayfayı yenilerse (safeReload) açılmakta olan hedef kayboluyor, sayfa eski sekmesiyle açılıyordu.
+function navMsg(url) { navOpen(url); }
 try { const bc = new BroadcastChannel("bw-nav"); bc.onmessage = (e) => { const m = e.data || {}; if (m.kind === "open" && m.url && tok) navMsg(m.url); }; } catch (e) {}
 // 🔔 Bildirime dokunma → ilgili yer (?c= sohbet, ?t= sekme, ?pz= onay isteği). iPhone'da uyuyan sayfaya SW mesajı kaybolabiliyor: SW hedefi önbelleğe de yazar
 // (caches "bw-nav" ./__open {url, at}); sayfa açılınca / öne gelince okur (2 dk geçerli), siler ve açar. Aynı hedef 5 sn içinde iki kez açılmaz. Kaldığı yere dönüşten (resume) önce gelir.
 let navLast = { k: "", at: 0 }, navReady = false, navBusy = false;
-const popWait = (go) => new Promise((res) => { let t = 0; const f = () => { clearTimeout(t); res(); }; t = setTimeout(() => { removeEventListener("popstate", f); res(); }, 700); addEventListener("popstate", f, { once: true }); go(); });
+const navKey = (url) => { try { const u = new URL(url, location.href), c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz"); return c ? "c" + c : t ? "t" + t : pz ? "pz" + pz : u.hash === "#mola" ? "mola" : ""; } catch (e) { return ""; } };
+// hedef açıldı: önbellekteki kopya (aynı hedefse) silinir; bu arada yeni bir bildirime dokunulduysa onunki kalır
+async function navDone(k) { try { if (!window.caches) return; const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return; const x = await r.json().catch(() => ({}));
+  if (!x || !x.url || navKey(x.url) === k || Date.now() - (Number(x.at) || 0) >= 120_000) await ch.delete("./__open"); } catch (e) {} }
+// iPhone'da uyanan sayfada geri hareketinin olayı geç gelebiliyor: 0,7 sn yetmiyordu (geç gelen olay yeni açılan sohbeti kapatabiliyordu) → 2 sn
+const popWait = (go) => new Promise((res) => { let t = 0; const f = () => { clearTimeout(t); res(); }; t = setTimeout(() => { removeEventListener("popstate", f); res(); }, 2000); addEventListener("popstate", f, { once: true }); go(); });
 async function navReset(toChat) { if ($("modal").style.display === "flex") { if ($("pinIn") && window.__pinRes) __pinRes(""); else { $("modal").style.display = "none"; $("modalBox").innerHTML = ""; } } // açık pencere / PIN sorusu kapanır
+  try { odaWhoClose(); } catch (e) {} try { if ($("msgMenu") && !$("msgMenu").hidden) msgMenuClose(); } catch (e) {} // 👤 Oda kişi menüsü · uzun basma menüsü
+  if (typeof galS !== "undefined" && galS) await popWait(() => history.back()); // 📸 Oda kişi galerisi (tam ekran, geçmişte kaydı var): kapanmazsa sohbet altında kalıyordu
   if (!$("lb").hidden) await popWait(() => history.back());
   for (let i = 0; i < 4 && ($("prof").classList.contains("on") || setOn()); i++) await popWait(() => ($("prof").classList.contains("on") || !setOn() ? history.back() : history.go(-setStack.length))); // profil / ayarlar geçmişten düşer
+  if (typeof odaGoz !== "undefined" && odaGoz) { if (history.state && history.state.odaGoz) await popWait(() => history.back()); if (odaGoz) odaGozBit(); } // 👀 W12: başka odaya göz atma kapanır (geçmiş kaydı düşer → Oda'ya dönünce bizim oda; sohbetten geri → mesaj listesi)
   if (!toChat) for (let i = 0; i < 4 && $("chat").classList.contains("on"); i++) await popWait(() => history.back()); } // sekmeye: sohbetten listeye
 async function navOpen(url) { let u; try { u = new URL(url, location.href); } catch (e) { return false; } const c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz");
-  if (!c && !t && !pz && u.hash === "#mola") { if (navLast.k === "mola" && Date.now() - navLast.at < 5000) return true; navLast = { k: "mola", at: Date.now() }; molaSayfa(); return true; } // ☕ mola bildirimi
-  if (!c && !t && !pz) return false; const k = c ? "c" + c : t ? "t" + t : "pz" + pz; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
-  if (pz) { pzLoad(pz); return true; } // onay bandı her ekranın üstünde: ekran değişmez
-  // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
-  await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } return true; }
+  const k = navKey(u.href); if (!k) return false; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
+  try { if (k === "mola") molaSayfa(); // ☕ mola bildirimi
+    else if (pz) pzLoad(pz); // onay bandı her ekranın üstünde: ekran değişmez
+    // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
+    else { await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); tab(t); } }
+  } catch (e) { navLast = { k: "", at: 0 }; return false; } // yarıda kaldı: sonraki deneme (öne gelme yoklaması) yeniden açabilsin
+  await navDone(k); return true; }
 async function takeNavOpen(force) { if (!tok || !(force || navReady) || navBusy || !window.caches) return false; navBusy = true;
-  try { const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return false; const x = await r.json().catch(() => ({})); await ch.delete("./__open");
-    return !!(x && x.url && Date.now() - (Number(x.at) || 0) < 120_000) && (await navOpen(x.url)); } catch (e) { return false; } finally { navBusy = false; } }
-// iPhone: dokununca uygulama ÖNCE öne gelir, SW hedefi önbelleğe biraz SONRA yazar → öne gelişte bir kez değil, 3 sn içinde birkaç kez bakılır (yerel önbellek: ağ yok)
-let navPollT = []; const navPoll = () => { navPollT.forEach(clearTimeout); takeNavOpen(); navPollT = [600, 1500, 3000].map((ms) => setTimeout(() => { if (!document.hidden) takeNavOpen(); }, ms)); };
+  try { const ch = await caches.open("bw-nav"), r = await ch.match("./__open"); if (!r) return false; const x = await r.json().catch(() => ({}));
+    if (!(x && x.url && Date.now() - (Number(x.at) || 0) < 120_000)) { await ch.delete("./__open"); return false; } // bozuk / süresi geçmiş
+    return await navOpen(x.url); } catch (e) { return false; } finally { navBusy = false; } } // silme navOpen bitince (navDone)
+// iPhone: dokununca uygulama ÖNCE öne gelir, SW (uyuyorsa uyanıp) hedefi önbelleğe biraz SONRA yazar → öne gelişte 10 sn boyunca birkaç kez bakılır (yerel önbellek: ağ yok)
+let navPollT = []; const navPoll = () => { navPollT.forEach(clearTimeout); takeNavOpen(); navPollT = [600, 1500, 3000, 6000, 10000].map((ms) => setTimeout(() => { if (!document.hidden) takeNavOpen(); }, ms)); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden) navPoll(); }); addEventListener("pageshow", navPoll); addEventListener("focus", navPoll);
+// </bildirim-git>
 
 // ---------- anlık güncelleme (yeni mesaj / gönderim sonucu) + yedek yoklama
 // Anlık mesaj: sohbet açıksa hemen eklenir, listedeki satır hemen güncellenir (sonraki yenileme sadece doğrular)
@@ -4776,7 +4836,7 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.110"></script>
-<script src="durum.js?v=2.1.110"></script>
+<script src="profile.js?v=2.1.111"></script>
+<script src="durum.js?v=2.1.111"></script>
 </body>
 </html>
