@@ -27,13 +27,16 @@
     .svrow .b { min-width: 0; } .svrow .b b, .svrow .b .s { overflow-wrap: anywhere; } .svrow .sag { flex: none; text-align: right; font-weight: 700; max-width: 40%; overflow-wrap: anywhere; }
     .svrz { display: inline-block; font-size: 11px; font-weight: 600; line-height: 1.4; padding: 0 6px; margin-left: 4px; border-radius: 999px; border: 1px solid #f59e0b; color: #f59e0b; vertical-align: middle; white-space: nowrap; }
     .svrz.ok { border-color: #10b981; color: #10b981; } .svrz.kot { border-color: #ef4444; color: #ef4444; }
-    .svpf { margin: 8px 0 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); min-height: 20px; } .svpf b { color: var(--text); }
-    .svpf .svl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; } .svpf button { padding: 3px 10px; font-size: 13px; border-radius: 999px; }
+    .svpf { margin: 8px 0 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); } .svpf b { color: var(--text); }
+    /* W24: dört satırın yeri baştan ayrılı (iskelet de dört satır, her satır 26 px, tek satır; uzunsa yatay kayar): sunucu cevabı gelince alttaki kartlar inmez */
+    .svpf > div { height: 26px; line-height: 26px; white-space: nowrap; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; } .svpf > div::-webkit-scrollbar { display: none; }
+    .svpf .svl { display: flex; flex-wrap: nowrap; gap: 4px; align-items: center; } .svpf .svl > * { flex: none; } .svpf .svl .sk { margin: 0; } .svpf button { padding: 2px 10px; font-size: 13px; line-height: 18px; border-radius: 999px; }
     .svkart { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--tint, rgba(127,127,127,.08)); max-width: 260px; }
     .svkart .svkb { font-weight: 700; font-size: 13px; } .svkart .svkm { margin-top: 4px; overflow-wrap: anywhere; } .svkart img { display: block; max-width: 100%; max-height: 160px; border-radius: 8px; margin-top: 6px; }
     .svkart .svkn { font-size: 12px; color: var(--muted); margin-top: 4px; } .svkart.coz { opacity: .8; }
     .svmore { display: block; width: calc(100% - 20px); margin: 10px; padding: 11px; border-radius: 12px; }
-    .svtbl { width: 100%; table-layout: fixed; } .svtbl td, .svtbl th { overflow-wrap: anywhere; }`;
+    .svtbl { width: calc(100% - 20px); max-width: calc(100% - 20px); margin: 0 10px; table-layout: fixed; box-sizing: border-box; } .svtbl td, .svtbl th { overflow-wrap: anywhere; } .svtbl .svtn { width: 5.2em; } /* W24: genel tablo kenar boşluğu (10 px) + %100 genişlik sağdan kırpıyordu (390 / 600) */
+    .svtbl td.n, .svtbl th.n { white-space: nowrap; font-variant-numeric: tabular-nums; }`;
     document.head.appendChild(st); }
 
   // ---------------------------------------------------------------- 🛰️ Ajansım › Sugo
@@ -138,7 +141,7 @@
   function turH() {
     if (!tur) return SKR(4); if (tur.hata) return bos("❌ " + esc(tur.hata));
     return `<h3>🧩 Tanınmayan mesaj türleri <span class="s">(${N(tur.toplam)} mesaj · ${N(tur.cozulemeyen)} çözülemedi)</span></h3>` +
-      ((tur.liste || []).length ? `<table class="svtbl"><tr><th>Tür</th><th class="n">Mesaj</th><th class="n">Kartla</th></tr>${tur.liste.map((x) => `<tr><td>${esc(x.ad)}</td><td class="n">${N(x.n)}</td><td class="n">${N(x.cozulen)}</td></tr>`).join("")}</table>` : bos("Tanınmayan tür yok."));
+      ((tur.liste || []).length ? `<table class="svtbl"><colgroup><col><col class="svtn"><col class="svtn"></colgroup><tr><th>Tür</th><th class="n">Mesaj</th><th class="n">Kartla</th></tr>${tur.liste.map((x) => `<tr><td>${esc(x.ad)}</td><td class="n">${N(x.n)}</td><td class="n">${N(x.cozulen)}</td></tr>`).join("")}</table>` : bos("Tanınmayan tür yok."));
   }
   const IS_DURUM = (x) => !x ? "—" : x.hata ? "⚠️ " + esc(x.hata) : x.son ? "✓ " + T(x.son) : "bekliyor";
   function isH() {
@@ -182,12 +185,12 @@
     return `<div class="svpf" id="svPf" data-uid="${escA(uid)}">${pfIc(uid, c)}</div>`;
   };
   function pfIc(uid, c) {
-    if (!c) return `<div class="svl"><span class="sk" style="width:9em"></span></div>`;
+    if (!c) return [9, 13, 8, 11].map((w) => `<div class="svl"><span class="sk" style="width:${w}em"></span></div>`).join(""); // dört satır yeri (kayma yok)
     const out = [];
     const r = c.risk || {}, rk = rz(r.kodlar), app = r.uygulama != null ? `<span class="svrz" title="Sugo kayıt uygulaması kodu (anlamı doğrulanmadı)">📱 uyg. ${esc(r.uygulama)}</span>` : "";
-    if (rk || app) out.push(`<div class="svl">${rk}${app}</div>`);
-    if (c.coin) out.push(`<div>🪙 Panelde bu ay aldığı: <b>${N(c.coin.bu_ay)} coin</b></div>`);
-    if (c.aile_uye) out.push(`<div>👪 Ailemizde${c.aile_uye.rol != null ? " · " + esc(rolAd(c.aile_uye.rol)) : ""}${c.aile_uye.son_aktif ? " · son aktif " + T(c.aile_uye.son_aktif) : ""}</div>`);
+    out.push(rk || app ? `<div class="svl">⚠️ ${rk}${app}</div>` : `<div>⚠️ Sugo risk işareti yok</div>`);
+    out.push(c.coin ? `<div>🪙 Panelde bu ay aldığı: <b>${N(c.coin.bu_ay)} coin</b></div>` : `<div>🪙 Panelde bu ay coin kaydı yok</div>`);
+    out.push(c.aile_uye ? `<div>👪 Ailemizde${c.aile_uye.rol != null ? " · " + esc(rolAd(c.aile_uye.rol)) : ""}${c.aile_uye.son_aktif ? " · son aktif " + T(c.aile_uye.son_aktif) : ""}</div>` : `<div>👪 Ailemizde kaydı yok</div>`);
     const cp = c.cp;
     out.push(`<div class="svl">💞 Yakınlık: ${cp ? `<b>seviye ${N(cp.seviye)}</b> · puan ${N(cp.puan)}${cp.sonraki_puan ? " / " + N(cp.sonraki_puan) : ""}${cp.tur_adi ? " · " + esc(cp.tur_adi) : ""} <span class="s">(${T(cp.at)})</span>` : '<span class="s">bilinmiyor</span>'}
       <button onclick="svCp('${escA(uid)}')"${c.cpBusy ? " disabled" : ""}>${c.cpBusy ? "⏳" : cp ? "tazele" : "Sugo'dan oku"}</button>${c.cpHata ? ` <span class="s">${esc(c.cpHata)}</span>` : ""}</div>`);
