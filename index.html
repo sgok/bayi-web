@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.126">
+<meta name="build" content="2.1.127">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.126">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.126">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.126">
+<link rel="manifest" href="manifest.json?v=2.1.127">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.127">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.127">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -343,7 +343,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .oseat { position: relative; display: flex; flex-direction: column; align-items: center; height: 98px; min-width: 0; padding: 4px 2px 0; margin: 0; border: 0; background: none; border-radius: 12px; font: inherit; color: inherit; }
   .oseat.ohost { height: 112px; } .oseat.ohost .avw .av { width: 64px; height: 64px; } .oseat.ohost .ono { left: calc(50% - 46px); } .oseat.osm .avw .av { width: 44px; height: 44px; } .oseat.osm .ono { left: 0; } .oseat.ovid { height: auto; padding: 0 3px; }
   .ovbox { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; background: #1e293b; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--muted); }
-  .ovbox .av { width: 64px; height: 64px; } .ovbox > img.ovim { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; } .oemp .ovbox { background: transparent; border: 2px dashed var(--line); }
+  .oseats.ovdikey .oseat.ocamon .ovbox { aspect-ratio: 9 / 16; } /* W58: görüntü izleme AÇIKKEN ve kamerası açık koltuk sayısı 1–2 ise kamerası açık koltukların kutusu dikey 9:16; 3+ kare (1:1); kamerasız kutular kare. Sayı oda verisinden (kareye bağlı değil) */ .ovbox .av { width: 64px; height: 64px; } .ovbox > img.ovim { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; } .oemp .ovbox { background: transparent; border: 2px dashed var(--line); }
   .ovbox .ono { top: 5px; left: 7px; color: #fff; text-shadow: 0 1px 2px #000; } .ovbox .orl { right: 6px; top: 5px; } .ovbox .omic { right: 6px; bottom: 6px; width: 22px; height: 22px; line-height: 22px; font-size: 13px; }
   .ocam { position: absolute; left: 6px; bottom: 6px; z-index: 5; font-style: normal; font-size: 11px; line-height: 20px; padding: 0 6px; border-radius: 999px; background: #dc2626; color: #fff; font-weight: 700; }
   .omic.on { background: #16a34a; box-shadow: 0 0 0 2px var(--panel); } .omic.off { background: #dc2626; box-shadow: 0 0 0 2px var(--panel); }
@@ -390,6 +390,15 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .okdur { min-height: 18px; margin: 4px 0; overflow-wrap: anywhere; } .oklis { height: max(160px, min(52vh, calc(90vh - 270px))); overflow-y: auto; overscroll-behavior: contain; } /* W30: pencere baştan sabit boy; liste / saat açılınca yalnız içerik kayar */
   .oksa summary { min-height: 40px; display: flex; gap: 8px; align-items: center; cursor: pointer; } .okp { display: grid; grid-template-columns: 72px 1fr 20px; gap: 6px; align-items: center; width: 100%; min-height: 40px; padding: 0 8px; text-align: left; font-variant-numeric: tabular-nums; }
   .okp.on { outline: 2px solid var(--brand); } .okp.okbos { color: var(--muted); grid-template-columns: 72px 1fr; }
+  /* 🗣️ W54 kim ne zaman konuştu: kişi çipleri (tek satır, yatay kaydırma — yükseklik sabit), zaman şeridi (tuval, sabit yükseklik), önceki/sonraki dilim satırı; hepsi pencerenin içinde (sayfada taşma / kayma yok) */
+  .okkon { margin: 2px 0 6px; min-width: 0; } .okkis { display: flex; gap: 6px; height: 44px; align-items: center; overflow-x: auto; overflow-y: hidden; overscroll-behavior: contain; scrollbar-width: none; } .okkis::-webkit-scrollbar { display: none; }
+  .okchip { flex: none; display: inline-flex; gap: 6px; align-items: center; min-height: 44px; max-width: 70%; padding: 0 10px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); font-size: 14px; }
+  .okchip i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--c); } .okchip .ad { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; } .okchip .s { flex: none; font-variant-numeric: tabular-nums; }
+  .okchip[aria-pressed="true"] { border-color: var(--c); box-shadow: inset 0 0 0 1px var(--c); background: var(--panel); }
+  .okser { display: block; width: 100%; height: 46px; border-radius: 6px; background: var(--panel); touch-action: manipulation; } .okeks { display: flex; justify-content: space-between; height: 14px; font-size: 11px; line-height: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .okgez { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; min-height: 44px; } .okgez button { min-height: 44px; padding: 0 8px; } .okgez button:disabled { opacity: .45; } .okgez .s { text-align: center; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .okgr { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 8px; align-items: center; min-height: 36px; font-variant-numeric: tabular-nums; } .okgr i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); } .okgr .ad { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .okgr .s { text-align: right; }
+  .oklis.k { height: max(120px, min(34vh, calc(90vh - 500px))); }
   .ovf .ovson { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; opacity: .5; cursor: zoom-in; visibility: hidden; } .ovf .ovsc { position: absolute; left: 6px; bottom: 6px; max-width: calc(100% - 12px); padding: 2px 8px; border-radius: 6px; background: rgba(0,0,0,.55); color: #fff; font-size: 11px; line-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; visibility: hidden; } .ovf.son .ovson, .ovf.son .ovsc { visibility: visible; } /* 🧭 W42 gezi: "tabletten son görüntü" canlı görüntü alanının İÇİNDE (ayrı kutu yok): akış yokken solgun + etiket, canlı kare gelince gizlenir; alan baştan 4:3 → kayma yok */
   .otgim { display: block; width: calc(100% - 20px); max-height: 46vh; object-fit: contain; margin: 0 10px 8px; border-radius: 12px; background: #000; cursor: zoom-in; }
   #odaBody.gz .ocsay { display: none !important; } /* 🧭 W40 gezi: yalnız izleme, yazma kutusu yok */ #odaBody.goz > .ochatw { display: none !important; } #odaBody.goz > .opast::before { content: "💬 Bu odanın sohbeti buradan görülemiyor"; display: block; padding: 10px 14px; color: var(--muted); font-size: 13px; }
@@ -568,6 +577,15 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .okt { display: flex; gap: 8px; align-items: flex-start; padding: 8px 2px; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); font-size: 14px; }
   .okt .okz { flex: none; width: 64px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; padding-top: 2px; } .okt .oki { flex: none; width: 22px; text-align: center; }
   .okt .b { flex: 1; min-width: 0; overflow-wrap: anywhere; } .okt.red .b > div:first-child, .okt.geri .b > div:first-child { color: var(--warn); }
+  /* 🛠️ W51 düzeltme ekranı: satır içi eylem düğmeleri (yalnız yönetici) + sabit boy pencere (kayma yok) */
+  .askbtn { display: flex; gap: 8px; } .askbtn .dzb { flex: 1 1 0; min-width: 0; }
+  .dzact { margin-top: 4px; } button.dzb, .row button.dzb { min-height: 44px; padding: 8px 14px; font-size: 14px; line-height: 1.25; border-radius: 12px; } .nkm .dzact { white-space: normal; }
+  .dzm { display: flex; flex-direction: column; gap: 8px; height: min(78vh, 660px); margin: -4px -4px 0; } /* Nakit hareket penceresiyle (nksh) AYNI sabit boy: pencere değişince / aşama değişince kayma yok */ .dzm h3 { margin: 0; } .dzm .dzl { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .dzit { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 56px; margin: 0 0 6px; padding: 6px 10px; text-align: left; } .dzit .b { flex: 1; min-width: 0; } .dzit .b b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dzit .s { font-size: 12.5px; font-weight: 400; white-space: normal; } .dzrozet { flex: none; font-size: 11.5px; padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--go) 22%, transparent); color: var(--text); }
+  .dzgd { flex-wrap: wrap; cursor: default; padding-bottom: 8px; } .dzgd .dzb { flex: 1 1 100%; } .dzfazla { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px 2px; font-size: 13px; line-height: 1.35; } .dzfazla input { flex: none; width: 22px; height: 22px; margin: 0; }
+  .dzhata { min-height: 40px; color: #f87171; font-size: 13.5px; } .dzhata.k { color: #facc15; } .dzalt { display: grid; grid-template-columns: 1fr 1.6fr; gap: 8px; } .dzalt button { min-height: 48px; }
+  .dzm input[type=text] { width: 100%; box-sizing: border-box; min-height: 44px; font-size: 16px; }
   .nkm.tap { cursor: pointer; } .nkm.tap:active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
   .oxrow .b .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .oxmore { display: block; width: calc(100% - 20px); margin: 10px; min-height: 44px; }
   .dmgrp { margin: 0 12px 8px; padding: 8px 10px; border: 1px dashed #818cf8; border-radius: 10px; font-size: 14px; }
@@ -842,7 +860,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.126" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.127" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -851,7 +869,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.126" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.127" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -912,7 +930,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.126"></script>
+<script src="emoji.js?v=2.1.127"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -946,7 +964,7 @@ const VPS_YAVAS_OKU = YOL_TOLERANS ? { moments_feed: 27_000, moments_user: 17_00
 // hiç gitmedi: yeniden başlatma; vps/caddy/Caddyfile:13, 272). kapali / 404 / 413 kalıcıdır: yeniden denenmez, hemen sıradaki yol.
 const vpsGecici = (r) => !!r && ((r.status === 503 && (r.headers.get("x-yerel") === "beat-eski" || (r.headers.get("x-yerel") === "hazir-degil" && !r.headers.get("x-yerel-neden")))) || r.headers.get("x-vps") === "ulasilamadi");
 const webYol = () => { let m = me; if (!m) try { m = JSON.parse(localStorage.getItem("bw_me") || "null"); } catch (e) {} return (m && m.web_yol) || ""; };
-const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_list|room_chat_list|room_person_frames|nakit|nakit_hareket|odeme_karti|mahsup_ara|hesaplasma_onizle|dekont_ozet|dekont_liste|dekont_adres|grup_listesi|grup_mesajlari)$|_get$/;
+const API_OKU = /^(me|chat_history|outbox|outbox_get|bayi_inbox_get|pcards|buyer_stats|room_now|bayi_templates|tablet|profile|profiles_search|msg_search|dm_by_uids|coins_overview|bayi_coins_get|union_view|relations_list|team_report|bayi_state|account_list|own_exchanges|id_mentions|moments_feed|moments_user|moment_likes|moment_comments|room_live|room_list|room_chat_list|room_person_frames|nakit|nakit_hareket|odeme_karti|mahsup_ara|hesaplasma_onizle|odeme_tasi_adaylar|dekont_ozet|dekont_liste|dekont_adres|grup_listesi|grup_mesajlari)$|_get$/;
 // Contabo atlanırken yoklama: GET API_VPS (bayi-web'in kendi 405'i, CORS'lu, veritabanına dokunmaz; /f/health anahtarsız 403 verir ve CORS başlığı yok)
 let vpsBek = 10_000, vpsYokT = 0, vpsDonAt = 0, vpsSupheAt = 0, yolYedekAt = 0; const vpsOkuyan = new Set(); // Contabo'da bekleyen OKUMALAR (yol düşünce hemen sıradaki yola)
 const vpsUyku = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2132,6 +2150,93 @@ async function hsGeri(id) { const st = hsSt; if (!st || st.busy) return; if (!(m
   if (hsSt !== st) return; st.busy = false; if (d.pin === "wrong") pinCache = null;
   if (d.error) { toast(hsKisa(d.error), true); hsCiz(); return; }
   hsSt = null; closeModal(); toast(typeof d.ok === "string" ? d.ok : "↩️ Hesaplaşma geri alındı"); idStaleAll(); if (cur) { loadChat(); idRefresh(cur); } loadDm(); }
+// ---------- 🛠️ Düzeltme ekranı (W51, 17.11): yalnız yönetici (hesaplaşma geri alma ile AYNI koşul: me.yon; ötekilerde düğmeler DOM'da hiç yok) + işlem PIN'i; sunucu da aynısını ister (403).
+// Üç düzeltme: ↪️ Başka satışa taşı (Nakit › hesap hareketleri › satış ödemesi satırı) · 🎁 Oda desteği – gider olarak kapat (Coins › Son gönderilenler › sahipsiz satır) ·
+// 🧾 Gider yap (Nakit › hesap hareketleri › açıklaması olmayan banka çıkışı). Her gönderimde istek_id (uuid): gönderim sürerken düğme kilitli, hatada pencere açık kalır ve girdi
+// değişmediyse AYNI kimlikle yeniden denenir (sunucu ikinci kez yazmaz), başarıda kimlik bırakılır. Pencere sabit boy: kayma yok.
+const dzOk = () => !!(me && me.yon);
+const dzUuid = () => { try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+  const b = new Uint8Array(16); try { crypto.getRandomValues(b); } catch (e) { for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256); }
+  b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128; const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`; };
+let dz = null; // açık düzeltme penceresi: { tur: tasi | oda | gider, istek, imza, busy, hata, kural, ... }
+const DZ_KAT = ["Reklam", "Maaş", "Oda desteği"];
+function dzSatir(k) { for (const c of Object.values(nkH)) { const r = c && c.rows && c.rows.find((x) => x.k === k); if (r) return { r, hesap: (c.hesap && c.hesap.label) || "" }; } return null; }
+function dzDon() { const st = dz; dz = null; closeModal(); if (st && st.nk && nkSh) openModal(nkShHtml()); } // Nakit hareket penceresinden açıldıysa oraya dön (önbellekten, istek yok)
+function dzHata(st) { return `<div class="dzhata${st.kural ? " k" : ""}" id="dzH" role="alert">${st.hata ? esc(st.hata) : ""}</div>`; }
+function dzAlt(st, goTxt, goFn, geri) { const b = st.busy; return `<div class="dzalt"><button ${b ? "disabled" : ""} onclick="${geri || "dzDon()"}">${geri ? "‹ Geri" : "Vazgeç"}</button><button class="go" id="dzGo" ${b || !goFn ? "disabled" : ""} ${goFn ? `onclick="${goFn}"` : ""}>${b ? "⏳ Kaydediliyor…" : esc(goTxt)}</button></div>`; }
+function dzCiz() { const st = dz; if (!st) return; let h;
+  if (st.tur === "tasi") {
+    const bas = `<h3>↪️ Başka satışa taşı</h3><div class="s">${esc(st.ad || "Satış")} satışındaki <b style="color:var(--text)">${azn(st.tutar)}</b> ödeme</div>`;
+    if (st.faz === "yukle") h = `${bas}<div class="dzl s">⏳ Satışlar yükleniyor…</div>${dzAlt(st, "Taşı", "")}`;
+    else if (st.faz === "hata") h = `${bas}<div class="dzl"><div class="dzhata" role="alert">${esc(st.hata)}</div></div>${dzAlt(st, "Taşı", "")}`;
+    else if (st.faz === "liste") h = `${bas}${st.hata ? dzHata(st) : ""}<div class="dzl">${(st.liste || []).length ? st.liste.map((x, i) => `<button class="dzit" data-dz-i="${i}" onclick="dzSec(${i})"><div class="b"><b>${esc(x.alici || "Satış")}</b><div class="s">${nf(x.coin)} coin · kalan ${azn(x.kalan)} · ${esc(nkSaat(x.zaman))} · …${esc(String(x.order_id).slice(-6))}</div></div>${x.esit ? '<span class="dzrozet">aynı tutar</span>' : ""}</button>`).join("")
+      : `<div class="s" id="dzBos" style="padding:14px 2px">Taşınabilecek satış yok: son 7 günde ödemesi eksik açık satış bulunamadı.</div>`}</div>${dzAlt(st, "Taşı", "", "dzDon()").replace("‹ Geri", "Kapat")}`;
+    else { const x = st.hedef; h = `${bas}<div class="card" style="margin:0" id="dzOzet"><b>${azn(st.tutar)}</b> ödeme <b>${esc(st.ad || "bu")}</b> satışından <b>${esc(x.alici || "seçilen")}</b> satışına taşınacak.<div class="s">Hedef satışın kalanı ${azn(x.kalan)}.</div></div><div class="dzl">${dzFazla(st) ? `<label class="dzfazla" id="dzFz"><input type="checkbox" ${st.fazlaOk ? "checked" : ""} ${st.busy ? "disabled" : ""} onchange="dzFazlaOk(this.checked)"><span>Kalan ${azn(x.kalan)}, taşınan ${azn(st.tutar)} → <b>${azn(Math.round((st.tutar - x.kalan) * 100) / 100)}</b> fazla ödenmiş olacak. Yine de taşımak istiyorum.</span></label>` : ""}</div>${dzHata(st)}${dzAlt(st, st.kural ? "⚠️ Yine de taşı" : "↪️ Taşı", dzFazla(st) && !st.fazlaOk ? "" : `dzGo(${st.kural ? "true" : "false"})`, "dzGeri()")}`; }
+  } else if (st.tur === "askida") { const x = st.x, gitti = st.sonuc === "gitti";
+    h = `<h3>${gitti ? "✅ Gönderim gitti" : "❌ Gönderim gitmedi"}</h3><div class="card" style="margin:0" id="dzOzet"><b>${esc(x.ad || "UID " + x.uid)}</b> · ${nf(x.coins)} coin${x.azn != null ? " · <b>" + azn(x.azn) + "</b>" : ""} · #${esc(x.id)}</div>
+      <div class="s">${gitti ? "Gitti: coin müşteriye ulaştı, satış geçerli sayılır. Aynı kişiye aynı miktar bir daha göndermeden önce bu kayıt kapanmış olur." : "Gitmedi: coin müşteriye ulaşmadı; aynı kişiye aynı miktar yeniden gönderilebilir. Önce Sugo panelinin sipariş geçmişine bakın: gitmişse \"Gitti\" deyin."} Kayıt kapatılınca geri açılamaz.</div><div class="dzl"></div>${dzHata(st)}${dzAlt(st, gitti ? "✅ Evet, gitti" : "❌ Evet, gitmedi", "dzGo(false)")}`;
+  } else if (st.tur === "oda") { const o = st.o;
+    h = `<h3>🎁 Oda desteği – gider olarak kapat</h3><div class="card" style="margin:0" id="dzOzet"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b> · ${nf(o.coins)} coin · <b>${azn(o.expected_azn || 0)}</b></div>
+      <div class="s">Bu satışın ödemesi gelmeyecek: oda desteği için verilen coin. Satış kapatılır ve ${azn(o.expected_azn || 0)} tutarında "Oda desteği" gideri yazılır. Bu ekrandan geri alınamaz.</div><div class="dzl"></div>${dzHata(st)}${dzAlt(st, "🎁 Kapat ve gider yaz", "dzGo(false)")}`;
+  } else if (st.faz === "var") { const r = st.r;
+    h = `<h3>🧾 Benzer gider var</h3><div class="s">${esc(st.hesap || "Hesap")} · ${esc(nkSaat(r.at))} · çıkış <b style="color:var(--text)">${azn(Math.abs(r.tutar))}</b></div>
+      <div class="s">Bu kartta aynı tutarda, bu harekete yakın zamanlı bir gider zaten yazılmış. Aynı harcamayı iki kez yazmamak için onu bu çıkışa bağlayın; ayrı bir harcamaysa yeni gider yazın.</div>
+      <div class="dzl" id="dzVar">${(st.adaylar || []).map((x, i) => `<div class="dzit dzgd" data-dz-g="${esc(x.id)}"><div class="b"><b>${azn(x.tutar)} · ${esc(x.kategori || "Gider")}</b><div class="s">${esc(nkSaat(x.entered_at))}${x.alici ? " · " + esc(x.alici) : ""} · #${esc(x.id)}</div></div><button class="dzb go" ${st.busy ? "disabled" : ""} onclick="dzBagla(${i})">Bu gideri bu çıkışa bağla</button></div>`).join("")}</div>${dzHata(st)}
+      <div class="dzalt"><button ${st.busy ? "disabled" : ""} onclick="dzGiderGeri()">‹ Geri</button><button id="dzYine" ${st.busy ? "disabled" : ""} onclick="dzYine()">Yine de yeni gider yaz</button></div>`;
+  } else { const r = st.r;
+    h = `<h3>🧾 Gider yap</h3><div class="s">${esc(st.hesap || "Hesap")} · ${esc(nkSaat(r.at))} · çıkış <b style="color:var(--text)">${azn(Math.abs(r.tutar))}</b></div>
+      <div class="s">Kategori</div><input type="text" id="dzKat" list="dzKatL" maxlength="40" autocomplete="off" value="${esc(st.kat || "")}" ${st.busy ? "disabled" : ""}><datalist id="dzKatL">${st.kats.map((k) => `<option value="${esc(k)}">`).join("")}</datalist>
+      <div class="s">Alan kişi (isteğe bağlı)</div><input type="text" id="dzAli" maxlength="80" autocomplete="off" value="${esc(st.ali || "")}" ${st.busy ? "disabled" : ""}>
+      <div class="s">Not (isteğe bağlı)</div><input type="text" id="dzNot" maxlength="200" autocomplete="off" value="${esc(st.not || "")}" ${st.busy ? "disabled" : ""}>
+      <div class="dzl"></div>${dzHata(st)}${dzAlt(st, "🧾 Gider olarak yaz", "dzGo(false)")}`; }
+  openModal(`<div class="dzm" id="dzM">${h}</div>`); }
+function dzTasiAc(k) { if (!dzOk()) return; const f = dzSatir(k); if (!f || !f.r.claim || !f.r.order) return;
+  const st = dz = { tur: "tasi", r: f.r, nk: !!nkSh, tutar: Math.abs(Number(f.r.tutar)), ad: f.r.ad || "", faz: "yukle", liste: null, hedef: null, hata: "", kural: false, busy: false, istek: dzUuid(), imza: "" };
+  dzCiz(); dzAdaylar(st); }
+async function dzAdaylar(st) { let d; try { d = await api("odeme_tasi_adaylar", { claim: st.r.claim }); } catch (e) { d = { error: "Bağlantı hatası" }; }
+  if (dz !== st) return; if (!d || d.error || !d.report) { st.faz = "hata"; st.hata = (d && d.error) || "Liste alınamadı"; } else { st.liste = Array.isArray(d.report.adaylar) ? d.report.adaylar : []; st.faz = "liste"; } dzCiz(); }
+function dzSec(i) { const st = dz; if (!st || st.busy || st.tur !== "tasi" || !st.liste || !st.liste[i]) return; st.hedef = st.liste[i]; st.faz = "ozet"; st.fazlaOk = false; st.hata = ""; st.kural = false; dzCiz(); }
+const dzFazla = (st) => !!(st && st.hedef && Number(st.tutar) > Number(st.hedef.kalan) + 0.005);
+function dzFazlaOk(v) { const st = dz; if (!st || st.busy) return; st.fazlaOk = !!v; dzCiz(); }
+function dzBagla(i) { const st = dz; if (!st || st.busy || !st.adaylar || !st.adaylar[i]) return; st.sec = { bagla: st.adaylar[i].id }; dzGo(false); }
+function dzYine() { const st = dz; if (!st || st.busy) return; st.sec = { yine_de: true }; dzGo(false); }
+function dzGiderGeri() { const st = dz; if (!st || st.busy) return; st.faz = "form"; st.sec = null; st.hata = ""; dzCiz(); }
+function dzGeri() { const st = dz; if (!st || st.busy) return; st.faz = "liste"; st.hata = ""; st.kural = false; st.hedef = null; st.fazlaOk = false; dzCiz(); }
+function dzAskidaAc(id, sonuc) { if (!dzOk() || (sonuc !== "gitti" && sonuc !== "gitmedi")) return; const x = ((coinData && coinData.askida) || []).find((y) => Number(y.id) === Number(id)); if (!x) return;
+  dz = { tur: "askida", x, sonuc, nk: false, hata: "", kural: false, busy: false, istek: dzUuid(), imza: "" }; dzCiz(); }
+function dzOdaAc(oid) { if (!dzOk()) return; const o = ((coinData && coinData.orders) || []).find((x) => String(x.order_id) === String(oid)); if (!o || o.status !== "open") return;
+  dz = { tur: "oda", o, nk: false, hata: "", kural: false, busy: false, istek: dzUuid(), imza: "" }; dzCiz(); }
+function dzGiderAc(k) { if (!dzOk()) return; const f = dzSatir(k); if (!f || !f.r.olay) return;
+  const kats = [...new Set([...DZ_KAT, ...Object.values(nkH).flatMap((c) => ((c && c.rows) || []).filter((x) => x.cins === "gider" && x.not).map((x) => x.not))])];
+  dz = { tur: "gider", faz: "form", sec: null, adaylar: null, r: f.r, hesap: f.hesap, nk: !!nkSh, kats, kat: "", ali: "", not: "", hata: "", kural: false, busy: false, istek: dzUuid(), imza: "" }; dzCiz(); }
+function dzOku(st) { const v = (id) => { const e = $(id); return e ? String(e.value || "").trim() : null; }; const a = v("dzKat"), b = v("dzAli"), c = v("dzNot"); if (a !== null) { st.kat = a; st.ali = b; st.not = c; } }
+async function dzGo(force) { const st = dz; if (!st || st.busy || !dzOk()) return; st.busy = true; // senkron kilit: çift dokunuşta tek istek
+  let eylem, body;
+  if (st.tur === "tasi") { if (!st.hedef || (dzFazla(st) && !st.fazlaOk)) { st.busy = false; return; } eylem = "odeme_tasi"; body = { claim: st.r.claim, yeni_order: st.hedef.order_id, ...(force === true ? { force: true } : {}) }; }
+  else if (st.tur === "oda") { eylem = "sale_gider_kapat"; body = { order_id: String(st.o.order_id) }; }
+  else if (st.tur === "askida") { eylem = "coin_askida_coz"; body = { id: Number(st.x.id), sonuc: st.sonuc }; }
+  else { if (st.faz === "form") dzOku(st); if (!st.kat) { st.busy = false; st.hata = "Kategori yazın."; st.kural = false; dzCiz(); return; } eylem = "cikis_gider"; body = { event_id: st.r.olay, kategori: st.kat, alici: st.ali, not: st.not, ...(st.faz === "var" && st.sec ? st.sec : {}) }; }
+  const imza = JSON.stringify([eylem, body]); if (imza !== st.imza) { st.imza = imza; st.istek = dzUuid(); } // girdi değişmediyse AYNI kimlik (yeniden deneme ikinci kez yazmaz)
+  const pin = await askPin("Düzeltme için işlem PIN'iniz"); if (dz !== st) return;
+  if (!pin) { st.busy = false; dzCiz(); return; }
+  st.hata = ""; dzCiz(); // kilitli düğme + "Kaydediliyor"
+  let d; try { d = await api(eylem, { ...body, istek_id: st.istek, pin }); } catch (e) { d = { error: "Bağlantı hatası" }; }
+  if (dz !== st) return; st.busy = false; if (d && d.pin === "wrong") pinCache = null;
+  if (!d || d.error) { st.hata = hsKisa((d && d.error) || "Olmadı"); st.kural = !!(d && d.report && d.report.kural); const kd = d && d.report && d.report.hata;
+    if (st.tur === "gider" && (kd === "gider_var" || kd === "bagla_gecersiz") && d.report && Array.isArray(d.report.adaylar)) { st.faz = "var"; st.adaylar = d.report.adaylar; st.sec = null; if (kd === "gider_var") st.hata = ""; } // benzer gider: bağla / yine de yeni yaz seçtirilir
+    else if (st.tur === "tasi" && (kd === "hedef_kapali" || kd === "hedef_geri_cagrildi")) { st.liste = (st.liste || []).filter((x) => x !== st.hedef); st.hedef = null; st.faz = "liste"; st.fazlaOk = false; } // kapalı / geri çekilmiş hedef listeden düşer
+    if (st.tur === "askida" && kd === "askida_degil" && coinData) loadCoins(); // başka biri kapatmış: satır listeden kalkar
+    dzCiz(); return; } // pencere açık; aynı kimlikle yeniden denenebilir
+  const z = (d.report && d.report.duzeltme) || {}, tg = d.report && d.report.telegram;
+  let msg = z.tekrar ? "ℹ️ Bu düzeltme zaten yapılmıştı; ikinci kez yazılmadı." : (typeof d.ok === "string" ? "✅ " + d.ok : "✅ Düzeltme yapıldı");
+  if (st.tur === "gider" && z.bagla === true && !z.tekrar) msg = "✅ Mevcut gider bu çıkışa bağlandı.";
+  if (st.tur === "tasi" && z.kaynak_acik === true) msg += " Ödemesi alınan eski satış artık ödemesiz/eksik; sahipsiz satış uyarısı açıldı.";
+  if (tg === "hata") msg += " Telegram mesajı güncellenemedi.";
+  const nk0 = st.nk; dz = null; closeModal(); toast(msg); dzYenile(nk0); }
+/** Başarıdan sonra ilgili listeler önbellekten değil yeniden yüklenir */
+function dzYenile(nk0) { for (const k of Object.keys(nkH)) delete nkH[k]; if (nk) nk.v = "";
+  if (nkOk()) nkLoad(); if (nk0 && nkSh) { openModal(nkShHtml()); nkHLoad(false); } if (coinData) loadCoins(); }
 /** Ödeme sonrası BÜTÜN sohbetlerin ID çipleri bayat sayılır: ödeme başka sohbetten / Elmas listesinden yapıldıysa dönülen sohbet "Ödenmedi" göstermesin (W29 kusuru) */
 function idStaleAll() { for (const k of Object.keys(idSt)) { const s0 = idSt[k]; s0.stale = true; s0.gen++; s0.at = 0; } }
 document.addEventListener("click", (e) => { const gv = e.target.closest && e.target.closest(".oseat .ovbox, .oseat img.ofr"); if (gv) { const st = gv.closest(".oseat"); if (st && st.dataset.u && (st.classList.contains("ocamon") || st.querySelector("img.ofr"))) { e.stopPropagation(); e.preventDefault(); odaGalOpen(st.dataset.u); return; } } // 📸 kamera kutusu / kare resmi → galeri (ad / koltuk → kişi menüsü)
@@ -3109,11 +3214,18 @@ function shrink(file) { return new Promise((res) => { const img = new Image(); c
 // ---------- kart ver (sıradaki kart; hakkı dolan verilemez)
 const PCB = { ABB: "ABB", BIRBANK: "Birbank (Kapital)", UNIBANK: "Unibank", LEOBANK: "Leobank", M10: "M10", DIGER: "Diğer" };
 const PCS = { ABB: "ABB", BIRBANK: "Birbank", UNIBANK: "Unibank", LEOBANK: "Leobank", M10: "M10", DIGER: "Diğer" };
-const pcTxt = (c) => String(c.number); // müşteriye sadece numara gider (kopyalaması kolay); banka adı sadece bizde görünür
+// 📱 M10 (W56): M10'da "numara" telefondur (0XXXXXXXXX; müşteriler M10'da telefona gönderir); öteki bankalarda 16 haneli kart. Sunucu da aynı kuralı doğrular (_shared/pcardno.ts).
+const pcM10 = (b) => String(b || "").trim().toUpperCase() === "M10";
+const pcTel = (raw) => { let d = String(raw || "").replace(/\D/g, ""); if (d.startsWith("00994")) d = d.slice(2); if (d.startsWith("994") && d.length === 12) d = "0" + d.slice(3); return /^0\d{9}$/.test(d) ? d : ""; };
+const pcBic = (bank, n) => { const d = String(n || "").replace(/\D/g, ""); return pcM10(bank) ? (/^0\d{9}$/.test(d) ? `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6, 8)} ${d.slice(8)}` : d) : d.replace(/(\d{4})(?=\d)/g, "$1 "); }; // M10: "050 123 45 67"; kart: 4'lü gruplar
+const pcTxt = (c) => pcM10(c.bank) ? "M10 " + pcBic("M10", c.number) : String(c.number); // müşteriye giden metin: kartta yalnız numara (kopyalaması kolay; banka adı gitmez); M10'da "M10 050 123 45 67" (telefon tek başına hangi banka olduğunu söylemez)
+const pcNoOk = (bank, n) => pcM10(bank) ? /^0\d{9}$/.test(n) : pcLuhn(n);
+/** Mesaj bir kart numarası ya da "M10 050 …" ise rakamları (yoksa "") */
+const pcMsgNo = (text) => { const t = String(text || "").trim(), mm = /^m10[\s:·-]*(\+?[\d\s()-]{9,20})$/i.exec(t); if (mm) return pcTel(mm[1]); const d = t.replace(/[\s-]/g, ""); return /^\d{12,20}$/.test(d) ? d : ""; };
 /** Kartın sahibi + bankası "Zara ABB" (13.11): yalnız bizim ekranımızda; müşteriye giden metne (pcTxt) asla girmez */
 const pcWho = (c) => `${c.owner || ""} ${PCS[String(c.bank || "").toUpperCase()] || c.bank || ""}`.trim();
 /** Bizim gönderdiğimiz mesaj tam bir kart numarasıysa yanında soluk "(Sahip Banka)" — mesajın içinde değil, sadece bu ekranda (eski mesajlarda da: numara kart listesinden bulunur) */
-function cardTag(text) { const d = String(text || "").replace(/[\s-]/g, ""); if (!/^\d{12,20}$/.test(d) || !pcs || !pcs.cards) return "";
+function cardTag(text) { const d = pcMsgNo(text); if (!d || !pcs || !pcs.cards) return "";
   const c = pcs.cards.find((x) => String(x.number || "").replace(/\D/g, "") === d); return c ? `<span class="cardtag">(${esc(pcWho(c))})</span>` : ""; }
 const pcCan = (c) => c.active && c.number && c.uses < c.max_uses;
 async function toggleCards() { const el = $("cards"), low = stick, keep = () => { if (low) { toBottom(); requestAnimationFrame(toBottom); } }; // en alttaysa altta kalsın (mesajlar kaymasın)
@@ -3203,6 +3315,13 @@ async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit 
   const d = await api("coins_overview", { limit: coinLimit }); const c = d.report && d.report.coins; if (!c) return; coinData = c;
   if (c.stock != null) $("hStock").textContent = nf(c.stock);
   renderCoins(); if (coinSub === "io" && curTab === "coin") ioFresh(); } // gizliyken de çizilir: sekme açılınca hazır (yer tutucu / eski hâl yerine) · ↕️ açıksa yeni hareketler de
+/** 🪙 W55 (0207): sonucu belirsiz kalan gönderim — listede "⏳ Askıda"; yalnız sahipte (dzOk) "Gitti / Gitmedi" düğmeleri (sunucu da yalnız sahip + PIN ister) */
+function askRow(x) { const ad = x.ad || "UID " + x.uid;
+  return `<div class="row askrow" data-ask="${esc(x.id)}"><div class="av">${avHtml(x.ad, (people[x.uid] || {}).av)}</div>
+    <div class="b"><div class="t"><b>${esc(ad)}</b><span class="s">${rel(Date.parse(x.at))}</span></div>
+      <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(x.coins)} coin</b>${x.azn != null ? " · " + azn(x.azn) : ""} · UID ${esc(x.uid)}</div>
+      <div class="s"><span style="color:#fbbf24">⏳ Askıda — sonucu belli değil</span>${x.by ? ` · gönderen <b style="color:var(--text)">(${esc(x.by)})</b>` : ""} · #${esc(x.id)}</div>
+      ${dzOk() ? `<div class="s dzact askbtn"><button class="dzb" data-dz="askida-gitti" onclick="event.stopPropagation();dzAskidaAc(${Number(x.id)},'gitti')">✅ Gitti</button><button class="dzb" data-dz="askida-gitmedi" onclick="event.stopPropagation();dzAskidaAc(${Number(x.id)},'gitmedi')">❌ Gitmedi</button></div>` : ""}</div></div>`; }
 function renderCoins() { const c = coinData; if (!c) return; const td = c.today || {}, wk = c.week || {}, du = c.dm_unpaid || {}, db = c.debt || {}, low = c.stock != null && c.low_coin > 0 && c.stock < c.low_coin;
   if ($("hStock")) $("hStock").style.color = low ? "#f87171" : "";
   $("coinBody").innerHTML = `${low ? `<div class="card" style="border-color:#ef4444;background:rgba(239,68,68,.12)">🔻 <b>Coin bakiyesi düşük:</b> ${nf(c.stock)} · eşik ${nf(c.low_coin)}. Coin alın.</div>` : ""}<div class="grid"><div class="card" style="grid-column:1/-1;border-color:#f59e0b"><div class="k"><span class="gc"></span> Coin bakiyemiz (bayi paneli)</div><div class="v" style="font-size:28px;color:#fbbf24">${c.stock != null ? nf(c.stock) : "—"}</div><div class="s">${c.stock_at ? "son okuma " + rel(Date.parse(c.stock_at)) : ""}${c.stock != null ? " · ≈ " + azn(Math.round(c.stock / 1000 * 100) / 100) + " değerinde (1000 coin = 1 ₼)" : ""}</div>${c.recall && c.recall.pending_n > 0 ? `<div class="s rcsum">↩️ İade bekleyen: <b>${nf(c.recall.pending_coins)} coin</b> (${c.recall.pending_n} sipariş)</div>` : ""}</div>
@@ -3214,11 +3333,12 @@ function renderCoins() { const c = coinData; if (!c) return; const td = c.today 
     ${coinSub === "io" ? `<div id="ioBox">${ioHtml()}</div>` : `<div style="padding:0 10px"><button class="fullbtn" onclick="crOpen()"><span class="gc"></span> Tüm coin hareketleri (gönderilen / alınan)</button></div>
     ${can("oto_ayar") && me ? `<div class="s" style="padding:4px 12px">🔻 Düşük bakiye uyarısı: ${c.low_coin ? nf(c.low_coin) + " coin altı" : "kapalı"} <button style="padding:3px 10px;font-size:13px" onclick="lowCoinEdit(${Number(c.low_coin) || 0})">değiştir</button></div>` : ""}
     <h3>🕘 Son gönderilen coinler <span class="s">(${nf(c.total)} satış)</span></h3>
+    ${(c.askida || []).map(askRow).join("")}
     ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0), rk = rcRenk(o);
       return `<div class="row${rk ? " " + rk.c : ""}" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
         <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
           <div class="s"><span class="gc"></span> <b class="rcamt" style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
-          <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
+          <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}${dzOk() && o.status === "open" && !Number(o.recalled_coins || 0) && !o._iyimser && !(o.rc && o.rc.state) ? `<div class="s dzact" style="text-align:right"><button class="dzb" data-dz="oda" onclick="event.stopPropagation();dzOdaAc('${esc(o.order_id)}')">🎁 Oda desteği – gider olarak kapat</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
     ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
     <div class="s" style="padding:10px 12px">Bayi panelindeki satışlar (SugoCoins ve programdan gönderilenler). Ödeme durumu banka bildirimleriyle eşleşmeye göre.</div>`}`;
   if (window.svSusle) svSusle($("coinBody")); } // <sugo-veri> risk rozetleri </sugo-veri>
@@ -3423,7 +3543,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = (d.open || 
 
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
 async function loadCards() { if (!canSee("kart_gor")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
-  $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(String(cu.number).replace(/(\d{4})(?=\d)/g, "$1 "))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
+  $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(pcBic(cu.bank, cu.number))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
     <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}</div>`).join("")}
     <div class="s" style="padding:10px 12px">${can("kart") ? "" : "👁 <b>Sadece görüntüleme:</b> kart verme ve düzeltme Bayi Yetkilisinde. "}Kart vermek için sohbette 💳 Kart ver'e basın. ${isSahip() ? "Kart ekleme / düzenleme: ⚙️ Ayarlar › 👑 Kartları yönet" : "Kart ekleme tabletten yapılır"}${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
@@ -3668,7 +3788,9 @@ function nkSatir(r) { const [ic, ad] = NK_CINS[r.cins] || NK_CINS.diger, t = r.t
     r.bakiye != null && r.cins === "banka" ? "bakiye " + nkPara(r.bakiye) : "", r.cins === "alis" && r.batch > 0 && okOk() ? "🧾 ödeme ›" : ""].filter(Boolean).join(" · ");
   const amt = r.cins === "elle" ? `<div class="nkamt eq">= ${nkPara(r.bakiye)}</div>` : t == null ? `<div class="nkamt eq">${r.bakiye != null ? "= " + nkPara(r.bakiye) : "—"}</div>` : `<div class="nkamt ${t < 0 ? "out" : "in"}">${nkPara(t, true)}</div>`;
   const tap = r.cins === "alis" && r.batch > 0 && okOk(); // 🧾 alış satırı: ödeme kartı ayrıntısı
-  return `<div class="nkm${tap ? " tap" : ""}" data-k="${esc(r.k)}"${tap ? ` role="button" onclick="okAc(${Number(r.batch)},'nk')"` : ""}><div class="nkbi">${ic}</div><div class="b"><div class="t"><b>${esc(bas)}</b>${amt}</div><div class="s">${alt}</div></div></div>`; }
+  const dz = !dzOk() ? "" : r.claim && r.order ? `<div class="dzact"><button class="dzb" data-dz="tasi" data-k="${esc(r.k)}" onclick="event.stopPropagation();dzTasiAc('${esc(r.k)}')">↪️ Başka satışa taşı</button></div>`
+    : r.olay ? `<div class="dzact"><button class="dzb" data-dz="gider" data-k="${esc(r.k)}" onclick="event.stopPropagation();dzGiderAc('${esc(r.k)}')">🧾 Gider yap</button></div>` : ""; // 🛠️ W51: yalnız yönetici (hesaplaşma geri alma ile aynı koşul); başkasında DOM'da yok
+  return `<div class="nkm${tap ? " tap" : ""}" data-k="${esc(r.k)}"${tap ? ` role="button" onclick="okAc(${Number(r.batch)},'nk')"` : ""}><div class="nkbi">${ic}</div><div class="b"><div class="t"><b>${esc(bas)}</b>${amt}</div><div class="s">${alt}</div>${dz}</div></div>`; }
 function nkListe(c) { if (!c || !c.rows) return c && c.err ? `<div class="row s" style="padding:18px 4px">❌ ${esc(c.err)} <button class="nkre" onclick="nkHTekrar()">🔄 Tekrar dene</button></div>` : SKR(8);
   if (!c.rows.length) return `<div class="row s" style="padding:24px 4px">Bu süzgeçte hareket yok.</div>`;
   const tb = c.taban || {}, tAt = tb.at ? Date.parse(tb.at) : 0; let base = false, h = "";
@@ -4435,13 +4557,16 @@ function tgSatir(g, oda, simdi) { const d = g && g.durum, ayni = !!g && String(g
 // UYARLANIR küçük tampon (osTampon: hedef 0,35 sn → boşalınca +0,1 sn, 20 sn sorunsuzsa −0,05 sn, 0,25–1,2 sn): hedefin biraz üstündeyken %6 hızlı
 // çalar, sessiz parça fazlaysa atlanır, 0,6 sn'den fazla birikirse sesli parça da atlanır → gecikme zamanla BÜYÜMEZ. Uçtan uca gecikme saat farkına
 // dayanıklı ölçülür: tablet t'yi sunucu saatine çevirir, web 30 sn'de bir "saat" ile kendi farkını ölçer (osSaatEkle) → tanılamada (🩺) ölçülen gecikme + tampon.
+// ⏱️ W57 (kullanıcı 17.11: "gecikme 1.2 sn oluyor çoğu zaman onu 0.5 sn yi geçmeyecek şekilde"): tablet 3.60 100 ms'lik parça yollar (parça süresi n / sr'den okunur; eski tablet 200 ms yollamayı sürdürür), yakalama
+// bloğu 43 → 11 ms, Java çekmesi 100 → 50 ms. Tampon hedefi artık ÖLÇÜLEN ağ titreşiminden türer (osTampon: son 20 sn'de parça gelişlerinin en geç kalışı + 30 ms; en az 80 ms, ilk 3 sn en az 200 ms);
+// ağ bozulunca hemen büyür, temiz geçince kendiliğinden küçülür (hızlı çalarak / sessiz parçayı atlayarak erir). 🩺: gecikmenin bileşenleri (osGecikmeBilesen).
 // Yedek yolda (Supabase) ses YOK ("şu an kullanılamıyor"); ses parçaları hiçbir yere kaydedilmez. Sekme gizlenince / Oda'dan çıkınca / 2 saat dolunca durur.
 // 🎚️ W33 (kullanıcı: "gönderilen ses orta kalitede olabilir … istersem kaliteyi değiştirebileyim oda sekmesinden"): canlı ses kalitesi ORTAK ayar (sinyal sunucusunda,
 // varsayılan Orta). Düşük 8 kHz IMA ADPCM 4 bit (~4 KB/sn) · Orta 12 kHz IMA (~6 KB/sn) · Yüksek 16 kHz µ-law (16 KB/sn, eski biçim). Bu web "dinle" {kd:["ima"]} ile
 // IMA çözebildiğini bildirir; çözemeyen (eski) web dinliyorsa sunucu Yüksek'e döner. Yalnız sahip değiştirir (sunucu da denetler); her değişiklik web_audit'e (seskal).
 // Seçici 🩺 penceresinde (yalnız yön); öteki roller durum satırında kaliteyi görür. Eski tablet (kal bildirmez) → seçici kapalı, "tablet güncellenince".
 // <oda-ses-saf> (saf işlevler: tests/odases_test.ts metin olarak çalıştırır)
-var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 0.35, OS_HEDEF_MIN = 0.25, OS_HEDEF_MAX = 1.2, OS_YETIS = 0.6, OS_SAAT_MS = 30_000, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000, OS_DON_MS = 30 * 60_000, OS_DOKUN_MS = 1_500;
+var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 0.2, OS_HEDEF_MIN = 0.08, OS_HEDEF_MAX = 1.2, OS_YETIS = 0.6, OS_PENCERE = 20, OS_PAY = 0.03, OS_TIT_EN_COK = 0.5, OS_ISINMA = 3, OS_HIZLI_ESIK = 0.06, OS_SAAT_MS = 30_000, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000, OS_DON_MS = 30 * 60_000, OS_DOKUN_MS = 1_500;
 /** G.711 µ-law bayt → [-1, 1] */
 function osUlawCoz(u) { u = ~u & 0xff; const s = u & 0x80, e = (u >> 4) & 7, m = u & 0x0f; const x = (((m << 3) + 0x84) << e) - 0x84; return (s ? -x : x) / 32768; }
 /** 🎚️ W33 IMA ADPCM bloğu (tablet room_ses.js __rsIma): [ilk örnek int16 LE, adım sırası, n−1 örnek × 4 bit (düşük yarım önce)] → Float32Array(n) ya da null */
@@ -4471,20 +4596,26 @@ function osCoz(p) { if (!p || !(p.n > 0) || p.n > 48000 * 3 || !(p.sr >= 8000 &&
 /** Doğrusal ara değerle örnekleme hızı yükseltme (eski Safari createBuffer 16 kHz'i reddederse) */
 function osYukselt(x, gHz, cHz) { if (gHz === cHz) return x; const n = Math.max(1, Math.round(x.length * cHz / gHz)), o = new Float32Array(n), r = gHz / cHz;
   for (let i = 0; i < n; i++) { const p = i * r, k = Math.floor(p), f = p - k, a = x[Math.min(k, x.length - 1)], b = x[Math.min(k + 1, x.length - 1)]; o[i] = a + (b - a) * f; } return o; }
-/** ⏱️ Uyarlanır titreşim tamponu (W26). st {next, hedef, atlanan, bosluk, hizli, sonBosluk, sonAzalt}; simdi = ctx.currentTime (sn); sure = parça süresi;
- *  sessiz = parça sessiz mi. Döner {at (başlama anı), hiz (çalma hızı)} ya da null (bu parça atlanır: birikmiş gecikme eritilir).
- *  - tampon boşaldı (ilk parça / kopma / geç gelen): simdi + hedef'ten yeniden başlar; kopmadan sonra hedef +0,1 sn (en çok OS_HEDEF_MAX)
- *  - 20 sn boşalma yoksa hedef −0,05 sn (en az OS_HEDEF_MIN): ağ iyileşince gecikme yeniden küçülür
- *  - fazla = tampondaki − hedef: > OS_YETIS → atla · sessiz parça ve > 0,12 → atla (duyulmaz) · > 0,08 → %6 hızlı çal (konuşmada fark edilmez) */
-function osTampon(st, simdi, sure, sessiz) { if (!(st.hedef > 0)) st.hedef = OS_HEDEF;
+/** ⏱️ Uyarlanır titreşim tamponu (W26; W57 17.11, kullanıcı: "gecikme 1.2 sn oluyor çoğu zaman onu 0.5 sn yi geçmeyecek şekilde"): hedef artık ÖLÇÜLEN titreşimden türer.
+ *  st {next, hedef, atlanan, bosluk, hizli, j, m, n, sOnce}; simdi = ctx.currentTime (sn); sure = parça süresi (sn; tablet 3.60: 0,1 · eski tablet: 0,2);
+ *  sessiz = parça sessiz mi; s = tabletin parça sırası (yoksa her parça ardışık sayılır). Döner {at (başlama anı), hiz (çalma hızı)} ya da null (bu parça atlanır).
+ *  - Titreşim: her parçanın gelişi x = simdi − (o parçaya kadarki medya süresi); son OS_PENCERE (20 sn) içinde x'in en küçüğüne göre en geç kalış = titreşim.
+ *    hedef = titreşim (en çok OS_TIT_EN_COK = 0,5: daha uzun takılma kopmadır, tampon onun için şişirilmez) + OS_PAY (0,03), OS_HEDEF_MIN (0,08) – OS_HEDEF_MAX (1,2) arası; ilk OS_ISINMA (3 sn) en az OS_HEDEF (0,2: henüz ölçüm yok).
+ *    Ağ bozulunca hedef HEMEN büyür (geç parça ölçüme girer), 20 sn temiz geçince kendiliğinden küçülür.
+ *  - Tampon boşaldı (ilk parça / kopma): simdi + hedef'ten yeniden başlar. Parça sırasında 1–5'lik delik varsa (kayıp parça) süre sessizlikle korunur (sonraki parça erkene kaymaz).
+ *  - fazla = tampondaki − hedef: > OS_YETIS → atla · sessiz parça ve fazla ≥ ~1 parça → atla (duyulmaz) · > OS_HIZLI_ESIK (0,06) → %6 hızlı çal (konuşmada fark edilmez) */
+function osTampon(st, simdi, sure, sessiz, s) { let bos = 0;
+  if (Number.isInteger(s)) { if (Number.isInteger(st.sOnce)) { const g = s - st.sOnce - 1; if (g > 0 && g <= 5) bos = g * sure; else if (g > 5 || g < 0) { st.j = []; st.m = 0; st.n = 0; } } st.sOnce = s; }
+  st.m = (st.m || 0) + bos; const x = simdi - st.m; st.m += sure;
+  const j = st.j || (st.j = []); j.push([simdi, x]); while (j.length > 1 && simdi - j[0][0] > OS_PENCERE) j.shift();
+  let mn = x; for (let i = 0; i < j.length; i++) if (j[i][1] < mn) mn = j[i][1]; let tit = 0; for (let i = 0; i < j.length; i++) if (j[i][1] - mn > tit) tit = j[i][1] - mn;
+  st.n = (st.n || 0) + 1; tit = Math.min(tit, OS_TIT_EN_COK); st.titresim = tit; st.hedef = Math.min(OS_HEDEF_MAX, Math.max(OS_HEDEF_MIN, st.n * sure <= OS_ISINMA ? OS_HEDEF : 0, tit + OS_PAY));
   const ileri = (st.next || 0) - simdi;
-  if (!(ileri > 0.03)) { if (st.next > 0) { st.bosluk = (st.bosluk || 0) + 1; st.hedef = Math.min(OS_HEDEF_MAX, st.hedef + 0.1); st.sonBosluk = simdi; } else st.sonBosluk = simdi;
-    st.sonAzalt = simdi; const at = simdi + st.hedef; st.next = at + sure; return { at, hiz: 1 }; }
-  if (simdi - (st.sonAzalt || 0) >= 20 && simdi - (st.sonBosluk || 0) >= 20) { st.hedef = Math.max(OS_HEDEF_MIN, Math.round((st.hedef - 0.05) * 1000) / 1000); st.sonAzalt = simdi; }
+  if (!(ileri > 0.005)) { if (st.next > 0) { st.bosluk = (st.bosluk || 0) + 1; st.sonBosluk = simdi; } const at = simdi + st.hedef; st.next = at + sure; return { at, hiz: 1 }; }
   const fazla = ileri - st.hedef;
-  if (fazla > OS_YETIS || (sessiz && fazla > 0.12)) { st.atlanan = (st.atlanan || 0) + 1; return null; }
-  const hiz = fazla > 0.08 ? 1.06 : 1; if (hiz > 1) st.hizli = (st.hizli || 0) + 1;
-  const at = st.next; st.next = at + sure / hiz; return { at, hiz }; }
+  if (fazla > OS_YETIS || (sessiz && fazla > Math.max(0.08, sure * 0.9))) { st.atlanan = (st.atlanan || 0) + 1; return null; }
+  const hiz = fazla > OS_HIZLI_ESIK ? 1.06 : 1; if (hiz > 1) st.hizli = (st.hizli || 0) + 1;
+  const at = st.next + bos; st.next = at + sure / hiz; return { at, hiz }; }
 /** 🔁 W52: parça sırası (tablet p.s artar). Aynı sıra ikinci kez ya da biraz geriden gelen (eski / sırasız) parça ÇALINMAZ — art arda çalınsa "annnn" diye tekrar eder.
  *  Sıra çok geri gittiyse (≥ 100: tablet sayfası yeniden başladı) yeni akış sayılır. st {sonS, tekrar}. Döner: true = çal. */
 function osSiraKabul(st, s) { if (!Number.isInteger(s)) return true; const son = st.sonS;
@@ -4501,6 +4632,11 @@ function osSaatEkle(sa, c, s, simdi) { const rtt = simdi - c; if (!(c > 0 && s >
 function osGecikme(p, simdi, bekleSn, cikisSn, saat) { const bek = Math.max(0, bekleSn) + Math.max(0, cikisSn || 0);
   if (saat && Number.isFinite(saat.fark) && p.t > 0) return Math.max(0, (simdi + saat.fark - p.t) / 1000 + bek);
   return Math.max(0, Number(p.g) || 0) / 1000 + bek; }
+/** ⏱️ W57: gecikmenin bileşenleri (ms). p.g = tablet → sunucu (parça süresi DAHİL: parçanın ilk örneğinden sunucuya varışa), p.st = sunucunun iletme anı.
+ *  Döner {parca, tablet (g − parça: toplama bloğu + tabletin çekme beklemesi + ağ), sunucu_web (saat farkı varsa), tampon, cikis, top} (hepsi ms) ya da null. Odadan tablete ZEGO yolu BURADA YOK (ölçülemez). */
+function osGecikmeBilesen(p, simdi, bekleSn, cikisSn, saat, sureSn) { if (!p) return null; const parca = Math.round(1000 * (sureSn || 0)), g = Math.max(0, Number(p.g) || 0);
+  const sw = saat && Number.isFinite(saat.fark) && p.st > 0 ? Math.max(0, Math.round(simdi + saat.fark - p.st)) : null;
+  return { parca, tablet: Math.max(0, Math.round(g - parca)), sunucu_web: sw, tampon: Math.round(1000 * Math.max(0, bekleSn)), cikis: Math.round(1000 * Math.max(0, cikisSn || 0)) }; }
 /** Durum satırı: x {acik, durum, son (ses_durum), bekleMs, sonParcaYas (ms|null), gec (sn|null), sessiz (ardışık sessiz parça)} → {t (düz metin), u (uyarı), cal} */
 function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: false };
   const d = x.durum, s = x.son, oda = s && (s.ad || (s.oda ? "Oda " + s.oda : "")), yer = s && s.yer, uzak = !!s && !!oda && (yer === "gezi" || yer === "izleme" || yer === "kare") ? ` · 📲 ${oda} odası` : "";
@@ -4524,10 +4660,11 @@ function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: fal
   return { t: (x.sessiz >= 15 ? "Çalıyor · sessiz" : "Çalıyor") /* W30: 390 px'te 2 satıra sığsın (eski: "odada şu an ses yok") */ /* 15 × 200 ms = 3 sn */ + kl + g + uzak, u: false, cal: true }; }
 /** Yönetici tanılama satırı (tabletin "durum.tani"sı) */
 function osTaniMetni(t) { if (!t || typeof t !== "object") return ""; const v = (k) => t[k] == null ? "–" : String(t[k]);
-  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")}${t.yakala ? " · " + (t.yakala === "aw" ? "Yakalama: yeni yol" : "Yakalama: eski yol (yedek)") + " · Kayıp blok: " + (t.wk_kayip || 0) : ""} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.saat_rtt != null && t.saat_rtt >= 0 ? ` · tablet saat farkı ${v("saat_fark")} ms` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
-/** ⏱️ Yönetici tanılaması: ölçülen gecikme ve tampon (x {gec, tampon, hedef, g, sr, st {atlanan, bosluk, hizli}, saat}) */
-function osOlcumMetni(x) { if (!x || x.gec == null) return ""; const f = (n) => (Math.round(n * 100) / 100).toString().replace(".", ","); const st = x.st || {};
-  return `⏱️ gecikme ${f(x.gec)} sn (tablet→sunucu ${f(Math.max(0, x.g || 0) / 1000)} · tampon ${f(x.tampon || 0)} / hedef ${f(x.hedef || 0)} sn) · atlanan ${st.atlanan || 0} · boşalma ${st.bosluk || 0} · hızlı ${st.hizli || 0}` + (x.saat ? ` · saat ±${Math.round(x.saat.rtt / 2)} ms` : " · saat ölçülmedi"); }
+  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")}${t.yakala ? " · " + (t.yakala === "aw" ? "Yakalama: yeni yol" : "Yakalama: eski yol (yedek)") + " · Kayıp blok: " + (t.wk_kayip || 0) : ""} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")}${t.parca_ms != null ? " × " + t.parca_ms + " ms" : ""} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.saat_rtt != null && t.saat_rtt >= 0 ? ` · tablet saat farkı ${v("saat_fark")} ms` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
+/** ⏱️ Yönetici tanılaması: ölçülen gecikme ve bileşenleri (x {gec, tampon, hedef, g, st {atlanan, bosluk, hizli}, saat, bil, titresim}) */
+function osOlcumMetni(x) { if (!x || x.gec == null) return ""; const f = (n) => (Math.round(n * 100) / 100).toString().replace(".", ","); const st = x.st || {}, b = x.bil;
+  const d = b ? `parça ${b.parca} ms + tablet/ağ ${b.tablet} ms + ` + (b.sunucu_web == null ? "" : `sunucu→web ${b.sunucu_web} ms + `) + `tampon ${b.tampon} ms (hedef ${Math.round(1000 * (x.hedef || 0))}) + çıkış ${b.cikis} ms` : `tablet→sunucu ${f(Math.max(0, x.g || 0) / 1000)} · tampon ${f(x.tampon || 0)} / hedef ${f(x.hedef || 0)} sn`;
+  return `⏱️ gecikme ${f(x.gec)} sn = ${d}${x.titresim != null ? ` · ağ titreşimi ${Math.round(1000 * x.titresim)} ms` : ""} (odadan tablete ZEGO yolu dahil değil) · atlanan ${st.atlanan || 0} · boşalma ${st.bosluk || 0} · hızlı ${st.hizli || 0}` + (x.saat ? ` · saat ±${Math.round(x.saat.rtt / 2)} ms` : " · saat ölçülmedi"); }
 // </oda-ses-saf>
 let os = { acik: false, durum: "", ctx: null, gain: null, el: null, ws: null, ok: 0, st: { next: 0, atlanan: 0, bosluk: 0 }, sa: {}, saat: null, saatAt: 0, olcum: null, basla: 0, katilAt: 0, son: null, sonParca: 0, gec: null, sessiz: 0, nabiz: 0, cizT: 0, yon: false, bufHz: 16000, bay: [], bicim: null, kalBekle: "", kalImza: "" };
 /** iOS: WebAudio sessiz düğmesine takılmasın diye dokunuşta döngülü sessiz <audio> (0,5 sn, 8 kHz 8 bit) */
@@ -4615,15 +4752,15 @@ function osMesaj(ws, d) { if (ws !== os.ws) return; const p = d.payload || {};
   if (ev === "ses") { osBayt(pl); osCal(pl); } }
 /** 🎚️ gelen biçim + son 5 sn'nin ham bayt/sn'si (base64 öncesi; sessiz parça 0 bayt) */
 function osBayt(p) { const t = Date.now(), d = typeof p.d === "string" ? Math.floor(p.d.length * 3 / 4) : 0; os.bay.push([t, d]); while (os.bay.length && t - os.bay[0][0] > 5000) os.bay.shift();
-  const ilk = os.bay[0][0], sn = Math.max(1, t - ilk + 200) / 1000, top = os.bay.reduce((a, x) => a + x[1], 0); if (p.k !== "sessiz") os.bicim = { k: p.k, sr: p.sr, bps: Math.round(top / sn) }; else if (os.bicim) os.bicim.bps = Math.round(top / sn); }
+  const ilk = os.bay[0][0], sn = Math.max(1, t - ilk + (p.n > 0 && p.sr > 0 ? 1000 * p.n / p.sr : 200)) / 1000, top = os.bay.reduce((a, x) => a + x[1], 0); if (p.k !== "sessiz") os.bicim = { k: p.k, sr: p.sr, bps: Math.round(top / sn) }; else if (os.bicim) os.bicim.bps = Math.round(top / sn); }
 function osCal(p) { const c = os.ctx; if (!c || !os.gain) return; const x = osCoz(p); if (!x) return;
   if (c.state !== "running") { try { c.resume(); } catch (e) {} }
   if (!osSiraKabul(os.st, p.s)) return; // 🔁 W52
   let buf = null; try { buf = c.createBuffer(1, x.length, p.sr); buf.getChannelData(0).set(x); } catch (e) { const y = osYukselt(x, p.sr, c.sampleRate); buf = c.createBuffer(1, y.length, c.sampleRate); buf.getChannelData(0).set(y); } // eski Safari: 16 kHz tampon yok → yükselt
-  const sessiz = p.k === "sessiz", pl = osTampon(os.st, c.currentTime, buf.duration, sessiz); os.sonParca = Date.now(); os.sessiz = sessiz ? os.sessiz + 1 : 0;
+  const sessiz = p.k === "sessiz", pl = osTampon(os.st, c.currentTime, buf.duration, sessiz, p.s); os.sonParca = Date.now(); os.sessiz = sessiz ? os.sessiz + buf.duration / 0.2 : 0; /* W57: sessiz sayısı 200 ms birimi (parça 100 ms de olabilir) */
   if (!pl) return; const s = c.createBufferSource(); s.buffer = buf; if (pl.hiz !== 1) { try { s.playbackRate.value = pl.hiz; } catch (e) {} } s.connect(os.gain); s.start(pl.at);
-  const bek = pl.at - c.currentTime; os.gec = osGecikme(p, Date.now(), bek, c.outputLatency || c.baseLatency || 0, os.saat); // ⏱️ tablet anı → hoparlör (saat farkına dayanıklı)
-  os.olcum = { gec: os.gec, tampon: Math.max(0, os.st.next - c.currentTime), hedef: os.st.hedef, g: p.g, st: os.st, saat: os.saat };
+  const bek = pl.at - c.currentTime, cik = c.outputLatency || c.baseLatency || 0; os.gec = osGecikme(p, Date.now(), bek, cik, os.saat); // ⏱️ tablet anı → hoparlör (saat farkına dayanıklı)
+  os.olcum = { gec: os.gec, tampon: Math.max(0, os.st.next - c.currentTime), hedef: os.st.hedef, g: p.g, st: os.st, saat: os.saat, bil: osGecikmeBilesen(p, Date.now(), bek, cik, os.saat, buf.duration), titresim: os.st.titresim }; /* W57: 🩺 bileşenler */
   if (!os.cizT) os.cizT = setTimeout(() => { os.cizT = 0; osCiz(); }, 250); }
 /** rtKur kancası: yeni anlık bağlantı kurulunca dinleme sürüyorsa yeniden katıl */
 function osYeniBag(ws) { if (os.acik && os.ws !== ws) osKatil(); }
@@ -4724,6 +4861,7 @@ function ovIstenenOda() { return gzIzle() ? String(odaGoz.id) : ovOda(); }
 function ovBaska() { const w = ovIstenenOda(), o = ov.son && ov.son.oda ? String(ov.son.oda) : ""; return !!(w && o && o !== w) || (ov.baskaAt > 0 && Date.now() - ov.baskaAt < 4000); }
 /** 📹 Her kişinin görüntüsü KENDİ koltuk kutusunun içinde, avatarın yerinde (kutuyu doldurur); görüntüsü olmayanın kutusunda avatar kalır. Koltuk yeniden kurulunca da hemen çağrılır */
 function ovSeatBas() { const box = $("odaBody"), g = box && box.querySelector(":scope > .oseats"); if (!g) return;
+  { const nc = g.querySelectorAll(":scope > .oseat.ocamon").length; g.classList.toggle("ovdikey", !!ov.acik && nc >= 1 && nc <= 2); } /* W58: oran yalnız izleme açılıp kapanırken ya da kamera SAYISI değişince değişir (oda verisinden; kare gelişine bağlı değil) */
   const im = ov.acik && ov.cur && !ovBaska() ? ov.cur : null, kol = im && Array.isArray(ov.kol) ? ov.kol : [];
   if (!im && !ov.cvVar) return; let var_ = false;
   for (const c of g.children) { const no = Number(c.dataset.no), b = c.querySelector(":scope > .ovbox"); if (!b) continue;
@@ -4816,8 +4954,29 @@ function okDilimSaatler(dl) { const m = new Map(); (dl || []).forEach((x, j) => 
   return [...m.values()].sort((a, b) => a.h.localeCompare(b.h)); }
 /** Bölüm b içindeki konum (sn) → gerçek zaman (ms) ya da null (zaman haritasından) */
 function okGercek(dl, b, sn) { const p = Number(sn) * 1000; for (const x of dl || []) if (x.b === b && p >= x.d && p < x.d + x.ms + 1) return x.t + (p - x.d); return null; }
+/** 🗣️ W54: kişi renkleri — uid'den türetilir (aynı kişi hep aynı renk); aynı güne düşen iki kişi çakışırsa uid sırasıyla sıradaki boş renk. kisiler: [{u}] → {uid: renk} */
+const OK_RENK = ["#22c55e", "#38bdf8", "#f472b6", "#fbbf24", "#a78bfa", "#fb923c", "#2dd4bf", "#f87171", "#a3e635", "#60a5fa", "#e879f9", "#facc15"];
+function okRenkler(kisiler) { const out = {}, kul = new Set(); [...(kisiler || [])].map((k) => String(k.u)).sort().forEach((u) => { let h = 0; for (const c of u) h = (h * 31 + c.charCodeAt(0)) % 9973; let i = h % OK_RENK.length; for (let n = 0; n < OK_RENK.length && kul.has(i); n++) i = (i + 1) % OK_RENK.length; kul.add(i); out[u] = OK_RENK[i]; }); return out; }
+/** Kişinin dilimleri [[bas, bitis, tepe]] (kon.dil [kisiIndex, bas, bitis, tepe]; zamana göre sıralı) */
+function okKisiDil(kon, ki) { return ((kon && kon.dil) || []).filter((x) => x[0] === ki).map((x) => [x[1], x[2], x[3]]).sort((a, b) => a[0] - b[0]); }
+/** Kişi satırı metni: "12 dk · 17 konuşma · 10:05–17:40"; hiç konuşmadıysa "konuşmadı · koltukta 3 sa" */
+function okKisiMetin(k) { if (!k || !(k.n > 0)) return `konuşmadı${k && k.otur_ms > 0 ? " · koltukta " + okSure(k.otur_ms) : ""}`; return `${okSure(k.ms)} · ${k.n} konuşma · ${okSaat(k.ilk).slice(0, 5)}–${okSaat(k.son).slice(0, 5)}`; }
+/** Kişi sırası → sonraki / önceki dilim: liste [[bas, bitis]], şimdiki gerçek zaman T (ms) ya da dilim no (no ≥ 0); yon +1 / −1. Döner: dilim no | -1 */
+function okDilimGit(liste, no, T, yon) { const n = (liste || []).length; if (!n) return -1;
+  if (no >= 0 && no < n) { const j = no + yon; return j >= 0 && j < n ? j : -1; }
+  if (yon > 0) { const j = liste.findIndex((x) => x[0] > T); return j; }
+  for (let j = n - 1; j >= 0; j--) if (liste[j][0] < T) return j; return -1; }
+/** Gerçek zaman T'nin sesi nerede: ham parça (silinmemiş) ya da gün sonu özeti dilimi. Döner {tur: "ham", o, a, sn, t0} | {tur: "ozet", oi, j, ofs} | null */
+function okKonumBul(T, parcalar, ozetler) {
+  for (const x of parcalar || []) if (x.d === "tamam" && !x.s && x.a && T >= x.t && T < x.t + (x.ms || 60000)) return { tur: "ham", o: x.o, a: x.a, sn: (T - x.t) / 1000, t0: x.t };
+  let en = null;
+  (ozetler || []).forEach((oz, oi) => (oz.dilimler || []).forEach((x, j) => { if (T < x.t + x.ms && T >= x.t - 2000 && (!en || x.t < en.x.t)) en = { oi, j, x }; })); // dilimin içi ya da hemen öncesi (sessizlik çıkarılmış)
+  return en ? { tur: "ozet", oi: en.oi, j: en.j, ofs: Math.max(0, T - en.x.t) } : null; }
+/** Zaman şeridi aralığı: ilk dilimin saatinden son dilimin saatine (en az 1 saat) → [bas, bitis] */
+function okSeritAralik(dil) { if (!dil || !dil.length) return null; let a = Infinity, b = -Infinity; for (const x of dil) { if (x[1] < a) a = x[1]; if (x[2] > b) b = x[2]; }
+  const H = 3600_000; a = Math.floor(a / H) * H; b = Math.max(Math.ceil(b / H) * H, a + H); return [a, b]; }
 // </oda-kayit-saf>
-let ok_ = { bek: new Map(), no: 0, yT: 0, oz: null, liste: null, gun: "", url: "", calan: "", bol: new Map(), oc: null };
+let ok_ = { bek: new Map(), no: 0, yT: 0, oz: null, liste: null, gun: "", url: "", calan: "", bol: new Map(), oc: null, kon: null, konC: new Map(), kisi: -1, dn: -1, t0: 0, gez: false };
 /** sunucuya kayıt isteği (yalnız birincil bağlantıda); cevap "kayit_cevap" {i} */
 async function okIstek(tur, p) { const ws = rt; if (!ws || ws.readyState !== 1 || !ws.__bir) return { hata: "yedek" };
   const b = await sbBiletAl(); if (!b || !b.bilet) return { hata: "bilet" }; if (rt !== ws || ws.readyState !== 1) return { hata: "yedek" };
@@ -4833,13 +4992,14 @@ function okZamanla(hemen) { clearTimeout(ok_.yT); if (!yonOk()) { const B = $("o
 function okCiz() { const B = $("okB"); if (!B) return; const g = okGosterge(ok_.oz); if (B.hidden) B.hidden = false; if (B.textContent !== g.t) B.textContent = g.t; if (B.className !== "okb " + g.c) B.className = "okb " + g.c; B.title = g.title; B.setAttribute("aria-label", g.title); }
 /** Liste penceresi */
 window.odaKayitAc = function () { /* 🎙 Oda kayıtları penceresi (K39: eski adı okAc, ödeme kartının okAc(batch) işlevini eziyordu) */ openModal(`<h3 style="margin:0 0 6px">🎙 Oda kayıtları</h3><div class="okust"><select id="okGun" onchange="okGunSec(this.value)" aria-label="Gün"><option>…</option></select><span id="okTop" class="s"></span></div>
+  <div id="okKon" class="okkon" hidden></div>
   <audio id="okAu" class="okau" controls preload="none"></audio><div id="okDur" class="s okdur" role="status" aria-live="polite"></div><div id="okLis" class="oklis"><div class="s">Yükleniyor…</div></div>
   <button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="okKapat()">Kapat</button>`);
   const au = $("okAu"); if (au) { au.onended = () => okSonraki(); au.ontimeupdate = () => okKonum(); }
   okGunSec(""); };
-window.okKapat = function () { try { const au = $("okAu"); if (au) au.pause(); } catch (e) {} if (ok_.url) { try { URL.revokeObjectURL(ok_.url); } catch (e) {} ok_.url = ""; }
+window.okKapat = function () { ok_.kisi = -1; ok_.dn = -1; ok_.kon = null; try { const au = $("okAu"); if (au) au.pause(); } catch (e) {} if (ok_.url) { try { URL.revokeObjectURL(ok_.url); } catch (e) {} ok_.url = ""; }
   for (const u of ok_.bol.values()) { try { URL.revokeObjectURL(u); } catch (e) {} } ok_.bol.clear(); ok_.oc = null; closeModal(); };
-window.okGunSec = async function (gun) { const L = $("okLis"); if (!L) return; const r = await okIstek("liste", gun ? { gun } : {});
+window.okGunSec = async function (gun) { const L = $("okLis"); if (!L) return; ok_.kisi = -1; ok_.dn = -1; okKonYukle(gun); const r = await okIstek("liste", gun ? { gun } : {});
   if (!$("okLis")) return; if (r.hata) { L.innerHTML = `<div class="s">${r.hata === "yedek" ? "Kayıtlar şu an açılamıyor (anlık kanal yedek yolda)" : r.hata === "yetki" ? "Bu liste yalnız yöneticiye açık" : "Kayıtlar alınamadı"}</div>`; return; }
   ok_.liste = r; ok_.gun = r.gun;
   const S = $("okGun"); if (S) S.innerHTML = (r.gunler && r.gunler.length ? r.gunler : [r.gun]).map((g) => `<option value="${esc(g)}"${g === r.gun ? " selected" : ""}>${esc(okGunAd(g))}</option>`).join("");
@@ -4852,7 +5012,7 @@ window.okGunSec = async function (gun) { const L = $("okLis"); if (!L) return; c
     ? `<button class="okp" data-k="${esc(x.o + "/" + x.a)}" onclick="okCal('${esc(x.o)}','${esc(x.a)}')"><span>${okSaat(x.t)}</span><span class="s">${okSure(x.ms || 60000)} · ${okBoyut(x.b)}</span><span aria-hidden="true">▶</span></button>`
     : `<div class="okp okbos"><span>${okSaat(x.t)}</span><span class="s">atlandı · ${okSure(x.ms)}${x.n ? " · " + esc(String(x.n).replace(/_/g, " ")) : ""}</span></div>`).join("")}</details>`).join("") : "";
   L.innerHTML = OZ.length ? (ozHtml || `<div class="s">Bu gün konuşma yok (hep sessiz)</div>`) + (H.length ? `<details class="oksa"><summary><b>Ham parçalar</b> <span class="s">${ham.filter((x) => x.d === "tamam").length} parça (henüz silinmedi)</span></summary>${hamHtml}</details>` : "")
-    : hamHtml || `<div class="s">${okGunAd(r.gun)} için kayıt yok</div>`; };
+    : hamHtml || `<div class="s">${okGunAd(r.gun)} için kayıt yok</div>`; okGunOzet(); /* 🗣️ liste yeniden çizildi: gün özeti başa */ };
 /** Gün sonu bölümünü dilim dilim al (bas → b), blob adresi önbellekte */
 async function okBolum(oda, a) { const k = ok_.gun + "/" + oda + "/" + a; if (ok_.bol.has(k)) return ok_.bol.get(k); const ps = []; let bas = 0, top = 1;
   while (bas < top) { const r = await okIstek("dosya", { oda, gun: ok_.gun, a, bas }); if (r.hata || !r.d || !(r.n > 0)) return null; ps.push(osB64(r.d)); top = r.b; bas += r.n; const D = $("okDur"); if (D && top > r.n) D.textContent = `yükleniyor… %${Math.round(bas * 100 / top)}`; }
@@ -4860,31 +5020,92 @@ async function okBolum(oda, a) { const k = ok_.gun + "/" + oda + "/" + a; if (ok
   if (au && (!au.canPlayType || !au.canPlayType('audio/webm; codecs="opus"'))) { blob = await okWav(blob, 16000).catch(() => null); if (!blob) return null; }
   const u = URL.createObjectURL(blob); ok_.bol.set(k, u); return u; }
 /** Zaman haritasındaki dilimi çal: bölüm dosyası, dilimin konumundan */
-window.okDilim = async function (oi, j) { const oz = (ok_.liste && ok_.liste.ozetler || [])[oi], x = oz && oz.dilimler[j], au = $("okAu"), D = $("okDur"); if (!x || !au) return;
+window.okDilim = async function (oi, j, ofs) { const oz = (ok_.liste && ok_.liste.ozetler || [])[oi], x = oz && oz.dilimler[j], au = $("okAu"), D = $("okDur"); if (!x || !au) return;
   const b = oz.bolumler[x.b]; if (!b) return; ok_.calan = ""; ok_.oc = { oi, b: x.b }; if (D) D.textContent = `${okSaat(x.t)} yükleniyor…`;
   try { au.src = osSessizWav(); const pp = au.play(); if (pp && pp.catch) pp.catch(() => {}); } catch (e) {} // iOS: dokunuşun içinde aç
   const u = await okBolum(oz.o, "ozet/" + b.a); if (!ok_.oc || ok_.oc.oi !== oi || ok_.oc.b !== x.b) return;
   if (!u) { if (D) D.textContent = "Bölüm alınamadı / bu cihaz çalamıyor"; return; }
   if (au.src !== u) { au.src = u; await new Promise((ok) => { au.onloadedmetadata = ok; setTimeout(ok, 4000); }); }
-  try { au.currentTime = x.d / 1000; } catch (e) {} try { await au.play(); } catch (e) {}
+  try { au.currentTime = (x.d + (ofs || 0)) / 1000; } catch (e) {} try { await au.play(); } catch (e) {}
   document.querySelectorAll(".okp.on").forEach((e) => e.classList.remove("on")); const bt = document.querySelector(`.okp[data-k="z${oi}-${j}"]`); if (bt) bt.classList.add("on"); okKonum(); };
 /** Özet çalarken: gerçek saat (zaman haritasından) */
-function okKonum() { const oc = ok_.oc, au = $("okAu"), D = $("okDur"); if (!oc || !au || !D) return; const oz = (ok_.liste && ok_.liste.ozetler || [])[oc.oi]; if (!oz) return;
-  const t = okGercek(oz.dilimler, oc.b, au.currentTime); const m = t == null ? "" : `▶ ${okGunAd(ok_.gun)} ${okSaat(t)} · oda ${oz.o}`; if (m && D.textContent !== m) D.textContent = m; }
+function okKonum() { const oc = ok_.oc, au = $("okAu"), D = $("okDur"); if (au && !oc && ok_.calan && ok_.hamT0) okKisiTik(ok_.hamT0 + au.currentTime * 1000); // 🗣️ ham parça: gerçek zaman = parça başı + konum
+  if (!oc || !au || !D) return; const oz = (ok_.liste && ok_.liste.ozetler || [])[oc.oi]; if (!oz) return;
+  const t = okGercek(oz.dilimler, oc.b, au.currentTime); if (t != null) okKisiTik(t); const m = t == null ? "" : `▶ ${okGunAd(ok_.gun)} ${okSaat(t)} · oda ${oz.o}`; if (m && D.textContent !== m) D.textContent = m; }
+// 🗣️ W54 "kim ne zaman konuştu" (17.11; kullanıcı: "kayıtlarda zaranın konuşmaları kenanın konuşmaları gibi ayırabilelim … kim konuşuyor kim konuşmuyor"). Veri: sinyal "kayit_konusma" {gun}
+// (yalnız sahip; tablet 3.60+ kayıtlarında; önce sunucu önbelleği → veritabanı → dosya yedeği; Supabase'e çağrı YOK). Kişi çipleri + zaman şeridi + gün özeti AYNI pencerede.
+/** konuşma verisi (gün başına web önbelleği: bugün 20 sn, geçmiş gün 10 dk) → ok_.kon; çizilir */
+async function okKonYukle(gun) { const g = gun || "", tk = (ok_.konNo = (ok_.konNo || 0) + 1), c = ok_.konC.get(g);
+  if (c && Date.now() - c.at < (!g || g === bakuBugunKodu() ? 20_000 : 600_000)) { ok_.kon = c.v; okKonCiz(); return; }
+  ok_.kon = null; okKonCiz(); const r = await okIstek("konusma", g ? { gun: g } : {}); if (!$("okKon") || tk !== ok_.konNo) return; // gün hızlı değiştiyse eski cevap atılır
+  if (r && !r.hata && Array.isArray(r.kisiler)) { ok_.konC.set(g, { at: Date.now(), v: r }); if (ok_.konC.size > 8) ok_.konC.delete(ok_.konC.keys().next().value); }
+  ok_.kon = r && !r.hata ? r : { hata: r && r.hata || "zaman" }; okKonCiz(); }
+/** kişi çipleri + zaman şeridi + önceki/sonraki dilim; gün özeti listenin başına (okGunOzet) */
+function okKonCiz() { const K = $("okKon"), L = $("okLis"); if (!K) return; const kon = ok_.kon;
+  if (!kon) { K.hidden = false; K.innerHTML = `<div class="s" style="min-height:44px;display:flex;align-items:center">Kim konuştu: yükleniyor…</div>`; if (L) L.classList.add("k"); return; }
+  if (kon.hata || !(kon.kisiler && kon.kisiler.length)) { K.hidden = false; if (L) L.classList.remove("k"); K.innerHTML = `<div class="s">${kon.hata === "yedek" ? "Kim konuştu: anlık kanal yedek yolda" : kon.hata ? "Kim konuştu: şu an alınamadı" : "Bu gün için kişi bilgisi yok (tablet 3.60 ve sonrası kayıtlarda görünür)"}</div>`; return; }
+  const R = okRenkler(kon.kisiler), konusan = kon.kisiler.map((k, i) => ({ k, i })).filter((x) => x.k.n > 0);
+  K.hidden = false; if (L) L.classList.add("k");
+  K.innerHTML = `<div class="okkis" role="group" aria-label="Kişiler">${konusan.map(({ k, i }) => `<button class="okchip" style="--c:${R[k.u]}" aria-pressed="${ok_.kisi === i}" onclick="okKisi(${i})" title="${esc(k.ad || k.u)} · ${esc(okKisiMetin(k))}"><i aria-hidden="true"></i><span class="ad">${esc(k.ad || "kişi " + k.u.slice(-4))}</span><span class="s">${okSure(k.ms)}</span></button>`).join("") || `<span class="s">Bu gün kimse konuşmadı</span>`}</div>
+    <canvas id="okSer" class="okser" role="img" aria-label="Konuşma zaman şeridi"></canvas><div class="okeks" id="okEks"></div>
+    <div class="okgez"><button onclick="okGez(-1)" id="okOnc" ${ok_.kisi < 0 ? "disabled" : ""}>◀ Önceki</button><span class="s" id="okGezM">${ok_.kisi < 0 ? "Bir kişiye dokun" : ""}</span><button onclick="okGez(1)" id="okSon" ${ok_.kisi < 0 ? "disabled" : ""}>Sonraki dilim ▶</button></div>`;
+  const cv = $("okSer"); if (cv) cv.onclick = (e) => okSeritTik(e); okSeritCiz(); okGezMetin(); okGunOzet(); }
+/** Zaman şeridi: her kişi ayrı şerit (kişi rengi); seçili kişi parlak, ötekiler soluk; çalan an dikey çizgi */
+function okSeritCiz() { const cv = $("okSer"), kon = ok_.kon; if (!cv || !kon || !kon.kisiler) return; const ar = okSeritAralik(kon.dil), dpr = Math.min(3, window.devicePixelRatio || 1), w = cv.clientWidth || 300, h = 46;
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); const g = cv.getContext("2d"); if (!g) return; g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+  const E = $("okEks"); if (!ar) { if (E) E.innerHTML = ""; return; } if (E) E.innerHTML = `<span>${okSaat(ar[0]).slice(0, 5)}</span><span>${okSaat((ar[0] + ar[1]) / 2).slice(0, 5)}</span><span>${okSaat(ar[1]).slice(0, 5)}</span>`;
+  const R = okRenkler(kon.kisiler), sira = kon.kisiler.map((k, i) => i).filter((i) => kon.kisiler[i].n > 0), sat = Math.min(8, sira.length) || 1, lh = Math.floor((h - 2) / sat), px = (t) => (t - ar[0]) / (ar[1] - ar[0]) * w;
+  const sec = ok_.kisi; sira.forEach((ki, r) => { const y = 1 + (Math.min(r, 7)) * lh; g.fillStyle = R[kon.kisiler[ki].u]; g.globalAlpha = sec < 0 || sec === ki ? 1 : 0.22;
+    for (const x of kon.dil) if (x[0] === ki) g.fillRect(Math.floor(px(x[1])), y, Math.max(2, Math.ceil(px(x[2]) - px(x[1]))), Math.max(2, lh - 1)); });
+  g.globalAlpha = 1; if (ok_.simdiT && ok_.simdiT >= ar[0] && ok_.simdiT <= ar[1]) { g.fillStyle = "#fff"; g.fillRect(Math.round(px(ok_.simdiT)), 0, 2, h); } cv._ar = ar; }
+window.addEventListener("resize", () => { if ($("okSer")) okSeritCiz(); });
+/** Şeride dokunma: o ana en yakın (seçili kişi varsa onun) dilime atla */
+function okSeritTik(e) { const cv = e.currentTarget, kon = ok_.kon; if (!cv || !cv._ar || !kon) return; const r = cv.getBoundingClientRect(), T = cv._ar[0] + (e.clientX - r.left) / r.width * (cv._ar[1] - cv._ar[0]);
+  const l = (kon.dil || []).filter((x) => ok_.kisi < 0 || x[0] === ok_.kisi); let en = null, ed = Infinity; for (const x of l) { const d = T >= x[1] && T <= x[2] ? 0 : Math.min(Math.abs(x[1] - T), Math.abs(x[2] - T)); if (d < ed) { ed = d; en = x; } }
+  if (!en || ed > (cv._ar[1] - cv._ar[0]) / 40) return; if (ok_.kisi < 0) { ok_.kisi = en[0]; okKonCiz(); } const lk = okKisiDil(kon, ok_.kisi); ok_.dn = lk.findIndex((x) => x[0] === en[1]); okDilimCal(); }
+/** Çip: kişi seç / bırak; seçilince yalnız onun yerleri işaretlenir ve oynatma onun dilimine atlar */
+window.okKisi = function (i) { const ac = ok_.kisi === i; ok_.kisi = ac ? -1 : i; ok_.dn = -1; okKonCiz(); if (!ac) okGez(1); else { const D = $("okDur"); if (D && !ok_.oc && !ok_.calan) D.textContent = ""; } };
+/** önceki (−1) / sonraki (+1) dilim */
+window.okGez = function (yon) { const kon = ok_.kon; if (!kon || ok_.kisi < 0) return; const l = okKisiDil(kon, ok_.kisi), j = okDilimGit(l, ok_.dn, ok_.simdiT || 0, yon);
+  if (j < 0) { const D = $("okDur"); if (D) D.textContent = yon > 0 ? "Son dilim" : "İlk dilim"; if (yon > 0) { try { $("okAu").pause(); } catch (e) {} } return; } ok_.dn = j; okDilimCal(); };
+function okGezMetin() { const M = $("okGezM"), kon = ok_.kon; if (!M || !kon) return; const k = kon.kisiler[ok_.kisi]; if (!k) { M.textContent = "Bir kişiye dokun"; return; }
+  const l = okKisiDil(kon, ok_.kisi), x = ok_.dn >= 0 ? l[ok_.dn] : null; M.textContent = `${k.ad || "kişi"} · ${x ? `${ok_.dn + 1}/${l.length} · ${okSaat(x[0])}` : `${l.length} dilim`}`;
+  const a = $("okOnc"), b = $("okSon"); if (a) a.disabled = ok_.dn <= 0 && ok_.dn >= 0; if (b) b.disabled = ok_.dn >= l.length - 1 && ok_.dn >= 0; }
+/** Seçili kişinin ok_.dn'inci dilimini çal (dilimden 0,4 sn önce başlar; sesi olmayan dilim atlanır) */
+async function okDilimCal() { const kon = ok_.kon, l = okKisiDil(kon, ok_.kisi); okGezMetin(); okSeritCiz(); if (ok_.gez) return; ok_.gez = true;
+  try { for (let n = 0; n < 6 && ok_.dn >= 0 && ok_.dn < l.length; n++) { const x = l[ok_.dn], T = x[0] - 400, yer = okKonumBul(T, (ok_.liste && ok_.liste.parcalar) || [], (ok_.liste && ok_.liste.ozetler) || []);
+      if (yer) { ok_.t0 = x[0]; if (yer.tur === "ham") await okCal(yer.o, yer.a, yer.sn, yer.t0); else await okDilim(yer.oi, yer.j, yer.ofs); ok_.simdiT = T; okGezMetin(); okSeritCiz(); return; }
+      if (ok_.dn + 1 >= l.length) break; ok_.dn++; okGezMetin(); }
+    const D = $("okDur"); if (D) D.textContent = "Bu dilimin sesi yok (atlanmış / sessizlik çıkarılmış)"; } finally { ok_.gez = false; } }
+/** Çalarken: gerçek zaman (ok_.simdiT) güncellenir; seçili kişinin diliminin sonu geçtiyse sıradaki dilime atlanır */
+function okKisiTik(T) { ok_.simdiT = T; if (!$("okSer")) return; const n = Date.now(); if (n - (ok_.cizAt || 0) > 600) { ok_.cizAt = n; okSeritCiz(); } if (ok_.kisi < 0 || ok_.dn < 0 || ok_.gez || !ok_.kon) return; const l = okKisiDil(ok_.kon, ok_.kisi), x = l[ok_.dn];
+  if (x && T > x[1] + 300 && T < x[1] + 20_000) okGez(1); }
+/** Gün özeti: "Bugün kim ne kadar konuştu" + koltukta olup hiç konuşmayanlar (listenin başına; Bakü saati) */
+function okGunOzet() { const L = $("okLis"), kon = ok_.kon; if (!L || !kon || !kon.kisiler || !kon.kisiler.length) return; const R = okRenkler(kon.kisiler), bugun = bakuBugunKodu(), baslik = kon.gun === bugun ? "Bugün kim ne kadar konuştu" : `${okGunAd(kon.gun)} kim ne kadar konuştu`;
+  const k1 = kon.kisiler.filter((k) => k.n > 0), k0 = kon.kisiler.filter((k) => !(k.n > 0) && k.otur_ms > 0);
+  const html = `<details class="oksa" id="okOzK" open><summary><b>${baslik}</b> <span class="s">${k1.length} kişi</span></summary>${k1.map((k) => `<div class="okgr" style="--c:${R[k.u]}"><i aria-hidden="true"></i><span class="ad">${esc(k.ad || "kişi " + k.u.slice(-4))}</span><span class="s">${okKisiMetin(k)}</span></div>`).join("") || `<div class="s">Kimse konuşmadı</div>`}
+    ${k0.length ? `<div class="s" style="margin:4px 0 8px">Koltukta olup hiç konuşmayan: ${k0.map((k) => esc(k.ad || "kişi " + k.u.slice(-4)) + " (" + okSure(k.otur_ms) + ")").join(", ")}</div>` : ""}</details>`;
+  const eski = $("okOzK"); if (eski) eski.remove(); L.insertAdjacentHTML("afterbegin", html); }
+/** Bakü günü kodu (YYYYMMDD) */
+function bakuBugunKodu() { const d = new Date(Date.now() + 4 * 3600_000), p = (n) => String(n).padStart(2, "0"); return `${d.getUTCFullYear()}${p(d.getUTCMonth() + 1)}${p(d.getUTCDate())}`; }
 /** Tek dosyayı çal (webm çalınamıyorsa WAV'a çevir; o da olmazsa indir) */
-window.okCal = async function (oda, a) { const D = $("okDur"), au = $("okAu"); if (!au) return; ok_.calan = oda + "/" + a; ok_.oc = null; if (D) D.textContent = `${okSaat(okZaman(a))} yükleniyor…`;
+window.okCal = async function (oda, a, bas, t0) { const D = $("okDur"), au = $("okAu"); if (!au) return; const anah = oda + "/" + a; ok_.hamT0 = t0 || okZaman(a);
+  if (ok_.calan === anah && ok_.url && au.src === ok_.url && !ok_.oc) { try { au.currentTime = bas > 0 ? bas : 0; await au.play(); } catch (e) {} return; } // 🗣️ aynı dosya zaten yüklü: yalnız konuma atla
+  ok_.calan = anah; ok_.oc = null; if (D) D.textContent = `${okSaat(okZaman(a))} yükleniyor…`;
   try { au.src = osSessizWav(); const pp = au.play(); if (pp && pp.catch) pp.catch(() => {}); } catch (e) {} // ⚠️ iOS: oynatma dokunuşa bağlı → öğe DOKUNUŞUN İÇİNDE sessizle açılır, dosya gelince aynı öğede çalar
   const r = await okIstek("dosya", { oda, gun: ok_.gun, a }); if (ok_.calan !== oda + "/" + a) return;
   if (r.hata || !r.d) { if (D) D.textContent = "Dosya alınamadı"; return; }
   let blob = new Blob([osB64(r.d)], { type: "audio/webm" });
   if (!au.canPlayType || !au.canPlayType('audio/webm; codecs="opus"')) { blob = await okWav(blob).catch(() => null); if (!blob) { const u = URL.createObjectURL(new Blob([osB64(r.d)], { type: "audio/webm" })); if (D) D.innerHTML = `Bu cihaz bu ses biçimini çalamıyor · <a href="${u}" download="oda-${esc(oda)}-${esc(ok_.gun)}-${esc(a)}">indir</a>`; return; } }
   if (ok_.url) { try { URL.revokeObjectURL(ok_.url); } catch (e) {} } ok_.url = URL.createObjectURL(blob); au.src = ok_.url;
+  if (bas > 0) { await new Promise((ok) => { au.onloadedmetadata = ok; setTimeout(ok, 4000); }); try { au.currentTime = bas; } catch (e) {} }
   let calti = true; try { await au.play(); } catch (e) { calti = false; } if (D) D.textContent = (calti ? "▶ " : "Oynatmak için ▶'e basın · ") + `${okGunAd(ok_.gun)} ${okSaat(okZaman(a))} · oda ${oda}`;
   document.querySelectorAll(".okp.on").forEach((e) => e.classList.remove("on")); const b = document.querySelector(`.okp[data-k="${CSS.escape(oda + "/" + a)}"]`); if (b) b.classList.add("on"); };
 /** dosya adı (HHMMSS-mmm.webm) + seçili gün → t (ms) */
 function okZaman(a) { const g = ok_.gun, s = String(a); return Date.UTC(+g.slice(0, 4), +g.slice(4, 6) - 1, +g.slice(6, 8), +s.slice(0, 2), +s.slice(2, 4), +s.slice(4, 6)) - 4 * 3600_000; }
 /** Bitince aynı odanın sıradaki parçası (dakika dakika dinleme) */
-function okSonraki() { if (ok_.oc) { const oz = (ok_.liste && ok_.liste.ozetler || [])[ok_.oc.oi], nb = ok_.oc.b + 1, j = oz ? oz.dilimler.findIndex((x) => x.b === nb) : -1; if (j >= 0) okDilim(ok_.oc.oi, j); return; }
+function okSonraki() { if (ok_.kisi >= 0 && ok_.dn >= 0) { okGez(1); return; } // 🗣️ kişi seçiliyse dosya bitince onun sıradaki diliminden sürer
+  if (ok_.oc) { const oz = (ok_.liste && ok_.liste.ozetler || [])[ok_.oc.oi], nb = ok_.oc.b + 1, j = oz ? oz.dilimler.findIndex((x) => x.b === nb) : -1; if (j >= 0) okDilim(ok_.oc.oi, j); return; }
   const l = (ok_.liste && ok_.liste.parcalar || []).filter((x) => x.d === "tamam"), i = l.findIndex((x) => x.o + "/" + x.a === ok_.calan);
   const n = i >= 0 ? l.slice(i + 1).find((x) => x.o === l[i].o) : null; if (n) okCal(n.o, n.a); }
 /** webm → WAV (iPhone Safari webm çalamıyorsa; WebAudio çözebiliyorsa) */
@@ -5531,7 +5752,7 @@ async function ownAct(action, body, title) { const pin = await askPin(title || "
 
 // 💳 Kartları yönet: ekle (tek / toplu yapıştırma), düzenle, sıra, hak sıfırla; kart silinmez, pasif yapılır
 let ocEdit = null, ocBulk = null; // düzenlenen kart (0 = yeni) · toplu yapıştırma { text, owner, items, parsed }
-const pcNum = (n) => String(n || "").replace(/(\d{4})(?=\d)/g, "$1 ");
+const pcNum = (n, b) => pcBic(b, n);
 const pcLuhn = (n) => { if (!/^\d{13,19}$/.test(n)) return false; let s = 0; for (let i = 0; i < n.length; i++) { let d = +n[n.length - 1 - i]; if (i % 2) { d *= 2; if (d > 9) d -= 9; } s += d; } return s % 10 === 0; };
 const pcBankOf = (w) => { const t = w.toLocaleLowerCase("tr"); return /^abb/.test(t) ? "ABB" : /kapital|birbank|bir bank/.test(t) ? "BIRBANK" : /^u(ni)?bank/.test(t) ? "UNIBANK" : /^leo/.test(t) ? "LEOBANK" : /^m10/.test(t) ? "M10" : null; };
 const ocOwners = () => [...new Set([...((pcs && pcs.cards) || []).map((c) => c.owner).filter(Boolean), "Günel", "Zara"])];
@@ -5540,37 +5761,43 @@ async function ocLoad() { const d = await api("pcards"); if (d.report && d.repor
 function ocDraw() { if ($("ocBody")) ownFill("ocards", "ocBody", ocHtml()); }
 const ocSet = (d) => { if (d.report && d.report.pcards) pcs = d.report.pcards; ocDraw(); if (curTab === "card") loadCards(); };
 function ocHtml() { const cards = (pcs && pcs.cards) || [], cu = pcs && pcs.current;
-  const form = (x) => `<div class="ocform" id="ocF"><input id="ocO" placeholder="Sahibi (ör. Günel)" value="${esc(x.owner)}"><select id="ocB">${Object.entries(PCB).map(([k, v]) => `<option value="${k}" ${String(x.bank).toUpperCase() === k ? "selected" : ""}>${v}</option>`).join("")}</select>
-    <input id="ocN" class="full" inputmode="numeric" autocomplete="off" placeholder="Kart numarası (16 hane)" value="${esc(x.number || "")}">
+  const form = (x) => `<div class="ocform" id="ocF"><input id="ocO" placeholder="Sahibi (ör. Günel)" value="${esc(x.owner)}"><select id="ocB" onchange="ocBanka()">${Object.entries(PCB).map(([k, v]) => `<option value="${k}" ${String(x.bank).toUpperCase() === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+    <label class="s full" id="ocNL">${pcM10(x.bank) ? "Telefon numarası (M10)" : "Kart numarası (16 hane)"}</label>
+    <input id="ocN" class="full" inputmode="${pcM10(x.bank) ? "tel" : "numeric"}" autocomplete="off" placeholder="${pcM10(x.bank) ? "0XX XXX XX XX" : "Kart numarası (16 hane)"}" aria-labelledby="ocNL" value="${esc(x.number ? (pcM10(x.bank) ? pcBic(x.bank, x.number) : x.number) : "")}">
     <label class="s">Toplam hak<input id="ocM" type="number" inputmode="numeric" min="1" max="100" value="${Number(x.max_uses) || 5}"></label>
     <label class="occk"><input id="ocA" type="checkbox" ${x.active ? "checked" : ""}> Aktif (sırada)</label>
     <button onclick="ocEdit=null;ocDraw()">Vazgeç</button><button class="go" onclick="ocSave(${Number(x.id) || 0})">💾 Kaydet</button></div>`;
-  return `${cu ? `<div class="card ocnext"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div class="ocnum">${esc(pcNum(cu.number))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card ocnext">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş ya da pasif.</div>`}
+  return `${cu ? `<div class="card ocnext"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div class="ocnum">${esc(pcNum(cu.number, cu.bank))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card ocnext">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş ya da pasif.</div>`}
   <div class="ownacts"><button class="go" onclick="ocEdit=0;ocBulk=null;ocDraw()">➕ Kart ekle</button><button onclick="ocBulk=ocBulk?null:{text:'',owner:'',items:[]};ocEdit=null;ocDraw()">📋 Toplu ekle</button><button onclick="ocReset()">🔄 Tüm hakları sıfırla</button></div>
   ${ocEdit === 0 ? form({ id: 0, owner: "", bank: "ABB", number: "", max_uses: 5, active: true }) : ""}${ocBulk ? ocBulkHtml() : ""}
   <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}" data-id="${x.id}"><div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${x.uses}/${x.max_uses} hak${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}</div></div>
     <div class="ocb"><button onclick="ocMove(${x.id},'up')" ${i ? "" : "disabled"} aria-label="Yukarı">▲</button><button onclick="ocMove(${x.id},'down')" ${i < cards.length - 1 ? "" : "disabled"} aria-label="Aşağı">▼</button><button onclick="ocEdit=${x.id};ocBulk=null;ocDraw()" aria-label="Düzenle">✏️</button><button onclick="ocReset(${x.id})" ${x.uses ? "" : "disabled"} aria-label="Hakkı sıfırla">🔄</button></div></div>${ocEdit === x.id ? form(x) : ""}`).join("") || '<div class="s" style="padding:12px">Kart yok.</div>'}</div>
   <div class="s" style="margin:10px 4px">Kartlar silinmez: kullanılmayacak kartı ✏️ ile <b>pasif</b> yapın. Değişiklikler işlem PIN'inizle kaydedilir; tablet ve açık sayfalar hemen görür.</div>`; }
-function ocBulkHtml() { const b = ocBulk, known = (pcs && pcs.cards) || [], ok = b.items.length && b.items.every((x) => x.bank && pcLuhn(x.number));
+function ocBulkHtml() { const b = ocBulk, known = (pcs && pcs.cards) || [], ok = b.items.length && b.items.every((x) => x.bank && pcNoOk(x.bank, x.number));
   return `<div class="ocform"><textarea id="ocPaste" class="full" rows="4" placeholder="Kart bilgilerini yapıştırın (ad, numara, banka; birden çok kart olabilir)" oninput="ocBulk.text=this.value">${esc(b.text)}</textarea>
     <label class="s full">Adı yazmayan kartların sahibi<select id="ocPO" onchange="ocBulk.owner=this.value">${ocOwners().map((o) => `<option ${o === b.owner ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>
     <button class="full" onclick="ocParse()">🔎 Kartları ayır</button>
-    ${b.items.map((x, i) => `<div class="full ocprev"><b>${i + 1}.</b> ${esc(x.owner)} <select onchange="ocBulk.items[${i}].bank=this.value;ocDraw()">${[["", "banka?"], ...Object.entries(PCS)].map(([k, v]) => `<option value="${k}" ${x.bank === k || (!x.bank && !k) ? "selected" : ""}>${v}</option>`).join("")}</select> <b class="ocnum">${esc(pcNum(x.number))}</b> ${pcLuhn(x.number) ? '<span class="okc">✓</span>' : '<span class="badc">✗ numara hatalı</span>'}${known.some((c) => c.number === x.number) ? ' <span class="s">(zaten kayıtlı)</span>' : ""}<button onclick="ocBulk.items.splice(${i},1);ocDraw()" aria-label="Çıkar">✕</button></div>`).join("")}
+    ${b.items.map((x, i) => `<div class="full ocprev"><b>${i + 1}.</b> ${esc(x.owner)} <select onchange="ocBulk.items[${i}].bank=this.value;ocDraw()">${[["", "banka?"], ...Object.entries(PCS)].map(([k, v]) => `<option value="${k}" ${x.bank === k || (!x.bank && !k) ? "selected" : ""}>${v}</option>`).join("")}</select> <b class="ocnum">${esc(pcNum(x.number, x.bank))}</b> ${pcNoOk(x.bank, x.number) ? '<span class="okc">✓</span>' : '<span class="badc">✗ numara hatalı</span>'}${known.some((c) => c.number === x.number) ? ' <span class="s">(zaten kayıtlı)</span>' : ""}<button onclick="ocBulk.items.splice(${i},1);ocDraw()" aria-label="Çıkar">✕</button></div>`).join("")}
     ${b.items.length ? `<button class="go full" ${ok ? "" : "disabled"} onclick="ocBulkSave()">💾 ${b.items.length} kartı kaydet</button>${ok ? "" : '<div class="s full">Bankası boş ya da numarası hatalı satırı düzeltin / çıkarın</div>'}` : b.parsed ? '<div class="s full">Metinde kart numarası bulunamadı.</div>' : ""}</div>`; }
 // toplu yapıştırma (tabletteki gibi): metinden sırayla sahip adı / kart numarası / banka sözcüğü; banka numaranın ardından (ya da hemen önünden) gelir
 function ocParse() { const text = ($("ocPaste") || {}).value || "", owners = ocOwners(); ocBulk.text = text; ocBulk.owner = ($("ocPO") || {}).value || owners[0];
-  const re = new RegExp(`(\\d[\\d -]{11,22}\\d)|(abb|kapital ?bank|kapital|birbank|bir bank|unibank|ubank|leobank|leo|m10)|(${owners.map((o) => o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
+  // 📱 M10 (W56): 10 haneli telefon (0XXXXXXXXX; boşluk / tire / +994 olabilir) da bir "numara"dır → banka M10 (satırda M10 sözcüğü varsa o tüketilir, başka banka yazıyorsa satır "numara hatalı" görünür)
+  const re = new RegExp(`(\\d[\\d -]{11,22}\\d)|((?<!\\d)(?:(?:\\+|00)?994\\d{9}|0\\d{9})(?!\\d))|(abb|kapital ?bank|kapital|birbank|bir bank|unibank|ubank|leobank|leo|m10)|(${owners.map((o) => o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
   let owner = ocBulk.owner, pend = null, pendBank = null; const out = [];
   for (const m of text.matchAll(re)) {
-    if (m[3]) { if (pend) { out.push(pend); pend = null; } owner = owners.find((o) => o.toLocaleLowerCase("tr") === m[3].toLocaleLowerCase("tr")) || m[3]; continue; }
-    if (m[1]) { const n = m[1].replace(/\D/g, ""); if (n.length < 13 || n.length > 19) continue; if (pend) out.push(pend); pend = { owner, number: n, bank: pendBank }; pendBank = null; continue; }
-    if (m[2]) { const bk = pcBankOf(m[2]); if (pend && !pend.bank) { pend.bank = bk; out.push(pend); pend = null; } else pendBank = bk; } }
-  if (pend) out.push(pend); ocBulk.items = out; ocBulk.parsed = true; ocDraw(); }
+    if (m[4]) { if (pend) { out.push(pend); pend = null; } owner = owners.find((o) => o.toLocaleLowerCase("tr") === m[4].toLocaleLowerCase("tr")) || m[4]; continue; }
+    if (m[1] || m[2]) { const raw = m[1] || m[2], n = raw.replace(/\D/g, ""), tel = n.length < 13 ? pcTel(raw) : "";
+      if (tel) { if (pend) out.push(pend); pend = { owner, number: tel, bank: pendBank || "M10", tel: true }; pendBank = null; continue; }
+      if (n.length < 13 || n.length > 19) continue; if (pend) out.push(pend); pend = { owner, number: n, bank: pendBank }; pendBank = null; continue; }
+    if (m[3]) { const bk = pcBankOf(m[3]); if (pend && pend.tel) { out.push(pend); pend = null; if (bk && bk !== "M10") pendBank = bk; } else if (pend && !pend.bank) { pend.bank = bk; out.push(pend); pend = null; } else pendBank = bk; } }
+  if (pend) out.push(pend); ocBulk.items = out.map(({ owner, bank, number }) => ({ owner, bank, number })); ocBulk.parsed = true; ocDraw(); }
 async function ocBulkSave() { if (!ocBulk || !ocBulk.items.length) return; const items = ocBulk.items.map(({ owner, bank, number }) => ({ owner, bank, number }));
   const d = await ownAct("pcard_bulk", { items }, `${items.length} kartı kaydetmek için işlem PIN'iniz`); if (!d) return; ocBulk = null; ocSet(d); }
-async function ocSave(id) { const owner = $("ocO").value.trim(), number = $("ocN").value.replace(/\D/g, ""), max_uses = Math.round(Number($("ocM").value) || 0), bank = $("ocB").value, active = $("ocA").checked;
+function ocBanka() { const m = pcM10($("ocB").value), n = $("ocN"); $("ocNL").textContent = m ? "Telefon numarası (M10)" : "Kart numarası (16 hane)"; n.placeholder = m ? "0XX XXX XX XX" : "Kart numarası (16 hane)"; n.inputMode = m ? "tel" : "numeric"; }
+async function ocSave(id) { const bank = $("ocB").value, ham = $("ocN").value, owner = $("ocO").value.trim(), number = pcM10(bank) ? pcTel(ham) : ham.replace(/\D/g, ""), max_uses = Math.round(Number($("ocM").value) || 0), active = $("ocA").checked;
+  if (pcM10(bank) && ham.trim() && !number) { toast("M10 için telefon numarası: 10 hane, 0 ile başlar (ör. 050 123 45 67)", true); return; }
   if (!owner) { toast("Kartın sahibini yazın", true); return; } if (!(max_uses >= 1 && max_uses <= 100)) { toast("Hak 1–100 arası olmalı", true); return; }
-  if (number && !pcLuhn(number) && !confirm("Kart numarası hatalı görünüyor (kontrol hanesi tutmuyor). Yine de kaydedilsin mi?")) return;
+  if (number && !pcM10(bank) && !pcLuhn(number) && !confirm("Kart numarası hatalı görünüyor (kontrol hanesi tutmuyor). Yine de kaydedilsin mi?")) return;
   const d = await ownAct("pcard_save", { ...(id ? { id } : {}), owner, bank, number, max_uses, active }, "Kartı kaydetmek için işlem PIN'iniz"); if (!d) return; ocEdit = null; ocSet(d); }
 async function ocMove(id, dir) { const d = await ownAct("pcard_move", { id, dir }, "Sırayı değiştirmek için işlem PIN'iniz"); if (d) ocSet(d); }
 async function ocReset(id) { const x = id ? ((pcs && pcs.cards) || []).find((c) => c.id === id) : null;
@@ -5744,6 +5971,8 @@ function coinLockModal(d, retry) { const l = d.lock, end = Date.now() + (Number(
   openModal(`<div style="padding:16px"><b>🔒 Kilitli</b><p id="cnLockMsg">${esc(d.error)}</p><p>Kalan süre: <b id="cnLeft">${left()}</b></p>${canForce() ? `<button class="go" style="width:100%;margin-bottom:8px" id="cnForce">👑 Yine de gönder</button>` : `<p class="s">Süre dolunca tekrar deneyin.</p>`}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
   if (canForce() && $("cnForce")) $("cnForce").onclick = () => { closeModal(); retry(); };
   const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); }
+function coinAskidaModal(msg) { openModal(`<div style="padding:16px" id="cnAsk"><b>⏳ Önceki gönderim askıda</b><p>${esc(msg)}</p><p class="s">Coin GÖNDERİLMEDİ. ${me && me.yon ? "Sugo panelinden kontrol edip Coins › Son gönderilenler listesindeki ⏳ Askıda satırında <b>Gitti</b> ya da <b>Gitmedi</b> diyebilirsiniz." : "Ajans sahibi, Coins › Son gönderilenler listesindeki ⏳ Askıda satırından kaydı kapatabilir."}</p>
+  <button class="go" style="width:100%;min-height:48px;margin-bottom:8px" onclick="closeModal();cn=null;coinSub='gon';tab('coin');loadCoins()">🪙 Coins listesine git</button><button style="width:100%;min-height:48px" onclick="closeModal()">Kapat</button></div>`); }
 async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
   const lk = cn.lock && cn.lock.until > Date.now() ? cn.lock : null;
   if (lk && !force) { if (!canForce()) { toast(lk.msg || "🔒 Kilitli", true); return; } // 🔒 başkası bu kişiye az önce gönderdi / sohbeti yürütüyor
@@ -5758,6 +5987,7 @@ async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn
     if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
       openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><p class="s" style="color:#fbbf24">⚠️ Gönderim çok acilse Selçuk Bey ile iletişime geçin.</p><button onclick="closeModal()">Tamam</button></div>`);
       const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); return; }
+    if (/Askıda|askıda|sonucu belirsiz|sonuçlanmadı|uzun süredir/.test(d.error)) { coinAskidaModal(d.error); return; } // 🪙 W55: önceki gönderim askıda → satırdaki Gitti / Gitmedi düğmelerine yönlendir
     closeModal(); toast("❌ " + d.error, true); return; }
   closeModal(); if (cn && cn.uid === cur) { chX.sent = { at: new Date().toISOString(), coins: c, by: (me && me.name) || "" }; renderChat(); } // ⚡ öneriler hemen kaybolur
   if (d.certain) { coinIyimser(cn, c, name, d.report && d.report.order_id); toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
@@ -6296,8 +6526,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.126"></script>
-<script src="durum.js?v=2.1.126"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.126"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.127"></script>
+<script src="durum.js?v=2.1.127"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.127"></script><!-- </sugo-veri> -->
 </body>
 </html>
