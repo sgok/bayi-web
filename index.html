@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.119">
+<meta name="build" content="2.1.120">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.119">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.119">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.119">
+<link rel="manifest" href="manifest.json?v=2.1.120">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.120">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.120">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -780,7 +780,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.119" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.120" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -789,7 +789,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.119" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.120" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -849,7 +849,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.119"></script>
+<script src="emoji.js?v=2.1.120"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -4167,7 +4167,7 @@ let os = { acik: false, durum: "", ctx: null, gain: null, el: null, ws: null, ok
 function osSessizWav() { const n = 4000, b = new Uint8Array(44 + n), v = new DataView(b.buffer), y = (o, s) => { for (let i = 0; i < s.length; i++) b[o + i] = s.charCodeAt(i); };
   y(0, "RIFF"); v.setUint32(4, 36 + n, true); y(8, "WAVEfmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); y(36, "data"); v.setUint32(40, n, true); b.fill(128, 44);
   let s = ""; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return "data:audio/wav;base64," + btoa(s); }
-function osGoster() { const k = $("odaSes"); if (!k) return; if (!k.firstChild) k.innerHTML = '<div class="oses"><button id="osB" onclick="osTikla()" aria-pressed="false">🔊 Sesi aç</button><span id="osT" class="ost" role="status" aria-live="polite"></span><button id="okB" class="okb off" hidden onclick="okAc()" aria-label="Oda kayıtları" title="Oda kayıtları">● …</button><button id="osTn" class="ostn" hidden onclick="osTaniAc()" aria-label="Ses tanılaması" title="Ses tanılaması"></button></div>'; osCiz(); try { okZamanla(true); } catch (e) {} /* 🎙️ W26 kayıt göstergesi (yalnız sahip) */ }
+function osGoster() { const k = $("odaSes"); if (!k) return; if (!k.firstChild) k.innerHTML = '<div class="oses"><button id="osB" onclick="osTikla()" aria-pressed="false">🔊 Sesi aç</button><span id="osT" class="ost" role="status" aria-live="polite"></span><button id="okB" class="okb off" hidden onclick="odaKayitAc()" aria-label="Oda kayıtları" title="Oda kayıtları">● …</button><button id="osTn" class="ostn" hidden onclick="osTaniAc()" aria-label="Ses tanılaması" title="Ses tanılaması"></button></div>'; osCiz(); try { okZamanla(true); } catch (e) {} /* 🎙️ W26 kayıt göstergesi (yalnız sahip) */ }
 function osCiz() { const B = $("osB"), T = $("osT"), N = $("osTn"); if (!B) return;
   const x = osDurumMetni({ acik: os.acik, durum: os.durum, son: os.son, bekleMs: os.katilAt ? Date.now() - os.katilAt : 0, sonParcaYas: os.sonParca ? Date.now() - os.sonParca : null, gec: os.gec, sessiz: os.sessiz });
   const bt = os.acik ? "🔇 Sesi kapat" : "🔊 Sesi aç"; if (B.textContent !== bt) { B.textContent = bt; B.setAttribute("aria-pressed", os.acik ? "true" : "false"); }
@@ -4278,7 +4278,7 @@ function okZamanla(hemen) { clearTimeout(ok_.yT); if (!yonOk()) { const B = $("o
   ok_.yT = setTimeout(async () => { if (!odaOn || !yonOk()) return; if (document.visibilityState === "visible") { ok_.oz = await okIstek("ozet").catch(() => ({ hata: "zaman" })); okCiz(); } okZamanla(false); }, hemen ? 0 : OK_YOKLA_MS); }
 function okCiz() { const B = $("okB"); if (!B) return; const g = okGosterge(ok_.oz); if (B.hidden) B.hidden = false; if (B.textContent !== g.t) B.textContent = g.t; if (B.className !== "okb " + g.c) B.className = "okb " + g.c; B.title = g.title; B.setAttribute("aria-label", g.title); }
 /** Liste penceresi */
-window.okAc = function () { openModal(`<h3 style="margin:0 0 6px">🎙 Oda kayıtları</h3><div class="okust"><select id="okGun" onchange="okGunSec(this.value)" aria-label="Gün"><option>…</option></select><span id="okTop" class="s"></span></div>
+window.odaKayitAc = function () { /* 🎙 Oda kayıtları penceresi (K39: eski adı okAc, ödeme kartının okAc(batch) işlevini eziyordu) */ openModal(`<h3 style="margin:0 0 6px">🎙 Oda kayıtları</h3><div class="okust"><select id="okGun" onchange="okGunSec(this.value)" aria-label="Gün"><option>…</option></select><span id="okTop" class="s"></span></div>
   <audio id="okAu" class="okau" controls preload="none"></audio><div id="okDur" class="s okdur" role="status" aria-live="polite"></div><div id="okLis" class="oklis"><div class="s">Yükleniyor…</div></div>
   <button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="okKapat()">Kapat</button>`);
   const au = $("okAu"); if (au) { au.onended = () => okSonraki(); au.ontimeupdate = () => okKonum(); }
@@ -5655,8 +5655,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.119"></script>
-<script src="durum.js?v=2.1.119"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.119"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.120"></script>
+<script src="durum.js?v=2.1.120"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.120"></script><!-- </sugo-veri> -->
 </body>
 </html>
