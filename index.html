@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.118">
+<meta name="build" content="2.1.119">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.118">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.118">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.118">
+<link rel="manifest" href="manifest.json?v=2.1.119">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.119">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.119">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -351,6 +351,13 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .oses .ost { flex: 1 1 auto; min-width: 0; font-size: 13px; line-height: 17px; color: var(--muted); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } .oses .ost.uyari { color: var(--warn); }
   /* W24: yönetici tanılaması şeridin içinde küçük 🩺 düğmesi (dokununca ayrıntı penceresi); satır yüksekliği değişmez (eskiden odayı 51/36 px itiyordu) */
   .oses .ostn { flex: none; width: 40px; padding: 0; font-size: 16px; } .oses .ostn[hidden] { display: none; }
+  /* 🎙️ W26 oda kaydı göstergesi (yalnız sahip): sabit genişlik → metin değişince satır kaymaz; liste penceresi */
+  .oses .okb { flex: none; width: 74px; padding: 0 6px; font-size: 13px; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; color: #22c55e; } .oses .okb[hidden] { display: none; }
+  .oses .okb.mid { color: var(--warn); } .oses .okb.hi { color: var(--bad); } .oses .okb.off { color: var(--muted); }
+  .okust { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; } .okust select { min-height: 40px; font-size: 15px; } .okau { width: 100%; height: 40px; }
+  .okdur { min-height: 18px; margin: 4px 0; overflow-wrap: anywhere; } .oklis { max-height: 52vh; overflow-y: auto; overscroll-behavior: contain; }
+  .oksa summary { min-height: 40px; display: flex; gap: 8px; align-items: center; cursor: pointer; } .okp { display: grid; grid-template-columns: 72px 1fr 20px; gap: 6px; align-items: center; width: 100%; min-height: 40px; padding: 0 8px; text-align: left; font-variant-numeric: tabular-nums; }
+  .okp.on { outline: 2px solid var(--brand); } .okp.okbos { color: var(--muted); grid-template-columns: 72px 1fr; }
   .otgim { display: block; width: calc(100% - 20px); max-height: 46vh; object-fit: contain; margin: 0 10px 8px; border-radius: 12px; background: #000; cursor: zoom-in; }
   #odaBody.goz > .ochatw { display: none !important; } #odaBody.goz > .opast::before { content: "💬 Bu odanın sohbeti buradan görülemiyor"; display: block; padding: 10px 14px; color: var(--muted); font-size: 13px; }
   .oseat .avw .av { width: 50px; height: 50px; } .oemp .av { background: transparent; border: 2px dashed var(--line); color: var(--muted); font-weight: 600; }
@@ -773,7 +780,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.118" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.119" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -782,7 +789,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.118" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.119" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -842,7 +849,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.118"></script>
+<script src="emoji.js?v=2.1.119"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -4091,10 +4098,14 @@ function tgSatir(g, oda, simdi) { const d = g && g.durum, ayni = !!g && String(g
 // <oda-ses> 🔊 Oda sesi (W21, 16.11; kullanıcı: "odanın sesini açabilme özelliği de getir tüm roller odadayken sesi aç yaparsa tablet sesi aktarsın biraz geç gelebilir ama gelsin").
 // TÜM roller: Oda'da "🔊 Sesi aç" → AudioContext DOKUNUŞUN İÇİNDE açılır (iOS şartı) → mevcut anlık bağlantı (YALNIZ birincil: Contabo sugo-sinyal) üzerinden ayrı konu
 // "realtime:oda-ses"a sohbetteler biletiyle katılınır, 10 sn'de bir "dinle" → sunucu tableti uyandırır, tablet odadaki sesi ~1 sn'lik µ-law 16 kHz parçalar hâlinde yollar
-// → burada WebAudio ile ardışık zamanlanıp çalınır (titreşim tamponu ~1,6 sn; kopmada sessizlikle devam, 6 sn'den fazla birikirse ileri atlanır).
+// → burada WebAudio ile ardışık zamanlanıp çalınır.
+// ⏱️ W26 (kullanıcı 17.11: "ses 4 sn gecikmeli geliyor ona bir çare bul 1 saniye olsun"): tablet 200 ms'lik parça yollar (eskiden 1 sn); burada
+// UYARLANIR küçük tampon (osTampon: hedef 0,35 sn → boşalınca +0,1 sn, 20 sn sorunsuzsa −0,05 sn, 0,25–1,2 sn): hedefin biraz üstündeyken %6 hızlı
+// çalar, sessiz parça fazlaysa atlanır, 0,6 sn'den fazla birikirse sesli parça da atlanır → gecikme zamanla BÜYÜMEZ. Uçtan uca gecikme saat farkına
+// dayanıklı ölçülür: tablet t'yi sunucu saatine çevirir, web 30 sn'de bir "saat" ile kendi farkını ölçer (osSaatEkle) → tanılamada (🩺) ölçülen gecikme + tampon.
 // Yedek yolda (Supabase) ses YOK ("şu an kullanılamıyor"); ses parçaları hiçbir yere kaydedilmez. Sekme gizlenince / Oda'dan çıkınca / 2 saat dolunca durur.
 // <oda-ses-saf> (saf işlevler: tests/odases_test.ts metin olarak çalıştırır)
-var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 1.6, OS_EN_COK = 6, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000;
+var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 0.35, OS_HEDEF_MIN = 0.25, OS_HEDEF_MAX = 1.2, OS_YETIS = 0.6, OS_SAAT_MS = 30_000, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000;
 /** G.711 µ-law bayt → [-1, 1] */
 function osUlawCoz(u) { u = ~u & 0xff; const s = u & 0x80, e = (u >> 4) & 7, m = u & 0x0f; const x = (((m << 3) + 0x84) << e) - 0x84; return (s ? -x : x) / 32768; }
 /** base64 → baytlar */
@@ -4106,11 +4117,27 @@ function osCoz(p) { if (!p || !(p.n > 0) || p.n > 48000 * 3 || !(p.sr >= 8000 &&
 /** Doğrusal ara değerle örnekleme hızı yükseltme (eski Safari createBuffer 16 kHz'i reddederse) */
 function osYukselt(x, gHz, cHz) { if (gHz === cHz) return x; const n = Math.max(1, Math.round(x.length * cHz / gHz)), o = new Float32Array(n), r = gHz / cHz;
   for (let i = 0; i < n; i++) { const p = i * r, k = Math.floor(p), f = p - k, a = x[Math.min(k, x.length - 1)], b = x[Math.min(k + 1, x.length - 1)]; o[i] = a + (b - a) * f; } return o; }
-/** Titreşim tamponu: st {next, atlanan, bosluk}; simdi = ctx.currentTime (sn), sure = parça süresi. Döner: başlama anı (sn) ya da null (çok birikti → bu parça atlanır).
- *  İlk parça / tampon boşaldı (kopma, geç gelen) → simdi + hedef'ten yeniden başlar (arada sessizlik). */
-function osPlan(st, simdi, sure, hedef, enCok) { if (!(st.next > simdi + 0.05)) { if (st.next > 0) st.bosluk++; st.next = simdi + hedef; }
-  else if (st.next - simdi > enCok) { st.atlanan++; return null; }
-  const at = st.next; st.next = at + sure; return at; }
+/** ⏱️ Uyarlanır titreşim tamponu (W26). st {next, hedef, atlanan, bosluk, hizli, sonBosluk, sonAzalt}; simdi = ctx.currentTime (sn); sure = parça süresi;
+ *  sessiz = parça sessiz mi. Döner {at (başlama anı), hiz (çalma hızı)} ya da null (bu parça atlanır: birikmiş gecikme eritilir).
+ *  - tampon boşaldı (ilk parça / kopma / geç gelen): simdi + hedef'ten yeniden başlar; kopmadan sonra hedef +0,1 sn (en çok OS_HEDEF_MAX)
+ *  - 20 sn boşalma yoksa hedef −0,05 sn (en az OS_HEDEF_MIN): ağ iyileşince gecikme yeniden küçülür
+ *  - fazla = tampondaki − hedef: > OS_YETIS → atla · sessiz parça ve > 0,12 → atla (duyulmaz) · > 0,08 → %6 hızlı çal (konuşmada fark edilmez) */
+function osTampon(st, simdi, sure, sessiz) { if (!(st.hedef > 0)) st.hedef = OS_HEDEF;
+  const ileri = (st.next || 0) - simdi;
+  if (!(ileri > 0.03)) { if (st.next > 0) { st.bosluk = (st.bosluk || 0) + 1; st.hedef = Math.min(OS_HEDEF_MAX, st.hedef + 0.1); st.sonBosluk = simdi; } else st.sonBosluk = simdi;
+    st.sonAzalt = simdi; const at = simdi + st.hedef; st.next = at + sure; return { at, hiz: 1 }; }
+  if (simdi - (st.sonAzalt || 0) >= 20 && simdi - (st.sonBosluk || 0) >= 20) { st.hedef = Math.max(OS_HEDEF_MIN, Math.round((st.hedef - 0.05) * 1000) / 1000); st.sonAzalt = simdi; }
+  const fazla = ileri - st.hedef;
+  if (fazla > OS_YETIS || (sessiz && fazla > 0.12)) { st.atlanan = (st.atlanan || 0) + 1; return null; }
+  const hiz = fazla > 0.08 ? 1.06 : 1; if (hiz > 1) st.hizli = (st.hizli || 0) + 1;
+  const at = st.next; st.next = at + sure / hiz; return { at, hiz }; }
+/** ⏱️ Saat farkı (NTP benzeri): sa {o: [[rtt, fark]…] son 5} ← "saat" {c, s} cevabı, simdi = Date.now(). Döner {fark (sunucu − web, ms), rtt} (en kısa dönüşlü). */
+function osSaatEkle(sa, c, s, simdi) { const rtt = simdi - c; if (!(c > 0 && s > 0) || rtt < 0 || rtt > 3000) return sa.en || null;
+  sa.o = (sa.o || []).concat([[rtt, s - (c + rtt / 2)]]).slice(-5); const en = sa.o.reduce((a, b) => (b[0] < a[0] ? b : a)); sa.en = { fark: Math.round(en[1]), rtt: en[0] }; return sa.en; }
+/** ⏱️ Uçtan uca gecikme (sn): p.t sunucu saatinde (tablet çevirir) → oynatma anı (web saati + fark). Saat farkı yoksa: tablet→sunucu (p.g) + bekleme (eski yaklaşım). */
+function osGecikme(p, simdi, bekleSn, cikisSn, saat) { const bek = Math.max(0, bekleSn) + Math.max(0, cikisSn || 0);
+  if (saat && Number.isFinite(saat.fark) && p.t > 0) return Math.max(0, (simdi + saat.fark - p.t) / 1000 + bek);
+  return Math.max(0, Number(p.g) || 0) / 1000 + bek; }
 /** Durum satırı: x {acik, durum, son (ses_durum), bekleMs, sonParcaYas (ms|null), gec (sn|null), sessiz (ardışık sessiz parça)} → {t (düz metin), u (uyarı), cal} */
 function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: false };
   const d = x.durum, s = x.son, oda = s && (s.ad || (s.oda ? "Oda " + s.oda : "")), yer = s && s.yer, uzak = !!s && !!oda && (yer === "gezi" || yer === "izleme" || yer === "kare") ? ` · 📲 ${oda} odası` : "";
@@ -4126,34 +4153,37 @@ function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: fal
   if (s.yakalama === "hata") return { t: "Tabletten ses alınamadı" + uzak, u: true, cal: false };
   if (x.sonParcaYas == null) return { t: "Ses bekleniyor…" + uzak, u: false, cal: false };
   if (x.sonParcaYas > OS_SUSKUN_MS) return { t: "Ses gelmiyor…" + uzak, u: true, cal: false };
-  const g = x.gec == null ? "" : ` · gecikme ~${Math.max(1, Math.round(x.gec))} sn`;
-  return { t: (x.sessiz >= 3 ? "Çalıyor · odada şu an ses yok" : "Çalıyor") + g + uzak, u: false, cal: true }; }
+  const g = x.gec == null ? "" : ` · gecikme ~${(Math.round(Math.max(0.1, x.gec) * 10) / 10).toString().replace(".", ",")} sn`;
+  return { t: (x.sessiz >= 15 ? "Çalıyor · odada şu an ses yok" : "Çalıyor") /* 15 × 200 ms = 3 sn */ + g + uzak, u: false, cal: true }; }
 /** Yönetici tanılama satırı (tabletin "durum.tani"sı) */
 function osTaniMetni(t) { if (!t || typeof t !== "object") return ""; const v = (k) => t[k] == null ? "–" : String(t[k]);
-  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
+  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.saat_rtt != null && t.saat_rtt >= 0 ? ` · tablet saat farkı ${v("saat_fark")} ms` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
+/** ⏱️ Yönetici tanılaması: ölçülen gecikme ve tampon (x {gec, tampon, hedef, g, sr, st {atlanan, bosluk, hizli}, saat}) */
+function osOlcumMetni(x) { if (!x || x.gec == null) return ""; const f = (n) => (Math.round(n * 100) / 100).toString().replace(".", ","); const st = x.st || {};
+  return `⏱️ gecikme ${f(x.gec)} sn (tablet→sunucu ${f(Math.max(0, x.g || 0) / 1000)} · tampon ${f(x.tampon || 0)} / hedef ${f(x.hedef || 0)} sn) · atlanan ${st.atlanan || 0} · boşalma ${st.bosluk || 0} · hızlı ${st.hizli || 0}` + (x.saat ? ` · saat ±${Math.round(x.saat.rtt / 2)} ms` : " · saat ölçülmedi"); }
 // </oda-ses-saf>
-let os = { acik: false, durum: "", ctx: null, gain: null, el: null, ws: null, ok: 0, st: { next: 0, atlanan: 0, bosluk: 0 }, basla: 0, katilAt: 0, son: null, sonParca: 0, gec: null, sessiz: 0, nabiz: 0, cizT: 0, yon: false, bufHz: 16000 };
+let os = { acik: false, durum: "", ctx: null, gain: null, el: null, ws: null, ok: 0, st: { next: 0, atlanan: 0, bosluk: 0 }, sa: {}, saat: null, saatAt: 0, olcum: null, basla: 0, katilAt: 0, son: null, sonParca: 0, gec: null, sessiz: 0, nabiz: 0, cizT: 0, yon: false, bufHz: 16000 };
 /** iOS: WebAudio sessiz düğmesine takılmasın diye dokunuşta döngülü sessiz <audio> (0,5 sn, 8 kHz 8 bit) */
 function osSessizWav() { const n = 4000, b = new Uint8Array(44 + n), v = new DataView(b.buffer), y = (o, s) => { for (let i = 0; i < s.length; i++) b[o + i] = s.charCodeAt(i); };
   y(0, "RIFF"); v.setUint32(4, 36 + n, true); y(8, "WAVEfmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); y(36, "data"); v.setUint32(40, n, true); b.fill(128, 44);
   let s = ""; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return "data:audio/wav;base64," + btoa(s); }
-function osGoster() { const k = $("odaSes"); if (!k) return; if (!k.firstChild) k.innerHTML = '<div class="oses"><button id="osB" onclick="osTikla()" aria-pressed="false">🔊 Sesi aç</button><span id="osT" class="ost" role="status" aria-live="polite"></span><button id="osTn" class="ostn" hidden onclick="osTaniAc()" aria-label="Ses tanılaması" title="Ses tanılaması"></button></div>'; osCiz(); }
+function osGoster() { const k = $("odaSes"); if (!k) return; if (!k.firstChild) k.innerHTML = '<div class="oses"><button id="osB" onclick="osTikla()" aria-pressed="false">🔊 Sesi aç</button><span id="osT" class="ost" role="status" aria-live="polite"></span><button id="okB" class="okb off" hidden onclick="okAc()" aria-label="Oda kayıtları" title="Oda kayıtları">● …</button><button id="osTn" class="ostn" hidden onclick="osTaniAc()" aria-label="Ses tanılaması" title="Ses tanılaması"></button></div>'; osCiz(); try { okZamanla(true); } catch (e) {} /* 🎙️ W26 kayıt göstergesi (yalnız sahip) */ }
 function osCiz() { const B = $("osB"), T = $("osT"), N = $("osTn"); if (!B) return;
   const x = osDurumMetni({ acik: os.acik, durum: os.durum, son: os.son, bekleMs: os.katilAt ? Date.now() - os.katilAt : 0, sonParcaYas: os.sonParca ? Date.now() - os.sonParca : null, gec: os.gec, sessiz: os.sessiz });
   const bt = os.acik ? "🔇 Sesi kapat" : "🔊 Sesi aç"; if (B.textContent !== bt) { B.textContent = bt; B.setAttribute("aria-pressed", os.acik ? "true" : "false"); }
   const tt = os.acik ? x.t : os.durum === "sure" ? osDurumMetni({ acik: true, durum: "sure" }).t : ""; if (T.textContent !== tt) T.textContent = tt; if (T.classList.contains("uyari") !== !!x.u) T.classList.toggle("uyari", !!x.u);
-  const tn = os.acik && os.yon && os.son && os.son.tani ? osTaniMetni(os.son.tani) : ""; os.taniMetin = tn; const ti = tn ? "🩺" : ""; if (N.textContent !== ti) N.textContent = ti; if (N.hidden !== !tn) N.hidden = !tn;
+  const tn = os.acik && os.yon && os.son && os.son.tani ? osTaniMetni(os.son.tani) + (os.olcum ? "\n" + osOlcumMetni(os.olcum) : "") : ""; os.taniMetin = tn; const ti = tn ? "🩺" : ""; if (N.textContent !== ti) N.textContent = ti; if (N.hidden !== !tn) N.hidden = !tn;
   const A = document.getElementById && document.getElementById("osTnAc"); if (A && A.textContent !== (tn || "Tanılama şu an yok")) A.textContent = tn || "Tanılama şu an yok"; } // açık pencere yerinde tazelenir
-window.osTaniAc = function () { openModal(`<h3 style="margin:0 0 6px">🩺 Ses tanılaması</h3><div class="s" id="osTnAc" style="overflow-wrap:anywhere">${esc(os.taniMetin || "Tanılama şu an yok")}</div><button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="closeModal()">Tamam</button>`); };
+window.osTaniAc = function () { openModal(`<h3 style="margin:0 0 6px">🩺 Ses tanılaması</h3><div class="s" id="osTnAc" style="overflow-wrap:anywhere;white-space:pre-line">${esc(os.taniMetin || "Tanılama şu an yok")}</div><button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="closeModal()">Tamam</button>`); };
 window.osTikla = function () { if (os.acik) { osDur(""); return; } osBasla(); };
 function osBasla() { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { toast("Bu tarayıcı canlı ses çalamıyor", true); return; }
-  try { os.ctx = new AC({ latencyHint: "playback" }); } catch (e) { try { os.ctx = new AC(); } catch (e2) { toast("Ses açılamadı", true); return; } }
+  try { os.ctx = new AC({ latencyHint: "interactive" }); } /* ⏱️ W26: "playback" çıkış tamponu büyük (~0,1–0,2 sn) */ catch (e) { try { os.ctx = new AC(); } catch (e2) { toast("Ses açılamadı", true); return; } }
   try { os.ctx.resume(); } catch (e) {} // ⚠️ dokunuşun İÇİNDE (await'ten önce): iOS'ta sonradan açılan ses çalmaz
   try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {} // iOS 17+: sessiz düğmesi WebAudio'yu kesmesin
   try { const el = new Audio(osSessizWav()); el.loop = true; el.setAttribute("playsinline", ""); const p = el.play(); if (p && p.catch) p.catch(() => {}); os.el = el; } catch (e) {} // eski iOS için aynı amaç
   try { const b = os.ctx.createBuffer(1, 1, os.ctx.sampleRate), s = os.ctx.createBufferSource(); s.buffer = b; s.connect(os.ctx.destination); s.start(0); } catch (e) {}
   os.gain = os.ctx.createGain(); os.gain.connect(os.ctx.destination);
-  Object.assign(os, { acik: true, durum: "", basla: Date.now(), katilAt: Date.now(), st: { next: 0, atlanan: 0, bosluk: 0 }, son: null, sonParca: 0, gec: null, sessiz: 0, ok: 0, ws: null });
+  Object.assign(os, { acik: true, durum: "", basla: Date.now(), katilAt: Date.now(), st: { next: 0, atlanan: 0, bosluk: 0 }, sa: {}, saat: null, saatAt: 0, olcum: null, son: null, sonParca: 0, gec: null, sessiz: 0, ok: 0, ws: null });
   clearInterval(os.nabiz); os.nabiz = setInterval(osNabiz, 1000); osKatil(); osCiz(); }
 /** "dur": neden "" (el ile) | "gizli" | "cikti" | "sure" */
 function osDur(neden) { if (!os.acik && neden !== "sure") return; const ws = os.ws; os.acik = false; clearInterval(os.nabiz); os.nabiz = 0;
@@ -4166,9 +4196,12 @@ function osKatil() { const ws = rt; if (!os.acik) return; os.ok = 0; os.ws = ws;
   os.durum = ""; os.katilAt = Date.now();
   sbBiletAl().then((b) => { if (!os.acik || os.ws !== ws || rt !== ws || ws.readyState !== 1) return; if (!b) { os.durum = "bilet"; osCiz(); return; }
     try { ws.send(JSON.stringify({ topic: OS_KONU, event: "phx_join", payload: { bilet: b.bilet }, ref: "osj" + (ws.__ref++) })); } catch (e) {} }); }
-function osDinle(yeni) { const ws = os.ws; if (!ws || ws.readyState !== 1 || !os.ok) return; try { ws.send(JSON.stringify({ topic: OS_KONU, event: "broadcast", payload: { type: "broadcast", event: "dinle", payload: yeni ? { yeni: 1 } : {} }, ref: "os" + (ws.__ref++) })); } catch (e) {} os.dinleAt = Date.now(); }
+function osDinle(yeni) { const ws = os.ws; if (!ws || ws.readyState !== 1 || !os.ok) return; try { ws.send(JSON.stringify({ topic: OS_KONU, event: "broadcast", payload: { type: "broadcast", event: "dinle", payload: yeni ? { yeni: 1 } : {} }, ref: "os" + (ws.__ref++) })); } catch (e) {} os.dinleAt = Date.now(); if (yeni) osSaatSor(); }
+/** ⏱️ sunucuya "saat" {c} (cevap osMesaj'da → osSaatEkle) */
+function osSaatSor() { const ws = os.ws; if (!ws || ws.readyState !== 1 || !os.ok) return; os.saatAt = Date.now(); try { ws.send(JSON.stringify({ topic: OS_KONU, event: "broadcast", payload: { type: "broadcast", event: "saat", payload: { c: Date.now() } }, ref: "os" + (ws.__ref++) })); } catch (e) {} }
 function osNabiz() { if (!os.acik) return; if (document.visibilityState !== "visible") { osDur("gizli"); return; } if (Date.now() - os.basla > OS_SURE_MS) { osDur("sure"); return; }
   if (os.ws !== rt) osKatil(); else if (os.ok && Date.now() - (os.dinleAt || 0) >= OS_NABIZ_MS) osDinle(false);
+  if (os.ok && Date.now() - (os.saatAt || 0) >= (os.saat ? OS_SAAT_MS : 3000)) osSaatSor();
   if (os.ctx && os.ctx.state !== "running") { try { os.ctx.resume(); } catch (e) {} } osCiz(); }
 /** Anlık bağlantıdan oda-ses konusu (rtKur onmessage kancası) */
 function osMesaj(ws, d) { if (ws !== os.ws) return; const p = d.payload || {};
@@ -4177,18 +4210,136 @@ function osMesaj(ws, d) { if (ws !== os.ws) return; const p = d.payload || {};
   if (d.event === "phx_close") { os.ok = 0; if (os.acik) setTimeout(() => { if (os.acik && !os.ok) osKatil(); }, 3000); return; }
   if (d.event !== "broadcast" || !os.acik) return; const ev = p.event, pl = p.payload || {};
   if (ev === "ses_durum") { os.son = pl; if (pl.bitti === "sure") { osDur("sure"); return; } osCiz(); return; }
+  if (ev === "saat") { os.saat = osSaatEkle(os.sa, Number(pl.c), Number(pl.s), Date.now()); return; }
   if (ev === "ses") osCal(pl); }
 function osCal(p) { const c = os.ctx; if (!c || !os.gain) return; const x = osCoz(p); if (!x) return;
   if (c.state !== "running") { try { c.resume(); } catch (e) {} }
   let buf = null; try { buf = c.createBuffer(1, x.length, p.sr); buf.getChannelData(0).set(x); } catch (e) { const y = osYukselt(x, p.sr, c.sampleRate); buf = c.createBuffer(1, y.length, c.sampleRate); buf.getChannelData(0).set(y); } // eski Safari: 16 kHz tampon yok → yükselt
-  const at = osPlan(os.st, c.currentTime, buf.duration, OS_HEDEF, OS_EN_COK); os.sonParca = Date.now(); os.sessiz = p.k === "sessiz" ? os.sessiz + 1 : 0;
-  if (at == null) return; const s = c.createBufferSource(); s.buffer = buf; s.connect(os.gain); s.start(at);
-  os.gec = Math.max(0, Number(p.g) || 0) / 1000 + (at - c.currentTime); // tablet → sunucu (sunucunun ölçtüğü) + burada bekleme
+  const sessiz = p.k === "sessiz", pl = osTampon(os.st, c.currentTime, buf.duration, sessiz); os.sonParca = Date.now(); os.sessiz = sessiz ? os.sessiz + 1 : 0;
+  if (!pl) return; const s = c.createBufferSource(); s.buffer = buf; if (pl.hiz !== 1) { try { s.playbackRate.value = pl.hiz; } catch (e) {} } s.connect(os.gain); s.start(pl.at);
+  const bek = pl.at - c.currentTime; os.gec = osGecikme(p, Date.now(), bek, c.outputLatency || c.baseLatency || 0, os.saat); // ⏱️ tablet anı → hoparlör (saat farkına dayanıklı)
+  os.olcum = { gec: os.gec, tampon: Math.max(0, os.st.next - c.currentTime), hedef: os.st.hedef, g: p.g, st: os.st, saat: os.saat };
   if (!os.cizT) os.cizT = setTimeout(() => { os.cizT = 0; osCiz(); }, 250); }
 /** rtKur kancası: yeni anlık bağlantı kurulunca dinleme sürüyorsa yeniden katıl */
 function osYeniBag(ws) { if (os.acik && os.ws !== ws) osKatil(); }
 document.addEventListener("visibilitychange", () => { if (os.acik && document.visibilityState !== "visible") osDur("gizli"); });
 // </oda-ses>
+// <oda-kayit> 🎙️ Oda sesi kaydı (W26, 17.11; kullanıcı: "sesleri kaydedelim bütün gün kayit etsin … gün raporunda seslerden de ne konuşuldu analizi
+// yaptıracağım"). YALNIZ sahip (yonOk): Oda şeridinde sabit genişlikli "● 12 sn" göstergesi (son kayıt parçasının yaşı; 30 sn'de bir, yalnız Oda açıkken)
+// ve dokununca gün seçip saat saat, dakika dakika dinlenen YALIN liste (pencere: sayfada kayma yok). Veri Contabo sugo-sinyal'den (oda-ses konusu,
+// katılım gerekmez, her istekte bilet; sunucu "yon" değilse "yetki" der) — Supabase'e çağrı YOK; yedek yoldayken "şu an kullanılamıyor".
+// Dosyalar webm/Opus 16 kbps; iPhone Safari webm çalamazsa ses çözülüp WAV'a çevrilir, o da olmazsa indirme bağlantısı verilir.
+// <oda-kayit-saf> (saf işlevler: tests/odakayit_test.ts metin olarak çalıştırır)
+const OK_YOKLA_MS = 30_000;
+/** Bakü saati (t ms) → "HH:MM:SS" */
+function okSaat(t) { const d = new Date(Number(t) + 4 * 3600_000), p = (n) => String(n).padStart(2, "0"); return `${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}`; }
+/** YYYYMMDD → "17.11.2026" */
+function okGunAd(g) { g = String(g || ""); return /^\d{8}$/.test(g) ? `${g.slice(6, 8)}.${g.slice(4, 6)}.${g.slice(0, 4)}` : g; }
+/** ms → "1 sa 2 dk" / "12 dk" / "45 sn" */
+function okSure(ms) { const s = Math.round((Number(ms) || 0) / 1000); if (s < 60) return s + " sn"; const dk = Math.round(s / 60); return dk < 60 ? dk + " dk" : `${Math.floor(dk / 60)} sa ${dk % 60} dk`; }
+/** bayt → "118 KB" / "7,1 MB" */
+function okBoyut(b) { b = Number(b) || 0; return b < 1e6 ? Math.max(1, Math.round(b / 1024)) + " KB" : (Math.round(b / 1e5) / 10).toString().replace(".", ",") + " MB"; }
+/** parçalar [{o, a, t, ms, b, d}] → saat grupları [{h: "10", n, ms, b, atlanan, p: [...]}] (Bakü saati, sıralı) */
+function okSaatler(parcalar) { const m = new Map();
+  for (const x of parcalar || []) { const h = okSaat(x.t).slice(0, 2); let g = m.get(h); if (!g) m.set(h, g = { h, n: 0, ms: 0, b: 0, atlanan: 0, p: [] });
+    g.p.push(x); if (x.d === "tamam") { g.n++; g.ms += Number(x.ms) || 0; g.b += Number(x.b) || 0; } else g.atlanan++; }
+  return [...m.values()].sort((a, b) => a.h.localeCompare(b.h)); }
+/** Gösterge: oz (kayit_ozet cevabı) | {hata} | null → {t (kısa metin, ≤ 8 karakter), c ("" | "mid" | "hi" | "off"), title} */
+function okGosterge(oz) { if (!oz) return { t: "● …", c: "off", title: "Oda kaydı: bekleniyor" };
+  if (oz.hata) return { t: "● ?", c: "off", title: "Oda kaydı: şu an okunamıyor" + (oz.hata === "yedek" ? " (anlık kanal yedek yolda)" : "") };
+  const tb = oz.tablet || {}, s = oz.son_kayit_sn, d = tb.durum, yas = s == null ? "—" : s < 90 ? s + " sn" : s < 5400 ? Math.round(s / 60) + " dk" : Math.round(s / 3600) + " sa";
+  const bg = oz.bugun ? ` · bugün ${okSure(oz.bugun.ms)}, ${okBoyut(oz.bugun.b)}` : "", kq = tb.kuyruk > 0 ? ` · tablette ${tb.kuyruk} parça bekliyor` : "";
+  const title = `Oda kaydı · son parça ${s == null ? "yok" : yas + " önce"}${kq}${bg}` + (tb.hata ? ` · ${tb.hata}` : "");
+  if (d === "sicak") return { t: "● sıcak", c: "hi", title };
+  if (d === "desteklenmiyor" || d === "hata") return { t: "● hata", c: "hi", title };
+  if (d === "odada_degil" || d === "sayfa_yok") return { t: "○ " + (s != null && s < 90 ? yas : "yok"), c: "off", title: title + " · tablet odada değil" };
+  if (s == null) return { t: "● yok", c: "off", title };
+  return { t: "● " + yas, c: s > 600 ? "hi" : s > 150 || tb.kuyruk > 2 ? "mid" : "", title }; }
+/** Gün sonu özeti (sessizlik çıkmış) → "kayıt 14 sa 20 dk → sessizlik çıkınca 3 sa 5 dk, 21,4 MB" */
+function okOzetMetin(oz) { if (!oz) return ""; return `kayıt ${okSure(oz.ham && oz.ham.ms)} → sessizlik çıkınca ${okSure(oz.kalan && oz.kalan.ms)}, ${okBoyut(oz.kalan && oz.kalan.b)}`; }
+/** Zaman haritası dilimleri [{t, ms, b, d}] → Bakü saati grupları [{h, n, ms, l: [{j, t, ms, b, d}]}] */
+function okDilimSaatler(dl) { const m = new Map(); (dl || []).forEach((x, j) => { const h = okSaat(x.t).slice(0, 2); let g = m.get(h); if (!g) m.set(h, g = { h, n: 0, ms: 0, l: [] }); g.n++; g.ms += Number(x.ms) || 0; g.l.push({ j, ...x }); });
+  return [...m.values()].sort((a, b) => a.h.localeCompare(b.h)); }
+/** Bölüm b içindeki konum (sn) → gerçek zaman (ms) ya da null (zaman haritasından) */
+function okGercek(dl, b, sn) { const p = Number(sn) * 1000; for (const x of dl || []) if (x.b === b && p >= x.d && p < x.d + x.ms + 1) return x.t + (p - x.d); return null; }
+// </oda-kayit-saf>
+let ok_ = { bek: new Map(), no: 0, yT: 0, oz: null, liste: null, gun: "", url: "", calan: "", bol: new Map(), oc: null };
+/** sunucuya kayıt isteği (yalnız birincil bağlantıda); cevap "kayit_cevap" {i} */
+async function okIstek(tur, p) { const ws = rt; if (!ws || ws.readyState !== 1 || !ws.__bir) return { hata: "yedek" };
+  const b = await sbBiletAl(); if (!b || !b.bilet) return { hata: "bilet" }; if (rt !== ws || ws.readyState !== 1) return { hata: "yedek" };
+  const i = ++ok_.no;
+  return new Promise((res) => { const t = setTimeout(() => { ok_.bek.delete(i); res({ hata: "zaman" }); }, 20_000); ok_.bek.set(i, (x) => { clearTimeout(t); res(x); });
+    try { ws.send(JSON.stringify({ topic: OS_KONU, event: "broadcast", payload: { type: "broadcast", event: "kayit_" + tur, payload: { ...(p || {}), bilet: b.bilet, i } }, ref: "ok" + (ws.__ref++) })); } catch (e) { clearTimeout(t); ok_.bek.delete(i); res({ hata: "gonderilemedi" }); } }); }
+/** rtKur kancası: oda-ses konusundaki "kayit_cevap" → bekleyen istek (true döner: ileti bunundu) */
+function okMesaj(d) { if (d.event !== "broadcast" || !d.payload || d.payload.event !== "kayit_cevap") return false; const pl = d.payload.payload || {}, f = ok_.bek.get(pl.i);
+  if (f) { ok_.bek.delete(pl.i); f(pl); } return true; }
+/** Oda açıkken 30 sn'de bir gösterge (yalnız sahip; sekme görünürken) */
+function okZamanla(hemen) { clearTimeout(ok_.yT); if (!yonOk()) { const B = $("okB"); if (B) B.hidden = true; return; }
+  ok_.yT = setTimeout(async () => { if (!odaOn || !yonOk()) return; if (document.visibilityState === "visible") { ok_.oz = await okIstek("ozet").catch(() => ({ hata: "zaman" })); okCiz(); } okZamanla(false); }, hemen ? 0 : OK_YOKLA_MS); }
+function okCiz() { const B = $("okB"); if (!B) return; const g = okGosterge(ok_.oz); if (B.hidden) B.hidden = false; if (B.textContent !== g.t) B.textContent = g.t; if (B.className !== "okb " + g.c) B.className = "okb " + g.c; B.title = g.title; B.setAttribute("aria-label", g.title); }
+/** Liste penceresi */
+window.okAc = function () { openModal(`<h3 style="margin:0 0 6px">🎙 Oda kayıtları</h3><div class="okust"><select id="okGun" onchange="okGunSec(this.value)" aria-label="Gün"><option>…</option></select><span id="okTop" class="s"></span></div>
+  <audio id="okAu" class="okau" controls preload="none"></audio><div id="okDur" class="s okdur" role="status" aria-live="polite"></div><div id="okLis" class="oklis"><div class="s">Yükleniyor…</div></div>
+  <button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="okKapat()">Kapat</button>`);
+  const au = $("okAu"); if (au) { au.onended = () => okSonraki(); au.ontimeupdate = () => okKonum(); }
+  okGunSec(""); };
+window.okKapat = function () { try { const au = $("okAu"); if (au) au.pause(); } catch (e) {} if (ok_.url) { try { URL.revokeObjectURL(ok_.url); } catch (e) {} ok_.url = ""; }
+  for (const u of ok_.bol.values()) { try { URL.revokeObjectURL(u); } catch (e) {} } ok_.bol.clear(); ok_.oc = null; closeModal(); };
+window.okGunSec = async function (gun) { const L = $("okLis"); if (!L) return; const r = await okIstek("liste", gun ? { gun } : {});
+  if (!$("okLis")) return; if (r.hata) { L.innerHTML = `<div class="s">${r.hata === "yedek" ? "Kayıtlar şu an açılamıyor (anlık kanal yedek yolda)" : r.hata === "yetki" ? "Bu liste yalnız yöneticiye açık" : "Kayıtlar alınamadı"}</div>`; return; }
+  ok_.liste = r; ok_.gun = r.gun;
+  const S = $("okGun"); if (S) S.innerHTML = (r.gunler && r.gunler.length ? r.gunler : [r.gun]).map((g) => `<option value="${esc(g)}"${g === r.gun ? " selected" : ""}>${esc(okGunAd(g))}</option>`).join("");
+  const OZ = r.ozetler || [], ham = (r.parcalar || []).filter((x) => !x.s);
+  const T = $("okTop"); if (T) T.textContent = OZ.length ? OZ.map(okOzetMetin).join(" · ") : r.toplam ? `${okSure(r.toplam.ms)} · ${okBoyut(r.toplam.b)} · ${r.toplam.n} parça` + (r.toplam.atlanan ? ` · ${r.toplam.atlanan} boşluk` : "") : "";
+  // 🎙️ gün sonu özeti: konuşma dilimleri gerçek saatleriyle; dilime basınca bölüm dosyası o konumdan çalar
+  const ozHtml = OZ.map((oz, oi) => okDilimSaatler(oz.dilimler).map((g) => `<details class="oksa"><summary><b>${g.h}:00</b> <span class="s">${g.n} konuşma · ${okSure(g.ms)}${OZ.length > 1 ? " · oda " + esc(oz.o) : ""}</span></summary>${g.l.map((x) =>
+    `<button class="okp" data-k="z${oi}-${x.j}" onclick="okDilim(${oi},${x.j})"><span>${okSaat(x.t)}</span><span class="s">${okSure(x.ms)}</span><span aria-hidden="true">▶</span></button>`).join("")}</details>`).join("")).join("");
+  const H = okSaatler(ham), hamHtml = H.length ? H.map((g) => `<details class="oksa"><summary><b>${g.h}:00</b> <span class="s">${okSure(g.ms)} · ${okBoyut(g.b)}${g.atlanan ? ` · ${g.atlanan} boşluk` : ""}</span></summary>${g.p.map((x) => x.d === "tamam"
+    ? `<button class="okp" data-k="${esc(x.o + "/" + x.a)}" onclick="okCal('${esc(x.o)}','${esc(x.a)}')"><span>${okSaat(x.t)}</span><span class="s">${okSure(x.ms || 60000)} · ${okBoyut(x.b)}</span><span aria-hidden="true">▶</span></button>`
+    : `<div class="okp okbos"><span>${okSaat(x.t)}</span><span class="s">atlandı · ${okSure(x.ms)}${x.n ? " · " + esc(String(x.n).replace(/_/g, " ")) : ""}</span></div>`).join("")}</details>`).join("") : "";
+  L.innerHTML = OZ.length ? (ozHtml || `<div class="s">Bu gün konuşma yok (hep sessiz)</div>`) + (H.length ? `<details class="oksa"><summary><b>Ham parçalar</b> <span class="s">${ham.filter((x) => x.d === "tamam").length} parça (henüz silinmedi)</span></summary>${hamHtml}</details>` : "")
+    : hamHtml || `<div class="s">${okGunAd(r.gun)} için kayıt yok</div>`; };
+/** Gün sonu bölümünü dilim dilim al (bas → b), blob adresi önbellekte */
+async function okBolum(oda, a) { const k = ok_.gun + "/" + oda + "/" + a; if (ok_.bol.has(k)) return ok_.bol.get(k); const ps = []; let bas = 0, top = 1;
+  while (bas < top) { const r = await okIstek("dosya", { oda, gun: ok_.gun, a, bas }); if (r.hata || !r.d || !(r.n > 0)) return null; ps.push(osB64(r.d)); top = r.b; bas += r.n; const D = $("okDur"); if (D && top > r.n) D.textContent = `yükleniyor… %${Math.round(bas * 100 / top)}`; }
+  let blob = new Blob(ps, { type: "audio/webm" }); const au = $("okAu");
+  if (au && (!au.canPlayType || !au.canPlayType('audio/webm; codecs="opus"'))) { blob = await okWav(blob, 16000).catch(() => null); if (!blob) return null; }
+  const u = URL.createObjectURL(blob); ok_.bol.set(k, u); return u; }
+/** Zaman haritasındaki dilimi çal: bölüm dosyası, dilimin konumundan */
+window.okDilim = async function (oi, j) { const oz = (ok_.liste && ok_.liste.ozetler || [])[oi], x = oz && oz.dilimler[j], au = $("okAu"), D = $("okDur"); if (!x || !au) return;
+  const b = oz.bolumler[x.b]; if (!b) return; ok_.calan = ""; ok_.oc = { oi, b: x.b }; if (D) D.textContent = `${okSaat(x.t)} yükleniyor…`;
+  try { au.src = osSessizWav(); const pp = au.play(); if (pp && pp.catch) pp.catch(() => {}); } catch (e) {} // iOS: dokunuşun içinde aç
+  const u = await okBolum(oz.o, "ozet/" + b.a); if (!ok_.oc || ok_.oc.oi !== oi || ok_.oc.b !== x.b) return;
+  if (!u) { if (D) D.textContent = "Bölüm alınamadı / bu cihaz çalamıyor"; return; }
+  if (au.src !== u) { au.src = u; await new Promise((ok) => { au.onloadedmetadata = ok; setTimeout(ok, 4000); }); }
+  try { au.currentTime = x.d / 1000; } catch (e) {} try { await au.play(); } catch (e) {}
+  document.querySelectorAll(".okp.on").forEach((e) => e.classList.remove("on")); const bt = document.querySelector(`.okp[data-k="z${oi}-${j}"]`); if (bt) bt.classList.add("on"); okKonum(); };
+/** Özet çalarken: gerçek saat (zaman haritasından) */
+function okKonum() { const oc = ok_.oc, au = $("okAu"), D = $("okDur"); if (!oc || !au || !D) return; const oz = (ok_.liste && ok_.liste.ozetler || [])[oc.oi]; if (!oz) return;
+  const t = okGercek(oz.dilimler, oc.b, au.currentTime); const m = t == null ? "" : `▶ ${okGunAd(ok_.gun)} ${okSaat(t)} · oda ${oz.o}`; if (m && D.textContent !== m) D.textContent = m; }
+/** Tek dosyayı çal (webm çalınamıyorsa WAV'a çevir; o da olmazsa indir) */
+window.okCal = async function (oda, a) { const D = $("okDur"), au = $("okAu"); if (!au) return; ok_.calan = oda + "/" + a; ok_.oc = null; if (D) D.textContent = `${okSaat(okZaman(a))} yükleniyor…`;
+  try { au.src = osSessizWav(); const pp = au.play(); if (pp && pp.catch) pp.catch(() => {}); } catch (e) {} // ⚠️ iOS: oynatma dokunuşa bağlı → öğe DOKUNUŞUN İÇİNDE sessizle açılır, dosya gelince aynı öğede çalar
+  const r = await okIstek("dosya", { oda, gun: ok_.gun, a }); if (ok_.calan !== oda + "/" + a) return;
+  if (r.hata || !r.d) { if (D) D.textContent = "Dosya alınamadı"; return; }
+  let blob = new Blob([osB64(r.d)], { type: "audio/webm" });
+  if (!au.canPlayType || !au.canPlayType('audio/webm; codecs="opus"')) { blob = await okWav(blob).catch(() => null); if (!blob) { const u = URL.createObjectURL(new Blob([osB64(r.d)], { type: "audio/webm" })); if (D) D.innerHTML = `Bu cihaz bu ses biçimini çalamıyor · <a href="${u}" download="oda-${esc(oda)}-${esc(ok_.gun)}-${esc(a)}">indir</a>`; return; } }
+  if (ok_.url) { try { URL.revokeObjectURL(ok_.url); } catch (e) {} } ok_.url = URL.createObjectURL(blob); au.src = ok_.url;
+  let calti = true; try { await au.play(); } catch (e) { calti = false; } if (D) D.textContent = (calti ? "▶ " : "Oynatmak için ▶'e basın · ") + `${okGunAd(ok_.gun)} ${okSaat(okZaman(a))} · oda ${oda}`;
+  document.querySelectorAll(".okp.on").forEach((e) => e.classList.remove("on")); const b = document.querySelector(`.okp[data-k="${CSS.escape(oda + "/" + a)}"]`); if (b) b.classList.add("on"); };
+/** dosya adı (HHMMSS-mmm.webm) + seçili gün → t (ms) */
+function okZaman(a) { const g = ok_.gun, s = String(a); return Date.UTC(+g.slice(0, 4), +g.slice(4, 6) - 1, +g.slice(6, 8), +s.slice(0, 2), +s.slice(2, 4), +s.slice(4, 6)) - 4 * 3600_000; }
+/** Bitince aynı odanın sıradaki parçası (dakika dakika dinleme) */
+function okSonraki() { if (ok_.oc) { const oz = (ok_.liste && ok_.liste.ozetler || [])[ok_.oc.oi], nb = ok_.oc.b + 1, j = oz ? oz.dilimler.findIndex((x) => x.b === nb) : -1; if (j >= 0) okDilim(ok_.oc.oi, j); return; }
+  const l = (ok_.liste && ok_.liste.parcalar || []).filter((x) => x.d === "tamam"), i = l.findIndex((x) => x.o + "/" + x.a === ok_.calan);
+  const n = i >= 0 ? l.slice(i + 1).find((x) => x.o === l[i].o) : null; if (n) okCal(n.o, n.a); }
+/** webm → WAV (iPhone Safari webm çalamıyorsa; WebAudio çözebiliyorsa) */
+async function okWav(blob, hz) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) throw new Error("yok"); let c; try { c = hz ? new AC({ sampleRate: hz }) : new AC(); } catch (e) { c = new AC(); } // uzun bölüm: 16 kHz'te çöz (10 dk ≈ 19 MB WAV)
+  try { const ab = await c.decodeAudioData(await blob.arrayBuffer()), x = ab.getChannelData(0), n = x.length, sr = ab.sampleRate, b = new ArrayBuffer(44 + n * 2), v = new DataView(b), y = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    y(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); y(8, "WAVEfmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); y(36, "data"); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, x[i])) * 32767, true);
+    return new Blob([b], { type: "audio/wav" }); } finally { try { c.close(); } catch (e) {} } }
+// </oda-kayit>
 let odaTg = null, odaTgT = 0, odaTgS = 0, odaTgBusy = false, odaTgImg = null;
 function odaTgHtml(oda) { if (!yonOk()) return ""; const x = tgSatir(odaTg, oda, Date.now()); if (!x) return "";
   const k = odaTg && odaTg.son_kare && String(odaTg.oda) === String(oda) && TG_SURER.concat("dondu").includes(odaTg.durum) ? odaTgKare(odaTg.son_kare) : null;
@@ -5282,7 +5433,7 @@ function rtKur(ws, cfg) { const bir = !!ws.__bir; rtYeniDur(); rt = ws; rtDen = 
   ws.onmessage = (m) => { if (rt !== ws) return; rtLast = Date.now(); let d = {}; try { d = JSON.parse(m.data); } catch (e) {}
     if (d.event === "phx_reply" && d.topic === "phoenix" && hbAt[d.ref]) { STAT.rt = Math.round(performance.now() - hbAt[d.ref]); for (const k in hbAt) delete hbAt[k]; clearTimeout(wd); wd = 0; statLine(); return; }
     if (d.topic === SB_KONU) { sbMesaj(ws, d); return; } // 👥 sohbette olanlar (ayrı konu)
-    if (d.topic === OS_KONU) { try { osMesaj(ws, d); } catch (e) {} return; } // 🔊 oda sesi (ayrı konu, W21)
+    if (d.topic === OS_KONU) { try { if (!okMesaj(d)) osMesaj(ws, d); } catch (e) {} return; } // 🔊 oda sesi (ayrı konu, W21) · 🎙️ kayıt cevapları (W26)
     if (d.event !== "broadcast" || !d.payload) return; const ev = d.payload.event, pl = d.payload.payload || {};
     if (ev === "live" && rtTekrar(pl)) return; rtOlay(ev, pl); };
   ws.onclose = () => { ws.__dur(); rtKopu(ws); }; ws.onerror = () => { try { ws.close(); } catch (e) {} };
@@ -5504,8 +5655,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.118"></script>
-<script src="durum.js?v=2.1.118"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.118"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.119"></script>
+<script src="durum.js?v=2.1.119"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.119"></script><!-- </sugo-veri> -->
 </body>
 </html>
