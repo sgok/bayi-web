@@ -41,7 +41,8 @@
   const avBox = (m, cls) => { const o = vipO(m); return `<div class="avw${o ? vipAttr(o) : ""}" data-u="${escA(m.uid)}"><div class="av ${cls || ""}">${avHtml(m.n, m.av)}</div>${o ? vipLab(o) : ""}</div>`; };
   const vipChip = (m) => { const o = vipO(m); return o ? `<span class="svtag dvip" style="--vc:${o.c}">${o.t}</span>` : ""; };
   const txtH = (t) => (typeof emo === "function" ? emo(esc(t)) : esc(t));
-  const canPost = () => !!(me && (me.role === "sahip" || me.role === "yetkili"));
+  const canPost = () => !!(me && typeof can === "function" && can("durum_paylas")); // 🔐 W32: izin (sunucu da denetler)
+  const durumOk = () => typeof can !== "function" || (typeof me !== "undefined" && !!me && can("durum_gor")); // 🔐 W32: ⭕ Durum izni (varsayılan: yalnız sahip)
   const dur = (sn) => { sn = Math.round(Number(sn) || 0); return sn > 0 ? Math.floor(sn / 60) + ":" + String(sn % 60).padStart(2, "0") : ""; };
   const GR = ["#f58529,#dd2a7b", "#8134af,#515bd4", "#dd2a7b,#8134af", "#feda75,#fa7e1e", "#515bd4,#22d3ee", "#16a34a,#0ea5e9"]; // yazı-yalnız durumun renkli zemini (kimliğe göre sabit)
   const grOf = (id) => { let h = 0; for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return GR[h % GR.length]; };
@@ -199,10 +200,10 @@
     if (e.target.closest("video,button,a")) return; const c = e.target.closest(".dcard[data-id]"); if (c && !c.classList.contains("dsk")) durumAc(c.dataset.id); }
   window.durumDaha = (t) => load(t, true);
   window.durumYenile = (t) => { const s = S(t), more = !!(s.items && s.items.length && s.next); s.err = null; s.items = s.items || []; draw(t); load(t, more); }; // sonraki sayfa hata verdiyse o sayfa yeniden
-  function show(force) { if (!(typeof yonOk !== "function" || yonOk())) return; /* 🔐 ⭕ Durum yalnız yöneticide */ const yeni = shell(); postBtn(); draw(dtab); if (yeni) TABS.forEach(([k]) => { if (k !== dtab) draw(k); }); /* rol yöneticiye dönünce kabuk yeniden kuruldu: gizli sekmeler de hazır */ const s = S(dtab); if (force || !s.at || Date.now() - s.at > STALE) load(dtab); }
+  function show(force) { if (!durumOk()) return; /* 🔐 W32: ⭕ Durum izinle */ const yeni = shell(); postBtn(); draw(dtab); if (yeni) TABS.forEach(([k]) => { if (k !== dtab) draw(k); }); /* rol yöneticiye dönünce kabuk yeniden kuruldu: gizli sekmeler de hazır */ const s = S(dtab); if (force || !s.at || Date.now() - s.at > STALE) load(dtab); }
   window.durumShow = show;
   // Gizli alt sekmeler (ve sekme açılmadan önce akış) boşta önbellekten çizilir: dokununca hazır
-  function boot() { if (typeof me !== "undefined" && me && !(typeof yonOk !== "function" || yonOk())) return; shell(); draw(dtab); idleRun(() => TABS.forEach(([k]) => { if (k !== dtab) draw(k); })); }
+  function boot() { if (typeof me !== "undefined" && me && !durumOk()) return; shell(); draw(dtab); idleRun(() => TABS.forEach(([k]) => { if (k !== dtab) draw(k); })); }
   window.__durumReset = () => { for (const k of Object.keys(st)) delete st[k]; const b = $("durumBody"); if (b) { b.innerHTML = ""; delete b.dataset.on; } boot(); }; // senaryolar: telefonda saklı akıştan yeniden açılış
 
   // ---- ana sayfaya kancalar: sekme yetkisi (mesaj), aşağı çekip yenile, rol değişince paylaş düğmesi
