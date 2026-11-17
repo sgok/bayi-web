@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.117">
+<meta name="build" content="2.1.118">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.117">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.117">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.117">
+<link rel="manifest" href="manifest.json?v=2.1.118">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.118">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.118">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -773,7 +773,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.117" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.118" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -782,7 +782,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.117" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.118" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -842,7 +842,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.117"></script>
+<script src="emoji.js?v=2.1.118"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -3735,10 +3735,11 @@ function odaModId() { return "rm-" + Date.now().toString(36) + "-" + Math.random
 /** İstek → tablet sonucu (Promise; asla reddetmez): { ok, err, code, data, cevapsiz?, belirsiz? } */
 function odaModIste(body) { const id = odaModId(), room = odaModOda();
   return new Promise((res) => { const p = { kind: body.kind, alindi: false, sure: body.kind === "gift" ? 100_000 : body.kind === "gifts" ? 45_000 : 30_000 }; odaModP[id] = p; // 💎 W23: hediye 90 sn'ye kadar sürebilir
-    p.bitir = (o) => { if (odaModP[id] !== p) return; delete odaModP[id]; clearTimeout(p.t); res({ id, room, ...o }); };
+    p.onRapor = body.onRapor; delete body.onRapor; // 🎁 W25: sunucu raporu (gifts / giftkuru: sınır) tablet sonucundan önce gelir
+    p.bitir = (o) => { if (odaModP[id] !== p) return; delete odaModP[id]; clearTimeout(p.t); res({ id, room, ...o, rapor: p.rapor || null }); };
     p.t = setTimeout(() => p.bitir(p.kind === "gift" ? { ok: false, err: "Sonuç bilinmiyor — tablet 15 sn'de cevap vermedi; yeniden göndermeden önce bakiyeye bakın", belirsiz: 1 } : { ok: false, err: "Tablet cevap vermedi (ofis tableti açık ve internete bağlı olmalı)", cevapsiz: 1 }), 15_000); // 🎁 hediye: sunucu tablete iletmiş olabilir → asla "gönderilmedi" denmez
     if (!room) { p.bitir({ ok: false, err: "Yalnız bizim odada yönetim yapılabilir" }); return; }
-    api("room_mod", { ...body, room, id }).then((d) => { if (!d || d.error) p.bitir({ ok: false, err: (d && d.error) || "Bağlantı yok", sunucu: 1 }); }, () => p.bitir({ ok: false, err: "Bağlantı yok", sunucu: 1 })); }); }
+    api("room_mod", { ...body, room, id }).then((d) => { if (!d || d.error) p.bitir({ ok: false, err: (d && d.error) || "Bağlantı yok", sunucu: 1 }); else { p.rapor = d.report || null; if (p.onRapor) p.onRapor(p.rapor); } }, () => p.bitir({ ok: false, err: "Bağlantı yok", sunucu: 1 })); }); }
 /** room_mod_ok (tablet): alindi → bekleme 30 sn'ye uzar; son → sonuç */
 window.odaModOk = function (pl) { const p = pl && odaModP[String(pl.id || "")]; if (!p) return;
   if (pl.st === "alindi") { if (!p.alindi) { p.alindi = true; clearTimeout(p.t); p.t = setTimeout(() => p.bitir({ ok: false, err: p.kind === "gift" ? "Sonuç bilinmiyor — yeniden göndermeden önce bakiyeye bakın (tablet işi aldı ama sonuç gelmedi)" : "Tablet işi aldı ama sonuç gelmedi: Sugo'da kontrol edin", belirsiz: 1 }), p.sure || 30_000); } return; }
@@ -3878,12 +3879,14 @@ function odaIciParca(o, now) { if (!o) return []; const L = [];
   return L; }
 /** Hediye toplamı (coin): çanta 0; alıcı sayısı geçersizse null */
 function odaHdToplam(birim, n, alici, canta) { if (!(alici >= 1) || !(n >= 1)) return null; return canta ? 0 : Math.round(Number(birim) * n * alici * 100) / 100; }
-/** W24: "Gönder" neden pasif? x {canta, cantaN (çantadaki adet), n, alici, top, bakiye (null = bilinmiyor), tek (tek gönderim sınırı; null = bilinmiyor)} → "" (gönderilebilir) ya da neden */
+/** W24: "Gönder" neden pasif? x {canta, cantaN (çantadaki adet), n, alici, top, bakiye (null = bilinmiyor), tek (tek gönderim sınırı; null = bilinmiyor),
+ *  W25: gun (günlük sınır) + bugun (bugün harcanan; ikisi de sunucudan, yoksa denetlenmez)} → "" (gönderilebilir) ya da neden */
 function odaHdNeden(x) { const L = [], f = (n) => Number(n || 0).toLocaleString("tr-TR");
   if (x.canta) { const ger = Number(x.n || 0) * Math.max(1, Number(x.alici) || 0); if (Number(x.cantaN || 0) < ger) L.push(`Çantada yeterli yok (${f(x.cantaN)} var, ${f(ger)} gerekiyor)`); return L.join(" · "); }
   if (x.top == null) return "";
   if (x.bakiye != null && Number(x.top) > Number(x.bakiye)) L.push("Bakiye yetmiyor");
   if (Number(x.tek) > 0 && Number(x.top) > Number(x.tek)) L.push(`Tek gönderim sınırı ${f(x.tek)} coin`);
+  if (Number(x.gun) > 0 && x.bugun != null && Number(x.bugun) + Number(x.top) > Number(x.gun)) L.push(`Günlük sınır ${f(x.gun)} coin (bugün ${f(x.bugun)})`);
   return L.join(" · "); }
 /** W24: "sonuç bilinmiyor" penceresinde aynı uyarı iki kez yazılmasın: hata metninden "Sonuç bilinmiyor" ve "yeniden göndermeden önce bakiyeye bakın" ayıklanır */
 function odaHdBilMetin(err) { let t = String(err || "").replace(/^\s*Sonuç bilinmiyor\s*[—–-]?\s*/i, "").replace(/[;,.]?\s*yeniden göndermeden önce (Sugo'da )?bakiyeye bakın\.?/gi, "").replace(/^\s*\((.*)\)\s*$/, "$1").replace(/\s*\((.*)\)\s*$/, " · $1").replace(/^[\s·;—–-]+|[\s·;—–-]+$/g, "");
@@ -3929,10 +3932,15 @@ function odaIciAc() { const r = odaData && odaData.room; if (!r) return; const v
     <h3>🏆 Katkı sıralaması (Sugo)</h3>${rows || '<div class="row s">Henüz yok.</div>'}
     ${sahip ? `<div class="ohs" style="margin-top:10px"><button onclick="closeModal();odaHediyeAc('koltuk')">🎁 Koltuktakilere</button><button onclick="closeModal();odaHediyeAc('oda')">🎁 Tüm odaya</button></div><button style="width:100%" onclick="closeModal();odaAyarAc()">⚙️ Oda ayarları · PK daveti</button>` : ""}
     ${tn}<button class="owx" style="width:100%;margin-top:10px" onclick="closeModal()">Kapat</button>`); }
-// 🎁 Hediye gönder (yalnız Ajans sahibi). Liste tabletten (sayfanın kendi hediye paneli) okunur, bu telefonda saklanır (açılınca anında; arkada yenilenir).
+// 🎁 Hediye gönder (yalnız Ajans sahibi). Liste tabletteki oda sayfasının hediye verisinden okunur, bu telefonda saklanır (açılınca anında; arkada yenilenir).
+// W25 (17.11): tablet paneli tıklatmaz, Sugo'nun gönderme isteğini sayfanın kendi bağlantısıyla atar; hata "Adım N/12 (ad): tanı" biçiminde gelir.
+// Sınırlar sunucudan (report.sinir {tek, gunluk, bugun}); gelmezse varsayılan 5.000 / 30.000. "🔎 Yolu sına" = kuru deneme (tablet göndermez).
 let odaHd = null;
 /** W24: tek gönderim sınırı — sunucu bildiriyorsa o; değilse son reddinden öğrenilen (24 sa geçerli); yoksa ekranda yazan varsayılan (W24b: yazı ile denetim hep aynı sayı) */
-const ODA_HD_TEK = 5000; // sunucunun varsayılanı (odayonet.ts HEDIYE_SINIR.tek); ayar değişirse sunucu reddi yeni değeri öğretir
+const ODA_HD_TEK = 5000, ODA_HD_GUN = 30000; // sunucunun varsayılanı (odayonet.ts HEDIYE_SINIR); W25: sunucu gerçek sınırı liste cevabıyla bildirir
+/** W25: sunucunun bildirdiği sınırı pencereye işle (tek, günlük, bugün harcanan) */
+function odaHdSinirAl(h, rp) { const sn = rp && rp.sinir; if (!h || !sn) return; if (Number(sn.tek) > 0) { h.tek = Number(sn.tek); h.sinirSunucu = true; try { localStorage.setItem("bw_oda_hd_tek", JSON.stringify({ tek: h.tek, t: Date.now() })); } catch (e) {} }
+  if (Number(sn.gunluk) > 0) h.gun = Number(sn.gunluk); h.bugun = sn.bugun == null ? null : Number(sn.bugun); }
 function odaHdTek(d) { const s = d && (d.sinir && d.sinir.tek != null ? d.sinir.tek : d.tek); if (Number(s) > 0) return Number(s);
   try { const x = JSON.parse(localStorage.getItem("bw_oda_hd_tek") || "null"); return x && Number(x.tek) > 0 && Date.now() - x.t < 86_400_000 ? Number(x.tek) : ODA_HD_TEK; } catch (e) { return ODA_HD_TEK; } }
 function odaHdCache() { try { const x = JSON.parse(localStorage.getItem("bw_oda_hediye") || "null"); return x && Array.isArray(x.tabs) ? x : null; } catch (e) { return null; } }
@@ -3941,9 +3949,9 @@ function odaHdAlici(h) { if (h.hedef === "kisi") return 1; const r = odaData && 
   const v = odaIciGecerli(r); return Math.round(Number(v && v.o && v.o.izl) || Number(r.online) || 0); }
 const odaHdSecili = (h) => { const T = h.tabs.find((t) => t.id === h.tab) || null, G = T ? (T.gifts || []).find((g) => g.id === h.gid) || null : null; return { T, G }; };
 async function odaHediyeAc(hedef, uid) { if (!yonOk() || odaGoz || !odaModOda()) { toast("Hediye yalnız Ajans sahibinde, bizim odada", true); return; }
-  const c = odaHdCache(), h = { hedef, uid: uid || "", tabs: c ? c.tabs : [], adet: c && Array.isArray(c.adet) && c.adet.length ? c.adet : [1], bakiye: null, tek: odaHdTek(null), tab: "", gid: "", n: 1, yuk: true, err: "", eski: !!c };
+  const c = odaHdCache(), h = { hedef, uid: uid || "", tabs: c ? c.tabs : [], adet: c && Array.isArray(c.adet) && c.adet.length ? c.adet : [1], bakiye: null, tek: odaHdTek(null), gun: ODA_HD_GUN, bugun: null, tab: "", gid: "", n: 1, yuk: true, err: "", eski: !!c };
   h.tab = h.tabs.length ? h.tabs[0].id : ""; odaHd = h; odaHdCiz(true);
-  const r = await odaModIste({ kind: "gifts" }); if (odaHd !== h) return; h.yuk = false;
+  const r = await odaModIste({ kind: "gifts", onRapor: (rp) => { if (odaHd === h) { odaHdSinirAl(h, rp); odaHdCiz(false); } } }); if (odaHd !== h) return; h.yuk = false; odaHdSinirAl(h, r.rapor);
   if (r.ok && r.data && Array.isArray(r.data.tabs)) { h.tabs = r.data.tabs; h.adet = Array.isArray(r.data.adet) && r.data.adet.length ? r.data.adet : [1]; h.bakiye = r.data.bakiye == null ? null : Number(r.data.bakiye); h.tek = odaHdTek(r.data); h.eski = false;
     if (!h.tabs.some((t) => t.id === h.tab)) { h.tab = h.tabs.length ? h.tabs[0].id : ""; h.gid = ""; } if (!h.adet.includes(h.n)) h.n = h.adet[0];
     try { localStorage.setItem("bw_oda_hediye", JSON.stringify({ t: Date.now(), tabs: h.tabs, adet: h.adet })); } catch (e) {} }
@@ -3957,31 +3965,46 @@ function odaHdCiz(ilk) { const h = odaHd; if (!h) return; const acik = $("modal"
   const als = (h.uid ? [["kisi", "Bu kişi: " + odaWhoName(h.uid)]] : []).concat([["koltuk", "Koltuktakiler"], ["oda", "Tüm oda"]]);
   const alSel = `<div class="ohc" role="group" aria-label="Alıcı">${als.map(([k, t]) => `<button class="${k === h.hedef ? "on" : ""}" aria-pressed="${k === h.hedef}" onclick="odaHdSec('h','${k}')">${esc(t)}</button>`).join("")}</div>`;
   const nSel = `<div class="ohc" role="group" aria-label="Adet">${h.adet.map((n) => `<button class="${n === h.n ? "on" : ""}" aria-pressed="${n === h.n}" onclick="odaHdSec('n','${esc(String(n))}')">× ${esc(nf(n))}</button>`).join("")}</div>`;
-  const neden = G && al >= 1 ? odaHdNeden({ canta: !!(T && T.canta), cantaN: G.n, n: h.n, alici: al, top, bakiye: h.bakiye, tek: h.tek }) : "";
+  const neden = G && al >= 1 ? odaHdNeden({ canta: !!(T && T.canta), cantaN: G.n, n: h.n, alici: al, top, bakiye: h.bakiye, tek: h.tek, gun: h.gun, bugun: h.bugun }) : "";
   const durum = h.yuk ? "⏳ Tablet Sugo'dan hediye listesini okuyor…" + (h.eski ? " (önceki liste gösteriliyor)" : "") : h.err ? "❌ " + esc(h.err) : "Selçuk hesabıyla, tabletteki oda sayfasından gönderilir.";
   const sum = G ? `${esc(G.ad || G.id)} × ${h.n} → ${esc(kim)}${al > 1 ? " (" + nf(al) + " kişi)" : ""}<br>Toplam: <b>${T.canta ? "çantadan (coin harcanmaz)" : top == null ? "—" : nf(top) + " coin"}</b>${h.bakiye != null ? " · Bakiye " + nf(h.bakiye) + " coin" : ""}`
     : al >= 1 ? "Bir hediye seçin" : h.hedef === "koltuk" ? "Koltukta kimse yok" : "Odadaki kişi sayısı bilinmiyor";
   const html = `<h3 style="margin:0 0 6px">🎁 Hediye gönder</h3><div class="s">${durum}</div><div class="sub osel">${tabs}</div><div class="ohg">${gl || '<div class="row s">Liste yok</div>'}</div>
-    <div class="s">Alıcı</div>${alSel}<div class="s">Adet</div>${nSel}<div class="ohsum">${sum}</div><div class="s">Sınır${h.tek === ODA_HD_TEK ? " (varsayılan)" : ""}: tek gönderim ≤ ${nf(h.tek)} coin${h.tek === ODA_HD_TEK ? ", günde ≤ 30.000 coin" : ""}; sunucu denetler. Gönderirken işlem PIN'i istenir.</div>
-    <div class="ohalt"><button class="ohgo" ${G && al >= 1 && !h.gidiyor && top != null && !neden ? "" : "disabled"} onclick="odaHdGonder()">${h.gidiyor ? "⏳ Gönderiliyor…" : neden ? "⛔ " + esc(neden) : "🎁 Gönder"}</button><button class="owx" onclick="odaHd=null;closeModal()">Kapat</button></div>`;
+    <div class="s">Alıcı</div>${alSel}<div class="s">Adet</div>${nSel}<div class="ohsum">${sum}</div><div class="s">Sınır${h.sinirSunucu ? "" : " (varsayılan)"}: tek gönderim ≤ ${nf(h.tek)} coin, günde ≤ ${nf(h.gun || ODA_HD_GUN)} coin${h.bugun != null ? " (bugün " + nf(h.bugun) + ")" : ""}; sunucu denetler. Gönderirken işlem PIN'i istenir.</div>
+    <div class="ohalt"><button class="ohgo" ${G && al >= 1 && !h.gidiyor && !h.bekle && top != null && !neden ? "" : "disabled"} onclick="odaHdGonder()">${h.gidiyor ? "⏳ Gönderiliyor…" : neden ? "⛔ " + esc(neden) : "🎁 Gönder"}</button><button class="owx" onclick="odaHd=null;closeModal()">Kapat</button></div>
+    <button class="owx ohsina" style="width:100%;margin-top:6px" ${h.gidiyor || h.sina ? "disabled" : ""} onclick="odaHdSina()">${h.sina ? "⏳ Tablet yolu sınıyor…" : "🔎 Hediye yolunu sına (coin harcamaz)"}</button>`;
   if (acik) { const sc = acik.scrollTop, ms = $("modalBox").scrollTop; $("modalBox").innerHTML = html; const y = $("modalBox").querySelector(".ohg"); if (y) y.scrollTop = sc; $("modalBox").scrollTop = ms; } else openModal(html); }
 function odaHdSec(k, v) { const h = odaHd; if (!h || h.gidiyor) return; if (k === "t") { h.tab = String(v); h.gid = ""; } else if (k === "g") h.gid = String(v); else if (k === "h") h.hedef = ["kisi", "koltuk", "oda"].includes(v) ? v : h.hedef; else if (k === "n") h.n = Number(v) || 1; odaHdCiz(false); }
-async function odaHdGonder() { const h = odaHd; if (!h || h.gidiyor) return; const { T, G } = odaHdSecili(h); if (!T || !G) return; const al = odaHdAlici(h);
+async function odaHdGonder() { const h = odaHd; if (!h || h.gidiyor || h.bekle) return; h.bekle = true; // W25: çift dokunuş / onay penceresi açıkken ikinci basış → tek istek
+  try { await odaHdGonder1(h); } finally { h.bekle = false; if (odaHd === h) odaHdCiz(false); } }
+async function odaHdGonder1(h) { const { T, G } = odaHdSecili(h); if (!T || !G) return; const al = odaHdAlici(h);
   if (!(al >= 1)) { toast(h.hedef === "koltuk" ? "Koltukta kimse yok" : "Odadaki kişi sayısı bilinmiyor", true); return; }
   if (T.canta && Number(G.n || 0) < h.n * al) { toast("Çantada yeterli yok", true); return; } // W24: çantadan her alıcıya n adet gider
   const birim = T.canta ? 0 : Number(G.f) || 0, top = odaHdToplam(birim, h.n, al, !!T.canta); if (top == null || (!T.canta && !(birim > 0))) { toast("Hediye fiyatı okunamadı", true); return; }
-  const neden = odaHdNeden({ canta: !!T.canta, cantaN: G.n, n: h.n, alici: al, top, bakiye: h.bakiye, tek: h.tek }); if (neden) { toast(neden, true); return; }
+  const neden = odaHdNeden({ canta: !!T.canta, cantaN: G.n, n: h.n, alici: al, top, bakiye: h.bakiye, tek: h.tek, gun: h.gun, bugun: h.bugun }); if (neden) { toast(neden, true); return; }
   const kim = h.hedef === "kisi" ? odaWhoName(h.uid) + " (" + h.uid + ")" : h.hedef === "koltuk" ? "koltuktaki " + al + " kişi" : "tüm oda (" + al + " kişi)";
   if (!confirm(`🎁 HEDİYE GÖNDER\nHediye: ${G.ad || G.id} × ${h.n}\nAlıcı: ${kim}\nToplam: ${T.canta ? "çantadan (coin harcanmaz)" : nf(top) + " coin"}${h.bakiye != null ? "\nBakiye: " + nf(h.bakiye) + " coin" : ""}\nSelçuk hesabıyla gönderilecek, geri alınamaz. Onaylıyor musunuz?`)) return;
   const pin = await askPin("🎁 Hediye: işlem PIN'i", true); if (!pin) { if (odaHd === h) odaHdCiz(true); return; } // W24: PIN'den vazgeçince hediye penceresi seçimleriyle geri gelir
   h.gidiyor = true; toast("⏳ Hediye: tablete gönderildi…");
   const body = { kind: "gift", gid: G.id, tab: T.id, n: h.n, hedef: h.hedef, ...(h.hedef === "kisi" ? { uid: h.uid } : {}), birim, canta: !!T.canta, alici: al, ad: String(G.ad || "").slice(0, 40) };
   const r = await odaModIste({ ...body, pin }); h.gidiyor = false; const d = r.data || {}, bil = !r.ok && !!(r.belirsiz || d.bilinmiyor);
-  if (r.ok) toast(`✅ ${G.ad || "Hediye"} × ${h.n} gönderildi${d.coin != null && !d.canta ? " · " + nf(d.coin) + " coin" : ""}${d.b1 != null ? " · bakiye " + nf(d.b1) : ""}`);
+  if (r.ok) { toast(`✅ ${G.ad || "Hediye"} × ${h.n} gönderildi${d.coin != null && !d.canta ? " · " + nf(d.coin) + " coin" : ""}${d.b1 != null ? " · bakiye " + nf(d.b1) : ""}`); if (h.bugun != null && d.coin != null && !d.canta) h.bugun += Number(d.coin) || 0; }
   else if (bil) { const ac = odaHdBilMetin(r.err); openModal(`<h3 style="margin:0 0 6px">⚠️ Sonuç bilinmiyor</h3>${ac ? `<div class="row s">${esc(ac)}</div>` : ""}<div class="row s">Yeniden göndermeden önce Sugo'da bakiyeye bakın. Bu istek ikinci kez gönderilmez.</div><button class="owx" style="width:100%" onclick="closeModal()">Tamam</button>`); }
-  else { toast("❌ Hediye: " + odaHdSayi(r.err), true); const sn = odaHdSinirOku(r.err); if (sn) { h.tek = sn; try { localStorage.setItem("bw_oda_hd_tek", JSON.stringify({ tek: sn, t: Date.now() })); } catch (e) {} } }
+  else { const sn = odaHdSinirOku(r.err); if (sn) { h.tek = sn; try { localStorage.setItem("bw_oda_hd_tek", JSON.stringify({ tek: sn, t: Date.now() })); } catch (e) {} }
+    if (/^Adım \d+\/\d+/.test(String(r.err || ""))) odaHdHataGoster(r.err); else toast("❌ Hediye: " + odaHdSayi(r.err), true); } // W25: tabletin adım tanısı pencerede (kısaltılmaz)
   odaModIz(r, { kind: "gift", gid: G.id, n: h.n, hedef: h.hedef, ...(bil ? { bilinmiyor: 1 } : {}), ...(d.b0 != null ? { b0: d.b0 } : {}), ...(d.b1 != null ? { b1: d.b1 } : {}), ...(r.ok && d.coin != null ? { coin: d.coin } : {}) });
   if (r.ok && d.b1 != null) h.bakiye = Number(d.b1); odaHdCiz(false); }
+/** W25: tablet adım tanısı (gönderilmedi / Sugo reddetti) — pencere; kapatınca hediye penceresi seçimleriyle geri gelir */
+function odaHdHataGoster(err) { const m = /^Adım (\d+)\/(\d+) \(([^)]*)\): ([\s\S]*)$/.exec(String(err || "")), adim = m ? `Adım ${m[1]}/${m[2]} · ${m[3]}` : "", tani = m ? m[4] : String(err || "");
+  openModal(`<h3 style="margin:0 0 6px">❌ Hediye gönderilemedi</h3>${adim ? `<div class="row s"><b>${esc(adim)}</b></div>` : ""}<div class="row s">${esc(odaHdSayi(tani))}</div><div class="row s">Coin harcanmadı. Ayrıntı için "🔎 Hediye yolunu sına" kullanılabilir.</div><button class="owx" style="width:100%" onclick="closeModal();if(odaHd)odaHdCiz(true)">Tamam</button>`); }
+/** W25 🔎 kuru deneme: tablet aynı hazırlığı yapar (paket, bağlantı, komut, liste, alıcı, bakiye, gövde) ama GÖNDERMEZ; adım adım sonuç */
+async function odaHdSina() { const h = odaHd; if (!h || h.gidiyor || h.sina) return; h.sina = true; odaHdCiz(false);
+  const { T, G } = odaHdSecili(h), body = { kind: "giftkuru", ...(T && G ? { gid: G.id, tab: T.id, n: h.n } : {}), hedef: h.hedef, ...(h.hedef === "kisi" && h.uid ? { uid: h.uid } : {}), onRapor: (rp) => odaHdSinirAl(h, rp) };
+  const r = await odaModIste(body); h.sina = false; odaHdSinirAl(h, r.rapor); if (odaHd !== h) return;
+  const d = r.data || {}, L = Array.isArray(d.adimlar) ? d.adimlar : [];
+  const satir = L.map((x, i) => `<div class="row s">${x.kuru ? "⏸️" : x.ok ? "✅" : "❌"} ${i + 1}. ${esc(x.ad || "")}${x.not ? " — " + esc(x.not) : ""}</div>`).join("");
+  const bas = !r.ok ? "❌ Sınama yapılamadı: " + esc(r.err || "") : d.hazir ? "✅ Yol hazır: gerçek gönderim bu adımlarla yapılır (bu sınamada hiçbir şey gönderilmedi)." : "⛔ Yol hazır değil: işaretli adımda kalıyor (hiçbir şey gönderilmedi).";
+  openModal(`<h3 style="margin:0 0 6px">🔎 Hediye yolu sınaması</h3><div class="row s">${bas}</div>${satir}<button class="owx" style="width:100%;margin-top:8px" onclick="closeModal();if(odaHd)odaHdCiz(true)">Geri</button>`); }
 // ⚙️ Oda ayarları + ⚔️ "Odalar arası PK davetini kabul et" (yalnız Ajans sahibi; hepsi onaylı). PK başlat / bitir Sugo web sayfasında yok.
 let odaPk = null;
 async function odaAyarAc() { if (!yonOk() || odaGoz || !odaModOda()) return; const r = odaData.room, v = odaIciGecerli(r), o = (v && v.o) || {};
@@ -5481,8 +5504,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.117"></script>
-<script src="durum.js?v=2.1.117"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.117"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.118"></script>
+<script src="durum.js?v=2.1.118"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.118"></script><!-- </sugo-veri> -->
 </body>
 </html>
