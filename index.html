@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.124">
+<meta name="build" content="2.1.125">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.124">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.124">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.124">
+<link rel="manifest" href="manifest.json?v=2.1.125">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.125">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.125">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -839,7 +839,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.124" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.125" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -848,7 +848,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.124" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.125" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -909,7 +909,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.124"></script>
+<script src="emoji.js?v=2.1.125"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -4438,7 +4438,7 @@ function tgSatir(g, oda, simdi) { const d = g && g.durum, ayni = !!g && String(g
 // IMA çözebildiğini bildirir; çözemeyen (eski) web dinliyorsa sunucu Yüksek'e döner. Yalnız sahip değiştirir (sunucu da denetler); her değişiklik web_audit'e (seskal).
 // Seçici 🩺 penceresinde (yalnız yön); öteki roller durum satırında kaliteyi görür. Eski tablet (kal bildirmez) → seçici kapalı, "tablet güncellenince".
 // <oda-ses-saf> (saf işlevler: tests/odases_test.ts metin olarak çalıştırır)
-var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 0.35, OS_HEDEF_MIN = 0.25, OS_HEDEF_MAX = 1.2, OS_YETIS = 0.6, OS_SAAT_MS = 30_000, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000;
+var OS_KONU = "realtime:oda-ses"; const OS_HEDEF = 0.35, OS_HEDEF_MIN = 0.25, OS_HEDEF_MAX = 1.2, OS_YETIS = 0.6, OS_SAAT_MS = 30_000, OS_SURE_MS = 2 * 3600_000, OS_NABIZ_MS = 10_000, OS_SUSKUN_MS = 6_000, OS_BAGLAN_MS = 15_000, OS_DON_MS = 30 * 60_000, OS_DOKUN_MS = 1_500;
 /** G.711 µ-law bayt → [-1, 1] */
 function osUlawCoz(u) { u = ~u & 0xff; const s = u & 0x80, e = (u >> 4) & 7, m = u & 0x0f; const x = (((m << 3) + 0x84) << e) - 0x84; return (s ? -x : x) / 32768; }
 /** 🎚️ W33 IMA ADPCM bloğu (tablet room_ses.js __rsIma): [ilk örnek int16 LE, adım sırası, n−1 örnek × 4 bit (düşük yarım önce)] → Float32Array(n) ya da null */
@@ -4482,6 +4482,15 @@ function osTampon(st, simdi, sure, sessiz) { if (!(st.hedef > 0)) st.hedef = OS_
   if (fazla > OS_YETIS || (sessiz && fazla > 0.12)) { st.atlanan = (st.atlanan || 0) + 1; return null; }
   const hiz = fazla > 0.08 ? 1.06 : 1; if (hiz > 1) st.hizli = (st.hizli || 0) + 1;
   const at = st.next; st.next = at + sure / hiz; return { at, hiz }; }
+/** 🔁 W52: parça sırası (tablet p.s artar). Aynı sıra ikinci kez ya da biraz geriden gelen (eski / sırasız) parça ÇALINMAZ — art arda çalınsa "annnn" diye tekrar eder.
+ *  Sıra çok geri gittiyse (≥ 100: tablet sayfası yeniden başladı) yeni akış sayılır. st {sonS, tekrar}. Döner: true = çal. */
+function osSiraKabul(st, s) { if (!Number.isInteger(s)) return true; const son = st.sonS;
+  if (Number.isInteger(son) && s <= son && son - s < 100) { st.tekrar = (st.tekrar || 0) + 1; return false; }
+  st.sonS = s; return true; }
+/** ▶️ W52: görünür olunca ses kendiliğinden sürsün mü (gizlenince durdurulmuştu; en çok OS_DON_MS bekler, Oda sekmesi hâlâ açıksa) */
+function osDonmeli(x) { return !!x && !!x.oto && !x.acik && x.gorunur && x.odada !== false && x.gizliAt > 0 && x.simdi - x.gizliAt <= OS_DON_MS; }
+/** ▶️ W52: AudioContext çalmıyor (iOS "interrupted"/"suspended") ve kısa süredir denendi → tek dokunuşluk "Sesi geri getir" gerekir */
+function osDokunGerek(x) { return !!x && !!x.acik && !!x.ctxDurum && x.ctxDurum !== "running" && x.simdi - x.basla > OS_DOKUN_MS; }
 /** ⏱️ Saat farkı (NTP benzeri): sa {o: [[rtt, fark]…] son 5} ← "saat" {c, s} cevabı, simdi = Date.now(). Döner {fark (sunucu − web, ms), rtt} (en kısa dönüşlü). */
 function osSaatEkle(sa, c, s, simdi) { const rtt = simdi - c; if (!(c > 0 && s > 0) || rtt < 0 || rtt > 3000) return sa.en || null;
   sa.o = (sa.o || []).concat([[rtt, s - (c + rtt / 2)]]).slice(-5); const en = sa.o.reduce((a, b) => (b[0] < a[0] ? b : a)); sa.en = { fark: Math.round(en[1]), rtt: en[0] }; return sa.en; }
@@ -4509,7 +4518,7 @@ function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: fal
   return { t: (x.sessiz >= 15 ? "Çalıyor · sessiz" : "Çalıyor") /* W30: 390 px'te 2 satıra sığsın (eski: "odada şu an ses yok") */ /* 15 × 200 ms = 3 sn */ + kl + g + uzak, u: false, cal: true }; }
 /** Yönetici tanılama satırı (tabletin "durum.tani"sı) */
 function osTaniMetni(t) { if (!t || typeof t !== "object") return ""; const v = (k) => t[k] == null ? "–" : String(t[k]);
-  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.saat_rtt != null && t.saat_rtt >= 0 ? ` · tablet saat farkı ${v("saat_fark")} ms` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
+  return `🩺 ses parçası ${v("iz")} (dom ${v("dom")} · akış ${v("akis")} · pc ${v("pc")}) · ${v("sr")} Hz · ctx ${v("ctx")}${t.yakala ? " · " + (t.yakala === "aw" ? "Yakalama: yeni yol" : "Yakalama: eski yol (yedek)") + " · Kayıp blok: " + (t.wk_kayip || 0) : ""} · örnek/sn ${v("ornek_hiz")} · parça ${v("parca")} (sessiz ${v("sessiz")}, atılan ${v("atilan")}) · gönderilen ${v("gonderilen")}` + (t.isi != null ? ` · ${v("isi")} °C` : "") + (t.saat_rtt != null && t.saat_rtt >= 0 ? ` · tablet saat farkı ${v("saat_fark")} ms` : "") + (t.hata ? ` · hata: ${t.hata}` : ""); }
 /** ⏱️ Yönetici tanılaması: ölçülen gecikme ve tampon (x {gec, tampon, hedef, g, sr, st {atlanan, bosluk, hizli}, saat}) */
 function osOlcumMetni(x) { if (!x || x.gec == null) return ""; const f = (n) => (Math.round(n * 100) / 100).toString().replace(".", ","); const st = x.st || {};
   return `⏱️ gecikme ${f(x.gec)} sn (tablet→sunucu ${f(Math.max(0, x.g || 0) / 1000)} · tampon ${f(x.tampon || 0)} / hedef ${f(x.hedef || 0)} sn) · atlanan ${st.atlanan || 0} · boşalma ${st.bosluk || 0} · hızlı ${st.hizli || 0}` + (x.saat ? ` · saat ±${Math.round(x.saat.rtt / 2)} ms` : " · saat ölçülmedi"); }
@@ -4523,8 +4532,8 @@ function osGoster() { const k = $("odaSes"); if (!k) return; if (!k.firstChild) 
 function osCiz() { const B = $("osB"), T = $("osT"), N = $("osTn"); if (!B) return;
   const x = osDurumMetni({ acik: os.acik, durum: os.durum, son: os.son, bekleMs: os.katilAt ? Date.now() - os.katilAt : 0, sonParcaYas: os.sonParca ? Date.now() - os.sonParca : null, gec: os.gec, sessiz: os.sessiz, kal: !os.yon && os.son ? os.son.kal_etkin || os.son.kal : "" });
   const gzS = typeof gzIzle === "function" && gzIzle(); // 🧭 W42 gezide düğmenin görünen yazısı da hangi odanın sesi olduğunu söyler (telefonda title görünmez)
-  const bt = gzS ? (os.acik ? "🔇 Gezi sesi kapat" : "🔊 Gezi odası sesi") : os.acik ? "🔇 Sesi kapat" : "🔊 Sesi aç"; const bti = gzS ? "Ses: " + (odaGoz.title || "Oda " + odaGoz.id) : ""; if (B.title !== bti) B.title = bti; if (B.textContent !== bt) { B.textContent = bt; B.setAttribute("aria-pressed", os.acik ? "true" : "false"); }
-  const tt = os.acik ? x.t : os.durum === "sure" ? osDurumMetni({ acik: true, durum: "sure" }).t : ""; if (T.textContent !== tt) T.textContent = tt; if (T.classList.contains("uyari") !== !!x.u) T.classList.toggle("uyari", !!x.u);
+  const bt = os.acik && os.dokun ? "🔊 Sesi geri getir" : gzS ? (os.acik ? "🔇 Gezi sesi kapat" : "🔊 Gezi odası sesi") : os.acik ? "🔇 Sesi kapat" : "🔊 Sesi aç"; const bti = gzS ? "Ses: " + (odaGoz.title || "Oda " + odaGoz.id) : ""; if (B.title !== bti) B.title = bti; if (B.textContent !== bt) { B.textContent = bt; B.setAttribute("aria-pressed", os.acik ? "true" : "false"); }
+  const tt = os.acik && os.dokun ? "Ses duraklatıldı — dokunun" : os.acik ? x.t : os.durum === "sure" ? osDurumMetni({ acik: true, durum: "sure" }).t : ""; if (T.textContent !== tt) T.textContent = tt; const uy = !!x.u || (os.acik && !!os.dokun); if (T.classList.contains("uyari") !== uy) T.classList.toggle("uyari", uy);
   const bc = os.bicim ? osBicimMetni(os.bicim.k, os.bicim.sr, os.bicim.bps) : "";
   const gm = typeof odaGorMetin === "function" ? odaGorMetin() : ""; // ⚠️ W37
   const vt = typeof ovTani === "function" ? ovTani() : ""; // 📹 W39 görüntü satırları (ses kapalıyken de)
@@ -4548,21 +4557,32 @@ function osKalCevap(pl) { const k = os.kalBekle; os.kalBekle = ""; clearTimeout(
   else if (k) toast(pl.hata === "yetki" ? "Kaliteyi yalnız Ajans sahibi değiştirebilir" : "Kalite değiştirilemedi", true);
   osCiz(); }
 window.osTaniAc = function () { os.kalImza = ""; openModal(`<h3 style="margin:0 0 6px">🩺 Ses ve görüntü tanılaması</h3><div id="osKalK"></div><div class="s" id="osTnAc" style="overflow-wrap:anywhere;white-space:pre-line">${esc(os.taniMetin || "Tanılama şu an yok")}</div><button class="owx" style="width:100%;margin-top:10px;min-height:44px" onclick="closeModal()">Tamam</button>`); osKalCiz(); };
-window.osTikla = function () { if (os.acik) { osDur(""); return; } if (typeof me !== "undefined" && me && typeof can === "function" && !can("oda_ses_dinle")) { toast("Oda sesini dinleme izniniz yok", true); return; } /* 🔐 W32 (sunucu: bilette os:0) */ osBasla(); };
+window.osTikla = function () { if (os.acik && os.dokun) { osGeriGetir(); return; } /* ▶️ W52: bağlam durmuş → dokunuş sesi geri getirir (kapatmaz) */ if (os.acik) { osDur(""); return; } if (typeof me !== "undefined" && me && typeof can === "function" && !can("oda_ses_dinle")) { toast("Oda sesini dinleme izniniz yok", true); return; } /* 🔐 W32 (sunucu: bilette os:0) */ osBasla(); };
 function osBasla() { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { toast("Bu tarayıcı canlı ses çalamıyor", true); return; }
-  try { os.ctx = new AC({ latencyHint: "interactive" }); } /* ⏱️ W26: "playback" çıkış tamponu büyük (~0,1–0,2 sn) */ catch (e) { try { os.ctx = new AC(); } catch (e2) { toast("Ses açılamadı", true); return; } }
+  const eski = os.ctx && os.ctx.state !== "closed" && os.gain ? os.ctx : null; // ▶️ W52: gizlenince tutulan (dokunuşla açılmış) bağlam yeniden kullanılır → iOS'ta dokunuş istemeden geri döner
+  if (!eski) { try { os.ctx = new AC({ latencyHint: "interactive" }); } /* ⏱️ W26: "playback" çıkış tamponu büyük (~0,1–0,2 sn) */ catch (e) { try { os.ctx = new AC(); } catch (e2) { toast("Ses açılamadı", true); return; } } }
   try { os.ctx.resume(); } catch (e) {} // ⚠️ dokunuşun İÇİNDE (await'ten önce): iOS'ta sonradan açılan ses çalmaz
   try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {} // iOS 17+: sessiz düğmesi WebAudio'yu kesmesin
-  try { const el = new Audio(osSessizWav()); el.loop = true; el.setAttribute("playsinline", ""); const p = el.play(); if (p && p.catch) p.catch(() => {}); os.el = el; } catch (e) {} // eski iOS için aynı amaç
+  try { if (os.el && eski) { const p = os.el.play(); if (p && p.catch) p.catch(() => {}); } else { const el = new Audio(osSessizWav()); el.loop = true; el.setAttribute("playsinline", ""); const p = el.play(); if (p && p.catch) p.catch(() => {}); os.el = el; } } catch (e) {} // eski iOS için aynı amaç
   try { const b = os.ctx.createBuffer(1, 1, os.ctx.sampleRate), s = os.ctx.createBufferSource(); s.buffer = b; s.connect(os.ctx.destination); s.start(0); } catch (e) {}
-  os.gain = os.ctx.createGain(); os.gain.connect(os.ctx.destination);
-  Object.assign(os, { acik: true, durum: "", basla: Date.now(), katilAt: Date.now(), st: { next: 0, atlanan: 0, bosluk: 0 }, sa: {}, saat: null, saatAt: 0, olcum: null, son: null, sonParca: 0, gec: null, sessiz: 0, ok: 0, ws: null, bay: [], bicim: null, kalBekle: "" });
+  if (!eski) { os.gain = os.ctx.createGain(); os.gain.connect(os.ctx.destination); }
+  Object.assign(os, { acik: true, oto: false, dokun: false, gizliAt: 0, durum: "", basla: Date.now(), katilAt: Date.now(), st: { next: 0, atlanan: 0, bosluk: 0 }, sa: {}, saat: null, saatAt: 0, olcum: null, son: null, sonParca: 0, gec: null, sessiz: 0, ok: 0, ws: null, bay: [], bicim: null, kalBekle: "" });
   clearInterval(os.nabiz); os.nabiz = setInterval(osNabiz, 1000); osKatil(); osCiz(); }
 /** "dur": neden "" (el ile) | "gizli" | "cikti" | "sure" */
 function osDur(neden) { if (!os.acik && neden !== "sure") return; const ws = os.ws; os.acik = false; clearInterval(os.nabiz); os.nabiz = 0;
   if (ws && ws.readyState === 1 && os.ok) { try { ws.send(JSON.stringify({ topic: OS_KONU, event: "broadcast", payload: { type: "broadcast", event: "birak", payload: {} }, ref: "os" + (ws.__ref++) })); ws.send(JSON.stringify({ topic: OS_KONU, event: "phx_leave", payload: {}, ref: "os" + (ws.__ref++) })); } catch (e) {} }
+  if (neden === "gizli") { // ▶️ W52: sekme gizlendi → akış durur (veri harcamaz) ama dokunuşla açılmış bağlam KAPATILMAZ; görünür olunca kendiliğinden sürer
+    try { if (os.el) os.el.pause(); } catch (e) {} try { if (os.ctx) os.ctx.suspend(); } catch (e) {}
+    Object.assign(os, { ws: null, ok: 0, durum: "", son: null, sonParca: 0, gec: null, oto: true, gizliAt: Date.now(), dokun: false }); osCiz(); return; }
   try { if (os.el) { os.el.pause(); os.el.removeAttribute("src"); } } catch (e) {} try { if (os.ctx) os.ctx.close(); } catch (e) {}
-  Object.assign(os, { ctx: null, gain: null, el: null, ws: null, ok: 0, durum: neden === "sure" ? "sure" : "", son: null, sonParca: 0, gec: null }); osCiz(); }
+  Object.assign(os, { ctx: null, gain: null, el: null, ws: null, ok: 0, durum: neden === "sure" ? "sure" : "", son: null, sonParca: 0, gec: null, oto: false, dokun: false }); osCiz(); }
+/** ▶️ W52: görünür olunca dinleme kendiliğinden yeniden başlar (iOS dokunuş istiyorsa osNabiz "Sesi geri getir" gösterir) */
+function osDon() { if (!osDonmeli({ oto: os.oto, acik: os.acik, gorunur: document.visibilityState === "visible", odada: typeof odaOn === "undefined" ? true : odaOn, gizliAt: os.gizliAt, simdi: Date.now() })) { if (os.oto && !os.acik && os.gizliAt && Date.now() - os.gizliAt > OS_DON_MS) { try { if (os.ctx) os.ctx.close(); } catch (e) {} Object.assign(os, { ctx: null, gain: null, el: null, oto: false }); } return; }
+  osBasla(); }
+/** ▶️ W52: "🔊 Sesi geri getir" — dokunuşun İÇİNDE bağlam + sessiz öğe yeniden açılır (iOS şartı) */
+function osGeriGetir() { try { if (os.ctx) os.ctx.resume(); } catch (e) {} try { if (os.el) { const p = os.el.play(); if (p && p.catch) p.catch(() => {}); } } catch (e) {}
+  try { const c = os.ctx, b = c.createBuffer(1, 1, c.sampleRate), z = c.createBufferSource(); z.buffer = b; z.connect(c.destination); z.start(0); } catch (e) {}
+  os.basla = Date.now(); os.dokun = false; os.st = { next: 0, atlanan: 0, bosluk: 0 }; osCiz(); }
 function osKatil() { const ws = rt; if (!os.acik) return; os.ok = 0; os.ws = ws;
   if (!ws || ws.readyState !== 1) { os.durum = "baglanti_yok"; osCiz(); return; }
   if (!ws.__bir) { os.durum = "yedek"; osCiz(); return; } // 🛡️ Supabase yedeğinde ses YOK
@@ -4575,7 +4595,8 @@ function osSaatSor() { const ws = os.ws; if (!ws || ws.readyState !== 1 || !os.o
 function osNabiz() { if (!os.acik) return; if (document.visibilityState !== "visible") { osDur("gizli"); return; } if (Date.now() - os.basla > OS_SURE_MS) { osDur("sure"); return; }
   if (os.ws !== rt) osKatil(); else if (os.ok && Date.now() - (os.dinleAt || 0) >= OS_NABIZ_MS) osDinle(false);
   if (os.ok && Date.now() - (os.saatAt || 0) >= (os.saat ? OS_SAAT_MS : 3000)) osSaatSor();
-  if (os.ctx && os.ctx.state !== "running") { try { os.ctx.resume(); } catch (e) {} } osCiz(); }
+  if (os.ctx && os.ctx.state !== "running") { try { os.ctx.resume(); } catch (e) {} }
+  const dg = osDokunGerek({ acik: os.acik, ctxDurum: os.ctx && os.ctx.state, simdi: Date.now(), basla: os.basla }); if (dg !== os.dokun) { os.dokun = dg; if (dg) os.st = { next: 0, atlanan: 0, bosluk: 0, sonS: os.st.sonS }; } osCiz(); }
 /** Anlık bağlantıdan oda-ses konusu (rtKur onmessage kancası) */
 function osMesaj(ws, d) { if (ws !== os.ws) return; const p = d.payload || {};
   if (d.event === "phx_reply" && String(d.ref || "").startsWith("osj")) { const r = p.response || {};
@@ -4591,6 +4612,7 @@ function osBayt(p) { const t = Date.now(), d = typeof p.d === "string" ? Math.fl
   const ilk = os.bay[0][0], sn = Math.max(1, t - ilk + 200) / 1000, top = os.bay.reduce((a, x) => a + x[1], 0); if (p.k !== "sessiz") os.bicim = { k: p.k, sr: p.sr, bps: Math.round(top / sn) }; else if (os.bicim) os.bicim.bps = Math.round(top / sn); }
 function osCal(p) { const c = os.ctx; if (!c || !os.gain) return; const x = osCoz(p); if (!x) return;
   if (c.state !== "running") { try { c.resume(); } catch (e) {} }
+  if (!osSiraKabul(os.st, p.s)) return; // 🔁 W52
   let buf = null; try { buf = c.createBuffer(1, x.length, p.sr); buf.getChannelData(0).set(x); } catch (e) { const y = osYukselt(x, p.sr, c.sampleRate); buf = c.createBuffer(1, y.length, c.sampleRate); buf.getChannelData(0).set(y); } // eski Safari: 16 kHz tampon yok → yükselt
   const sessiz = p.k === "sessiz", pl = osTampon(os.st, c.currentTime, buf.duration, sessiz); os.sonParca = Date.now(); os.sessiz = sessiz ? os.sessiz + 1 : 0;
   if (!pl) return; const s = c.createBufferSource(); s.buffer = buf; if (pl.hiz !== 1) { try { s.playbackRate.value = pl.hiz; } catch (e) {} } s.connect(os.gain); s.start(pl.at);
@@ -4599,7 +4621,8 @@ function osCal(p) { const c = os.ctx; if (!c || !os.gain) return; const x = osCo
   if (!os.cizT) os.cizT = setTimeout(() => { os.cizT = 0; osCiz(); }, 250); }
 /** rtKur kancası: yeni anlık bağlantı kurulunca dinleme sürüyorsa yeniden katıl */
 function osYeniBag(ws) { if (os.acik && os.ws !== ws) osKatil(); }
-document.addEventListener("visibilitychange", () => { if (os.acik && document.visibilityState !== "visible") osDur("gizli"); });
+document.addEventListener("visibilitychange", () => { if (os.acik && document.visibilityState !== "visible") osDur("gizli"); else if (document.visibilityState === "visible") { try { osDon(); } catch (e) {} } }); // ▶️ W52: görünür olunca sürer
+addEventListener("pageshow", () => { try { osDon(); } catch (e) {} });
 // </oda-ses>
 // <oda-vid> 📹 Oda canlı görüntüsü — "hızlı kareler" (W39, 17.11; kullanıcı: "oda da görüntü açılınca görüntü video akıcılığında gelebilir mi …", "hızlı kareler olsun onu seçtim").
 // ŞİMDİLİK YALNIZ Ajans sahibi (sunucu da denetler). Oda'daki ses şeridinde "📹" → mevcut anlık bağlantı (YALNIZ birincil: Contabo sugo-sinyal) üzerinden
@@ -6257,8 +6280,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.124"></script>
-<script src="durum.js?v=2.1.124"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.124"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.125"></script>
+<script src="durum.js?v=2.1.125"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.125"></script><!-- </sugo-veri> -->
 </body>
 </html>
