@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.116">
+<meta name="build" content="2.1.117">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.116">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.116">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.116">
+<link rel="manifest" href="manifest.json?v=2.1.117">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.117">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.117">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -263,9 +263,12 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   /* 👤 Oda sohbetinde kişi menüsü (dokunulan yerin yakınında) */
   .owbg { position: fixed; inset: 0; z-index: 59; background: transparent; } .owbg[hidden], .owm[hidden] { display: none; }
   .owm { position: fixed; z-index: 60; width: min(270px, calc(100vw - 24px)); display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 14px; background: var(--panel2); border: 1px solid var(--line); box-shadow: 0 10px 30px #000a; box-sizing: border-box; }
-  .owm { max-height: calc(100vh - 24px); overflow-y: auto; } .owm .omod { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 6px; } .owm .omods { font-size: 13px; color: var(--muted); padding: 2px 4px; white-space: normal; } .owm .omods.bad { color: var(--warn); } .owm button.omodr { color: #f87171; border-color: #f8717166; } .owm button.omodx { min-height: 36px; font-size: 13px; color: var(--muted); white-space: normal; line-height: 16px; text-align: center; }
+  .owm { max-height: calc(100vh - 24px); overflow-y: auto; } .owm .omod { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 6px; } .owm .omods { font-size: 13px; color: var(--muted); padding: 2px 4px; white-space: normal; } .owm .omods.bad { color: var(--warn); } .owm button.omodr { color: #f87171; border-color: #f8717166; } .owm button.omodx { min-height: 40px; font-size: 13px; color: var(--muted); white-space: normal; line-height: 16px; text-align: center; }
   /* W24b: yönetim bölümünün yeri menü açılırken ayrılı (son görülen satır sayısı kadar iskelet, en çok 6; fazlası bölüm içinde kayar) → menü büyümez, "Vazgeç" yerinden oynamaz */
-  .owm .omod { flex: none; overflow-y: auto; overscroll-behavior: contain; max-height: 38vh; box-sizing: border-box; } .owm .omsk { flex: none; height: 44px; border-radius: 12px; background: var(--panel); opacity: .55; }
+  .owm .omod { flex: none; overflow: hidden; box-sizing: border-box; } /* W24c: boy JS'te ekrana göre (en çok 6 satır, kısa ekranda azalır); işlem listesi .omodl içinde kayar, "+N tanınmayan" listenin dışında hep görünür */
+  .owm .omod > .omodl { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; overscroll-behavior: contain; position: relative; } .owm .omodl > * { flex: none; }
+  .owm .omipu { flex: none; height: 16px; line-height: 16px; font-size: 12px; font-weight: 600; text-align: center; color: var(--muted); visibility: hidden; white-space: nowrap; overflow: hidden; } .owm .omipu.on { visibility: visible; } /* W24d: ipucunun satırı baştan ayrılı (görünüp kaybolması boyu değiştirmez), hiçbir düğmenin üstüne binmez */
+  .owm .omodl.osol { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent); }
   .owm .omod > * { flex: none; } /* bölüm dolunca düğmeler ezilmez, bölüm kayar */ /* 🛡️ W22 oda yönetimi: yıkıcı işlem kırmızı, tanınmayanlar gizli */
   .omlist .row { gap: 10px; } .omlist .row .b { flex: 1; min-width: 0; } .omlist .row b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .omlist button.omc { flex: none; min-height: 40px; padding: 0 12px; }
   .owm .owt { font-size: 13px; color: var(--muted); padding: 2px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .owm button { min-height: 44px; font-size: 15px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .owm .owx { text-align: center; }
@@ -357,8 +360,8 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .osn .osg { font-style: normal; font-weight: 700; color: #fbbf24; font-variant-numeric: tabular-nums; } .osn .osg:empty { display: none; } .osn.hsc .osd { display: none; }
   .osn .osg.ta { color: #f87171; } .osn .osg.tb { color: #60a5fa; }
   /* W24: oda satırı iki satır yeri baştan ayrılı (40 px, içerik gelince zıplamaz); uzun PK metni kesilmez, ikinci satıra iner (daha uzunsa kutu içinde kayar) */
-  .oinf { flex: 1; min-width: 0; height: 40px; margin-right: 8px; padding: 5px 10px; box-sizing: border-box; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: inherit; font: inherit; font-size: 12px; line-height: 14px; text-align: left; font-variant-numeric: tabular-nums; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
-  .oinf::-webkit-scrollbar { display: none; } .oinf > .oil { display: block; flex: none; white-space: nowrap; line-height: 14px; } /* W24b: en çok iki SABİT satır (1: PK, 2: geri kalanı); kendiliğinden sarma yok → Safari'de üçüncü satır olmaz; uzun satır kutu içinde yatay kayar, hiçbir parça gizlenmez */
+  .oinf { flex: 1; min-width: 0; height: 40px; margin-right: 8px; padding: 5px 8px; box-sizing: border-box; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: inherit; font: inherit; font-size: 11px; line-height: 14px; letter-spacing: -0.1px; text-align: left; font-variant-numeric: tabular-nums; display: flex; align-items: center; overflow: hidden; }
+  .oinf > .oinfi { flex: 1 1 auto; min-width: 0; max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; } .oinfi::-webkit-scrollbar { display: none; } .oinfi.osol { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); } /* W24c: 390'da sığar (11 px); sığmayan uzun satır kesik harf yerine solarak biter; W24d: maske yalnız iç kapta, kutunun kenarlığı silinmez */ .oinfi > .oil { display: block; flex: none; white-space: nowrap; line-height: 14px; } /* W24b: en çok iki SABİT satır (1: PK, 2: geri kalanı); kendiliğinden sarma yok → Safari'de üçüncü satır olmaz; uzun satır kutu içinde yatay kayar, hiçbir parça gizlenmez */
   .oinf[hidden] { display: block !important; visibility: hidden; } .oinf .opk { color: #f87171; font-weight: 700; }
   .ohg { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 6px; max-height: 30vh; overflow-y: auto; margin: 6px 0; }
   /* W24b: "Gönder" + "Kapat" pencerenin altında her zaman görünür (yapışkan alt bölüm); üst içerik pencerenin içinde kayar */
@@ -770,7 +773,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.116" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.117" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -779,7 +782,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.116" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.117" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -839,7 +842,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.116"></script>
+<script src="emoji.js?v=2.1.117"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -3671,18 +3674,30 @@ function odaWhoName(uid) { uid = String(uid); for (let i = odaCh.items.length - 
   const r = odaData && odaData.room; if (r) for (const x of [...(r.seats || []), ...(r.audience || [])]) if (x && String(x.uid) === uid && x.n) return String(x.n); // 🪑 koltuk / 👂 dinleyici
   const k = (people && people[uid]) || {}; return String(k.n || uid); }
 function odaWho(uid, el) { uid = String(uid || ""); if (!uid) return; if (uid === odaSelf || uid === bayiMe()) { odaPick(uid); return; }
-  const m = odaWhoKur();
+  const m = odaWhoKur(), b0 = !m.hidden && $("odaModBox"), bh0 = b0 ? b0.style.height : ""; // W24d: menü açıkken yeniden dokunulursa yönetim bölümünün boyu değişmez
   const n = odaWhoName(uid), box = isSahip() && odaChEl() && odaChEl().querySelector(".ocsin");
   m.innerHTML = `<div class="owt">${esc(n)}</div>${box ? `<button role="menuitem" onclick="odaAt('${esc(uid)}')">✍️ @${esc(n)} yaz</button>` : `<button role="menuitem" onclick="odaAt('${esc(uid)}')">📋 @${esc(n)} kopyala</button>`}`
     + `<button role="menuitem" onclick="odaWhoProf('${esc(uid)}')">${can("profil") ? "👤 Profilini aç" : "💬 Sohbeti aç"}</button>`
     + odaIciKisi(uid)
-    + (odaMod() && odaModOda() ? `<div class="omod" id="odaModBox" data-u="${esc(uid)}" style="height:${odaModBoy()}px"><div class="omods">🛡️ Yönetim: Sugo menüsü okunuyor…</div>${'<div class="omsk"></div>'.repeat(Math.max(0, odaModSatir() - 1))}</div>` : "") // 🛡️ W22: yalnız bizim odada, yetkiliye · W24b: yeri baştan ayrılı
+    + (odaMod() && odaModOda() ? `<div class="omod" id="odaModBox" data-u="${esc(uid)}" style="height:${odaModBoy()}px"><div class="omods">🛡️ Yönetim: Sugo menüsü okunuyor…</div>${'<div class="omsk"></div>'.repeat(Math.max(0, odaModSatir() - 1))}<div class="omipu"></div></div>` : "") // 🛡️ W22: yalnız bizim odada, yetkiliye · W24b: yeri baştan ayrılı
     + `<button role="menuitem" class="owx" onclick="odaWhoClose()">Vazgeç</button>`;
-  odaWhoAc(m, el); if ($("odaModBox")) odaModKart(uid); }
+  if (bh0 && $("odaModBox")) { $("odaModBox").style.height = bh0; $("odaModBox").dataset.ayar = "1"; } odaWhoAc(m, el); if ($("odaModBox")) odaModKart(uid); }
 /** Menüyü göster + yerleştir (dokunulan yerin altında, sığmazsa üstünde; ekran kenarına 12 px pay). İçerik sonradan değişirse (yönetim menüsü geldi) yeniden çağrılır. */
 function odaWhoAc(m, el) { m.hidden = false; $("odaWhoBg").hidden = false; m.__el = el;
+  const bx = m.querySelector("#odaModBox"); if (bx && !bx.dataset.ayar) { bx.dataset.ayar = "1"; const fazla = m.scrollHeight - (innerHeight - 24); if (fazla > 0) { const n = Math.max(2, Math.floor((bx.offsetHeight - fazla - 7 - ODA_MOD_IPUCU + 6) / 50)); bx.style.height = odaModBoy(n) + "px"; } } // W24c: kısa ekranda (659) menü taşmaz; boy açılışta bir kez belirlenir
   const r = el && el.getBoundingClientRect && el.isConnected !== false ? el.getBoundingClientRect() : { left: 12, top: innerHeight / 2, bottom: innerHeight / 2 }, w = m.offsetWidth, h = m.offsetHeight;
-  m.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left)) + "px"; m.style.top = Math.max(12, Math.min(innerHeight - h - 12, r.bottom + 6 + h > innerHeight - 12 ? r.top - h - 6 : r.bottom + 6)) + "px"; }
+  const alt = r.bottom + 6, ust = r.top - h - 6, sinir = innerHeight - h - 12; // altına sığarsa altında, değilse üstünde; ikisi de sığmazsa dokunulan yere en yakın (ekrana sığan) yer
+  m.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left)) + "px"; m.style.top = Math.max(12, alt <= sinir ? alt : ust >= 12 ? ust : Math.min(sinir, alt)) + "px"; }
+// <oda-ipucu> (saf: tests/oda_ici_web_test.ts metin olarak çalıştırır)
+/** W24d: kaç işlem görünmüyor? x {ust (scrollTop), gor (clientHeight), boy (scrollHeight), d: [[offsetTop, offsetHeight], …]} → {sol, n}.
+ *  Kaydırılamıyorsa ya da sona gelinmişse (2 px pay) sol = false, n = 0. n = yarısından fazlası görünür alt kenarın altında kalan düğme sayısı (solma payı sayılmaz). */
+function odaModGizli(x) { const kay = x.boy > x.gor + 1, son = x.ust + x.gor >= x.boy - 2; if (!kay || son) return { sol: false, n: 0 };
+  const alt = x.ust + x.gor; return { sol: true, n: (x.d || []).filter(([t, h]) => t + h / 2 > alt).length }; }
+// </oda-ipucu>
+/** Yönetim listesi kaydırılabiliyorsa altta solma + ayrılmış satırda "↓ N işlem daha" (sona gelince ikisi de kalkar) */
+function odaModIpucu() { const bx = $("odaModBox"), l = bx && bx.querySelector(".omodl"), i = bx && bx.querySelector(":scope > .omipu"); if (!l || !i) return;
+  const g = odaModGizli({ ust: l.scrollTop, gor: l.clientHeight, boy: l.scrollHeight, d: [...l.querySelectorAll(":scope > button")].map((b) => [b.offsetTop, b.offsetHeight]) }), t = g.n ? `↓ ${g.n} işlem daha` : "";
+  if (i.textContent !== t) i.textContent = t; if (i.classList.contains("on") !== !!g.n) i.classList.toggle("on", !!g.n); if (l.classList.contains("osol") !== g.sol) l.classList.toggle("osol", g.sol); }
 function odaWhoKur() { let m = $("odaWhoM"); if (!m) { document.body.insertAdjacentHTML("beforeend", `<div id="odaWhoBg" class="owbg" hidden onclick="odaWhoClose()"></div><div id="odaWhoM" class="owm" role="menu" hidden></div>`); m = $("odaWhoM"); } return m; }
 function odaWhoClose() { const m = $("odaWhoM"); if (m) m.hidden = true; const b = $("odaWhoBg"); if (b) b.hidden = true; }
 function odaWhoProf(uid) { odaWhoClose(); odaPick(uid); } // geri dönüşte oda sohbeti aynı yerde: show() .ochs konumunu saklar / geri koyar
@@ -3714,7 +3729,8 @@ function odaModAd(it) { if (ODA_MOD_OP[it.op]) return ODA_MOD_OP[it.op]; const t
 const odaModP = {}; let odaModCur = null;
 /** W24b: yönetim bölümü kaç satır (son görülen; yoksa 4; en az 2, en çok 6) ve yüksekliği (satır 44 px + 6 px ara + üst çizgi payı 7 px) */
 function odaModSatir() { let n = 4; try { const x = Number(localStorage.getItem("bw_oda_mod_n")); if (x > 0) n = x; } catch (e) {} return Math.max(2, Math.min(6, Math.round(n))); }
-const odaModBoy = () => { const n = odaModSatir(); return n * 44 + (n - 1) * 6 + 7; };
+const ODA_MOD_IPUCU = 22; // ipucu satırı (16 px) + ara (6 px)
+const odaModBoy = (n = odaModSatir()) => n * 44 + (n - 1) * 6 + 7 + ODA_MOD_IPUCU;
 function odaModId() { return "rm-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8); }
 /** İstek → tablet sonucu (Promise; asla reddetmez): { ok, err, code, data, cevapsiz?, belirsiz? } */
 function odaModIste(body) { const id = odaModId(), room = odaModOda();
@@ -3737,8 +3753,8 @@ async function odaModKart(uid) { const box = () => { const b = $("odaModBox"); r
   const list = [], gizli = []; for (const it of (r.data && r.data.items) || []) { if (it.off) continue; const m = odaModAd(it); if (m) { if (!list.some((x) => x.ad === m[0])) list.push({ ...it, ad: m[0], yik: m[1] }); } else gizli.push({ ...it, ad: "Sugo: " + it.t, yik: 1 }); }
   odaModCur = { uid, list, gizli }; try { localStorage.setItem("bw_oda_mod_n", String(Math.max(1, list.length + (gizli.length ? 1 : 0)))); } catch (e) {} odaModCiz(false); }
 function odaModCiz(hepsi) { const b = $("odaModBox"), c = odaModCur; if (!b || !c || b.dataset.u !== c.uid) return; const L = hepsi ? [...c.list, ...c.gizli] : c.list;
-  b.innerHTML = (L.length ? L.map((it) => `<button role="menuitem" class="${it.yik ? "omodr" : ""}" onclick="odaModYap(${c.list.indexOf(it) >= 0 ? c.list.indexOf(it) : "'g" + c.gizli.indexOf(it) + "'"})">${esc(it.ad)}</button>`).join("") : '<div class="omods">🛡️ Sugo bu kişi için işlem vermedi</div>')
-    + (!hepsi && c.gizli.length ? `<button class="omodx" onclick="odaModCiz(true)">+${c.gizli.length} tanınmayan işlemi göster</button>` : ""); } // W24b: boy sabit → menü yerinde kalır, düğmeler yalnız bu bölüme gelir
+  b.innerHTML = `<div class="omodl" onscroll="odaModIpucu()">${L.length ? L.map((it) => `<button role="menuitem" class="${it.yik ? "omodr" : ""}" onclick="odaModYap(${c.list.indexOf(it) >= 0 ? c.list.indexOf(it) : "'g" + c.gizli.indexOf(it) + "'"})">${esc(it.ad)}</button>`).join("") : '<div class="omods">🛡️ Sugo bu kişi için işlem vermedi</div>'}</div><div class="omipu"></div>`
+    + (!hepsi && c.gizli.length ? `<button class="omodx" onclick="odaModCiz(true)">+${c.gizli.length} tanınmayan işlemi göster</button>` : ""); odaModIpucu(); } // W24b: boy sabit → menü yerinde kalır, düğmeler yalnız bu bölüme gelir
 async function odaModYap(i) { const c = odaModCur; if (!c) return; const it = typeof i === "string" ? c.gizli[Number(i.slice(1))] : c.list[i]; if (!it) return;
   const n = odaWhoName(c.uid), cf = it.cf ? [it.cf.t, it.cf.c].filter(Boolean).join(" – ") : "";
   if (!confirm(`${it.ad.replace(/^\W+\s*/, "")}\nKişi: ${n} (${c.uid})${cf ? "\nSugo: " + cf : ""}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`)) return;
@@ -3873,15 +3889,18 @@ function odaHdNeden(x) { const L = [], f = (n) => Number(n || 0).toLocaleString(
 function odaHdBilMetin(err) { let t = String(err || "").replace(/^\s*Sonuç bilinmiyor\s*[—–-]?\s*/i, "").replace(/[;,.]?\s*yeniden göndermeden önce (Sugo'da )?bakiyeye bakın\.?/gi, "").replace(/^\s*\((.*)\)\s*$/, "$1").replace(/\s*\((.*)\)\s*$/, " · $1").replace(/^[\s·;—–-]+|[\s·;—–-]+$/g, "");
   return t ? t.charAt(0).toLocaleUpperCase("tr-TR") + t.slice(1) : ""; }
 /** W24: sunucunun tek gönderim reddinden sınırı öğren ("Tek gönderim en çok 5000 coin …" / "… en çok 5.000 coin") */
-/** W24b: hata metnindeki çıplak sayılar binlik ayraçlı ("5000" → "5.000", "10112544000" → "10.112.544.000"); zaten ayraçlılar ve kısa sayılar aynen */
-function odaHdSayi(t) { return String(t || "").replace(/(^|[^\d.,])(\d{4,})(?![\d.,]\d)/g, (m, a, n) => a + Number(n).toLocaleString("tr-TR")); }
+/** W24b/W24c: ret metninde YALNIZ coin / tutar sayıları binlik ayraçlı ("5000 coin" → "5.000 coin", "(bu: 51480)" → "(bu: 51.480)", "bugün 12000", "istenen …"); hata kodları ("Hata 4001") aynen */
+function odaHdSayi(t) { const f = (n) => Number(n).toLocaleString("tr-TR");
+  // W24d: yalnız sunucunun bilinen ret kalıpları ayraçlanır: "coin" kelimesine bitişik sayı ve parantez içi "(bu: N)" / "(bugün N, bu N)"; başka hiçbir sayıya (hata kodu, "bu 4001 kodlu hata") dokunulmaz
+  return String(t || "").replace(/(^|[^\d.,])(\d{4,})(?=\s*coin\b)/gi, (m, a, n) => a + f(n)).replace(/\((bu: \d+|bugün \d+, bu \d+)\)/gi, (m, ic) => "(" + ic.replace(/\d{4,}/g, f) + ")"); }
 function odaHdSinirOku(err) { const m = /tek gönderim[^\d]{0,40}?(\d[\d.]*)\s*coin/i.exec(String(err || "")); const n = m ? Number(m[1].replace(/\./g, "")) : 0; return n > 0 ? n : null; }
 // </oda-ici-saf>
 let odaIci = null; // { room, o, t (alış), skew (web − tablet saati) }
 function odaIciSet(room, o, at) { odaIci = { room, o, t: Date.now(), skew: at ? Date.now() - at : 0 }; }
 function odaIciGecerli(r) { const x = odaIci; return x && r && !odaGoz && x.room === String(r.id) && Date.now() - x.t < ODA_TB_YOK && r.live !== false ? x : null; }
 const odaTabNow = (x) => Date.now() - ((x && x.skew) || 0);
-function odaIciTopHtml() { return '<button class="oinf" hidden onclick="odaIciAc()" aria-label="Oda bilgisi"></button>'; } // yer her zaman ayrılı; içerik yerinde yamanır
+function odaIciTopHtml() { return '<button class="oinf" hidden onclick="odaIciAc()" aria-label="Oda bilgisi"></button>'; }
+function odaInfSol(b) { const s = b.scrollWidth > b.clientWidth + 1 && b.scrollLeft + b.clientWidth < b.scrollWidth - 1; if (b.classList.contains("osol") !== s) b.classList.toggle("osol", s); } // yer her zaman ayrılı; içerik yerinde yamanır
 /** Koltuk altı puan + oda satırı (odaMicApply sonunda; değişmeyen yeniden yazılmaz) */
 function odaIciApply(g, byU) { const r = odaData && odaData.room, v = odaIciGecerli(r), pkVar = !!(v && v.o && v.o.pk);
   for (const c of g.children) { const sn = c.querySelector(".osn"), sg = sn && sn.querySelector(".osg"); if (!sg) continue;
@@ -3892,7 +3911,7 @@ function odaIciApply(g, byU) { const r = odaData && odaData.room, v = odaIciGece
   const L = v ? odaIciParca(v.o, odaTabNow(v)) : [], sahip = yonOk() && !odaGoz && !!odaModOda();
   const pk = L.length && L[0].startsWith("⚔️"), dig = (pk ? L.slice(1) : L).map(esc).join(" · ");
   const h = L.length ? (pk ? `<span class="oil"><span class="opk">${esc(L[0])}</span></span>` : "") + (dig ? `<span class="oil">${dig}</span>` : "") : sahip || v ? '<span class="oil">ℹ️ Oda bilgisi</span>' : "";
-  if (b.dataset.h !== h || (h && !b.firstChild)) { b.dataset.h = h; b.innerHTML = h; } if (b.hidden !== !h) b.hidden = !h; }
+  if (b.dataset.h !== h || (h && !b.firstChild)) { b.dataset.h = h; b.innerHTML = h ? `<span class="oinfi" onscroll="odaInfSol(this)">${h}</span>` : ""; } if (b.hidden !== !h) b.hidden = !h; if (b.firstElementChild) odaInfSol(b.firstElementChild); } // W24d: kayan / solan iç kap (kenarlık maskelenmez)
 setInterval(() => { if (!document.hidden && odaOn && odaIci) odaMicApply(); }, 20_000); // ⚔️ PK geri sayımı (dakika)
 function odaTbKisi(uid) { const r = odaData && odaData.room; if (!odaTb || !r || odaTb.room !== String(r.id) || Date.now() - odaTb.t > ODA_TB_YOK) return null; return odaTb.seats.find((x) => x && String(x.uid || "") === String(uid)) || null; }
 /** Kişi menüsüne: rozetler + "🎁 Hediye at" (yalnız Ajans sahibi, bizim odada) */
@@ -5462,8 +5481,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.116"></script>
-<script src="durum.js?v=2.1.116"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.116"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.117"></script>
+<script src="durum.js?v=2.1.117"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.117"></script><!-- </sugo-veri> -->
 </body>
 </html>
