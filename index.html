@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.135">
+<meta name="build" content="2.1.136">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.135">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.135">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.135">
+<link rel="manifest" href="manifest.json?v=2.1.136">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.136">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.136">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -685,7 +685,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .ocrow { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--line); min-height: 58px; } .ocrow:last-child { border-bottom: 0; } .ocrow .b { flex: 1; min-width: 0; } .ocrow .b b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ocgrip { flex: none; width: 34px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1; color: var(--muted); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; border-radius: 8px; } /* ↕️ sürükleme tutamacı: touch-action yalnız burada (liste normal kaydırılır) */
   .ocrow.surukleniyor { position: relative; z-index: 5; background: var(--bg); box-shadow: 0 6px 18px rgba(0,0,0,.35); border-radius: 10px; } .suruklemede { user-select: none; -webkit-user-select: none; } .ocrow.surukleniyor .ocgrip { cursor: grabbing; }
-  .ocrow { flex-wrap: wrap; } .ocrow .b { flex: 1 1 130px; } .ocb { margin-left: auto; } .ocdolu { flex: 0 0 100%; padding-left: 42px; } .ocdolu .swrow { min-height: 44px; padding: 0; } /* satır: tutamaç + bilgi (+ düğmeler sığarsa yanında, sığmazsa altında) + altta tam genişlik anahtar */ .pcdolu { padding: 0 12px 8px 62px; margin-top: -4px; border-bottom: 1px solid var(--line); }
+  .ocrow { flex-wrap: wrap; } .ocrow .b { flex: 1 1 130px; } .ocb { margin-left: auto; } .pcr .b b, .pcr .b .s { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } @media (max-width: 440px) { .pcr { gap: 6px; } .pcr .av { display: none; } .pcr .b b { font-size: 14.5px; } .pcr .pcrb { width: 34px !important; } } /* Kartlar sekmesi: ad / sayaç tek satır; dar ekranda simge gizlenir, düğmeler daralır (anahtar kartın kendi satırında) */ .ocrow > .swrow { order: 2; } .ocb { order: 3; } .ocrow .b .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ocrow.dolu .b b { opacity: .6; } /* satır: tutamaç + bilgi (+ düğmeler sığarsa yanında, sığmazsa altında) + altta tam genişlik anahtar */
   .ocrow.off .b { opacity: .55; } .ocb { display: flex; gap: 4px; flex: none; } .ocb button { width: 38px; height: 38px; padding: 0; font-size: 15px; } .ocb button:disabled { opacity: .3; }
   .ocform { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--tint, var(--panel)); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: 8px; } .ocform .full { grid-column: 1 / -1; } .ocform label.s { display: grid; gap: 4px; }
   .ocform select, .auhead select { height: 42px; width: 100%; } .occk { display: flex; gap: 8px; align-items: center; } .occk input, .ouck input { width: 22px; height: 22px; flex: none; }
@@ -809,7 +809,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .sdtel { margin-top: 8px; } .sdtel .sdr { align-items: flex-start; } .sdne { display: block; font-size: 13px; opacity: .75; margin-top: 2px; }
   .lsw { flex: none; width: 46px; height: 28px; border-radius: 14px; background: #52525b; position: relative; transition: background .2s; } .lsw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s; }
   .lsw.on { background: #22c55e; } .lsw.on::after { left: 21px; }
-  .swrow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 6px 0; background: transparent; border: 0; border-radius: 0; text-align: left; color: inherit; font: inherit; } .swrow .st { flex: 1; min-width: 0; } .swrow .st small { display: block; color: var(--muted); font-size: 12.5px; } /* ortak ANAHTAR satırı: swHtml / swAyar (.lsw görünümü) */
+  .swrow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 6px 0; background: transparent; border: 0; border-radius: 0; text-align: left; color: inherit; font: inherit; } .swrow .st { flex: 1; min-width: 0; } .swrow .st small { display: block; color: var(--muted); font-size: 12.5px; } /* ortak ANAHTAR satırı: swHtml / swAyar (.lsw görünümü) */ .swrow.sw-ic { width: auto; flex: none; gap: 6px; padding: 0; } .swrow.sw-ic .st { flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; } /* satır içi varyant (swHtml 6. parametre): kısa yazı + anahtar, kartın kendi satırında sağda */
   /* 🔐 W32 İzinler ekranı: sekme çipleri 40 px (yatay kayar), satır = metin + 2 rol anahtarı + sahip (390 px'te sığar: 1fr 54 54 36) */
   .izsek { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -2px 8px; padding: 0 2px; } .izsek::-webkit-scrollbar { display: none; }
   .izsek button { flex: none; height: 40px; padding: 0 12px; border-radius: 20px; font-size: 13px; white-space: nowrap; } .izsek button.on { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 700; }
@@ -899,7 +899,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.135" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.136" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -908,7 +908,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.135" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.136" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -970,7 +970,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.135"></script>
+<script src="emoji.js?v=2.1.136"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -3686,7 +3686,7 @@ function renderDm() { const d = dmData; if (!d) return; const open = (d.open || 
 // 💳 Kartlar: verilecek kart sırası (düzenleme sadece tablette)
 async function loadCards() { if (!canSee("kart_gor")) return; const d = await api("pcards"); pcs = (d.report && d.report.pcards) || { cards: [] }; const cards = (pcs.cards || []).filter((x) => x.number), cu = pcs.current;
   $("cardBody").innerHTML = `${cu ? `<div class="card" style="border-color:#d97706"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div style="font-variant-numeric:tabular-nums;font-size:18px;margin:4px 0">${esc(pcBic(cu.bank, cu.number))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş.</div>`}
-    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${pcU(x)}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : x.dolu ? " · bugünlük dolu" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}</div>${isYetkili() ? `<div class="pcdolu">${swHtml("pcd" + x.id, "Bugünlük dolu", "gece yarısına (Bakü) kadar verilmez", x.dolu, `cardDolu(${x.id},${!x.dolu})`)}</div>` : ""}`).join("")}
+    <h3>🗂️ Kart sırası</h3>${cards.map((x) => `<div class="row pcr"><div class="av" style="${pcCan(x) ? "" : "opacity:.5"}">💳</div><div class="b" style="${pcCan(x) ? "" : "opacity:.5;text-decoration:line-through"}"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number).slice(-4))}</b><div class="s">${pcU(x)}/${x.max_uses} hak${x.active ? "" : " · pasif"}${pcCan(x) ? "" : x.dolu ? " · dolu" : " · hakkı doldu"}</div></div>${isYetkili() ? `<div style="display:flex;gap:4px;align-items:center;flex:none"><button class="pcrb" style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses - 1})" ${x.uses <= 0 ? "disabled" : ""} aria-label="Kullanılanı azalt">−</button><button class="pcrb" style="width:40px;height:40px;padding:0" onclick="cardUses(${x.id},${x.uses + 1})" ${x.uses >= x.max_uses ? "disabled" : ""} aria-label="Kullanılanı artır">+</button></div>` : ""}${isYetkili() ? swHtml("pcd" + x.id, "Dolu", "", x.dolu, `cardDolu(${x.id},${!x.dolu})`, 1) : ""}</div>`).join("")}
     <div class="s" style="padding:10px 12px">${can("kart") ? "" : "👁 <b>Sadece görüntüleme:</b> kart verme ve düzeltme Bayi Yetkilisinde. "}Kart vermek için sohbette 💳 Kart ver'e basın. ${isSahip() ? "Kart ekleme / düzenleme: ⚙️ Ayarlar › 👑 Kartları yönet" : "Kart ekleme tabletten yapılır"}${isYetkili() ? "; kullanılan hakkı − / + ile düzeltebilirsiniz (ör. 4/5 → 5/5, işlem PIN'i); toplam hak değişmez" : "; kullanılan hakkı Bayi Yetkilisi düzeltir"}.</div>
     <h3>⚡ Hazır mesajlar <span class="s">(sohbetin altında düğme olur)</span></h3>
     ${!can("duzen") ? `<div id="tplEd">${tpls.map((x) => `<div class="card" style="margin:6px 10px;white-space:pre-wrap">${esc(x)}</div>`).join("") || '<div class="s" style="margin:6px 12px">Hazır mesaj yok.</div>'}</div><div class="s" style="margin:4px 12px 20px">👁 Düzenleme Bayi Yetkilisinde.</div>` : `<div id="tplEd">${tpls.map((x, i) => `<div style="display:flex;gap:6px;margin:6px 10px"><textarea rows="2" data-i="${i}" oninput="tpls[${i}]=this.value">${esc(x)}</textarea><button onclick="tpls.splice(${i},1);loadCards()">🗑️</button></div>`).join("")}</div>
@@ -4815,7 +4815,7 @@ function osDurumMetni(x) { if (!x || !x.acik) return { t: "", u: false, cal: fal
  *  x {bayrak (false = kapalı), dest (createMediaStreamDestination var), el (Audio var)} */
 function osYolSec(x) { return !!x && x.bayrak !== false && !!x.dest && !!x.el ? "akis" : "eski"; }
 /** Ortak ANAHTAR (switch) satırı: solda etiket + küçük açıklama, sağda kaydırmalı anahtar (.lsw görünümü: ayarlardaki "Hafif mod" ile aynı). id, etiket, açıklama, açık mı, tıklama kodu */
-function swHtml(id, etiket, aciklama, on, tikla) { return `<button type="button" id="${id}" class="swrow" role="switch" aria-checked="${!!on}" onclick="${tikla}"><span class="st">${etiket}${aciklama ? `<small>${aciklama}</small>` : ""}</span><span class="lsw${on ? " on" : ""}"></span></button>`; }
+function swHtml(id, etiket, aciklama, on, tikla, ic) { return `<button type="button" id="${id}" class="swrow${ic ? " sw-ic" : ""}" role="switch" aria-checked="${!!on}" onclick="${tikla}"><span class="st">${etiket}${aciklama ? `<small>${aciklama}</small>` : ""}</span><span class="lsw${on ? " on" : ""}"></span></button>`; }
 function swAyar(b, on) { if (!b) return; const v = String(!!on); if (b.getAttribute("aria-checked") !== v) b.setAttribute("aria-checked", v); const k = b.querySelector && b.querySelector(".lsw"); if (k && k.classList.contains("on") !== !!on) k.classList.toggle("on", !!on); }
 /** 🌙 W59: sayfa gizlenince dinleme DURDURULMALI mı: yalnız "eski" yolda (akış yolunda gerçek <audio> sayfayı canlı tutar) */
 /** 🌙 W61: etkin dal: sayfa görünürken "dogru" (ctx.destination: bilinen gecikme), gizliyken "akis" (MediaStream → <audio>) */
@@ -6106,8 +6106,8 @@ function ocHtml() { const cards = (pcs && pcs.cards) || [], cu = pcs && pcs.curr
   return `${cu ? `<div class="card ocnext"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div class="ocnum">${esc(pcNum(cu.number, cu.bank))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card ocnext">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş ya da pasif.</div>`}
   <div class="ownacts"><button class="go" onclick="ocEdit=0;ocBulk=null;ocDraw()">➕ Kart ekle</button><button onclick="ocBulk=ocBulk?null:{text:'',owner:'',items:[]};ocEdit=null;ocDraw()">📋 Toplu ekle</button><button onclick="ocReset()">🔄 Tüm hakları sıfırla</button></div>
   ${ocEdit === 0 ? form({ id: 0, owner: "", bank: "ABB", number: "", max_uses: 5, active: true }) : ""}${ocBulk ? ocBulkHtml() : ""}
-  <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}${x.dolu ? " dolu" : ""}" data-id="${x.id}">${ocEdit === null ? `<span class="ocgrip" role="button" aria-label="Sırayı değiştirmek için sürükleyin" title="Sürükleyin">⠿</span>` : ""}<div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${pcU(x)}/${x.max_uses} hak${x.dolu ? " · 🔒 bugünlük dolu" : ""}${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}</div></div>
-    <div class="ocb"><button onclick="ocMove(${x.id},'up')" ${i ? "" : "disabled"} aria-label="Yukarı">▲</button><button onclick="ocMove(${x.id},'down')" ${i < cards.length - 1 ? "" : "disabled"} aria-label="Aşağı">▼</button><button onclick="ocEdit=${x.id};ocBulk=null;ocDraw()" aria-label="Düzenle">✏️</button><button onclick="ocReset(${x.id})" ${x.uses ? "" : "disabled"} aria-label="Hakkı sıfırla">🔄</button></div><div class="ocdolu">${swHtml("ocd" + x.id, "Bugünlük dolu", "gece yarısına (Bakü) kadar verilmez", x.dolu, `cardDolu(${x.id},${!x.dolu})`)}</div></div>${ocEdit === x.id ? form(x) : ""}`).join("") || '<div class="s" style="padding:12px">Kart yok.</div>'}</div>
+  <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}${x.dolu ? " dolu" : ""}" data-id="${x.id}">${ocEdit === null ? `<span class="ocgrip" role="button" aria-label="Sırayı değiştirmek için sürükleyin" title="Sürükleyin">⠿</span>` : ""}<div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${pcU(x)}/${x.max_uses} hak${x.dolu ? " · 🔒 dolu" : ""}${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}</div></div>
+    <div class="ocb"><button onclick="ocMove(${x.id},'up')" ${i ? "" : "disabled"} aria-label="Yukarı">▲</button><button onclick="ocMove(${x.id},'down')" ${i < cards.length - 1 ? "" : "disabled"} aria-label="Aşağı">▼</button><button onclick="ocEdit=${x.id};ocBulk=null;ocDraw()" aria-label="Düzenle">✏️</button><button onclick="ocReset(${x.id})" ${x.uses ? "" : "disabled"} aria-label="Hakkı sıfırla">🔄</button></div>${swHtml("ocd" + x.id, "Dolu", "", x.dolu, `cardDolu(${x.id},${!x.dolu})`, 1)}</div>${ocEdit === x.id ? form(x) : ""}`).join("") || '<div class="s" style="padding:12px">Kart yok.</div>'}</div>
   <div class="s" style="margin:10px 4px">Kartlar silinmez: kullanılmayacak kartı ✏️ ile <b>pasif</b> yapın. Değişiklikler işlem PIN'inizle kaydedilir; tablet ve açık sayfalar hemen görür.</div>`; }
 function ocBulkHtml() { const b = ocBulk, known = (pcs && pcs.cards) || [], ok = b.items.length && b.items.every((x) => x.bank && pcNoOk(x.bank, x.number));
   return `<div class="ocform"><textarea id="ocPaste" class="full" rows="4" placeholder="Kart bilgilerini yapıştırın (ad, numara, banka; birden çok kart olabilir)" oninput="ocBulk.text=this.value">${esc(b.text)}</textarea>
@@ -6878,8 +6878,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.135"></script>
-<script src="durum.js?v=2.1.135"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.135"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.136"></script>
+<script src="durum.js?v=2.1.136"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.136"></script><!-- </sugo-veri> -->
 </body>
 </html>
