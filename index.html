@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.130">
+<meta name="build" content="2.1.131">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.130">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.130">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.130">
+<link rel="manifest" href="manifest.json?v=2.1.131">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.131">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.131">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -733,6 +733,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #login .pin { font-size: 28px; letter-spacing: 10px; text-align: center; max-width: 260px; }
   #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top) + var(--swh, 0px)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
   #toast.bad { background: #3a1f1f; }
+  #toast.warn { background: #3a2f12; color: #ffe9b0; border-color: #a16207; } /* ⚠️ sunucu uyarısı (yanıtta "uyari"): sarı, ~6 sn */
   .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
   nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: max(0px, calc(env(safe-area-inset-bottom) - 19px)); }
   nav.bn button { flex: 1; border: 0; border-radius: 0; background: none; padding: 8px 2px 10px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
@@ -802,6 +803,10 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .sys { background: rgba(217,70,239,.08); }
   .dmstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #2a2210; border: 1px solid #a16207; font-size: 14px; }
   .apstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #10243a; border: 1px solid #2563eb; font-size: 14px; cursor: pointer; }
+  /* 🃏 Kayıtsız kart sorusu (18.11): yalnız yöneticide, mesaj listesinin üstündeki şerit alanında tek kart; iki düğme eşit genişlikte, ≥ 44 px */
+  .kkstrip { margin: 8px 10px; padding: 10px 12px; border-radius: 12px; background: #2a2210; border: 1px solid #a16207; font-size: 14px; min-width: 0; }
+  .kkstrip .kkt { line-height: 19px; overflow-wrap: anywhere; } .kkstrip .kkt .s { color: var(--muted); font-size: 12px; }
+  .kkstrip .kkb { display: flex; gap: 8px; margin-top: 8px; min-width: 0; } .kkstrip .kkb button { flex: 1 1 0; min-width: 0; min-height: 44px; padding: 0 8px; font-size: 14px; white-space: normal; line-height: 17px; }
   .row.bek { box-shadow: inset 3px 0 0 #3b82f6; }
   /* ✔ Başvuru "Onayladım" (15.11): düğme ve "geri al" aynı yükseklik, durum satırı tek satır (basınca satır boyu oynamaz) */
   .row .aps { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .row .aps.ok { color: #4ade80; } .row .apo { color: #a3e635; overflow-wrap: anywhere; } /* W14: muhtemel üyenin adı + UID kırpılmaz (iki satıra iner) */
@@ -862,7 +867,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.130" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.131" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -871,13 +876,14 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.130" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.131" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
     <button type="button" class="dkbar" id="dkBar" data-dk="liste" hidden></button>
     <div id="dmStrip"></div>
     <div id="apStrip"></div>
+    <div id="kkStrip"></div>
     <div class="search"><input id="idIn" type="search" autocomplete="off" placeholder="🔎 İsim ya da UID ile ara / sohbet aç" oninput="srch()" onkeydown="if(event.key==='Enter')openById()"><button onclick="openById()">Aç</button></div>
     <div id="srchRes"></div>
     <div id="convs"><div class="tagbar" data-k="tagbar"><button class="rall">📩 Okunmayanlar <b>0</b></button><button class="on">💬 Genel</button><button>💎 Elmas satıcıları</button><button>🪙 Coin alıcıları</button></div><div class="row sys" data-k="team" onclick="openChat('30000')"><div class="av" style="background:linear-gradient(135deg,#e879f9,#db2777)">📢</div><div class="b"><div class="t"><b>SUGO TEAM <span class="s">· sistem mesajları 🔒</span></b></div><div class="p"><span>Sugo'nun resmi bildirimleri ve kodlar</span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div><div class="row skrow"><div class="av"><span class="sk" style="width:100%;height:100%;border-radius:50%"></span></div><div class="b"><div class="t"><b><span class="sk" style="width:9em"></span></b><span class="sk" style="width:2.5em"></span></div><div class="p"><span><span class="sk" style="width:14em"></span></span></div></div></div></div>
@@ -932,7 +938,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.130"></script>
+<script src="emoji.js?v=2.1.131"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1105,7 +1111,9 @@ let meGuven = false; // 🔐 me sunucudan bu oturumda doğrulandı mı (ya da bu
 let tok = localStorage.getItem("bw_tok") || "", me = null, rt = null, inbox = [], cur = null, curName = "", hist = [], coins = [], outbox = [], tpls = [], pcs = { cards: [], current: null }, tagx = []; // tagx: son 120 sohbette olmayan etiketli kişiler (etiket sekmelerinde görünür)
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad ? 5000 : 2500); }
+function toast(t, bad) { const e = $("toast"); e.textContent = t; e.className = bad === "warn" ? "warn" : bad ? "bad" : ""; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", bad === "warn" ? 6000 : bad ? 5000 : 2500); }
+// ⚠️ Gün kapanışı uyarısı (18.11): sunucu, kapanmış bir güne kayıt yazılınca yanıtın ÜST DÜZEYİNDE "uyari" (metin) döndürür → normal başarı bildirimi bittikten SONRA (~2,7 sn) sarı uyarı ~6 sn görünür. Alan yoksa hiçbir şey değişmez.
+function uyariGoster(r) { const u = r && typeof r === "object" && typeof r.uyari === "string" ? r.uyari.trim() : ""; if (!u) return; clearTimeout(uyariGoster.h); uyariGoster.h = setTimeout(() => toast("⚠️ " + u, "warn"), 2700); }
 // Ekran değişince kaydırma konumu korunur (gizlenen ekranın konumu tarayıcıda sıfırlanıyordu: profilden dönünce sohbet en üstte açılıyordu)
 let chatAnchor = null; const paneTops = {};
 function show(id) { const chatWas = $("chat") && $("chat").classList.contains("on"); if (id === "chat" || id === "login") setStack = []; // ayarlardan sohbete geçildi: ayarlar kapanmış sayılır
@@ -1142,7 +1150,7 @@ const kimAnah = (m) => (m ? [m.name || "", m.role || "", m.switched ? "sw:" + (m
 function kimDegisti(eski, yeni) { if (!eski || kimAnah(eski) === kimAnah(yeni)) return; nkSifirla();
   const b = $("ajBody"); if (b && !ajData) b.innerHTML = SKEL.ajBody(); renderAj(); if (can("ajans")) loadAj(); }
 async function permsRefresh() { const d = await api0("me"); if (d && !d.error && d.name) { const m0 = me; me = d; meSakla(d); swDraw(); applyPerms(); kimDegisti(m0, d); renderInbox(); if (cur) renderChat(); if (tok && (rtYeni(rtConf(d)) || rtYeni(rtCfg))) rtEnsure(); } } // 📡 adres listesi değiştiyse (rt_yol) yeniden bağlanır
-async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
+async function api(action, body = {}) { const t0 = performance.now(); try { const r = await api0(action, body); if (r && r.perm && action !== "me") permsRefresh(); uyariGoster(r); return r; } finally { const ms = Math.round(performance.now() - t0); if (action !== "login") { STAT.api.push(ms); if (STAT.api.length > 6) STAT.api.shift(); statLine(); } } }
 async function api0(action, body = {}) {
   const t0 = tok; // isteğin gönderildiği oturum: geç gelen 401 (kapanmış geçiş oturumunun eski isteği) şimdiki oturumu düşürmesin (yavaş ağ testi, 11.11)
   const r = await apiFetch(action, { method: "POST", headers: { "content-type": "application/json", "x-web-token": t0 }, body: JSON.stringify({ action, ...body }) });
@@ -1246,10 +1254,25 @@ apIsaretle.bek = new Set();
 function apCiz() { if (curTab === "aj" && ajSub === "basvuru") renderAj(); apStripCiz(); }
 let apInboxAt = null; /* Ajans Asistanı satırının son mesaj zamanı: değişince (yeni başvuru mesajı) ajans verisi bir kez tazelenir; ayrı yoklama yok */
 function apInboxIzle(its) { const x = (its || []).find((y) => String(y.id) === "30005"); if (!x) return; const k = String(x.at || "") + "|" + String(x.u || 0); if (apInboxAt !== null && apInboxAt !== k && ajData && can("ajans")) loadAj(); apInboxAt = k; }
+// 🃏 Kayıtsız kart sorusu (18.11, kullanıcı: "bana sorulsun"): hesapta ilk kez görülen kayıtsız kart son 4'ü yöneticiye BİR KEZ sorulur; "İş kartı" → sayılmaya devam, "Şahsi (sayılmasın)" → hesabın sayılmayacak listesi.
+// Yalnız yönetici (me.yon; sunucu da 403 verir). Soru mesaj listesinin üstündeki şerit alanında tek kart (en eskisi; birden çoksa "+N soru daha"). Veri: bayi-web kart_soru_liste (açılışta bir kez + uygulamaya dönünce, ≥ 90 sn arayla); numara yok, yalnız son 4.
+let kkSorular = [], kkBusy = false, kkAt = 0;
+function kkCiz() { const el = $("kkStrip"); if (!el) return; const q = me && me.yon && kkSorular.length ? kkSorular[0] : null;
+  const h = q ? `<div class="kkstrip" data-kk-kart="1"><div class="kkt">🃏 <b>${esc(q.hesap)}</b> hesabında yeni kart <b>••${esc(q.last4)}</b> görüldü: iş kartı mı, şahsi mi?${kkSorular.length > 1 ? ` <span class="s">(+${kkSorular.length - 1} soru daha)</span>` : ""}</div><div class="kkb"><button type="button" class="go" data-kk="is" data-c="${esc(String(q.card_id))}" data-l="${esc(q.last4)}"${kkBusy ? " disabled" : ""}>İş kartı</button><button type="button" data-kk="sahsi" data-c="${esc(String(q.card_id))}" data-l="${esc(q.last4)}"${kkBusy ? " disabled" : ""}>Şahsi (sayılmasın)</button></div></div>` : "";
+  if (el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_kkstrip", me && me.yon ? h : ""); } catch (e) {} }
+async function kkYukle(zorla) { if (!me || !me.yon) { kkSorular = []; kkCiz(); return; } if (!zorla && Date.now() - kkAt < 90_000) return; kkAt = Date.now();
+  const r = await api("kart_soru_liste").catch(() => null); if (r && r.report && Array.isArray(r.report.sorular)) { kkSorular = r.report.sorular; kkCiz(); } }
+async function kkCevap(c, l, v) { if (kkBusy || !me || !me.yon) return; kkBusy = true; kkCiz();
+  try { const r = await api("kart_soru_cevap", { card: Number(c), last4: l, cevap: v }); if (r && r.report && Array.isArray(r.report.sorular)) kkSorular = r.report.sorular; else kkSorular = kkSorular.filter((x) => !(String(x.card_id) === String(c) && x.last4 === l));
+    if (r && r.error) { toast("❌ " + r.error, true); kkAt = 0; } else toast((r && r.ok) || "✅ Kaydedildi"); }
+  catch (e) { toast("❌ Kaydedilemedi: " + String((e && e.message) || e).slice(0, 80), true); }
+  finally { kkBusy = false; kkCiz(); } }
+document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("#kkStrip [data-kk]"); if (b) kkCevap(b.dataset.c, b.dataset.l, b.dataset.kk); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && tok && me && me.yon) kkYukle(); });
 function setDmStrip(h) { const el = $("dmStrip"); if (el && el.innerHTML !== h) el.innerHTML = h; try { localStorage.setItem("bw_dmstrip", h); } catch (e) {} }
 async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekteki adla)
   // CLS: listenin üstündeki şeritler (bildirim, tablet uyarısı, elmas bozumu) ilk çizimde son bilinen hâliyle yer alır → liste sonradan aşağı kaymaz
-  try { notifBarShow(); setTabWarn(localStorage.getItem("bw_tabwarn") || ""); if ($("dmStrip")) $("dmStrip").innerHTML = localStorage.getItem("bw_dmstrip") || ""; if ($("apStrip")) $("apStrip").innerHTML = localStorage.getItem("bw_apstrip") || ""; } catch (e) {}
+  try { notifBarShow(); setTabWarn(localStorage.getItem("bw_tabwarn") || ""); if ($("dmStrip")) $("dmStrip").innerHTML = localStorage.getItem("bw_dmstrip") || ""; if ($("apStrip")) $("apStrip").innerHTML = localStorage.getItem("bw_apstrip") || ""; if ($("kkStrip")) $("kkStrip").innerHTML = localStorage.getItem("bw_kkstrip") || ""; } catch (e) {}
   // Açılış anında: son liste telefonda saklıysa hemen gösterilir; kimlik ve liste aynı anda istenir (sırayla ~1.5 sn sürüyordu)
   paneBoot(); // sekmeler son hâlleriyle ya da yer tutucularla hazır
   let cm = null, ci = null; try { cm = JSON.parse(localStorage.getItem("bw_me") || "null"); ci = JSON.parse(localStorage.getItem("bw_inbox") || "null"); } catch (e) {}
@@ -1261,7 +1284,7 @@ async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekt
   if (canSee("kart_gor")) api("pcards").then((d) => { if (d.report && d.report.pcards) { pcs = d.report.pcards; if (cur) renderChat(); } }); // kart numaralarının bankası (sohbette soluk etiket)
   const d = await api("me"); if (d.error) { show("login"); loginMsg("❌ Oturum açılamadı: " + d.error, "err"); return; }
   const m0 = me || cm; me = d; meSakla(d);
-  swDraw(); applyPerms(); kimDegisti(m0, d); if (!fast) { show("inbox"); tab(curTab); } await pInbox; loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); molaYukle(); /* ☕ */ chCache.warm(inbox.map((x) => String(x.id)));
+  swDraw(); applyPerms(); kimDegisti(m0, d); if (!fast) { show("inbox"); tab(curTab); } await pInbox; kkYukle(true); loadDm(); loadCoins(); loadWallet(); rtEnsure(); notifSetup(); molaYukle(); /* ☕ */ chCache.warm(inbox.map((x) => String(x.id)));
   setTimeout(() => { if (curTab !== "card") loadCards(); if (curTab !== "aj") { loadAj(); if (nkOk()) idleRun(nkLoad); } }, 4000); // gizli sekmeler boşta önceden çizilir (açınca hazır) · 💵 Nakit de
   const qp = new URLSearchParams(location.search), rs = takeResume(); if (!qp.get("pz")) pzLoad(); // bekleyen onay isteği
   // bildirimden açılış (adres ?c= / ?t= / ?pz= ya da SW önbelleğindeki hedef) kaldığı yere dönüşten önce gelir
@@ -5628,7 +5651,7 @@ function applyPerms() {
   try { if (me && !can("oda_ses_dinle") && typeof os !== "undefined" && os.acik) osDur(""); } catch (e) {} try { if (me && !can("durum_gor") && curTab === "durum") tab("msg"); } catch (e) {}
   try { apCiz(); } catch (e) {} try { if ($("odaBody") && $("odaBody").innerHTML && odaChOk.son !== odaChOk()) { odaChOk.son = odaChOk(); odaDraw(); } } catch (e) {} // ✔ başvuru düğmeleri / 💬 oda sohbeti izni sayfa yenilemeden
   if ($("coinBtn")) $("coinBtn").hidden = $("coinBtn").hidden || !can("coin");
-  if (!canSee("elmas_gor") && $("dmStrip")) setDmStrip(""); if (!can("ajans") && $("apStrip")) setApStrip("");
+  if (!canSee("elmas_gor") && $("dmStrip")) setDmStrip(""); if (!can("ajans") && $("apStrip")) setApStrip(""); if (!(me && me.yon)) { if (kkSorular.length) kkSorular = []; kkCiz(); } /* 🃏 yalnız yönetici */
   if (!can("coins") && $("hStock")) { $("hStock").textContent = ""; const g = document.querySelector("#hTitle .gc"); if (g) g.hidden = true; }
   try { renderTpls(); } catch (e) {} try { renderChTags(); } catch (e) {} try { walletDraw(); } catch (e) {} // 💎 başlıktaki elmas: sahip + yetkili
   try { dkUygula(); } catch (e) {} // 📎 dekont şeridi (me.dekont)
@@ -6571,8 +6594,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.130"></script>
-<script src="durum.js?v=2.1.130"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.130"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.131"></script>
+<script src="durum.js?v=2.1.131"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.131"></script><!-- </sugo-veri> -->
 </body>
 </html>
