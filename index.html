@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.127">
+<meta name="build" content="2.1.128">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.127">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.127">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.127">
+<link rel="manifest" href="manifest.json?v=2.1.128">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.128">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.128">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -48,6 +48,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); display: inline-block; }
   .dot.ok { background: #22c55e; } .dot.bad { background: var(--bad); }
+  .tkb .tkn { font-size: 13px; opacity: .85; line-height: 1.4; margin: 2px 0 8px; min-height: 37px; } .tkb .tkbtn { width: 100%; min-height: 44px; margin: 0 0 6px; } .tkb .tkbtn.bad { color: #ff6b6b; border-color: #ff6b6b66; } .tkm { font-size: 15px; line-height: 1.45; } .tkm ul { margin: 6px 0 8px; padding-left: 20px; } .tkm li { margin: 3px 0; } .tkw { padding: 10px 12px; border-radius: 12px; background: #f59e0b22; font-size: 14px; }
   .sdg { padding: 14px; border-radius: 14px; font-size: 16px; } .sdg .sds { margin-top: 4px; font-size: 14px; opacity: .85; } .sdb { margin-top: 10px; padding: 4px 12px 6px; border-radius: 14px; background: #ffffff0d; } .sdh { font-weight: 700; font-size: 14px; padding: 8px 0 4px; opacity: .9; } details.sdx > summary { cursor: pointer; min-height: 32px; } /* 🩺 sistem durumu (14.11) */
   .sdr { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-top: 1px solid #ffffff10; } .sdr:first-of-type { border-top: 0; } .sdr > i { flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; } .sdm { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; } .sda { font-size: 14px; } .sdd { font-size: 14px; text-align: right; margin-left: auto; overflow-wrap: anywhere; } .sdy { opacity: .6; } .sdn { margin: 12px 2px 0; font-size: 13px; line-height: 1.45; opacity: .8; } .sdz { margin: 8px 2px 4px; font-size: 12px; opacity: .5; }
   /* ☕ Mola (14.11): üst kartlar (sabit konum → kayma yok), tam ekran mola görünümü, ⚙️ üzerinde rozet */
@@ -860,7 +861,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.127" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.128" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -869,7 +870,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.127" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.128" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -930,7 +931,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.127"></script>
+<script src="emoji.js?v=2.1.128"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1328,7 +1329,7 @@ function sdCiz(d, alinan) { if (d && d.sade) return sdSade(d, alinan); const far
 async function sysPop() { clearTimeout(sdT); const yon = yonOk(); // 📋 yönetici: "Durum | Sürüm notları" sekmeleri; öteki rollerde sekme ve not kökü DOM'a hiç girmez
   const shell = (body) => `<div style="position:sticky;top:-16px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-16px -16px 6px;padding:10px 12px 10px 16px;background:var(--panel);border-bottom:1px solid var(--line)">
       <h3 style="margin:0;font-size:19px">Sistem durumu</h3>
-      <button onclick="closeModal()" aria-label="Kapat" style="flex:none;width:44px;height:44px;border-radius:22px;font-size:20px;line-height:1;padding:0">✕</button></div>${yon ? snSekmeHtml() : ""}<div id="sdDurumW">${body}</div>${yon ? `<div id="snKok" hidden></div>` : ""}`;
+      <button onclick="closeModal()" aria-label="Kapat" style="flex:none;width:44px;height:44px;border-radius:22px;font-size:20px;line-height:1;padding:0">✕</button></div>${yon ? snSekmeHtml() : ""}<div id="sdDurumW">${body}${yon ? `<div id="tkKok"></div>` : ""}</div>${yon ? `<div id="snKok" hidden></div>` : ""}`;
   let onceki = null; try { onceki = JSON.parse(localStorage.getItem("bw_pane_sd") || "null"); } catch (e) {} if (onceki && onceki.d && !onceki.d.sade && !yonOk()) onceki = null; // 🔐 yöneticinin ayrıntısı başkasına çizilmez
   openModal(shell(onceki && onceki.d ? sdCiz(onceki.d, onceki.at) : `<div id="sdKok" style="padding:30px 0;text-align:center;opacity:.7">Kontrol ediliyor…</div>`), true);
   const al = async (ilk) => { sdT = 0; if ($("modal").style.display !== "flex" || !$("sdKok")) return; // kapandı ya da başka pencere açıldı: tazeleme biter
@@ -1339,8 +1340,38 @@ async function sysPop() { clearTimeout(sdT); const yon = yonOk(); // 📋 yönet
         u.classList.add("sdhata"); u.style.background = "#ff4d4f1f"; u.innerHTML = `<b>⚠️ Durum alınamadı</b><div class="sds">Son bilinen gösteriliyor · <button onclick="sysPop()" style="min-height:0;padding:0 2px;border:0;background:none;color:inherit;font:inherit;text-decoration:underline">Tekrar dene</button></div>`; /* genel kartla aynı boy: 2 satır */ } } // 503 / ağ: önbellekteki son görünüm korunur
     else { const at = Date.now(); try { localStorage.setItem("bw_pane_sd", JSON.stringify({ d, at })); } catch (e) {} const h = sdCiz(d, at), k = $("sdKok");
       if (k && k.outerHTML !== h) { const det = k.querySelector("details.sdx"), acik = !!(det && det.open); k.outerHTML = h; if (acik) { const n = document.querySelector("#sdKok details.sdx"); if (n) n.open = true; } } }
-    sdT = setTimeout(() => al(false), 15_000); };
-  al(true); }
+    if (yon) tkCiz(); sdT = setTimeout(() => al(false), 15_000); };
+  al(true); if (yon) tkYukle(); }
+// 📟 Sistem durumu › Tablet › "Tablet kayboldu" (18.11, W64; kullanıcı: "yalnız yönetici, Web Bayi'den seçilebilsin"). YALNIZ yöneticide çizilir (yonOk); sunucu da yalnız
+// yöneticiye + işlem PIN'ine verir (bayi-web tablet_kayip_*, _shared/tabletkayip.ts). Onay penceresi sonucu açıkça yazar; PIN her seferinde sorulur (askPin taze).
+// Çift tık: düğme işlem sürerken kapalı + her pencere açılışında yeni istek kimliği (sunucu da aynı kimliği / aynı durumu tek kayıt sayar).
+let tkD = null, tkBusy = false, tkIstek = "", tkSt = "yok"; // tkSt: yok (hiç bilinmiyor) · eski (son bilinen, taze durum bekleniyor) · taze · hata (okunamadı)
+function tkYeni() { try { return crypto.randomUUID(); } catch (e) { return "tk-" + Date.now().toString(16) + "-" + Math.random().toString(16).slice(2, 10); } }
+// Kayma yok: kart, durum bölümü (sdKok) ilk gerçek içeriğini aldıktan SONRA çizilir (öncesinde kök boş, yer tutmaz; üstündeki "Kontrol ediliyor…" büyüyünce kart sıçramaz).
+// Hep aynı yükseklik: iskelet, son bilinen ve taze görünüm aynı iki satır + aynı not alanı. Aynıysa yeniden çizilmez. Taze durum gelene kadar düğme KAPALI (bayat durumla yanlış düğme).
+function tkCiz() { const k = $("tkKok"); if (!k) return; const sd = $("sdKok"), hazir = !!(sd && sd.querySelector(".sdg"));
+  const d = tkD, kayip = !!(d && d.kayip), kesin = tkSt === "taze" || tkSt === "hata";
+  const ne = (d && d.at ? new Date(d.at).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "");
+  const alt = tkSt === "eski" ? "Son bilinen durum · güncelleniyor…" : tkSt === "hata" ? "Durum doğrulanamadı · son bilinen" : "";
+  const h = !hazir ? "" : `<div class="sdb tkb"><div class="sdh">📟 Tablet</div>` + (d === null
+    ? `<div class="sdr"><div class="sdm"><span class="sda">Durum okunuyor…</span><span class="sdd">&nbsp;</span></div></div>`
+    : `<div class="sdr"><i style="background:${kayip ? SD_RENK.hata : SD_RENK.iyi}"></i><div class="sdm"><span class="sda">${kayip ? "🔒 Kapalı: kayıp olarak işaretli" : "Yetkili"}</span><span class="sdd">${esc(alt || (kayip ? ((d.yapan || "Yönetici") + (ne ? " · " + ne : "")) : "Sunucuya normal bağlanıyor"))}</span></div></div>`)
+    + `<div class="tkn">${d === null ? "Tablet kaybolur ya da çalınırsa buradan sunucu erişimini kesin." : kayip ? "Tablet şu an sunucudan veri okuyamaz, coin gönderemez, mesaj atamaz." : "Tablet kaybolur ya da çalınırsa buradan sunucu erişimini kesin."}</div>`
+    + `<button class="tkbtn${kayip ? "" : " bad"}" onclick="tkSor('${kayip ? "geri" : "yap"}')"${d === null || !kesin ? " disabled" : ""}>${kayip ? "✅ Tablet bulundu / yeniden yetkilendir" : "🚨 Tablet kayboldu"}</button></div>`;
+  if (k._h !== h) { k._h = h; k.innerHTML = h; } }
+async function tkYukle() { tkSt = tkD === null ? "yok" : "eski"; tkCiz(); const d = await api("tablet_kayip_durum"); if (!$("tkKok")) return;
+  if (d && d.report && d.report.tablet) { tkD = d.report.tablet; tkSt = "taze"; } else { if (tkD === null) tkD = { kayip: false, hata: true }; tkSt = "hata"; } // okunamazsa düğme açılır (sunucu kararı verir; onay penceresi işlemi açıkça yazar)
+  tkCiz(); }
+function tkSor(ne) { const yap = ne === "yap"; tkIstek = tkYeni();
+  openModal(`<h3 style="margin:0 0 8px">${yap ? "🚨 Tablet kayboldu mu?" : "✅ Tablet bulundu mu?"}</h3><div class="tkm">`
+    + (yap ? `<b>Onaylarsanız şunlar olur:</b><ul><li>Tabletin sunucuyla bağlantısı <b>hemen kesilir</b>: veri okuyamaz, coin gönderemez, mesaj atamaz, komut alamaz.</li><li>Tabletteki Web Bayi oturumu kapanır; işaret kalkana kadar giriş yapamaz.</li><li>Banka telefonları, bu panel ve öteki cihazlar <b>etkilenmez</b>.</li><li>Hiçbir kayıt silinmez; kimin ne zaman işaretlediği saklanır.</li></ul><div class="tkw">Ofisteki tablet de kapanır. Tablet bulunursa buradan geri açarsınız. Tabletin içinde kayıtlı Sugo şifreleri sunucudan silinemez: çalındıysa Sugo şifrelerini de değiştirin.</div>`
+      : `<b>Onaylarsanız:</b><ul><li>Tablet sunucuya yeniden bağlanır; veri okur, komut alır.</li><li>Tabletteki Web Bayi'ye yeniden giriş yapılması gerekir.</li></ul><div class="tkw">Tablet çalındıysa ve elinize geçmediyse bunu yapmayın.</div>`)
+    + `</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="sysPop()">Vazgeç</button><button class="go" onclick="tkOnay('${ne}')">${yap ? "Devam: PIN gir" : "Devam: PIN gir"}</button></div>`, true); }
+async function tkOnay(ne) { if (tkBusy) return; const pin = await askPin(ne === "yap" ? "Tablet kayboldu: işlem PIN'i" : "Tablet bulundu: işlem PIN'i", true); if (!pin) { sysPop(); return; }
+  tkBusy = true; let d; try { d = await api(ne === "yap" ? "tablet_kayip_yap" : "tablet_kayip_geri", { pin, istek: tkIstek || tkYeni() }); } finally { tkBusy = false; }
+  if (d && d.pin === "wrong") { toast("❌ " + (d.error || "PIN yanlış"), true); tkSor(ne); return; } // aynı pencere, aynı istek kimliği olmasın: yeni kimlik
+  if (!d || d.error) { toast("❌ " + ((d && d.error) || "Kaydedilemedi"), true); sysPop(); return; }
+  if (d.report && d.report.tablet) tkD = d.report.tablet; toast(d.ok || "Tamam"); sysPop(); }
 // 📋 Sistem durumu › Sürüm notları (15.11, kullanıcı: "sistem durumu içinde bir sekme koy oradan tıklayıp detaylara bakalım. sadece yönetici görebilir").
 // YALNIZ yöneticide çizilir (yonOk); sunucu da yalnız yöneticiye verir (bayi-web "surum_notlari", _shared/surumnotlari.ts). Önce bu cihazdaki son liste
 // (bw_pane_sn; çıkışta / rol düşünce yonSil → snSil ile bellekten, önbellekten ve ekrandan silinir), sonra sunucu: v aynıysa liste yeniden çizilmez.
@@ -3563,7 +3594,7 @@ function rolUygula() { const yon = yonOk(), degisti = document.documentElement.c
   if (yon) return; if (degisti) try { IO.yonVeri = true; } catch (e) {} /* rol yönetici-değile düştü: Giriş/Çıkış belleği işarete bakmadan sıfırlanır, açık ekran yeniden okunur (yonSil) */ yonSil();
   if (degisti) try { if (ajSub === "alt") { ajSub = ""; try { localStorage.removeItem("bw_aj"); } catch (e) {} } if (ajData) renderAj(); } catch (e) {} } /* AR: açık sekme "Alt ajanslar" idiyse rolün ilk sekmesine; şerit yeniden çizilir */
 /** Yönetici verisini bu telefonun önbelleğinden, bellekten ve ekrandan siler (rol yönetici değil, kimlik doğrulanmadı ya da çıkış) */
-function yonSil() { try { snSil(); } catch (e) {} /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
+function yonSil() { try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil(); } catch (e) {} /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
   try { for (const k of Object.keys(localStorage)) { if (YON_LS.test(k)) { localStorage.removeItem(k); continue; }
     if (/^pf_\d/.test(k)) { const v = localStorage.getItem(k) || ""; if (!v.includes('"temel":true')) localStorage.removeItem(k); continue; } // eski tam profil kopyası
     if (k === "bw_pane_sd") { const v = localStorage.getItem(k) || ""; if (!v.includes('"sade":true')) localStorage.removeItem(k); continue; }
@@ -6526,8 +6557,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.127"></script>
-<script src="durum.js?v=2.1.127"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.127"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.128"></script>
+<script src="durum.js?v=2.1.128"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.128"></script><!-- </sugo-veri> -->
 </body>
 </html>
