@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.131">
+<meta name="build" content="2.1.132">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.131">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.131">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.131">
+<link rel="manifest" href="manifest.json?v=2.1.132">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.132">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.132">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -733,6 +733,21 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #login .pin { font-size: 28px; letter-spacing: 10px; text-align: center; max-width: 260px; }
   #toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top) + var(--swh, 0px)); transform: translateX(-50%); background: #1f3a2d; border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; z-index: 50; display: none; max-width: 92vw; }
   #toast.bad { background: #3a1f1f; }
+  /* ---------- uyarı / onay kartı (onayKart / girisKart): tarayıcının yerel confirm / prompt penceresi yerine; sabit konumlu → sayfayı kaydırmaz (CLS yok) */
+  .kart { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); background: rgba(0,0,0,.6); }
+  .kart.giris { align-items: flex-start; padding-top: max(calc(12px + env(safe-area-inset-top)), 8vh); } /* yazı kutulu kart üstte: klavye açılınca da görünür */
+  .kartk { display: flex; flex-direction: column; width: 100%; max-width: 420px; max-height: calc(var(--vvh, 100dvh) - 32px); background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 12px 40px rgba(0,0,0,.5); outline: none; overflow: hidden; }
+  .kartk.tehlike { border-color: var(--bad); }
+  .karti { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 18px 18px 4px; }
+  .kartb { margin: 0 0 8px; font-size: 18px; line-height: 1.3; overflow-wrap: anywhere; } .kartk.tehlike .kartb { color: var(--bad); }
+  .kartm { white-space: pre-line; font-size: 15px; line-height: 1.45; overflow-wrap: anywhere; }
+  .karta { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: var(--panel2); border: 1px solid var(--line); color: var(--muted); font-size: 13.5px; line-height: 1.4; overflow-wrap: anywhere; }
+  .kartl { display: block; margin: 12px 0 4px; } .kartg { min-height: 48px; font-size: 16px; }
+  .kartd { flex: none; display: flex; gap: 10px; padding: 14px 18px 18px; } .kartd.ters { flex-direction: row-reverse; } .kartd.dik { flex-direction: column-reverse; }
+  .kartd button { flex: 1 1 0; min-width: 0; min-height: 48px; overflow-wrap: anywhere; } .kartd button.tehlike { background: var(--bad); border-color: var(--bad); color: var(--gofg); font-weight: 700; }
+  .kartd button:focus-visible { outline: 2px solid var(--brand3); outline-offset: 2px; }
+  .kartd button.bekle { position: relative; overflow: hidden; } .kartd button.bekle::after { content: ""; position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: currentColor; opacity: .55; transform-origin: left; animation: kartbekle var(--kb, 1s) linear forwards; }
+  @keyframes kartbekle { from { transform: scaleX(0); } to { transform: scaleX(1); } } @media (prefers-reduced-motion: reduce) { .kartd button.bekle::after { animation: none; } }
   #toast.warn { background: #3a2f12; color: #ffe9b0; border-color: #a16207; } /* ⚠️ sunucu uyarısı (yanıtta "uyari"): sarı, ~6 sn */
   .warnbar { background: #3a2f12; color: #ffe9b0; padding: 8px 12px; font-size: 14px; display: none; }
   nav.bn { display: flex; border-top: 1px solid var(--line); background: var(--panel); padding-bottom: max(0px, calc(env(safe-area-inset-bottom) - 19px)); }
@@ -867,7 +882,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.131" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.132" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -876,7 +891,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.131" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.132" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -938,7 +953,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.131"></script>
+<script src="emoji.js?v=2.1.132"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1221,7 +1236,7 @@ async function pushEndpoint() { try { if (!("serviceWorker" in navigator)) retur
   return reg && reg.pushManager ? await Promise.race([reg.pushManager.getSubscription(), new Promise((r) => setTimeout(() => r(null), 1500))]) : null; } catch (e) { return null; } }
 // Oturum kapandıysa (401) ya da sayfa girişsiz açıldıysa: bu tarayıcının aboneliği bırakılır (sunucuya soramayız; bildirim servisi aboneliği düşürür, sunucu ilk gönderimde kapatır)
 async function pushDrop() { const ps = await pushEndpoint(); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } }
-async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!confirm("Çıkış yapılsın mı?")) return; try { const ps = await pushEndpoint();
+async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!(await onayKart({baslik:"Çıkış yapılsın mı?",metin:"Çıkış yapılsın mı?",ayrinti:"Bu cihazdan çıkılır ve bildirimler bu cihaza gelmez. İstediğiniz an kullanıcı adı ve şifrenizle yeniden girebilirsiniz.",onay:"Evet, çık"}))) return; try { const ps = await pushEndpoint();
   await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } } finally { /* AE: ağ / abonelik adımı hata verse de temizlik atlanmaz */ tok = ""; ["bw_tok", "bw_me", "bw_me_t", "bw_inbox"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
   try { cacheClear(); rtBitir(); loginMsg("Çıkış yapıldı", "wait"); show("login"); } finally { oturumSil(); } } } /* önce giriş ekranı: temizlik görünür ekranı kaydırmaz */
 /** 🔐 T: çıkış / oturum düştü — kimlik, yönetici verisi ve çizilmiş ekranlar bellekten ve DOM'dan silinir (sonraki girişte me gelene kadar hiçbir yönetici öğesi kalmaz) */
@@ -1599,7 +1614,7 @@ function noteAdd() { if (!cur) return; openModal(`<h3 style="margin:0 0 8px">�
   <textarea id="noteIn" rows="3" style="width:100%" maxlength="1000"></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="closeModal()">Vazgeç</button><button class="go" onclick="noteSave()">💾 Kaydet</button></div>`, true); }
 async function noteSave() { const c = cur, t = ($("noteIn").value || "").trim(); if (!t) { toast("Not boş", true); return; }
   const d = await api("conv_note_add", { conv: c, body: t }); if (d.error) { toast(d.error, true); return; } closeModal(); toast(d.ok || "Not eklendi"); if (cur === c && d.report) { chX = { ...chX, ...d.report }; renderChat(); } }
-async function noteHide(id) { if (!confirm("Bu not kaldırılsın mı? (kayıtta durur)")) return; const c = cur; const d = await api("conv_note_hide", { id }); if (d.error) { toast(d.error, true); return; } if (cur === c && d.report) { chX = { ...chX, ...d.report }; renderChat(); } }
+async function noteHide(id) { if (!(await onayKart({baslik:"Not kaldırılsın mı?",metin:"Bu not kaldırılsın mı? (kayıtta durur)",ayrinti:"Not sohbette görünmez olur; kayıt silinmez.",onay:"Evet, kaldır"}))) return; const c = cur; const d = await api("conv_note_hide", { id }); if (d.error) { toast(d.error, true); return; } if (cur === c && d.report) { chX = { ...chX, ...d.report }; renderChat(); } }
 function remAdd() { if (!cur) return; const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(11, 0, 0, 0); const tm = Math.round((t - Date.now()) / 60000);
   openModal(`<h3 style="margin:0 0 8px">⏰ Hatırlat</h3><input id="remIn" placeholder="Not (isteğe bağlı) – ör. borcu sor" maxlength="300">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">${[[30, "30 dk"], [60, "1 saat"], [120, "2 saat"], [tm, "Yarın 11:00"]].map(([m, l]) => `<button onclick="remSave(${m})">${l}</button>`).join("")}</div>
@@ -1638,13 +1653,14 @@ function lockShow() { const el = $("chLock"); if (!el) return; const l = cur ? l
   for (const id of ["emoBtn", "picBtn", "sendBtn"]) { const b = $(id); if (b && b.disabled !== block) b.disabled = block; }
   $("compWrap").classList.toggle("locked", block);
   if (l && !lockIv) lockIv = setInterval(lockShow, 1000); else if (!l && lockIv) { clearInterval(lockIv); lockIv = 0; } }
-const lockAsk = (by) => confirm(`${by} bu müşteriyle ilgileniyor, yine de yazmak istiyor musun?`);
+const lockAsk = (by) => onayKart({baslik:"Başka biri ilgileniyor",metin:`${by} bu müşteriyle ilgileniyor, yine de yazmak istiyor musun?`,ayrinti:"Yine de yazarsanız mesaj hemen gider; ilgilenen kişiyle çakışabilirsiniz. Gönderilen mesaj, mesaj menüsünden geri alınabilir.",onay:"Evet, yaz"});
 /** Yazmadan / göndermeden önce: kilit yoksa {}; ajans sahibi onaylarsa { force: true }; kilitliyse null (uyarı) */
-function lockGate(c) { const l = lockOf(c); if (!l) return {};
+let lockSoruAcik = false; // 🔒 soru kartı açıkken ikinci çağrı (çift dokunuş) yok sayılır: ikinci gönderim / ikinci soru çıkmasın
+async function lockGate(c) { const l = lockOf(c); if (!l) return {};
   if (!canForce()) { toast(lockMsg(l), true); lockShow(); return null; }
-  return lockAsk(l.by) ? { force: true } : null; }
+  if (lockSoruAcik) return null; lockSoruAcik = true; try { return (await lockAsk(l.by)) ? { force: true } : null; } finally { lockSoruAcik = false; } }
 async function claimToggle() { const c = cur; if (!c) return; const a = asg(c), mine = a && me && a.by === me.name;
-  if (a && !mine && !confirm(`Bu sohbete ${a.by} bakıyor. Siz devralmak istiyor musunuz?`)) return;
+  if (a && !mine && !(await onayKart({baslik:"Sohbeti devral",metin:`Bu sohbete ${a.by} bakıyor. Siz devralmak istiyor musunuz?`,ayrinti:"Sohbet sizin üzerinize alınır, diğer kişi ilgilenen olarak görünmez. İstediğiniz an yeniden bırakabilirsiniz.",onay:"Evet, devral"}))) return;
   const d = await api("conv_assign", { conv: String(c), on: !mine }); if (d.error) { toast("❌ " + d.error, true); return; }
   if (d.report && d.report.assign) assigns = d.report.assign; renderChTags(); renderInbox(); toast(d.ok || "Tamam"); }
 // ⏱ Bekleme: son mesaj müşteriden ve okunmamışsa saatin yerinde "⏱ 7 dk" (5 dk sarı, 15 dk kırmızı); dakikada bir yalnız o yazı güncellenir
@@ -1751,7 +1767,7 @@ function renderInbox() {
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
 async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)); if (!list.length) return;
-  if (!confirm(`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`)) return;
+  if (!(await onayKart({baslik:"Hepsi okundu yapılsın mı?",metin:`${list.length} bayi sohbeti okundu yapılsın mı? (müşterilere "görüldü" gider)`,ayrinti:"Okunmamış bayi sohbetleri okundu olur ve müşterilere görüldü bilgisi gider; bu geri alınamaz.",onay:"Evet, okundu yap"}))) return;
   for (const x of list) { await api(readKind(x), { conv: String(x.id) }); if (seenMine) x.us = ""; x.u = ""; x.readAt = Number(x.at) || Date.now(); }
   renderInbox(); toast(`✓ ${list.length} sohbet okundu yapıldı`); }
 function openById() { const raw = $("idIn").value.trim(), v = (raw.match(/^\d{5,12}$/) || [])[0];
@@ -1996,7 +2012,7 @@ window.voicePlay = async (btn) => { if (btn.disabled) return; btn.disabled = tru
   const a = document.createElement("audio"); a.dataset.v = btn.dataset.v; a.src = SILENT_WAV; a.play().catch(() => {}); // dokunuşun içinde · data-v: yeniden çizimde bu oynatıcı yerinde kalır (çalarken durmaz)
   try { const v = await voiceSrc(btn.dataset.v); a.controls = true; a.src = v.src; a.style.cssText = "height:36px;max-width:230px;vertical-align:middle";
     btn.replaceWith(a); a.play().catch(() => {}); }
-  catch (e) { btn.disabled = false; btn.textContent = label; (window.toast || alert)("🎤 Ses çalınamadı: " + e.message, true); } };
+  catch (e) { btn.disabled = false; btn.textContent = label; toast("🎤 Ses çalınamadı: " + e.message, true); } };
 const voiceBtn = (url, dur) => `🎤 <button class="vplay" data-v="${String(url).replace(/"/g, "&quot;")}" onclick="event.stopPropagation();voicePlay(this)" style="padding:6px 12px;border-radius:999px">▶️ Sesli mesaj${dur ? " · " + (dur >= 60 ? Math.floor(dur / 60) + ":" + String(dur % 60).padStart(2, "0") : dur + " sn") : ""}</button>`;
 // ---------- Sugo emojileri: metindeki [beg_you] gibi kodlar Sugo'nun emoji resmine çevrilir (tabletle aynı tablo)
 const EMO = (() => { const m = new Map(), E = window.SUGO_EMOJI || {};
@@ -2080,11 +2096,11 @@ async function idMentions(uids, force) { uids = [...new Set((uids || []).map(Str
 function idmWant(c) { if (!c || c !== cur || isSys(c) || chFresh !== c || idmFly[c]) return; const e = idmC[c]; if (e && Date.now() - e.at < IDM_TTL) return;
   const t3 = Date.now() - 3 * 86400_000; if (!coins.some((x) => !x.other && Date.parse(x.at) >= t3)) return;
   const had = JSON.stringify(idmGet(c) || []); idMentions([c]).then(() => { if (cur === c && JSON.stringify(idmGet(c) || []) !== had) renderChat(); }); }
-function idPay(el) { const u = el.dataset.iu, st = cur && idSt[cur], o = st && st.got[u], g = o && (o.groups || []).find((x) => String(x.key) === el.dataset.ik); if (!g) return;
+async function idPay(el) { const u = el.dataset.iu, st = cur && idSt[cur], o = st && st.got[u], g = o && (o.groups || []).find((x) => String(x.key) === el.dataset.ik); if (!g) return;
   if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
   const nm = String(o.name || "").replace(/\[[^\]]+\]/g, "").trim(); // onay penceresinde [emoji] kodu görünmesin
   const what = `${nm || "UID " + u} · ${dk(g.diamonds)} elmas → ${azn(g.pay).replace(/ ₼/, "\u00a0₼")}`;
-  if (!confirm(g.part > 0 ? `${what}\n${partTxt(g.part, g.pay)}\nKalan ödensin mi?` : what + "\nÖdendi olarak işaretlensin mi?")) return;
+  if (!(await onayKart({baslik:"Ödendi olarak işaretle",metin:g.part > 0 ? `${what}\n${partTxt(g.part, g.pay)}\nKalan ödensin mi?` : what + "\nÖdendi olarak işaretlensin mi?",ayrinti:"Ödeme kayda geçer. Yanlışsa kayıt satırından Geri al ile geri alınabilir.",onay:"Evet, ödendi"}))) return;
   const txs = (g.txs || []).map((x) => x && typeof x === "object" ? (x.paid_at || x.paid ? null : x.tx) : x).filter((x) => x != null && x !== "").map(String);
   if (!txs.length) { toast("Ödenecek kayıt bulunamadı", true); return; }
   coinPaySend({ txs }, txs.length > 1 ? "✅ Hepsi ödendi işaretlendi" : "✅ Ödendi işaretlendi", what); }
@@ -2213,7 +2229,7 @@ async function hsGo() { const st = hsSt; if (!st || st.busy || !st.d) return; co
 /** hata tostu kısa (390 px'te 2–3 satır): " — hiçbir şey kaydedilmedi…" kuyruğu tek kelimeye iner, parantez içi açıklama düşer */
 const hsKisa = (e) => { const t = String(e || ""), ana = t.split(" — ")[0].replace(/ \((başka biri|şu an açık)[^)]*\)/g, "").trim(); return /hiçbir şey kaydedilmedi/.test(t) && !/hiçbir şey kaydedilmedi/.test(ana) ? `${ana} — kaydedilmedi` : ana; }; // 📎 dekont isteği kartlı ödemeyle aynı kuralla açıldı
 async function hsGeri(id) { const st = hsSt; if (!st || st.busy) return; if (!(me && me.yon)) { toast("Hesaplaşmayı yalnız yönetici geri alabilir", true); return; }
-  if (!confirm("🤝 Bu hesaplaşma TÜMÜYLE geri alınsın mı?\n\nAlışlar yeniden \"ödenmedi\" olur; karttan gönderilen ödeme ve mahsup (iki taraf) geçersiz sayılır. Kayıtlar silinmez.")) return;
+  if (!(await onayKart({baslik:"Hesaplaşma geri alınsın mı?",metin:"🤝 Bu hesaplaşma TÜMÜYLE geri alınsın mı?\n\nAlışlar yeniden \"ödenmedi\" olur; karttan gönderilen ödeme ve mahsup (iki taraf) geçersiz sayılır. Kayıtlar silinmez.".replace(/^[^\n]*\n+/, ""),ayrinti:"Alışlar yeniden ödenecek duruma döner; gerekirse hesaplaşma yeniden yapılır. Hiçbir kayıt silinmez.",onay:"Evet, geri al",tehlike:true}))) return;
   st.busy = true; hsCiz(); const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin;
   let d; try { d = await api("hesaplasma_geri_al", { id, pin }); } catch (e) { d = { error: "Bağlantı hatası" }; }
   if (hsSt !== st) return; st.busy = false; if (d.pin === "wrong") pinCache = null;
@@ -2370,7 +2386,7 @@ document.addEventListener("touchend", () => { if (!lsw) return; const s = lsw; l
   s.r.classList.add("swback"); s.r.style.transform = ""; setTimeout(() => { s.r.classList.remove("swback"); s.r.classList.remove("lswiping"); if (s.bg) s.bg.remove(); }, 220);
   const kill = (ev) => { ev.stopPropagation(); ev.preventDefault(); }; document.addEventListener("click", kill, { capture: true, once: true }); setTimeout(() => document.removeEventListener("click", kill, { capture: true }), 400); // kaydırma sohbeti açmasın
   if (s.dx < LSW_MIN() || !can("duzen")) return; const id = s.r.dataset.cid, on = !cpins.includes(String(id)), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
-  setTimeout(() => { if (confirm(on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`)) convPin(id, on); }, 220); }, { passive: true });
+  setTimeout(async () => { if ((await onayKart({baslik:on ? "Sohbet sabitlensin mi?" : "Sabitleme kaldırılsın mı?",metin:on ? `📌 ${n} listenin en üstüne sabitlensin mi?` : `${n} için sabitleme kaldırılsın mı?`,ayrinti:"Yalnız listedeki sıra değişir; istediğiniz an tersini yapabilirsiniz.",onay:on ? "Evet, sabitle" : "Evet, kaldır"}))) convPin(id, on); }, 220); }, { passive: true });
 // Listede kişiye uzun basma (yarım saniye): sabitle / kaldır, profil, sohbet (kaydırmaya gerek kalmadan)
 let rowLpT = 0, rowLp = null;
 document.addEventListener("touchstart", (e) => { const r = e.target.closest && e.target.closest("#convs .row[data-cid]"); clearTimeout(rowLpT); rowLp = null;
@@ -2382,7 +2398,7 @@ document.addEventListener("touchmove", (e) => { if (rowLp && (Math.abs(e.touches
 async function convMute(id, on, hours) { const d = await api("conv_mute", { conv: String(id), on, hours: hours || 0 }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCmutes(d.report && d.report.cmutes); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 async function blockToggle(id) { const on = !isBlocked(id), n = (inbox.find((x) => String(x.id) === String(id)) || {}).n || id;
-  if (on && !confirm(`🚫 ${n} bloklansın mı?\nMesajları listede görünmez ve bildirim gelmez; yalnız "Bloklu" sekmesinde görünür.`)) return;
+  if (on && !(await onayKart({baslik:"Kişi bloklansın mı?",metin:`🚫 ${n} bloklansın mı?\nMesajları listede görünmez ve bildirim gelmez; yalnız "Bloklu" sekmesinde görünür.`,ayrinti:"Mesajlar silinmez; blok istediğiniz an Bloklu sekmesinden kaldırılabilir.",onay:"Evet, blokla",tehlike:true}))) return;
   const d = await api("conv_tag", { conv: String(id), tag: "blocked", on }); if (d.error) { toast("❌ " + d.error, true); return; }
   setCtags(d.report && d.report.ctags); setTagx(d.report); sortInbox(); renderInbox(); toast(on ? "🚫 Bloklandı" : "Blok kaldırıldı"); }
 function rowMenu(id) { id = String(id); const k = inbox.find((x) => String(x.id) === id) || (tagx.find((x) => String(x.id) === id)) || {}; const pinned = cpins.includes(id);
@@ -2534,9 +2550,9 @@ function mcvDraft() { const t = mcvL ? mcvLines(mcvL).join("\n") : "", x = $("tx
 /** Tepki / geri al / sil: kuyruğa yazılır, bayi bağlantısı Sugo'da yapar; bitince sohbet yenilenir */
 async function msgAct(kind, mid, e) {
   msgMenuClose(); const m = findMsg(mid); if (!m || !cur) return;
-  const g = kind === "react" ? lockGate(cur) : {}; if (!g) return; // 🔒 tepki de yazmadır (geri al / sil kendi mesajımız: serbest)
-  if (kind === "withdraw" && !confirm("Bu mesaj geri alınsın mı? Karşı tarafta 'mesaj geri çekildi' görünür.")) return;
-  if (kind === "delete" && !confirm("Bu mesaj sohbetten silinsin mi? (Sugo'da bizim tarafta silinir; karşı taraf görmeye devam edebilir)")) return;
+  const g = kind === "react" ? (lockOf(cur) ? await lockGate(cur) : {}) : {}; if (!g) return; // 🔒 tepki de yazmadır (geri al / sil kendi mesajımız: serbest)
+  if (kind === "withdraw" && !(await onayKart({baslik:"Mesaj geri alınsın mı?",metin:"Bu mesaj geri alınsın mı? Karşı tarafta 'mesaj geri çekildi' görünür.",ayrinti:"Geri alınan mesaj geri getirilemez; karşı tarafta mesaj geri çekildi yazısı kalır.",onay:"Evet, geri al",tehlike:true}))) return;
+  if (kind === "delete" && !(await onayKart({baslik:"Mesaj silinsin mi?",metin:"Bu mesaj sohbetten silinsin mi? (Sugo'da bizim tarafta silinir; karşı taraf görmeye devam edebilir)",ayrinti:"Yalnız bizim tarafta silinir ve geri getirilemez.",onay:"Evet, sil",tehlike:true}))) return;
   const c = cur;
   // Sonuç ekranda HEMEN; sunucu bitirene kadar ara yenilemeler bunu ezmez (optMsg), biterse gerçek hâl yüklenir
   const key = String(mid);
@@ -2732,7 +2748,7 @@ async function payGo() { const st = paySt; if (!st || st.busy) return; const s =
   if (s.m.bad) { toast("Mahsup tutarı geçersiz ya da açık tutardan büyük", true); return; }
   if (!s.mOnly && s.noBank >= 0) { toast("Banka seçin", true); return; } if (s.bad || s.over) { toast(s.over ? "Toplam, ödenecek tutarı aşıyor" : "Tutar geçersiz", true); return; }
   if (st.dk && st.dk.items.some((x) => Number.isNaN(dkTutar(x.tutar)))) { toast("📎 Parça tutarı geçersiz (boş bırakın ya da sayı yazın)", true); return; }
-  if (s.part && !confirm(`Kısmen ödenecek: ${payN(s.sum)}/${payN(s.total)} ₼\nKalan ${payN(s.left)} ₼ ödenmedi olarak kalır, sonra "Ödendi yap" ile ödenir.\nDevam edilsin mi?`)) return;
+  if (s.part && !(await onayKart({baslik:"Kısmi ödeme",metin:`Kısmen ödenecek: ${payN(s.sum)}/${payN(s.total)} ₼\nKalan ${payN(s.left)} ₼ ödenmedi olarak kalır, sonra "Ödendi yap" ile ödenir.\nDevam edilsin mi?`,ayrinti:"Yazılan tutar ödeme olarak kaydedilir, kalan ödenmedi kalır. Kalan sonradan ödenebilir; kayıt gerekirse geri alınabilir.",onay:"Evet, kısmen öde"}))) return;
   st.busy = true; payDraw();
   const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
   const pid = (x) => isNaN(Number(x)) ? x : Number(x), one = (st.np.batches || []).length === 1;
@@ -2976,7 +2992,7 @@ async function dkTik(k, t) {
   if (k === "bgo" && dkBag && !dkBag.busy && dkBag.ds.size) { const b = dkBag, sec = b.res.filter((x) => x.on); // 👥 toplu ödeme: tek resim, tutar dekontun TOPLAMI (kayıtlara yazılmaz)
     if (sec.length !== 1) { toast("Toplu ödemede tek dekont resmi seçin", true); return; } const tt = dkTutar(sec[0].tutar); if (Number.isNaN(tt)) { toast("Tutar geçersiz (boş bırakın ya da sayı yazın)", true); return; }
     const s0 = dkBagSecim(b); if (b.sec.size + b.ds.size > DK_TOPLU) { toast(`Toplu dekont en çok ${DK_TOPLU} kayda`, true); return; }
-    if (tt != null && Math.abs(tt - s0.top) >= 0.01 && !confirm(`Dekont ${payN(tt)} ₼, seçilenler ${payN(s0.top)} ₼ (${s0.n} kayıt) – yine de bağla?`)) return;
+    if (tt != null && Math.abs(tt - s0.top) >= 0.01 && !(await onayKart({baslik:"Tutarlar uyuşmuyor",metin:`Dekont ${payN(tt)} ₼, seçilenler ${payN(s0.top)} ₼ (${s0.n} kayıt) – yine de bağla?`,ayrinti:"Bağlarsanız dekont seçilen kayıtlara bağlanır; parça sonradan ödemeden çıkarılabilir.",onay:"Evet, bağla"}))) return;
     b.busy = true; dkBagDraw(); let r; try { r = await api("dekont_sohbetten", { batches: [...b.sec, ...b.ds], conv: b.conv, mid: sec[0].mid, toplu: true }); } catch (e) { r = { error: "Bağlantı yok" }; }
     if (dkBag !== b) return; b.busy = false; if (r.error) { dkBagDraw(); toast("❌ " + r.error, true); return; } // hiçbiri bağlanmadı: seçim yerinde
     dkBag = null; closeModal(); toast(r.ok || "📎 Toplu dekont kaydedildi", false); dkOzetYenile(); return; }
@@ -3001,9 +3017,9 @@ async function dkTik(k, t) {
     T.busy = true; dkListeDraw(); const o = await dkParcaGonder([T.batch], T.items, ""); if (dkListeSt !== st) return;
     st.tas = null; toast(dkSonucMetni(o, T.items.length) || "📎 Dekont kaydedildi", !!o.hata.length); dkListeDraw(); dkOzetYenile(); return; } // şerit + açık liste birlikte yenilenir
   if (k === "lgor") { const r = await api("dekont_adres", { id: Number(t.dataset.i) }); if (r.error) { toast("❌ " + r.error, true); return; } lbOpen(r.report.url); return; }
-  if (k === "pcik") { if (!confirm("Bu parça bu ödemeden çıkarılsın mı?\n\nResim silinmez; yalnız bu ödemeyle bağı kaldırılır (kayıtta kalır).")) return; const n = prompt("Neden? (isteğe bağlı)") || "";
+  if (k === "pcik") { if (!(await onayKart({baslik:"Parça ödemeden çıkarılsın mı?",metin:"Bu parça bu ödemeden çıkarılsın mı?\n\nResim silinmez; yalnız bu ödemeyle bağı kaldırılır (kayıtta kalır).",ayrinti:"Resim silinmez; yalnız bu ödemeyle bağı kalkar.",onay:"Evet, çıkar"}))) return; const n = (await girisKart({baslik:"Çıkarma nedeni",metin:"Neden? (isteğe bağlı) Boş bırakıp devam edebilirsiniz.",etiket:"Neden",onay:"Devam",vazgec:"Nedensiz devam"})) || "";
     const r = await api("dekont_parca_cikar", { bag: Number(t.dataset.i), neden: n.trim() }); toast(r.error ? "❌ " + r.error : r.ok || "Parça çıkarıldı", !!r.error); if (!r.error) dkOzetYenile(); return; }
-  if (k === "lkapat") { const n = prompt("Dekont neden alınamadı? (gerekçe yazın)"); if (n == null) return; if (n.trim().length < 3) { toast("Gerekçe en az 3 harf", true); return; }
+  if (k === "lkapat") { const n = (await girisKart({baslik:"Dekont alınamadı",metin:"Dekont neden alınamadı? (gerekçe yazın)",ayrinti:"Gerekçe en az 3 harf olmalı ve kayda geçer.",etiket:"Gerekçe",onay:"Kaydet"})); if (n == null) return; if (n.trim().length < 3) { toast("Gerekçe en az 3 harf", true); return; }
     const r = await api("dekont_kapat", { id: Number(t.dataset.i), neden: n.trim() }); toast(r.error ? "❌ " + r.error : r.ok || "Kapatıldı", !!r.error); if (!r.error) dkOzetYenile(); return; }
 }
 document.addEventListener("click", (e) => { const t = e.target.closest && e.target.closest("[data-dk]"); if (!t || t.disabled) return;
@@ -3130,7 +3146,7 @@ function geriAlSoru(oz, part) { const eski = part ? "Kısmi ödeme geri alınsı
 async function coinPaid(tx, paid, part) { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
   if (paid) { coinPaySend({ tx }, "✅ Ödendi işaretlendi"); return; }
   let oz = null; try { const r = await api("geri_al_onizle", { tx }); oz = (r && r.report && r.report.onizle) || null; } catch (e) {} // 🧾 gerçek ödeme dökümü (mahsup / banka)
-  if (!confirm(geriAlSoru(oz, part))) return;
+  if (!(await onayKart({baslik:"Ödeme geri alınsın mı?",metin:geriAlSoru(oz, part),ayrinti:"Kayıt silinmez; ödendi işareti kalkar. Onaydan sonra işlem PIN i istenir.",onay:"Evet, geri al",tehlike:true}))) return;
   const pin = await askPin("Geri almak için işlem PIN'iniz"); if (!pin) return;
   const d = await api("bayi_coin_paid", { tx, paid, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) toast(d.error, true); else { toast(typeof d.ok === "string" ? d.ok : "Geri alındı"); if (cur) { loadChat(); idRefresh(cur); } loadDm(); } }
@@ -3164,9 +3180,10 @@ async function outRun(o) { const d = await outGo(o); if (outResult(o, d)) await 
 const NET_ERR = /^(Bağlantı yok|Yanıt okunamadı)$/;
 function outResult(o, d) { if (!d.error) { if (clocks[o.c]) clockSet(o.c, null); return true; } // gönderdim: sohbet artık bende (kilit bende değil)
   if (d.lock && d.lock.kind !== "coin") { clockSet(o.c, d.lock); o.gone = true; schedInbox(); // 🔒 sunucu kilide takıldı (ekran henüz bilmiyordu): balon kalkar
-    if (canForce() && !o.force && cur === o.c && lockAsk(d.lock.by)) { const n = outAdd(o.c, o.kind, o.body, o.q, o.extra); Object.assign(n, { prev: o.prev || null, data: o.data || null, dur: o.dur, force: true }); renderChat(true); outRun(n); return false; }
-    if (o.kind === "text" && cur === o.c && !$("txt").value.trim()) { $("txt").value = o.body; grow($("txt")); sendBtnUpd(); } // yazdığı kaybolmasın
-    toast(d.error, true); if (cur === o.c) renderChat(); return false; }
+    const vazgecildi = () => { if (o.kind === "text" && cur === o.c && !$("txt").value.trim()) { $("txt").value = o.body; grow($("txt")); sendBtnUpd(); } // yazdığı kaybolmasın
+      toast(d.error, true); if (cur === o.c) renderChat(); };
+    if (canForce() && !o.force && cur === o.c) { lockAsk(d.lock.by).then((ok) => { if (ok && cur === o.c) { const n = outAdd(o.c, o.kind, o.body, o.q, o.extra); Object.assign(n, { prev: o.prev || null, data: o.data || null, dur: o.dur, force: true }); renderChat(true); outRun(n); } else vazgecildi(); }); return false; }
+    vazgecildi(); return false; }
   if (NET_ERR.test(String(d.error))) { o.status = "unsure"; o.err = ""; for (const [oid, e] of Object.entries(liveEarly)) if (outLike(o, e.pl.item, e.pl.c)) { delete liveEarly[oid]; o.oid = oid; liveApply(e.pl, o); break; }
     if (o.status === "unsure") outCheck(o); }
   else { o.status = "failed"; o.err = d.error; toast("❌ " + d.error, true); }
@@ -3197,7 +3214,7 @@ function outSync(o, inHist) { if (o.mid && inHist.has(o.mid)) return;
   const at0 = Date.parse(o.created_at) - 60_000, used = new Set([...myOut.filter((y) => y.mid).map((y) => y.mid), ...Object.entries(oidMid).filter(([k]) => k !== o.oid).map(([, v]) => v)]);
   const hm = hist.find((m) => m.m && Date.parse(m.at) >= at0 && !used.has(String(m.id)) && outLike(o, m)); if (hm) outBind(o, String(hm.id)); }
 async function send(textArg, extra) { if (!cur) return; const t = (textArg ?? $("txt").value).trim(); if (!t) return;
-  let force = !!(extra && extra.force); if (!force && !(extra && extra.lockOk)) { const g = lockGate(cur); if (!g) return; force = !!g.force; } // 🔒 kilit: yazı kutuda kalır (lockOk: coin teşekkürü, kilit coin'de bakıldı)
+  let force = !!(extra && extra.force); if (!force && !(extra && extra.lockOk)) { const g = (lockOf(cur) ? await lockGate(cur) : {}); if (!g) return; force = !!g.force; } // 🔒 kilit: yazı kutuda kalır (lockOk: coin teşekkürü, kilit coin'de bakıldı)
   if (extra && ("force" in extra || "lockOk" in extra)) { extra = { ...extra }; delete extra.force; delete extra.lockOk; if (!Object.keys(extra).length) extra = undefined; }
   if (textArg === undefined) { $("txt").value = ""; grow($("txt")); sendBtnUpd(); } if ($("slashList")) $("slashList").hidden = true;
   const rq = replyTo; replyTo = null; renderReply();
@@ -3252,7 +3269,7 @@ function sendOrMic() { if ($("sendBtn").dataset.m === "mic") recStart(); else se
   b.addEventListener("touchend", (e) => { if (e.cancelable) e.preventDefault(); tAt = Date.now(); sendOrMic(); });
   b.addEventListener("click", () => { if (Date.now() - tAt < 700) return; sendOrMic(); }); })();
 let recForce = false;
-async function recStart() { if (rec) return; const c = cur; const g = lockGate(c); if (!g) return; recForce = !!g.force; // 🔒 kilitliyken kayıt hiç başlamaz
+async function recStart() { if (rec) return; const c = cur; const g = (lockOf(c) ? await lockGate(c) : {}); if (!g) return; recForce = !!g.force; // 🔒 kilitliyken kayıt hiç başlamaz
   try { await loadAmr(); const r = new window.BenzAMRRecorder(); await r.initWithRecord(); if (cur !== c) { r.destroy(); return; } r.startRecord(); rec = r; recAt = Date.now();
     $("recBar").hidden = false; recTick(); recT = setInterval(recTick, 250); try { navigator.vibrate && navigator.vibrate(10); } catch (e) {} }
   catch (e) { rec = null; toast("🎤 Mikrofon açılamadı: " + ((e && (e.message || e.name)) || e) + " (tarayıcıda mikrofon izni verin)", true); } }
@@ -3272,7 +3289,7 @@ function pickImg() { $("file").click(); }
 async function sendImg(inp) { const f = inp.files && inp.files[0]; inp.value = ""; if (!f || !cur) return;
   const url = await shrink(f); if (!url) { toast("Resim okunamadı", true); return; }
   await sendImgData(url); }
-async function sendImgData(url) { if (!cur) return; const g = lockGate(cur); if (!g) return; // 🔒
+async function sendImgData(url) { if (!cur) return; const g = (lockOf(cur) ? await lockGate(cur) : {}); if (!g) return; // 🔒
   const o = outAdd(cur, "image", ""); o.prev = o.data = url; if (g.force) o.force = true; renderChat(true); // önizleme: gönderilen resmin kendisi (asıl balonla aynı boy)
   ownRow(cur, "📷 Fotoğraf"); await outRun(o); }
 function shrink(file) { return new Promise((res) => { const img = new Image(); const u = URL.createObjectURL(file);
@@ -3306,7 +3323,7 @@ async function toggleCards() { const el = $("cards"), low = stick, keep = () => 
   if (pcs && (pcs.cards || []).length) draw(); else el.innerHTML = `<button disabled><span class="sk" style="width:12em"></span></button><button disabled><span class="sk" style="width:10em"></span></button>`; // bilinen kartlar hemen
   el.classList.add("on"); keep();
   const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; if (el.classList.contains("on")) { draw(); keep(); } }
-async function giveCard(id) { const g = lockGate(cur); if (!g) return; // 🔒 kart mesajı da yazmadır: kilitliyken kart verilmez (hak düşmesin)
+async function giveCard(id) { const g = (lockOf(cur) ? await lockGate(cur) : {}); if (!g) return; // 🔒 kart mesajı da yazmadır: kilitliyken kart verilmez (hak düşmesin)
   const low = stick; $("cards").classList.remove("on"); if (low) { toBottom(); requestAnimationFrame(toBottom); }
   const d = await api("pcard_give", { id, conv: cur, ...(g.force ? { force: true } : {}) }); const c = d.report && d.report.given; if (d.error || !c) { if (d.lock) clockSet(cur, d.lock); toast(d.error || "Kart verilemedi", true); return; }
   send(pcTxt(c), { card_after: 1, ...(g.force ? { force: true } : {}) }); toast(`💳 ${c.owner} ${PCS[c.bank] || c.bank} gönderiliyor`); } // card_after: ardından sunucu "çeki gönderin" mesajını kuyruğa ekler (Ayarlar › 🤖 Otomatik mesajlar)
@@ -3500,7 +3517,7 @@ async function rcOpen(oid) { if (!rcOwn()) return; const o = ((coinData && coinD
 async function rcSend() { const c = rcCur; if (!c || !c.prev || !rcOwn()) return; const t = $("rcReason"), reason = t ? t.value.trim() : "";
   if (reason.length < 3) { toast("Açıklama zorunlu (en az 3 karakter)", true); return; }
   const o = c.o, act = c.prev.preview && c.prev.preview.actual != null ? c.prev.preview.actual : null;
-  if (!confirm(`↩️ GERİ ÇAĞIRMA — GERİ ALINAMAZ\n\nKimden: ${o.buyer_name || ""} (UID ${o.buyer_uid})\nDüşülecek: ${nf(act != null ? act : o.coins)} coin\nAçıklama: ${reason}\n\nBu ayın geri çağırma hakkından 1 düşer. Onaylıyor musunuz?`)) return;
+  if (!(await onayKart({baslik:"Geri çağırma — geri alınamaz",metin:`↩️ GERİ ÇAĞIRMA — GERİ ALINAMAZ\n\nKimden: ${o.buyer_name || ""} (UID ${o.buyer_uid})\nDüşülecek: ${nf(act != null ? act : o.coins)} coin\nAçıklama: ${reason}\n\nBu ayın geri çağırma hakkından 1 düşer. Onaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Onaydan sonra işlem PIN i istenir. Coin geri çağrılır; bu işlem geri alınamaz.",onay:"Evet, geri çağır",tehlike:true}))) return;
   $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz", true); if (!pin) { rcCur = null; return; } // 5 dk önbellek kullanılmaz
   openModal(`<div style="text-align:center;padding:20px">⏳ Geri çağırılıyor…<div class="s" style="margin-top:6px">Panelin cevabı bekleniyor</div></div>`);
   const d = await api("coin_recall", { order_id: String(o.order_id), reason, expect: act, pin }); rcCur = null;
@@ -3641,7 +3658,7 @@ function yonSil() { try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil()
   try { const db = $("durumBody"); if (db && db.innerHTML) { db.innerHTML = ""; delete db.dataset.on; } } catch (e) {} try { statLine(); } catch (e) {}
   if (curTab === "durum") tab("msg"); }
 async function cardUses(id, nu) { const x = ((pcs && pcs.cards) || []).find((c) => c.id === id); if (!x) return;
-  if (!confirm(`${x.owner} ···${String(x.number).slice(-4)}: kullanılan hak ${x.uses}/${x.max_uses} → ${nu}/${x.max_uses} olsun mu?`)) return;
+  if (!(await onayKart({baslik:"Kart hakkı değişsin mi?",metin:`${x.owner} ···${String(x.number).slice(-4)}: kullanılan hak ${x.uses}/${x.max_uses} → ${nu}/${x.max_uses} olsun mu?`,ayrinti:"Sayaç elle düzeltilir; onaydan sonra işlem PIN i istenir. İstediğiniz an yeniden düzeltilebilir.",onay:"Evet, değiştir"}))) return;
   const pin = await askPin("Kart hakkını düzeltmek için işlem PIN'iniz"); if (!pin) return;
   const d = await api("pcard_uses", { id, uses: nu, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) { toast(d.error, true); return; } toast(d.ok || "Tamam"); loadCards(); }
@@ -3709,7 +3726,7 @@ function relRefresh() { relLoad(0, true); toast("🔄 Sugo'dan okunuyor (1 dk ka
 async function autoMsgsSave() { const v = (k) => ($("am_" + k) || {}).value || "";
   const auto = { on: $("am_on").checked, cardOn: $("am_cardOn").checked, gapMin: Number(v("gap")) || 60, busyMode: v("busyMode"), greet: v("greet"), online: v("online"), busy: v("busy"), card: v("card"), dmOn: $("am_dmOn").checked, almazOn: v("almazOn"), almazOff: v("almazOff") }; // boş metin → varsayılan
   const d = await api("auto_msgs_save", { auto }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); closeModal(); }
-async function lowCoinEdit(v) { const x = prompt("Bu coin miktarının altına inince uyar (0 = kapalı):", String(v)); if (x == null) return; const n = Number(String(x).replace(/\D/g, ""));
+async function lowCoinEdit(v) { const x = (await girisKart({baslik:"Düşük coin uyarısı",metin:"Bu coin miktarının altına inince uyar (0 = kapalı):",ayrinti:"Sayıyı sonradan istediğiniz an değiştirebilirsiniz.",etiket:"Coin miktarı",deger:String(v),tur:"sayi",onay:"Kaydet"})); if (x == null) return; const n = Number(String(x).replace(/\D/g, ""));
   const d = await api("low_coin_save", { low_coin: n }); if (d.error) { toast(d.error, true); return; } toast(d.ok || "Kaydedildi"); loadCoins(); }
 async function saveTpls() { const d = await api("bayi_templates_save", { templates: tpls.filter((x) => x && x.trim()) }); if (d.error) toast(d.error, true); else { toast("Hazır mesajlar kaydedildi"); const r = await api("bayi_templates"); tpls = (r.report && r.report.templates) || tpls; renderTpls(); } }
 
@@ -4185,7 +4202,7 @@ function odaModCiz(ikinci) { const b = $("odaModBox"), c = odaModCur; if (!b || 
   odaModIpucu(); } // W24b: boy sabit → menü yerinde kalır, düğmeler yalnız bu bölüme gelir
 async function odaModYap(i) { const c = odaModCur; if (!c) return; const it = c.list[i]; if (!it) return;
   const n = odaWhoName(c.uid), cf = it.cf ? [it.cf.t, it.cf.c].filter(Boolean).join(" – ") : "", ne = it.bil ? "bu işlemin ne yaptığı bilinmiyor (Sugo'nun adı: " + it.ad + ")" : ODA_MOD_NE[it.ad] || "";
-  if (!confirm(`${it.ad.replace(/^[^\p{L}\p{N}]+/u, "")}\nKişi: ${n} (${c.uid})${ne ? "\n⚠️ Ne olacak: " + ne : ""}${cf ? "\nSugo: " + cf : ""}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`)) return;
+  if (!(await onayKart({baslik:"Oda işlemi",metin:`${it.ad.replace(/^[^\p{L}\p{N}]+/u, "")}\nKişi: ${n} (${c.uid})${ne ? "\n⚠️ Ne olacak: " + ne : ""}${cf ? "\nSugo: " + cf : ""}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`,ayrinti:"Komut Selçuk hesabıyla tablete gönderilir ve hemen uygulanır; sonucu üstte bildirim olarak görürsünüz.",onay:"Evet, yap"}))) return;
   odaWhoClose(); toast("⏳ " + it.ad + ": tablete gönderildi…");
   const body = { kind: "op", uid: c.uid, op: it.op, ad: it.ad.slice(0, 40) }, r = await odaModIste(body);
   toast(r.ok ? `✅ ${it.ad}: yapıldı${r.data && r.data.toast ? " (" + r.data.toast + ")" : ""}` : `❌ ${it.ad}: ${r.err}`, !r.ok); odaModIz(r, body); odaModCur = null; }
@@ -4196,7 +4213,7 @@ document.addEventListener("click", (ev) => { const c = ev.target && ev.target.cl
   m.innerHTML = `<div class="owt">🪑 Koltuk ${no}${kilit ? " · kilitli" : " · boş"}</div>` + (odaModYetkisiz() ? '<div class="omods bad">🛡️ Selçuk hesabı bu odada yetkili değil</div>'
     : `<button role="menuitem" onclick="odaSeatKilit(${no},${!kilit})">${kilit ? "🔓 Kilidi aç" : "🔒 Koltuğu kilitle"}</button>`) + '<button role="menuitem" class="owx" onclick="odaWhoClose()">Vazgeç</button>';
   odaWhoAc(m, c); });
-async function odaSeatKilit(no, on) { if (!confirm(`Koltuk ${no} ${on ? "kilitlensin" : "kilidi açılsın"} mı?\nSelçuk hesabıyla yapılacak.`)) return; odaWhoClose(); toast("⏳ Koltuk " + no + ": tablete gönderildi…");
+async function odaSeatKilit(no, on) { if (!(await onayKart({baslik:on ? "Koltuk kilitlensin mi?" : "Koltuğun kilidi açılsın mı?",metin:`Koltuk ${no} ${on ? "kilitlensin" : "kilidi açılsın"} mı?\nSelçuk hesabıyla yapılacak.`,ayrinti:"Komut tablete gider ve hemen uygulanır; istediğiniz an tersini yapabilirsiniz.",onay:on ? "Evet, kilitle" : "Evet, aç"}))) return; odaWhoClose(); toast("⏳ Koltuk " + no + ": tablete gönderildi…");
   const body = { kind: "lock", no, on }, r = await odaModIste(body);
   toast(r.ok ? `✅ Koltuk ${no} ${on ? "kilitlendi" : "kilidi açıldı"}${r.data && r.data.zaten ? " (zaten öyleydi)" : ""}` : `❌ Koltuk ${no}: ${r.err}`, !r.ok); odaModIz(r, body);
   if (r.ok && odaTb) { const t = odaTb.seats.find((x) => !x.uid && Number(x.no) === no); if (t) { t.locked = on; odaMicApply(); } } }
@@ -4212,7 +4229,7 @@ function odaModListeCiz() { const L = odaModL, tab = (q, t) => `<button class="$
   const h = `<h3>🛡️ Oda yönetimi</h3><div class="sub osel">${tab(1, "⛔ Kara liste")}${tab(2, "👢 Atılanlar")}</div><div class="omlist">${body}</div><div class="row s">İşlemler Selçuk hesabıyla, tabletteki oda sayfasından yapılır.</div><button class="owx" onclick="closeModal()">Kapat</button>`;
   if ($("modal").style.display === "flex" && $("modalBox").querySelector(".omlist")) $("modalBox").innerHTML = h; else openModal(h); }
 async function odaModCikar(uid) { const L = odaModL, u = L.users.find((x) => x.uid === uid); if (!u) return; const ad = L.q === 1 ? "Kara listeden çıkar" : "Atılanlardan çıkar";
-  if (!confirm(`${ad}\nKişi: ${u.n || uid} (${uid})\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`)) return; toast("⏳ " + ad + ": tablete gönderildi…");
+  if (!(await onayKart({baslik:"Oda işlemi",metin:`${ad}\nKişi: ${u.n || uid} (${uid})\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`,ayrinti:"Komut Selçuk hesabıyla tablete gönderilir ve hemen uygulanır; sonucu üstte bildirim olarak görürsünüz.",onay:"Evet, yap"}))) return; toast("⏳ " + ad + ": tablete gönderildi…");
   const body = { kind: "op", uid, op: L.q === 1 ? 15 : 16, ad }, r = await odaModIste(body);
   toast(r.ok ? `✅ ${u.n || uid}: ${L.q === 1 ? "kara listeden çıkarıldı" : "atılanlardan çıkarıldı"}` : `❌ ${ad}: ${r.err}`, !r.ok); odaModIz(r, body);
   if (r.ok && odaModL.q === L.q) { odaModL.users = odaModL.users.filter((x) => x.uid !== uid); odaModListeCiz(); } }
@@ -4424,7 +4441,7 @@ async function odaHdGonder1(h) { const { T, G } = odaHdSecili(h); if (!T || !G) 
   const birim = T.canta ? 0 : Number(G.f) || 0, top = odaHdToplam(birim, h.n, al, !!T.canta); if (top == null || (!T.canta && !(birim > 0))) { toast("Hediye fiyatı okunamadı", true); return; }
   const neden = odaHdNeden({ canta: !!T.canta, cantaN: G.n, n: h.n, alici: al, top, bakiye: h.bakiye, tek: h.tek, gun: h.gun, bugun: h.bugun }); if (neden) { toast(neden, true); return; }
   const kim = h.hedef === "kisi" ? odaWhoName(h.uid) + " (" + h.uid + ")" : h.hedef === "koltuk" ? "koltuktaki " + al + " kişi" : "tüm oda (" + al + " kişi)";
-  if (!confirm(`🎁 HEDİYE GÖNDER\nHediye: ${G.ad || G.id} × ${h.n}\nAlıcı: ${kim}\nToplam: ${T.canta ? "çantadan (coin harcanmaz)" : nf(top) + " coin"}${h.bakiye != null ? "\nBakiye: " + nf(h.bakiye) + " coin" : ""}\nSelçuk hesabıyla gönderilecek, geri alınamaz. Onaylıyor musunuz?`)) return;
+  if (!(await onayKart({baslik:"Hediye gönderilsin mi?",metin:`🎁 HEDİYE GÖNDER\nHediye: ${G.ad || G.id} × ${h.n}\nAlıcı: ${kim}\nToplam: ${T.canta ? "çantadan (coin harcanmaz)" : nf(top) + " coin"}${h.bakiye != null ? "\nBakiye: " + nf(h.bakiye) + " coin" : ""}\nSelçuk hesabıyla gönderilecek, geri alınamaz. Onaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Hediye hemen gönderilir ve geri alınamaz.",onay:"Evet, gönder",tehlike:true}))) return;
   const pin = await askPin("🎁 Hediye: işlem PIN'i", true); if (!pin) { if (odaHd === h) odaHdCiz(true); return; } // W24: PIN'den vazgeçince hediye penceresi seçimleriyle geri gelir
   h.gidiyor = true; toast("⏳ Hediye: tablete gönderildi…");
   const body = { kind: "gift", gid: G.id, tab: T.id, n: h.n, hedef: h.hedef, ...(h.hedef === "kisi" ? { uid: h.uid } : {}), birim, canta: !!T.canta, alici: al, ad: String(G.ad || "").slice(0, 40) };
@@ -4520,7 +4537,7 @@ window.odaKtSec = function (key) { const k = odaKt; if (!k || !k.d) return; cons
 window.odaKarDuz = function (id) { const k = odaKt; if (!k) return; k.mid = k.mid === id ? "" : id; odaKtCiz(); };
 async function odaKtUygula() { const k = odaKt; if (!k || !k.d || k.gid) return; const d = k.d, sm = d.simdi || {}, s = (d.secenek || []).find((x) => x.k === k.sec);
   if (!s || !s.acik || s.k === sm.k || sm.pk || sm.bilinmiyor) return; if (s.mod === 1 && d.video !== true) { toast("Sugo bu odaya video izni vermemiş", true); return; }
-  if (!confirm(`🪑 Oda modu / koltuk düzeni değişecek\n${odaKtOnay(d, s).join("\n")}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`)) return;
+  if (!(await onayKart({baslik:"Oda düzeni değişsin mi?",metin:`🪑 Oda modu / koltuk düzeni değişecek\n${odaKtOnay(d, s).join("\n")}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`,ayrinti:"Komut Selçuk hesabıyla tablete gönderilir ve hemen uygulanır; sonucu üstte bildirim olarak görürsünüz.",onay:"Evet, uygula"}))) return;
   const dur = odaAyarDurum(), pin = await askPin("Oda modu / koltuk düzeni", true); if (odaKt === k) await odaAyarAc(dur); if (!pin) return; // W30: PIN'de onay da vazgeç de pencereyi kapatmaz (seçim korunur)
   const body = { kind: "koltuk", mod: s.mod, n: s.n, col: s.mod === 1 ? -1 : Number(s.col) || 0, lay: s.lay, once: sm.k, dolu: (d.koltuk && d.koltuk.dolu || []).length };
   k.gid = true; odaKtCiz(); toast("⏳ Koltuk düzeni: tablete gönderildi…"); const r = await odaModIste({ ...body, pin }); k.gid = false;
@@ -4529,13 +4546,13 @@ async function odaKtUygula() { const k = odaKt; if (!k || !k.d || k.gid) return;
   k.sonuc = { ok: !!r.ok, m: "Koltuk düzeni: " + son }; if (odaKt === k) odaKtCiz(); toast(son, !r.ok); // W30: sonuç pencerede de
   if (!r.ok && r.belirsiz && odaKt === k) odaKtOku(); odaModIz(r, body); }
 async function odaKtOto() { const k = odaKt; if (!k || !k.d || k.gid || k.d.otokilit == null) return; const on = !k.d.otokilit;
-  if (!confirm(`🔒 Otomatik koltuk kilidi: ${on ? "AÇILSIN (boş koltuklar kilitlenir, yalnız davetle çıkılır)" : "KAPATILSIN (boş koltuklar açılır)"} mı?\nSelçuk hesabıyla yapılacak.`)) return;
+  if (!(await onayKart({baslik:"Otomatik koltuk kilidi",metin:`🔒 Otomatik koltuk kilidi: ${on ? "AÇILSIN (boş koltuklar kilitlenir, yalnız davetle çıkılır)" : "KAPATILSIN (boş koltuklar açılır)"} mı?\nSelçuk hesabıyla yapılacak.`,ayrinti:"İstediğiniz an yeniden değiştirilebilir.",onay:"Evet, uygula"}))) return;
   const body = { kind: "ayar", alan: "otokilit", deger: on ? "1" : "0" }; k.gid = true; odaKtCiz(); const r = await odaModIste(body); k.gid = false;
   if (r.ok && r.data && odaKt === k) odaKtAl(k, r.data); const son = r.ok ? `✅ Otomatik koltuk kilidi ${on ? "açıldı" : "kapatıldı"}` : "❌ " + r.err; k.sonuc = { ok: !!r.ok, m: son }; if (odaKt === k) odaKtCiz(); toast(son, !r.ok); odaModIz(r, { kind: "ayar", alan: "otokilit", deger: body.deger }); }
 async function odaKarYap(islem, mid) { const k = odaKt; if (!k || !k.d || k.gid) return; const i = $("oaKar"), metin = islem === "kullan" ? "" : String((i && i.value) || "").replace(/\s+/g, " ").trim();
   if (islem !== "kullan" && (!metin || Array.from(metin).length > 200)) { toast("Mesaj 1–200 harf olmalı", true); return; }
   const km = islem !== "yeni" ? String(((k.d.karsilama || []).find((x) => x.id === mid) || {}).m || "") : "", kk = Array.from(km).length > 120 ? Array.from(km).slice(0, 120).join("") + "…" : km;
-  if (!confirm(islem === "kullan" ? `💬 Bu karşılama mesajı kullanılsın mı?\n“${kk}”\nSelçuk hesabıyla yapılacak.` : `💬 Karşılama mesajı: ${islem === "duzenle" ? `“${kk}” şöyle güncellensin` : "yeni mesaj eklensin"} mi?\n“${metin}”\nSelçuk hesabıyla yapılacak.`)) return;
+  if (!(await onayKart({baslik:"Karşılama mesajı",metin:islem === "kullan" ? `💬 Bu karşılama mesajı kullanılsın mı?\n“${kk}”\nSelçuk hesabıyla yapılacak.` : `💬 Karşılama mesajı: ${islem === "duzenle" ? `“${kk}” şöyle güncellensin` : "yeni mesaj eklensin"} mi?\n“${metin}”\nSelçuk hesabıyla yapılacak.`,ayrinti:"Mesaj Selçuk hesabıyla tablete gönderilir; sonradan yeniden değiştirilebilir.",onay:"Evet, uygula"}))) return;
   const body = { kind: "karsila", islem, ...(islem !== "yeni" ? { mid } : {}), ...(metin ? { metin } : {}) }; k.gid = true; odaKtCiz(); const r = await odaModIste(body); k.gid = false;
   if (r.ok && r.data && r.data.karsilama && k.d) { k.d.karsilama = r.data.karsilama; k.mid = ""; } const son = r.ok ? "✅ Karşılama mesajı: yapıldı" : "❌ " + r.err; k.sonuc = { ok: !!r.ok, m: son }; if (odaKt === k) odaKtCiz();
   toast(son, !r.ok); if (!r.ok && r.belirsiz && odaKt === k) odaKtOku(); odaModIz(r, { kind: "karsila", islem }); }
@@ -4547,14 +4564,14 @@ async function odaKtSina() { const k = odaKt; if (!k || k.sina) return; k.sina =
   openModal(`<h3 style="margin:0 0 6px">🔎 Oda ayarları sınaması</h3><div class="row s">${bas}</div>${L.map((x, i) => `<div class="row s">${x.kuru ? "⏸️" : x.ok ? "✅" : "❌"} ${i + 1}. ${esc(x.ad || "")}${x.not ? " — " + esc(x.not) : ""}</div>`).join("")}<div class="ohalt"><button class="owx" onclick="closeModal();odaAyarAc(window.__oaDur)">Geri</button></div>`); }
 window.odaMikSec = function (v) { const i = $("oaMik"); if (!i) return; i.value = v === "uye" ? "uye" : "herkes"; for (const b of document.querySelectorAll('.ohc[aria-label="Koltuğa çıkma"] button')) { const on = b.dataset.v === i.value; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); } };
 function odaPkCiz(on, err) { odaPk = on; const e = $("oaPk"), b = $("oaPkB"); if (!e) return; e.textContent = on == null ? "❌ " + (err || "okunamadı") : on ? "✅ Açık" : "⛔ Kapalı"; if (b) { b.disabled = on == null; b.textContent = on == null ? "Değiştir" : on ? "Daveti kapat" : "Daveti aç"; } } // W24: pencereyi kapatan "Kapat" ile karışmasın
-async function odaPkDegis() { if (odaPk == null) return; const on = !odaPk; if (!confirm(`Odalar arası PK davetini kabul et: ${on ? "AÇILSIN" : "KAPATILSIN"} mı?\nSelçuk hesabıyla yapılacak.`)) return;
+async function odaPkDegis() { if (odaPk == null) return; const on = !odaPk; if (!(await onayKart({baslik:"PK daveti ayarı",metin:`Odalar arası PK davetini kabul et: ${on ? "AÇILSIN" : "KAPATILSIN"} mı?\nSelçuk hesabıyla yapılacak.`,ayrinti:"İstediğiniz an yeniden değiştirilebilir.",onay:"Evet, değiştir"}))) return;
   const body = { kind: "pkset", on }; toast("⏳ PK ayarı: tablete gönderildi…"); const r = await odaModIste(body);
   toast(r.ok ? `✅ PK daveti ${on ? "açıldı" : "kapatıldı"}` : "❌ PK ayarı: " + r.err, !r.ok); odaModIz(r, body); if (r.ok) odaPkCiz(!!(r.data && r.data.pk), ""); }
 async function odaAyarKaydet(al) { const el = $({ ad: "oaAd", duyuru: "oaDuyuru", mik: "oaMik", kilit: "oaKilit" }[al]); if (!el) return; const deger = String(el.value || "").replace(/\s+/g, " ").trim();
   if (al === "ad" && (!deger || Array.from(deger).length > 40)) { toast("Oda adı 1–40 harf olmalı", true); return; }
   if (al === "kilit" && deger && !/^\d{4,8}$/.test(deger)) { toast("Parola 4–8 rakam olmalı", true); return; }
   const ne = { ad: "Oda adı: " + deger, duyuru: deger ? "Duyuru: " + deger : "Duyuru: silinsin", mik: "Koltuğa çıkma: " + (deger === "uye" ? "yalnız üyeler" : "herkes"), kilit: "Oda parolası: " + (deger ? "konsun (" + deger.length + " rakam)" : "kaldırılsın") }[al];
-  if (!confirm(`⚙️ ${ne}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`)) return;
+  if (!(await onayKart({baslik:"Oda ayarı kaydedilsin mi?",metin:`⚙️ ${ne}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`,ayrinti:"Komut Selçuk hesabıyla tablete gönderilir ve hemen uygulanır; sonucu üstte bildirim olarak görürsünüz.",onay:"Evet, kaydet"}))) return;
   toast("⏳ Oda ayarı: tablete gönderildi…"); const r = await odaModIste({ kind: "ayar", alan: al, deger });
   toast(r.ok ? `✅ ${ne.split(":")[0]}: yapıldı${r.data && r.data.inceleme ? " (Sugo incelemesinde)" : ""}` : "❌ " + r.err, !r.ok); odaModIz(r, { kind: "ayar", alan: al }); if (al === "kilit") el.value = ""; }
 // 📋 W12 (kullanıcı 16.11: "çark simgesi yerine Oda Listesi butonu olsun"): çarkın yerinde herkese "Oda Listesi"; ⚙️ izlenen odalar ayarı listenin altında (sahip / yetkili)
@@ -5547,9 +5564,42 @@ async function odaWSave() { if (!odaW || odaW.busy) return; odaW.busy = true; od
   if (d.error) { odaWDraw(); const m = $("odaWMsg"); if (m) m.textContent = "❌ " + d.error; return; } odaW = null; closeModal(); toast(typeof d.ok === "string" ? d.ok : "Kaydedildi"); odaTick(); }
 
 // ---------- pencere, ayarlar, şifre / PIN, coin gönderme
+// ---------- 🪧 Uyarı / onay kartı: tarayıcının yerel onay / yazı penceresi YOK (telefonda çirkin + ne olacağını anlatmıyor). Tek kart, tek sıra.
+//   await onayKart({ baslik, metin, ayrinti?, onay: "Evet, sil", vazgec: "Vazgeç", tehlike?: true, cift?: true, ikinci?: { baslik, metin, ayrinti?, onay } }) → true / false
+//   await girisKart({ baslik, metin, ayrinti?, etiket?, deger?, tur?: "sayi", onay, vazgec }) → yazılan metin / null (vazgeç)
+// cift: ilk kartta onay verilince İKİNCİ (farklı metinli) kart çıkar; onun onay düğmesi ilk 1 sn basılamaz ve ilk kartın onayıyla AYNI YANDA durmaz
+// (art arda çift dokunuş iki onayı birden vermesin); yalnız ikisi de onaylanırsa true. Esc / arka plana dokunma = vazgeç. Klavye kendiliğinden açılmaz.
+let kartSira = Promise.resolve(), kartSimdi = null;
+const kartSiraya = (f) => { const p = kartSira.then(f); kartSira = p.then(() => 0, () => 0); return p; }; // aynı anda tek kart: sonrakiler sıraya girer
+function kartCiz(o) { return new Promise((bitir) => {
+  const eski = document.activeElement, giris = !!o.giris, t0 = Date.now(), uzun = (s) => String(s || "").length > 18, dik = !o.sabitSatir && (uzun(o.onay) || uzun(o.vazgec));
+  const k = document.createElement("div"); k.className = "kart" + (giris ? " giris" : ""); k.id = "kart";
+  k.innerHTML = `<div class="kartk${o.tehlike ? " tehlike" : ""}" role="${giris ? "dialog" : "alertdialog"}" aria-modal="true" aria-labelledby="kartB" aria-describedby="kartM" tabindex="-1">
+    <div class="karti"><h2 class="kartb" id="kartB">${esc(o.baslik || "")}</h2><div class="kartm" id="kartM">${esc(o.metin || "")}</div>${o.ayrinti ? `<div class="karta" id="kartA">ℹ️ ${esc(o.ayrinti)}</div>` : ""}
+    ${giris ? `<label class="kartl s" for="kartG">${esc(o.etiket || "")}</label><input class="kartg" id="kartG" type="text" autocomplete="off" autocapitalize="off" enterkeyhint="done"${o.tur === "sayi" ? ' inputmode="numeric"' : ""}>` : ""}</div>
+    <div class="kartd${dik ? " dik" : ""}${o.ters ? " ters" : ""}"><button type="button" data-k="vazgec">${esc(o.vazgec || "Vazgeç")}</button><button type="button" data-k="onay" class="${o.tehlike ? "tehlike" : "go"}">${esc(o.onay || "Evet")}</button></div></div>`;
+  const kutu = k.firstElementChild, ob = k.querySelector('[data-k="onay"]'), gi = giris ? k.querySelector("#kartG") : null; if (gi) gi.value = o.deger == null ? "" : String(o.deger);
+  let bitti = false, bekT = 0; const hazirAt = t0 + (Number(o.bekle) || 0), kilitAt = t0 + (o.kilit || 0);
+  const kapat = (v) => { if (bitti) return; bitti = true; clearTimeout(bekT); document.removeEventListener("keydown", tus, true); window.removeEventListener("popstate", geri); k.remove(); kartSimdi = null;
+    try { if (eski && eski.isConnected && eski.focus && !/^(INPUT|TEXTAREA)$/.test(eski.tagName)) eski.focus({ preventScroll: true }); } catch (e) {} bitir(v); };
+  const onay = () => { if (Date.now() < hazirAt || Date.now() < kilitAt) return; kapat(giris ? (gi ? gi.value : "") : true); }, vazgec = () => { if (Date.now() < kilitAt) return; kapat(giris ? null : false); };
+  function tus(e) { if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); vazgec(); return; }
+    if (e.key === "Enter" && gi && document.activeElement === gi) { e.preventDefault(); e.stopImmediatePropagation(); onay(); return; }
+    if (e.key === "Tab") { const f = [...k.querySelectorAll("button:not(:disabled), input")]; if (!f.length) { e.preventDefault(); return; } const i = f.indexOf(document.activeElement);
+      if (e.shiftKey ? i <= 0 : i === f.length - 1) { e.preventDefault(); f[e.shiftKey ? f.length - 1 : 0].focus(); } else if (i < 0) { e.preventDefault(); f[0].focus(); } } }
+  const geri = () => { if (kilitAt <= Date.now()) vazgec(); };
+  k.addEventListener("click", (e) => { if (e.target === k) { if (Date.now() - t0 > 300) vazgec(); return; } const b = e.target.closest && e.target.closest("button[data-k]"); if (!b || b.disabled) return; if (b.dataset.k === "onay") onay(); else vazgec(); });
+  if (Number(o.bekle) > 0) { ob.disabled = true; ob.classList.add("bekle"); ob.style.setProperty("--kb", o.bekle / 1000 + "s"); bekT = setTimeout(() => { ob.disabled = false; ob.classList.remove("bekle"); }, o.bekle); }
+  document.addEventListener("keydown", tus, true); window.addEventListener("popstate", geri);
+  kartSimdi = k; document.body.appendChild(k); try { kutu.focus({ preventScroll: true }); } catch (e) {} }); } // odak karta (yazı kutusuna DEĞİL): klavye kendiliğinden açılmaz
+function onayKart(o) { o = o || {}; return kartSiraya(async () => {
+  if (!(await kartCiz({ baslik: o.baslik, metin: o.metin, ayrinti: o.ayrinti, onay: o.onay, vazgec: o.vazgec, tehlike: !!o.tehlike, sabitSatir: !!o.cift }))) return false;
+  if (!o.cift || !o.ikinci) return true; const i = o.ikinci; // ikinci kart: farklı metin, onay düğmesi ters yanda + 1 sn kilitli, 0,4 sn hiçbir düğme çalışmaz
+  return !!(await kartCiz({ baslik: i.baslik || o.baslik, metin: i.metin, ayrinti: i.ayrinti, onay: i.onay || o.onay, vazgec: i.vazgec || o.vazgec, tehlike: i.tehlike == null ? !!o.tehlike : !!i.tehlike, sabitSatir: true, ters: true, bekle: 1000, kilit: 400 })); }); }
+function girisKart(o) { o = o || {}; return kartSiraya(() => kartCiz({ ...o, giris: true })); }
 function openModal(h, top) { $("modalBox").innerHTML = h; $("modal").style.display = "flex"; modalLayout(!!top); }
 // ⌨️ Yazı kutusuna odaklan + ekran klavyesini aç: yazı beklenen pencereler (PIN, takma ad, arama…) bunu kullanır. Odak HEMEN verilir (iPhone
-// klavyeyi yalnız dokunuşla aynı anda verilen odakta açar → davranış aynı). Tablet uygulamasının WebView'u confirm() penceresinden / sunucu
+// klavyeyi yalnız dokunuşla aynı anda verilen odakta açar → davranış aynı). Tablet uygulamasının WebView'u yerel onay penceresinden / sunucu
 // beklemesinden sonraki odakta klavyeyi açmıyor: uygulamanın dar köprüsü SugoKlavye.goster() (yalnız "klavyeyi göster") pencere odağı
 // döndükten sonra çağrılır. Köprü yoksa (iPhone, Chrome) yalnız odak. how: "sec" = yazının hepsi seçili, "son" = imleç sonda (kaydırmadan).
 function kbFocus(el, how) { if (typeof el === "string") el = $(el); if (!el) return;
@@ -5599,8 +5649,8 @@ function appPage() { sheet("app", `<h3>📱 Sugo uygulaması</h3>
     <p class="s">Bu sürede panelden giden mesajlar ve bildirimler bekler; süre bitince sırayla gider.</p></div>
   <div class="setlbl" id="appMinsL">Süre</div><div class="seg seg3" id="appMins">${[2, 5, 10].map((m) => `<button data-m="${m}" class="${m === appMin ? "on" : ""}" onclick="appMinSet(${m})">${m} dk</button>`).join("")}</div>
   <div id="appCd"></div>`); appCdDraw(); }
-function appStart() { if (!isSahip()) { if (!confirm(`Ajans sahibinden ${appMin} dakika Sugo uygulaması onayı istensin mi?\n\nOnaylanınca sunucu ${appMin} dakika bayi hesabına bağlanmaz; bu sürede panelden giden mesajlar bekler.`)) return; pzRequest(appMin); return; }
-  if (!confirm(`Sunucu ${appMin} dakika bayi hesabına bağlanmayacak; bu sürede panelden giden mesajlar bekler.\n\nSugo uygulamasını kullanmaya başlansın mı?`)) return; linkPause(appMin, true); }
+async function appStart() { if (!isSahip()) { if (!(await onayKart({baslik:"Onay istensin mi?",metin:`Ajans sahibinden ${appMin} dakika Sugo uygulaması onayı istensin mi?\n\nOnaylanınca sunucu ${appMin} dakika bayi hesabına bağlanmaz; bu sürede panelden giden mesajlar bekler.`,ayrinti:"Ajans sahibi onaylayana kadar sunucu bayi hesabına bağlı kalır; onaylanırsa seçilen süre sonunda kendiliğinden geri bağlanır.",onay:"Evet, onay iste"}))) return; pzRequest(appMin); return; }
+  if (!(await onayKart({baslik:"Sugo uygulaması kullanılsın mı?",metin:`Sunucu ${appMin} dakika bayi hesabına bağlanmayacak; bu sürede panelden giden mesajlar bekler.\n\nSugo uygulamasını kullanmaya başlansın mı?`,ayrinti:"Süre bitince sunucu bayi hesabına yeniden bağlanır ve bekleyen mesajlar o zaman gider.",onay:"Evet, başla"}))) return; linkPause(appMin, true); }
 function appMinSet(m) { appMin = m; document.querySelectorAll("#appMins button").forEach((b) => b.classList.toggle("on", Number(b.dataset.m) === m)); appCdDraw(); }
 function appCdDraw() { const el = $("appCd"); if (!el) return; const left = Math.max(0, Math.round((pauseUntil - Date.now()) / 1000)), mins = $("appMins");
   const wait = !left && pzMine(); if (mins) mins.style.display = left || wait ? "none" : ""; if ($("appMinsL")) $("appMinsL").style.display = left || wait ? "none" : "";
@@ -5665,14 +5715,14 @@ function menu() { setOpen(); }
 function liteApply() { const on = !!(me && me.lite); document.documentElement.classList.toggle("lite", on); if (on && (curTab === "oda" || curTab === "durum")) tab("msg"); }
 const liteRow = () => `<button class="setrow" id="liteRow" onclick="liteToggle()"><span class="si">🪶</span><span class="st">Hafif mod<small>${me && me.lite ? "AÇIK · Oda, Durum, oda izleyici kapalı (sistem rahatlar)" : "kapalı · tüm özellikler açık"}</small></span><span class="lsw${me && me.lite ? " on" : ""}"></span></button>`;
 async function liteToggle() { if (!isSahip()) return; const on = !(me && me.lite);
-  if (!confirm(on ? "Hafif mod açılsın mı?\n\nKapanacaklar: 🎙️ Oda, 📸 Durum, tabletin odada kalması / oda sohbeti kaydı, dakikalık Sugo oda izleyicisi ve tablet kare alma.\nMesajlar, coin, elmas, kartlar, banka ve muhasebe aynen çalışır." : "Hafif mod kapatılsın mı?\n\nOda, Durum ve oda izleyici yeniden açılır.")) return;
+  if (!(await onayKart({baslik:on ? "Hafif mod açılsın mı?" : "Hafif mod kapatılsın mı?",metin:on ? "Hafif mod açılsın mı?\n\nKapanacaklar: 🎙️ Oda, 📸 Durum, tabletin odada kalması / oda sohbeti kaydı, dakikalık Sugo oda izleyicisi ve tablet kare alma.\nMesajlar, coin, elmas, kartlar, banka ve muhasebe aynen çalışır." : "Hafif mod kapatılsın mı?\n\nOda, Durum ve oda izleyici yeniden açılır.",ayrinti:"İstediğiniz an yeniden değiştirilebilir; hiçbir kayıt silinmez.",onay:on ? "Evet, aç" : "Evet, kapat"}))) return;
   const d = await api("lite_mode_set", { on }); if (d.error) { toast("❌ " + d.error, true); return; }
   me.lite = !!d.lite; try { localStorage.setItem("bw_me", JSON.stringify(me)); } catch (e) {} liteApply(); const r = $("liteRow"); if (r) r.outerHTML = liteRow();
   toast(me.lite ? "🪶 Hafif mod açık: Oda ve Durum kapalı" : "✅ Hafif mod kapalı: her şey açık"); }
 // 🪶 Hafif mod 2 (kullanıcı 11.11): oda istatistikleri (koltuk / atış özetleri, oda raporları) kapalı; rakip oda ve profil taramaları 5 dk'da bir. Yalnız Ajans sahibi.
 const lite2Row = () => `<button class="setrow" id="lite2Row" onclick="lite2Toggle()"><span class="si">🪶</span><span class="st">Hafif mod 2<small>${me && me.lite2 ? "AÇIK · oda istatistikleri kapalı, tarama 5 dk" : "kapalı · oda istatistikleri açık"}</small></span><span class="lsw${me && me.lite2 ? " on" : ""}"></span></button>`;
 async function lite2Toggle() { if (!isSahip()) return; const on = !(me && me.lite2);
-  if (!confirm(on ? "Hafif mod 2 açılsın mı?\n\nKapanacaklar: oda istatistikleri (koltuk / atış özetleri, saatlik-günlük-haftalık oda raporları, kişi günlük raporu).\nRakip oda takibi ve kişi profili taramaları 5 dakikada bir çalışır.\nMesajlar, coin, elmas, kartlar, banka ve muhasebe aynen çalışır." : "Hafif mod 2 kapatılsın mı?\n\nOda istatistikleri açılır, taramalar yeniden dakikada bir.")) return;
+  if (!(await onayKart({baslik:on ? "Hafif mod 2 açılsın mı?" : "Hafif mod 2 kapatılsın mı?",metin:on ? "Hafif mod 2 açılsın mı?\n\nKapanacaklar: oda istatistikleri (koltuk / atış özetleri, saatlik-günlük-haftalık oda raporları, kişi günlük raporu).\nRakip oda takibi ve kişi profili taramaları 5 dakikada bir çalışır.\nMesajlar, coin, elmas, kartlar, banka ve muhasebe aynen çalışır." : "Hafif mod 2 kapatılsın mı?\n\nOda istatistikleri açılır, taramalar yeniden dakikada bir.",ayrinti:"İstediğiniz an yeniden değiştirilebilir; hiçbir kayıt silinmez.",onay:on ? "Evet, aç" : "Evet, kapat"}))) return;
   const d = await api("lite_mode2_set", { on }); if (d.error) { toast("❌ " + d.error, true); return; }
   me.lite2 = !!d.lite2; try { localStorage.setItem("bw_me", JSON.stringify(me)); } catch (e) {} const r = $("lite2Row"); if (r) r.outerHTML = lite2Row();
   toast(me.lite2 ? "🪶 Hafif mod 2 açık: oda istatistikleri kapalı" : "✅ Hafif mod 2 kapalı: oda istatistikleri açık"); }
@@ -5752,7 +5802,7 @@ async function pzRequest(min) { const d = await api("link_pause_request", { minu
 async function pzCancel() { if (!pzReq) return; const d = await api("link_pause_cancel", { id: pzReq.id }); if (d.error) toast("❌ " + d.error, true); else toast("↩️ İstek geri alındı");
   pzSet((d.report && d.report.req) || (d.error ? pzReq : null)); }
 async function pzDecide(ok) { const r = pzReq; if (!r) return;
-  if (!confirm(ok ? `${r.by} ${r.minutes} dakika Sugo uygulamasını kullansın mı?\n\nSunucu bu sürede bayi hesabına bağlanmaz; panelden giden mesajlar bekler.` : `${r.by} kişisinin Sugo uygulaması isteği reddedilsin mi?`)) return;
+  if (!(await onayKart({baslik:ok ? "İstek onaylansın mı?" : "İstek reddedilsin mi?",metin:ok ? `${r.by} ${r.minutes} dakika Sugo uygulamasını kullansın mı?\n\nSunucu bu sürede bayi hesabına bağlanmaz; panelden giden mesajlar bekler.` : `${r.by} kişisinin Sugo uygulaması isteği reddedilsin mi?`,ayrinti:ok ? "Onaylanınca istek sahibi süre boyunca Sugo uygulamasını kullanabilir." : "İstek sahibi reddedildiğini görür; yeniden isteyebilir.",onay:ok ? "Evet, onayla" : "Evet, reddet"}))) return;
   const d = await api("link_pause_decide", { id: r.id, ok }); const rep = d.report || {};
   if (d.error) { toast("❌ " + d.error, true); pzSet(rep.req || null); return; } // başkası karar verdi / süresi doldu: güncel durum
   pzSet(rep.req || { ...r, status: ok ? "approved" : "denied" }); if (ok && rep.pauseUntil) pauseShow(Number(rep.pauseUntil));
@@ -5773,7 +5823,7 @@ async function pzLoad(want) { if (!me || !(isSahip() || can("uygulama_iste"))) r
 async function payUndo() { const p = chX.pay, c0 = cur; if (!p || !c0) return;
   const find = () => ((pcs && pcs.cards) || []).find((x) => x.owner === p.owner && String(x.bank).toUpperCase() === String(p.bank).toUpperCase() && String(x.number || "").endsWith(p.last4));
   let c = find(); if (!c) { const d = await api("pcards"); if (d.report && d.report.pcards) pcs = d.report.pcards; c = find(); } if (!c) { toast("Kart bulunamadı", true); return; }
-  if (!confirm(`💳 ${p.owner} ${PCS[p.bank] || p.bank} ···${p.last4}: kart verme geri alınsın mı?\n\nKartın kullanılan hakkı 1 azalır (${c.uses}/${c.max_uses} → ${Math.max(0, c.uses - 1)}/${c.max_uses}).`)) return;
+  if (!(await onayKart({baslik:"Kart verme geri alınsın mı?",metin:`💳 ${p.owner} ${PCS[p.bank] || p.bank} ···${p.last4}: kart verme geri alınsın mı?\n\nKartın kullanılan hakkı 1 azalır (${c.uses}/${c.max_uses} → ${Math.max(0, c.uses - 1)}/${c.max_uses}).`,ayrinti:"Kayıt silinmez; yalnız kartın kullanılan hakkı azalır. Sonradan yeniden kart verilebilir.",onay:"Evet, geri al"}))) return;
   const d = await api("pcard_undo", { id: c.id, conv: c0 }); if (d.error) { toast("❌ " + d.error, true); return; }
   if (d.report && d.report.pcards) pcs = d.report.pcards; if (cur === c0 && chX.pay === p) { chX.pay = { ...p, result: "undone", ev: null }; renderChat(); }
   toast("↩️ Kart verme geri alındı" + (typeof d.ok === "string" ? " · " + d.ok : "")); }
@@ -5865,11 +5915,11 @@ function ocBanka() { const m = pcM10($("ocB").value), n = $("ocN"); $("ocNL").te
 async function ocSave(id) { const bank = $("ocB").value, ham = $("ocN").value, owner = $("ocO").value.trim(), number = pcM10(bank) ? pcTel(ham) : ham.replace(/\D/g, ""), max_uses = Math.round(Number($("ocM").value) || 0), active = $("ocA").checked;
   if (pcM10(bank) && ham.trim() && !number) { toast("M10 için telefon numarası: 10 hane, 0 ile başlar (ör. 050 123 45 67)", true); return; }
   if (!owner) { toast("Kartın sahibini yazın", true); return; } if (!(max_uses >= 1 && max_uses <= 100)) { toast("Hak 1–100 arası olmalı", true); return; }
-  if (number && !pcM10(bank) && !pcLuhn(number) && !confirm("Kart numarası hatalı görünüyor (kontrol hanesi tutmuyor). Yine de kaydedilsin mi?")) return;
+  if (number && !pcM10(bank) && !pcLuhn(number) && !(await onayKart({baslik:"Kart numarası hatalı olabilir",metin:"Kart numarası hatalı görünüyor (kontrol hanesi tutmuyor). Yine de kaydedilsin mi?",ayrinti:"Numarayı kontrol edip düzeltmek daha güvenli; yine de kaydederseniz sonradan düzenleyebilirsiniz.",onay:"Yine de kaydet"}))) return;
   const d = await ownAct("pcard_save", { ...(id ? { id } : {}), owner, bank, number, max_uses, active }, "Kartı kaydetmek için işlem PIN'iniz"); if (!d) return; ocEdit = null; ocSet(d); }
 async function ocMove(id, dir) { const d = await ownAct("pcard_move", { id, dir }, "Sırayı değiştirmek için işlem PIN'iniz"); if (d) ocSet(d); }
 async function ocReset(id) { const x = id ? ((pcs && pcs.cards) || []).find((c) => c.id === id) : null;
-  if (!confirm(x ? `${x.owner} ···${String(x.number || "").slice(-4)}: kullanılan hak sıfırlansın mı? (${x.uses}/${x.max_uses} → 0/${x.max_uses})` : "Tüm kartların kullanılan hakları sıfırlansın mı?")) return;
+  if (!(await onayKart({baslik:x ? "Kart hakkı sıfırlansın mı?" : "Tüm kart hakları sıfırlansın mı?",metin:x ? `${x.owner} ···${String(x.number || "").slice(-4)}: kullanılan hak sıfırlansın mı? (${x.uses}/${x.max_uses} → 0/${x.max_uses})` : "Tüm kartların kullanılan hakları sıfırlansın mı?",ayrinti:"Yalnız kullanılan hak sayacı sıfırlanır; kartlar silinmez. Sonradan elle düzeltilebilir.",onay:"Evet, sıfırla",tehlike:!x}))) return;
   const d = await ownAct("pcard_reset", id ? { id } : {}, "Hak sıfırlamak için işlem PIN'iniz"); if (d) ocSet(d); }
 
 // 👥 Web kullanıcıları: ekle, rol, izinler, coin limiti, geçici şifre, PIN, oturumları kapat, pasif / aktif (kendi satırında rol / pasif yok)
@@ -5894,7 +5944,7 @@ function ouHtml() { const us = ouUsers();
 async function ouSave(body, title) { const d = await ownAct("web_user_set", body, title || "Kullanıcıyı değiştirmek için işlem PIN'iniz"); if (!d) return false; ouLoad(); return true; }
 async function ouSet(key, o) { const u = ouU(key); if (!u) return;
   const q = o.off ? `${u.name} PASİF yapılsın mı? Hemen çıkışa düşer, hiçbir şey yapamaz.` : o.on ? `${u.name} aktif yapılsın mı? Eski şifresiyle girebilir.` : `${u.name} kişisinin açık oturumları kapatılsın mı? Tekrar girmesi gerekir.`;
-  if (!confirm(q)) return; await ouSave({ key, ...o }); }
+  if (!(await onayKart({baslik:o.off ? "Kullanıcı pasif yapılsın mı?" : o.on ? "Kullanıcı aktif yapılsın mı?" : "Oturumlar kapatılsın mı?",metin:q,ayrinti:"Kullanıcı silinmez; istediğiniz an tersi yapılabilir. Sonra işlem PIN i istenir.",onay:o.off ? "Evet, pasif yap" : o.on ? "Evet, aktif yap" : "Evet, kapat",tehlike:!!o.off}))) return; await ouSave({ key, ...o }); }
 const ouRoleSeg = (cur) => `<div class="seg seg3" id="ouRoles">${["sahip", "yetkili", "yardimci"].map((r) => `<button data-r="${r}" class="${r === cur ? "on" : ""}" onclick="document.querySelectorAll('#ouRoles button').forEach((b)=>b.classList.toggle('on',b===this))">${ROLES_W[r][0]} ${ROLES_W[r][1]}</button>`).join("")}</div>`;
 const ouRolePicked = () => (document.querySelector("#ouRoles button.on") || {}).dataset?.r || "";
 function ouRole(key) { const u = ouU(key); if (!u || ouSelf(u)) return;
@@ -5958,7 +6008,7 @@ async function izGonder(body, geri) { const pin = await askPin("İzni değiştir
 async function izDegis(k, r) { const x = izT && (izT.izinler || []).find((y) => y.k === k); if (!x || izBek.has(k + ":" + r)) return;
   const eski = !!x.deger[r], yeni = !eski; x.deger[r] = yeni; izBek.add(k + ":" + r); izCiz(); // iyimser
   await izGonder({ rol: r, k, deger: yeni }, () => { x.deger[r] = eski; }); izBek.delete(k + ":" + r); izCiz(); }
-async function izVarsayilan() { const t = ((izT && izT.sekmeler) || []).find(([k]) => k === izSek); if (!izT || !confirm(`${t ? t[1] : "Bu sekme"}: bütün izinler varsayılana dönsün mü?`)) return;
+async function izVarsayilan() { const t = ((izT && izT.sekmeler) || []).find(([k]) => k === izSek); if (!izT || !(await onayKart({baslik:"İzinler varsayılana dönsün mü?",metin:`${t ? t[1] : "Bu sekme"}: bütün izinler varsayılana dönsün mü?`,ayrinti:"Bu sekmede yaptığınız özel izin değişiklikleri kalkar; yeniden tek tek açabilirsiniz.",onay:"Evet, varsayılana dön",tehlike:true}))) return;
   const once = JSON.parse(JSON.stringify(izT.izinler)); for (const x of izT.izinler) if (x.sekme === izSek) x.deger = { ...x.v }; izCiz();
   if (await izGonder({ varsayilan: true, sekme: izSek }, () => { izT.izinler = once; })) toast("↺ Varsayılana döndü"); }
 // 📜 İşlem kaydı: kişi + tür (mesaj, onay, coin, kart, giriş, diğer)
@@ -6007,11 +6057,11 @@ function olHtml() { const L = olData && olData.link, S = olData && olData.st, sk
   <div class="seg" id="olOn"><button class="${S && S.on ? "on" : ""}" ${S ? "" : "disabled"} onclick="olToggle(true)">✅ Açık</button><button class="${S && !S.on ? "on" : ""}" ${S ? "" : "disabled"} onclick="olToggle(false)">⏸ Kapalı</button></div>
   <div class="s" style="margin:8px 4px">Kapatınca eski kayıtlar silinmez; istediğiniz zaman tekrar açabilirsiniz. Değişiklikler işlem PIN'inizle.</div>`; }
 async function olMode(m) { const L = olData && olData.link; if (!L || L.mode === m) return;
-  if (!confirm(m === "server" ? "Bayi bağlantısı sunucuya alınsın mı?\n\nSugo bayi hesabı 7/24 sunucuda açık kalır; tablet artık Sugo'ya bağlanmaz. Tablet kapalı ya da internetsiz olsa da mesajlar gelir."
-    : "Bayi bağlantısı tablete alınsın mı?\n\nSunucu bağlantıyı bırakır, tablet tekrar Sugo'ya bağlanır. Tablet kapalıyken bayi mesajları durur.")) return;
+  if (!(await onayKart({baslik:m === "server" ? "Bağlantı sunucuya alınsın mı?" : "Bağlantı tablete alınsın mı?",metin:m === "server" ? "Bayi bağlantısı sunucuya alınsın mı?\n\nSugo bayi hesabı 7/24 sunucuda açık kalır; tablet artık Sugo'ya bağlanmaz. Tablet kapalı ya da internetsiz olsa da mesajlar gelir."
+    : "Bayi bağlantısı tablete alınsın mı?\n\nSunucu bağlantıyı bırakır, tablet tekrar Sugo'ya bağlanır. Tablet kapalıyken bayi mesajları durur.",ayrinti:"Onaydan sonra işlem PIN i istenir; değişiklik hemen uygulanır ve istediğiniz an geri alınabilir.",onay:"Evet, değiştir"}))) return;
   if (await ownAct("bayi_link_set", { mode: m }, "Bağlantıyı değiştirmek için işlem PIN'iniz")) olLoad(); }
 async function olToggle(on) { const S = olData && olData.st; if (!S || !!S.on === on) return;
-  if (!confirm(on ? "Sugo Bayi açılsın mı?\n\nBayi hesabının mesaj takibi, bildirimleri, elmas bozumları ve ajans okuması yeniden başlar." : "Sugo Bayi kapatılsın mı?\n\nBayi hesabıyla ilgili takip, bildirimler, elmas bozumları ve ajans okuması durur. Eski kayıtlar silinmez.")) return;
+  if (!(await onayKart({baslik:on ? "Sugo Bayi açılsın mı?" : "Sugo Bayi kapatılsın mı?",metin:on ? "Sugo Bayi açılsın mı?\n\nBayi hesabının mesaj takibi, bildirimleri, elmas bozumları ve ajans okuması yeniden başlar." : "Sugo Bayi kapatılsın mı?\n\nBayi hesabıyla ilgili takip, bildirimler, elmas bozumları ve ajans okuması durur. Eski kayıtlar silinmez.",ayrinti:"Hiçbir kayıt silinmez; istediğiniz an yeniden değiştirilebilir.",onay:on ? "Evet, aç" : "Evet, kapat",tehlike:!on}))) return;
   if (await ownAct("bayi_toggle", { on }, "Sugo Bayi aç / kapa için işlem PIN'iniz")) olLoad(); }
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
@@ -6020,12 +6070,12 @@ function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0,
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${[10000, 20000, 50000, 100000, 200000, 500000].map((c) => `<button onclick="coinAmt(${c})">${(c / 1000)}k</button>`).join("")}</div>
     <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
     ${me && (me.coin_max || me.coin_day) ? `<div class="s" style="margin-top:6px;color:var(--warn)">🪙 Limitiniz: ${me.coin_max ? "tek seferde en fazla " + nf(me.coin_max) : ""}${me.coin_max && me.coin_day ? " · " : ""}${me.coin_day ? "günde en fazla " + nf(me.coin_day) : ""} coin</div>` : ""}
-    <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
+    <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div><div id="cnCiftN" class="s" style="color:#fbbf24;margin:-4px 0 8px;min-height:36px;visibility:hidden"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); kbFocus("cnIn"); } // ⌨️ miktar kutusuna hemen odak + klavye (dokunuşun içinde; odak olayı pencereyi ilk boyamadan önce üste taşır)
 let cnT = 0;
-function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $("cnIn").value = c ? String(c) : ""; $("cnGo").disabled = true;
+function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $("cnIn").value = c ? String(c) : ""; $("cnGo").disabled = true; { const cs = $("cnCiftN"); if (cs) cs.style.visibility = "hidden"; }
   $("cnInfo").innerHTML = c >= 1000 ? `⏳ kontrol ediliyor…` : "En az 1.000 coin"; clearTimeout(cnT); if (c < 1000) return;
-  cnT = setTimeout(async () => { const d = await api("coin_check", { uid: cn.uid, coins: c }); if (!cn || cn.coins !== c) return; const k = d.report && d.report.coin;
+  cnT = setTimeout(async () => { const d = await api("coin_check", { uid: cn.uid, coins: c }); if (!cn || cn.coins !== c || !$("cnInfo")) return; const k = d.report && d.report.coin;
     if (d.error || !k) { $("cnInfo").innerHTML = `❌ ${esc(d.error || "kontrol edilemedi")}`; return; } cn.chk = k;
     const azn = k.azn != null ? Number(k.azn) : c / 1000; cn.azn = azn; const ok = k.ok && (!k.max || c <= k.max) && (!k.daily || (k.today || 0) + c <= k.daily);
     $("cnInfo").innerHTML = `👤 <b>${esc((k.user && k.user.name) || "")}</b> · UID ${esc(cn.uid)}<br><span class="gc"></span> <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${azn.toLocaleString("tr-TR")} ₼</b>` +
@@ -6033,7 +6083,10 @@ function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $
       (k.daily && (k.today || 0) + c > k.daily ? `<br>❌ 24 saatlik sınır aşılıyor` : "") + (k.limit && k.limit.error ? `<br>⛔ <b>${esc(k.limit.error)}</b>` : "");
     const lk = k.lock && Number(k.lock.left) > 0 ? k.lock : null; cn.lock = lk ? { ...lk, until: Date.now() + Number(lk.left) } : null; // 🔒 10 dk coin / 2 dk sohbet kilidi (sunucu söyler)
     const pl = $("cnLock"); if (pl) { pl.hidden = !lk; if (lk) pl.textContent = (lk.msg || "🔒 " + lk.by + " bu kişiyle ilgileniyor") + (canForce() ? " · 👑 onaylarsanız yine de gönderilir" : ""); } // başlığın üstüne biner: pencere boyu değişmez (kayma yok)
-    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error) || (!!lk && !canForce()); }, 400); }
+    $("cnGo").disabled = !ok || !!(k.limit && k.limit.error) || (!!lk && !canForce());
+    if (ok && canForce() && !(k.limit && k.limit.error)) { // 👑 kuru deneme: mükerrer görünüyorsa sarı not (gönder KİLİTLENMEZ; kartlar Gönder'e basılınca çıkar)
+      const dr = await api("coin_send", { uid: cn && cn.uid, coins: c, dry: true }); if (!cn || cn.coins !== c || !$("cnInfo")) return; const ci = dr && dr.cift_onay, sp = $("cnCiftN");
+      if (ci && sp) { sp.style.visibility = "visible"; sp.textContent = "🟡 Aynı gönderim az önce yapıldı; gönderirken iki kez onay istenecek."; } } }, 400); }
 // 🔒 Coin kilidi penceresi: kim, ne zaman, kalan süre canlı geri sayılır (ajans sahibine "yine de gönder")
 function coinLockModal(d, retry) { const l = d.lock, end = Date.now() + (Number(l.left) || 0), left = () => leftTxt(Math.max(0, end - Date.now()));
   openModal(`<div style="padding:16px"><b>🔒 Kilitli</b><p id="cnLockMsg">${esc(d.error)}</p><p>Kalan süre: <b id="cnLeft">${left()}</b></p>${canForce() ? `<button class="go" style="width:100%;margin-bottom:8px" id="cnForce">👑 Yine de gönder</button>` : `<p class="s">Süre dolunca tekrar deneyin.</p>`}<button style="width:100%" onclick="closeModal()">Tamam</button></div>`);
@@ -6041,16 +6094,28 @@ function coinLockModal(d, retry) { const l = d.lock, end = Date.now() + (Number(
   const iv = setInterval(() => { const el = $("cnLeft"); if (!el) { clearInterval(iv); return; } el.textContent = left(); if (Date.now() >= end) { clearInterval(iv); el.textContent = "süre doldu, tekrar gönderebilirsiniz"; } }, 1000); }
 function coinAskidaModal(msg) { openModal(`<div style="padding:16px" id="cnAsk"><b>⏳ Önceki gönderim askıda</b><p>${esc(msg)}</p><p class="s">Coin GÖNDERİLMEDİ. ${me && me.yon ? "Sugo panelinden kontrol edip Coins › Son gönderilenler listesindeki ⏳ Askıda satırında <b>Gitti</b> ya da <b>Gitmedi</b> diyebilirsiniz." : "Ajans sahibi, Coins › Son gönderilenler listesindeki ⏳ Askıda satırından kaydı kapatabilir."}</p>
   <button class="go" style="width:100%;min-height:48px;margin-bottom:8px" onclick="closeModal();cn=null;coinSub='gon';tab('coin');loadCoins()">🪙 Coins listesine git</button><button style="width:100%;min-height:48px" onclick="closeModal()">Kapat</button></div>`); }
-async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
+// 👑 Çift onay (sunucu 0229): ajans sahibine mükerrer görünen gönderimde sunucu hata yerine `cift_onay` verir (coin GİTMEMİŞ); iki farklı kart, ikisi de onaylanırsa aynı istek `gecis`le yeniden gider
+const coinCiftSor = (co) => { const ag = !!co.agir, on = Array.isArray(co.onaylar) ? co.onaylar : [];
+  return onayKart({ cift: true, baslik: co.baslik || "Aynı gönderim yakın zamanda yapılmış", metin: (co.yenilendi ? co.yenilendi + "\n\n" : "") + (co.metin || "") + (on[0] ? "\n\n" + on[0] : ""),
+    ayrinti: "Coin henüz GÖNDERİLMEDİ. İki onayı da verirseniz bu gönderim yapılır ve geri alınamaz; vazgeçerseniz hiçbir şey gitmez.", onay: "Evet, devam", tehlike: ag,
+    ikinci: { baslik: "Son onay", metin: on[1] || "Gönderim gerçekten yapılsın mı?", ayrinti: ag ? "Önceki gönderimin sonucu belirsizdi: aynı coin iki kez gidebilir." : undefined, onay: "Evet, GÖNDER", tehlike: ag } }); };
+async function coinSend(again, force) { if (!cn || !cn.chk) return; const html0 = $("modalBox").innerHTML, c = cn.coins, name = (cn.chk.user && cn.chk.user.name) || "UID " + cn.uid;
   const lk = cn.lock && cn.lock.until > Date.now() ? cn.lock : null;
   if (lk && !force) { if (!canForce()) { toast(lk.msg || "🔒 Kilitli", true); return; } // 🔒 başkası bu kişiye az önce gönderdi / sohbeti yürütüyor
-    if (!confirm(`${lk.kind === "coin" ? `${lk.by} bu kişiye az önce ${nf(lk.coins || 0)} coin gönderdi` : `${lk.by} bu müşteriyle ilgileniyor`}, yine de göndermek istiyor musun?`)) return; force = true; }
-  if (!confirm(`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`)) return;
+    if (!(await onayKart({baslik:"Başka biri ilgileniyor",metin:`${lk.kind === "coin" ? `${lk.by} bu kişiye az önce ${nf(lk.coins || 0)} coin gönderdi` : `${lk.by} bu müşteriyle ilgileniyor`}, yine de göndermek istiyor musun?`,ayrinti:"Yine de gönderirseniz çift gönderim olabilir; gönderilen coin geri alınamaz.",onay:"Evet, yine de devam"}))) return; force = true; }
+  if (!(await onayKart({baslik:"Coin gönderilsin mi?",metin:`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Onaydan sonra işlem PIN i istenir. Gönderilen coin geri alınamaz.",onay:"Evet, gönder",tehlike:true}))) return;
   const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
   openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…<div class="s" style="margin-top:6px">Kesinleşmesi bekleniyor (en fazla 10 sn)</div></div>`);
-  const d = await api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, ...(force ? { force: true } : {}) }); if (d.pin === "wrong") pinCache = null;
+  const gonder = (gecis) => api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, ...(force ? { force: true } : {}), ...(gecis ? { gecis } : {}) });
+  let d = await gonder(); if (d.pin === "wrong") pinCache = null;
+  for (let tur = 0; d.error && d.cift_onay && tur < 2; tur++) { // aynı dokunuşta en çok 2 çift onay turu (durum değişti / süre doldu → kart yeniden); sonra hata metni
+    const co = d.cift_onay; if (!(await coinCiftSor(co))) { if (/id="cnIn"/.test(html0)) { openModal(html0); coinAmt(c); } else closeModal(); toast("Vazgeçildi, coin gönderilmedi"); return; }
+    if (co.bitis && Date.now() > Number(co.bitis)) { toast("⏳ Onayın süresi doldu; gönderim yeniden denenecek (yeni uyarı gelebilir)", true); d = await gonder(); }
+    else d = await gonder(co.gecis);
+    if (d.pin === "wrong") pinCache = null; }
   if (d.error && d.lock && !force) { const cn0 = cn; coinLockModal(d, () => { cn = cn0; cn.lock = null; coinSend(again, true); }); return; } // 🔒 pencere açıkken başkası gönderdi
   if (d.error) {
+    if (d.cift_onay) { closeModal(); toast("❌ " + d.error, true); return; } // çift onay turları bitti: coin gitmedi, hata metni
     // 3 dakika kuralı: kalan süre canlı geri sayılır (mükerrer gönderim olmasın)
     if (d.wait_sec) { const end = Date.now() + d.wait_sec * 1000; const left = () => { const s = Math.max(0, Math.ceil((end - Date.now()) / 1000)), m = Math.floor(s / 60); return m ? `${m} dakika ${s % 60} saniye` : `${s} saniye`; };
       openModal(`<div style="padding:16px"><b>⏳ Mükerrer gönderim koruması</b><p>${esc(d.error.replace(/ Mükerrer.*$/, ""))}</p><p>Aynı kişiye aynı miktar için kalan süre: <b id="cnLeft">${left()}</b></p><p class="s" style="color:#fbbf24">⚠️ Gönderim çok acilse Selçuk Bey ile iletişime geçin.</p><button onclick="closeModal()">Tamam</button></div>`);
@@ -6058,7 +6123,7 @@ async function coinSend(again, force) { if (!cn || !cn.chk) return; const c = cn
     if (/Askıda|askıda|sonucu belirsiz|sonuçlanmadı|uzun süredir/.test(d.error)) { coinAskidaModal(d.error); return; } // 🪙 W55: önceki gönderim askıda → satırdaki Gitti / Gitmedi düğmelerine yönlendir
     closeModal(); toast("❌ " + d.error, true); return; }
   closeModal(); if (cn && cn.uid === cur) { chX.sent = { at: new Date().toISOString(), coins: c, by: (me && me.name) || "" }; renderChat(); } // ⚡ öneriler hemen kaybolur
-  if (d.certain) { coinIyimser(cn, c, name, d.report && d.report.order_id); toast("✅ " + (d.ok || "Gönderildi")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
+  if (d.certain) { coinIyimser(cn, c, name, d.report && d.report.order_id); toast("✅ " + (d.ok || "Gönderildi") + (d.cift_onay_gecti ? " · çift onayla gönderildi" : "")); send(`✅ ${c.toLocaleString("tr-TR")} coin göndərildi. Təşəkkür edirik! 🙏`, force ? { force: true } : { lockOk: true }); } // teşekkür sadece kesin gönderimde
   else toast("⚠️ Gönderim kesinleşmedi, teşekkür mesajı gönderilmedi", true);
   cn = null; }
 
@@ -6577,7 +6642,7 @@ async function molaDon() { await molaIs(async () => { const e = $("molaEkran"); 
   toast(`✅ Hoş geldin! Molan bitti (${Number(d.gercek_dk) || 0} dk${Number(d.gecikme_dk) ? ` · ${d.gecikme_dk} dk gecikme` : ""}) · ekibe haber verildi`); }); }
 async function molaUzat(dk) { await molaIs(async () => { const d = await api("mola_uzat", { dk }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : `➕ ${dk} dk uzatma istendi · nöbetçi onaylayınca uzar`, !!d.error); }); }
 async function molaUzatCevap(id, onay) { await molaIs(async () => { const d = await api("mola_uzat_cevap", { id, onay }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : onay ? "✅ Uzatma onaylandı" : "✋ Uzatma onaylanmadı", !!d.error); }); }
-async function molaBitir(id, ad) { if (!confirm(`${ad} adlı kişinin molası kapatılsın mı? (kayıt düzeltme — kişiye bildirim gider)`)) return;
+async function molaBitir(id, ad) { if (!(await onayKart({baslik:"Mola kapatılsın mı?",metin:`${ad} adlı kişinin molası kapatılsın mı? (kayıt düzeltme — kişiye bildirim gider)`,ayrinti:"Kayıt düzeltilir ve kişiye bildirim gider; mola kaydı silinmez.",onay:"Evet, kapat"}))) return;
   await molaIs(async () => { const d = await api("mola_don", { id }); if (d.durum) molaUygula(d.durum); toast(d.error ? "❌ " + d.error : `🛑 ${ad} molası kapatıldı`, !!d.error); }); }
 function molaYerelKapat() { const m = molaBen(); if (m) molaKapali = m.id; molaCiz(); } // yalnız bu cihazda: sunucuda hâlâ molada; şeritte "tekrar dene"
 addEventListener("hashchange", () => { if (location.hash === "#mola" && tok) molaSayfa(); });
@@ -6594,8 +6659,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.131"></script>
-<script src="durum.js?v=2.1.131"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.131"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.132"></script>
+<script src="durum.js?v=2.1.132"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.132"></script><!-- </sugo-veri> -->
 </body>
 </html>
