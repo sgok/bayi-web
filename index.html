@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.128">
+<meta name="build" content="2.1.129">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.128">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.128">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.128">
+<link rel="manifest" href="manifest.json?v=2.1.129">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.129">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.129">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -861,7 +861,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.128" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.129" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -870,7 +870,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.128" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.129" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -931,7 +931,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.128"></script>
+<script src="emoji.js?v=2.1.129"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1180,6 +1180,13 @@ const onDot = (x) => x && "on" in x && !isSys(x.id) ? `<i class="ondot ${x.on ? 
 function chOnUpd() { const el = $("chOn"); if (!el) return; const x = cur && !isSys(cur) ? inbox.find((i) => String(i.id) === cur) : null;
   el.hidden = !(x && "on" in x); if (x) { el.className = "ondot " + (x.on ? "on" : "off"); el.title = x.on ? "Çevrimiçi" : "Çevrimdışı"; } }
 const avHtml = (n, a) => initial(n) + (a ? `<img src="${esc(avUrl(a))}" loading="lazy" onerror="this.remove()">` : "");
+// 🕒 Para işlemi saati (satış, coin, alış, ödeme, nakit, banka, gider, borç): İstanbul (UTC+3) + Bakü (UTC+4) yan yana — "21:38 · Bakü 22:38".
+// İkisi de SABİT dilim (yaz saati yok), cihaz saatine bağlı değil. Bakü ertesi güne geçtiyse "Bakü 00:30 +1g". tarihli (varsayılan): İstanbul günü bugün değilse
+// önüne "Dün " / "13.11 " eklenir; false → yalnız saatler. Düz yazı döner (çağıran esc eder). Sohbet / oda / mesaj saatleri bunu KULLANMAZ (hm / rel).
+function pSaat(t, tarihli) { const ms = typeof t === "number" ? t : new Date(t).getTime(); if (!Number.isFinite(ms) || !ms) return "";
+  const ist = ms + 3 * 3600e3, bak = ms + 4 * 3600e3, gun = (x) => Math.floor(x / 864e5), iso = (x) => new Date(x).toISOString(), si = iso(ist), sb = iso(bak), fark = gun(bak) - gun(ist);
+  let on = ""; if (tarihli !== false) { const bg = gun(Date.now() + 3 * 3600e3), g = gun(ist); on = g === bg ? "" : g === bg - 1 ? "Dün " : si.slice(8, 10) + "." + si.slice(5, 7) + " "; }
+  return `${on}${si.slice(11, 16)} · Bakü ${sb.slice(11, 16)}${fark > 0 ? " +" + fark + "g" : ""}`; }
 function rel(ms) { if (!ms) return ""; const d = new Date(ms), now = new Date(); const hm = d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
   if (d.toDateString() === now.toDateString()) return hm; const y = new Date(now - 864e5); if (d.toDateString() === y.toDateString()) return "Dün " + hm; return d.toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" }); }
 
@@ -1550,9 +1557,9 @@ let chX = { pay: null, notes: [], rems: [], sent: null }, rems = {}, chFresh = n
 const sentAfter = (t) => !!(chX.sent && Date.parse(chX.sent.at) >= Date.parse(t) - 60_000); // bu andan sonra (1 dk pay) coin yüklendi mi
 const hm = (t) => { try { return new Date(t).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 function chatInfoHtml() { if (!cur || isSys(cur)) return ""; let h = ""; const p = chX.pay;
-  if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· ${hm(p.at)}'de verildi${p.by ? " · " + esc(p.by) : ""}</span>${can("kart") && p.result !== "undone" && p.result !== "unused" && !(p.ev && p.sure) ? `<button class="xundo" onclick="payUndo()">↩️ Geri al</button>` : ""}<br>${p.ev
+  if (p) h += `<div class="xinfo${p.ev ? " ok" : ""}" data-k="xpay">💳 <b>${esc(p.owner)} ${esc(PCS[p.bank] || p.bank)} ···${esc(p.last4)}</b> <span class="s">· verildi ${pSaat(p.at)}${p.by ? " · " + esc(p.by) : ""}</span>${can("kart") && p.result !== "undone" && p.result !== "unused" && !(p.ev && p.sure) ? `<button class="xundo" onclick="payUndo()">↩️ Geri al</button>` : ""}<br>${p.ev
     ? (() => { const r = payRound(p.ev.azn, p.ev.orig), co = Math.round(r * 1000), fark = r !== p.ev.azn;
-      return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${hm(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${sentAfter(p.ev.at) ? `<br>🪙 <b>${nf(chX.sent.coins)} coin yüklendi</b> <span class="s">· ${hm(chX.sent.at)}${chX.sent.by ? " · " + esc(chX.sent.by) : ""}</span>` : can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
+      return `✅ <b>${esc(String(p.ev.azn))} ₼</b>${p.ev.orig ? ` <span class="s">(${esc(p.ev.orig)})</span>` : ""} geldi · ${pSaat(p.ev.at)}${fark ? ` <span class="s">· çevirme farkıyla <b>${r} ₼</b> sayıldı</span>` : ""}${p.sure ? "" : ` <span class="s">(olabilir: aynı kart başkasına da verildiyse)</span>`}${sentAfter(p.ev.at) ? `<br>🪙 <b>${nf(chX.sent.coins)} coin yüklendi</b> <span class="s">· ${hm(chX.sent.at)}${chX.sent.by ? " · " + esc(chX.sent.by) : ""}</span>` : can("coin") && r > 0 ? `<button class="go" onclick="coinSuggest(${co})">⚡ ${nf(co)} coin yükle</button>` : ""}`; })()
     : p.result === "unused" ? "❌ 15 dk içinde bu karta para gelmedi" : p.result === "undone" ? "↩️ Kart verme geri alındı" : "⏳ Para bekleniyor…"}</div>`;
   for (const n of (chX.notes || []).slice(0, 3)) h += `<div class="xinfo note" data-k="xn${n.id}"><span class="xt">📝 ${emo(esc(n.body))} <span class="s">· ${esc(n.by_user || "")} · ${rel(Date.parse(n.at))}</span></span><button onclick="noteHide(${n.id})" aria-label="Notu kaldır">✕</button></div>`;
   for (const r of chX.rems || []) { const due = Date.parse(r.due_at), late = due <= Date.now();
@@ -2584,7 +2591,7 @@ function payAsk(np, body, pin, okMsg, label) { const ppl = np.people || [];
     <div class="paysum" id="paySum"></div></div>
     ${Array.isArray(np.mahsup) && !np.mahsup.length ? `<button class="payadd mhlink" id="mhLink" onclick="mhAraAc()">🧾 Coin / eski borçtan mahsup…</button>` : ""}
     <div id="payBtns" style="display:grid;gap:8px;margin-top:14px"><button class="go" id="payGo" onclick="payGo()" style="padding:14px;font-size:16px;overflow-wrap:anywhere"></button><div class="dkalt"><div id="dkWrap" class="dkrow" hidden></div><button id="payNo" onclick="payCancel()">Vazgeç</button></div></div>`);
-  payDraw(); }
+  payDraw(); if ($("payAmt")) kbFocus("payAmt", "sec"); } // ⌨️ tek alışta tutar kutusu odaklı + klavye açık (tüm yazı seçili)
 /** Durum: tutarlar, toplam, kalan, düğme yazısı */
 function payState() { const st = paySt, m = mhState(), full = Number(st.np.amount) || 0, total = payR2(Math.max(0, full - (m.bad ? 0 : m.sum))), on = payAmtOn();
   const amts = on ? st.parts.map((p) => payNum(p.amt)) : [total], sum = payR2(amts.reduce((t, v) => t + (Number.isFinite(v) ? v : 0), 0)), left = payR2(total - sum);
@@ -2677,7 +2684,7 @@ function mhDraw() { const st = paySt, M = st && st.mh, w = $("mhWrap"); if (!w) 
   const at = m.sum > 0 && !m.bad ? mhAtama(m.sum) : [], kt = at.length ? `Mahsubun yazılacağı alış: ${at.map(([b, v]) => `#${b} (${payN(v)} ₼)`).join(", ")} — en son alış önce${full - m.sum <= 0.009 ? " · banka adımı yok" : ""}` : "";
   if (kr.textContent !== kt) kr.textContent = kt; }
 function mhSync() { const st = paySt; if (!st) return; const s0 = mhState(), full = Number(st.np.amount) || 0; // tek hesaplı ödemede tutar = kalan (mahsup düşülmüş)
-  if (st.parts.length === 1 && !st.split) st.parts[0].amt = payN(Math.max(0, full - (s0.bad ? 0 : s0.sum))); }
+  if (st.parts.length === 1 && !st.split) { st.parts[0].amt = payN(Math.max(0, full - (s0.bad ? 0 : s0.sum))); const pa = $("payAmt"); if (pa && pa.value !== st.parts[0].amt) { pa.value = st.parts[0].amt; if (document.activeElement === pa) { try { pa.select(); } catch (e) {} } } } } // tutar kutusu odaktayken de (iPhone'da düğme odağı almaz) kalan tutar hemen yazılır
 function mhSec(i) { const st = paySt; if (!st || st.busy || !st.mh) return; const x = st.mh.list[i]; if (!x) return;
   if (x.on) { x.on = false; x.amt = ""; } else { x.on = true; const m = mhState().max(x); if (!(m > 0.009)) { x.on = false; toast("Alışın tamamı zaten mahsup edildi", true); return; } x.amt = payN(m); }
   mhSync(); payDraw(); }
@@ -2850,7 +2857,7 @@ function dkBagDigDraw() { const b = dkBag, w = $("dkBagDig"), el = $("dkBagDigLi
   const gor = b.dig.filter((x) => b.ds.has(x.batch) || uy(x)).slice(0, 40); // seçilenler süzgeçte de görünür; sıra sabit (dokununca kaymaz)
   const sig = JSON.stringify([gor.map((x) => x.batch), [...b.ds]]);
   if (sig !== b.dsig) { b.dsig = sig; el.innerHTML = gor.length ? gor.map((x) => { const on = b.ds.has(x.batch);
-      return `<button type="button" data-dk="dsec" data-b="${esc(String(x.batch))}" class="${on ? "on" : ""}" aria-pressed="${on}">${on ? "✓ " : ""}${esc(dkKisa(x.ad || "Alış #" + x.batch))}${x.uid ? " · " + esc(x.uid) : ""} · ${esc(payN(x.tutar))} ₼ · ${esc(dkSaat(x.at))}${x.anildi ? " · 💬 bu sohbette" : x.gun ? " · aynı gün" : ""}</button>`; }).join("")
+      return `<button type="button" data-dk="dsec" data-b="${esc(String(x.batch))}" class="${on ? "on" : ""}" aria-pressed="${on}">${on ? "✓ " : ""}${esc(dkKisa(x.ad || "Alış #" + x.batch))}${x.uid ? " · " + esc(x.uid) : ""} · ${esc(payN(x.tutar))} ₼ · ${esc(pSaat(x.at, false))}${x.anildi ? " · 💬 bu sohbette" : x.gun ? " · aynı gün" : ""}</button>`; }).join("")
     : `<span class="s">Eşleşen yok</span>`; }
   const s0 = dkBagSecim(b), t = b.ds.size ? `📎 ${s0.n} kayıt · ${payN(s0.top)} ₼ — dekont tutarıyla karşılaştırın` : ""; if (tp.textContent !== t) tp.textContent = t; }
 function dkBagUyGuncelle() { const b = dkBag, u = $("dkBagUy"); if (!b || !u || !b.list) return; const sec = b.list.filter((x) => b.sec.has(x.batch));
@@ -2897,7 +2904,7 @@ function dkTopluHtml(D, T) { const ad = dkAdaylar(D, T); if (!ad.length) return 
   const sat = (D.satirlar || []).filter((x) => Number(x.batch) === T.batch || T.ek.has(Number(x.batch))), top = sat.reduce((a, x) => a + (dkOdeme(x) || Number(x.tutar) || 0), 0);
   return `<div class="dktop"><div class="s">🔗 Bu dekont başka ödemeleri de kapsıyorsa (toplu ödeme) onları da işaretleyin:</div>
     <div class="paychips">${ad.map(({ r, kart, gun }) => { const b = Number(r.batch), on = T.ek.has(b), hs = [...dkKartlar(r)].join(", ");
-      return `<button type="button" data-dk="tsec" data-b="${esc(String(b))}" class="${on ? "on" : ""}" aria-pressed="${on}">${on ? "✓ " : ""}${esc(r.ad || (r.uid ? "UID " + r.uid : "Alış #" + b))} · ${esc(payN(dkOdeme(r) || r.tutar))} ₼${dkSaat(r.acildi_at) ? " · " + esc(dkSaat(r.acildi_at)) : ""}${kart ? " · 💳 aynı kart" : gun ? " · aynı gün" : hs ? " · " + esc(hs) : ""}</button>`; }).join("")}</div>
+      return `<button type="button" data-dk="tsec" data-b="${esc(String(b))}" class="${on ? "on" : ""}" aria-pressed="${on}">${on ? "✓ " : ""}${esc(r.ad || (r.uid ? "UID " + r.uid : "Alış #" + b))} · ${esc(payN(dkOdeme(r) || r.tutar))} ₼${pSaat(r.acildi_at, false) ? " · " + esc(pSaat(r.acildi_at, false)) : ""}${kart ? " · 💳 aynı kart" : gun ? " · aynı gün" : hs ? " · " + esc(hs) : ""}</button>`; }).join("")}</div>
     ${T.ek.size ? `<div class="dkad">📎 ${sat.length} kayıt · ${esc(payN(top))} ₼ — dekont tutarıyla karşılaştırın</div>` : ""}</div>`; }
 function dkListeDraw() { const st = dkListeSt, D = st && st.d, el = $("dkList"); if (!D || !el) return;
   document.querySelectorAll(".dktabs button").forEach((b) => b.classList.toggle("on", b.dataset.i === st.sekme));
@@ -3052,7 +3059,7 @@ function renderChat(scroll) {
   for (const c of cns) items.push({ k: "c" + c.tx, at: Date.parse(c.at), html: `<div class="coin ${c.paid_at ? "paid" : ""}">💎 <b>${Number(c.diamonds || 0).toLocaleString("tr-TR")} elmas</b> bozdurdu → ${Number(c.amount || 0).toLocaleString("tr-TR")} coin<br>
       ${c.paid_at ? `✅ Ödendi ${esc(String(c.pay_azn))} ₼${whoPaid(c.paid_note)} <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false)">geri al</button>`
       : c.paid_part > 0 ? `<span class="partl">${partTxt(c.paid_part, c.pay_azn)}</span>${whoPaid(c.paid_note)} <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button> <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false,1)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
-      <div class="s">${rel(Date.parse(c.at))} · sadece sizde görünür</div>${okSatir(c.odeme, c.odeme && c.batch ? cns.filter((x) => x.batch === c.batch).length : 1)}</div>` }); // 🧾 yönetici: ödeme kartı (sunucu yalnız ona koyar)
+      <div class="s">${pSaat(c.at)} · sadece sizde görünür</div>${okSatir(c.odeme, c.odeme && c.batch ? cns.filter((x) => x.batch === c.batch).length : 1)}</div>` }); // 🧾 yönetici: ödeme kartı (sunucu yalnız ona koyar)
   // Bu ekrandan gönderilenler (myOut): Sugo onayına kadar soluk, hata olursa kırmızı; asıl mesaj gelince AYNI balon (düğüm) onun hâlini alır (keyAlias)
   for (const o of mine) { if (o.mid && inHist.has(o.mid)) continue;
     const stt = o.status === "failed" ? `❌ gitmedi: ${esc(o.err || "")}` : o.status === "unsure" ? "⏳ kontrol ediliyor…" : `${rel(Date.parse(o.created_at))} <span class="tk">${o.status === "sent" ? "✓" : "⏳"}</span>`; // asıl balonla aynı düzen (saat + işaret): gelince kaymaz
@@ -3349,7 +3356,7 @@ async function loadCoins(more) { if (!can("coins")) return; if (more) coinLimit 
 /** 🪙 W55 (0207): sonucu belirsiz kalan gönderim — listede "⏳ Askıda"; yalnız sahipte (dzOk) "Gitti / Gitmedi" düğmeleri (sunucu da yalnız sahip + PIN ister) */
 function askRow(x) { const ad = x.ad || "UID " + x.uid;
   return `<div class="row askrow" data-ask="${esc(x.id)}"><div class="av">${avHtml(x.ad, (people[x.uid] || {}).av)}</div>
-    <div class="b"><div class="t"><b>${esc(ad)}</b><span class="s">${rel(Date.parse(x.at))}</span></div>
+    <div class="b"><div class="t"><b>${esc(ad)}</b><span class="s">${pSaat(x.at)}</span></div>
       <div class="s"><span class="gc"></span> <b style="color:var(--text)">${nf(x.coins)} coin</b>${x.azn != null ? " · " + azn(x.azn) : ""} · UID ${esc(x.uid)}</div>
       <div class="s"><span style="color:#fbbf24">⏳ Askıda — sonucu belli değil</span>${x.by ? ` · gönderen <b style="color:var(--text)">(${esc(x.by)})</b>` : ""} · #${esc(x.id)}</div>
       ${dzOk() ? `<div class="s dzact askbtn"><button class="dzb" data-dz="askida-gitti" onclick="event.stopPropagation();dzAskidaAc(${Number(x.id)},'gitti')">✅ Gitti</button><button class="dzb" data-dz="askida-gitmedi" onclick="event.stopPropagation();dzAskidaAc(${Number(x.id)},'gitmedi')">❌ Gitmedi</button></div>` : ""}</div></div>`; }
@@ -3367,7 +3374,7 @@ function renderCoins() { const c = coinData; if (!c) return; const td = c.today 
     ${(c.askida || []).map(askRow).join("")}
     ${(c.orders || []).map((o) => { const st = OST[o.status] || ["•", o.status, "var(--muted)"], net = Number(o.coins) - Number(o.recalled_coins || 0), rk = rcRenk(o);
       return `<div class="row${rk ? " " + rk.c : ""}" onclick="pick('${esc(o.buyer_uid)}')"><div class="av tap" onclick="event.stopPropagation();prof('${esc(o.buyer_uid)}')">${avHtml(o.buyer_name, (people[o.buyer_uid] || {}).av)}</div>
-        <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${rel(Date.parse(o.ordered_at))}</span></div>
+        <div class="b"><div class="t"><b>${esc(o.buyer_name || "UID " + o.buyer_uid)}</b><span class="s">${pSaat(o.ordered_at)}</span></div>
           <div class="s"><span class="gc"></span> <b class="rcamt" style="color:var(--text)">${nf(net)} coin</b>${o.recalled_coins ? ` <span>(${nf(o.recalled_coins)} geri çekildi)</span>` : ""} · ${azn(o.expected_azn || 0)} · UID ${esc(o.buyer_uid)}</div>
           <div class="s"><span style="color:${st[2]}">${o._iyimser ? "⏳ panelden okunuyor" : st[0] + " " + st[1]}</span>${o.by ? ` · gönderen <b style="color:var(--text)">(${esc(o.by)})</b>` : " · SugoCoins'ten"}${rcRozet(o)}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}${rcOwn() && o.rc && o.rc.can && !o._iyimser ? `<div class="s" style="text-align:right"><button class="rcb" style="padding:3px 10px;font-size:13px" onclick="event.stopPropagation();rcOpen('${esc(o.order_id)}')">↩️ Geri çağır</button></div>` : ""}${dzOk() && o.status === "open" && !Number(o.recalled_coins || 0) && !o._iyimser && !(o.rc && o.rc.state) ? `<div class="s dzact" style="text-align:right"><button class="dzb" data-dz="oda" onclick="event.stopPropagation();dzOdaAc('${esc(o.order_id)}')">🎁 Oda desteği – gider olarak kapat</button></div>` : ""}</div></div>`; }).join("") || '<div class="row s">Henüz satış yok.</div>'}
     ${(c.orders || []).length < c.total ? `<div style="padding:12px;text-align:center"><button onclick="loadCoins(true)">⬇️ Daha fazla (+40)</button></div>` : ""}
@@ -3418,7 +3425,7 @@ function ioHtml() { const [a, z] = ioRange(), inR = IO.rows.filter((r) => { cons
   const sum = `<div class="iosum"><div><small>⬇️ Giren</small><b class="ioin">+${nf(gir)}</b></div><div><small>⬆️ Çıkan</small><b class="ioout">−${nf(cik)}</b></div><div><small>Net</small><b>${gir - cik >= 0 ? "+" : "−"}${nf(Math.abs(gir - cik))}</b></div>
     ${yonOk() ? `<div class="iobal"><small>Aralık başı → sonu bakiye</small><b>${bas != null && tam ? nf(bas) : "…"} → ${son && son.result_amount != null ? nf(son.result_amount) : "—"}</b></div>` : ""}</div>`;
   const row = (r) => { const g = ioIn(r), [, tl] = ioTur(r), o = ioOrder(r), rk = o ? rcRenk(o) : null, t = Date.parse(r.at), nm = r.nickname || (r.uid ? "UID " + r.uid : "");
-    const when = odaDay(t) === odaDay(Date.now()) ? hm(r.at) : rcTarih(r.at);
+    const when = pSaat(r.at);
     return `<div class="row iorow${rk ? " " + rk.c : ""}"><div class="ioar ${g ? "ioin" : "ioout"}" aria-label="${g ? "giriş" : "çıkış"}">${g ? "⬇️" : "⬆️"}</div><div class="b"><div class="t"><b>${r.uid ? `<span class="tap" onclick="prof('${esc(r.uid)}')">${esc(nm)}</span>` : esc(nm || tl)}</b><span class="s">${when}</span></div>
       <div class="s">${esc(tl)}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null && yonOk() ? " · sonra " + nf(r.result_amount) : ""}${o ? rcRozet(o) : ""}</div>${rk ? `<div class="s rcinfo">${rk.t}</div>` : ""}</div><b class="ioamt rcamt ${g ? "ioin" : "ioout"}">${g ? "+" : "−"}${nf(r.amount)}</b></div>`; };
   return `<div class="iof">${ch("range", "bugun", "Bugün")}${ch("range", "dun", "Dün")}${ch("range", "7g", "Son 7 gün")}</div>
@@ -3433,19 +3440,19 @@ const rcOwn = () => yonOk();
 const RCB = { iade_bekleniyor: ["↩️ iade bekleniyor (inceleme)", "#fbbf24"], iade_geldi: ["↩️ geri çekildi · iade geldi", "#94a3b8"], inceleme_reddetti: ["⛔ inceleme reddetti", "#f87171"], belirsiz: ["⚠️ geri çağırma belirsiz", "#fbbf24"], gonderiliyor: ["⏳ geri çağırma gönderiliyor", "#94a3b8"] };
 // 🎨 Geri çağrılan gönderim satırları ayrı renkte (kullanıcı 13.11): kehribar = iade bekleniyor · turkuaz = iade geldi (coin hesabımıza geri yattı) · kırmızı = Sugo reddetti.
 // Renk tek başına değil: ikon + metin satırı da var. Kullanıcı 13.11: "geri çağrılan coinslerin hesaba yattığını herkes görebilir" → rc kime gelirse rozet + renk + özet onda; ↩️ Geri çağır düğmesi yalnız yönetici + rc.can.
-const rcTarih = (t) => { const d = new Date(t); if (isNaN(d)) return ""; const p = (n) => String(n).padStart(2, "0"); return `${p(d.getDate())}.${p(d.getMonth() + 1)} ${p(d.getHours())}:${p(d.getMinutes())}`; }; // 13.11 20:27
+const rcTarih = (t) => pSaat(t); // 13.11 20:27 · Bakü 21:27 (para işlemi saati)
 function rcRenk(o) { const s = o && o.rc && o.rc.state, n = Number(o && (o.recalled_coins || o.coins)) || 0;
   if (s === "iade_bekleniyor") return { c: "rc-bek", t: `⏳ ↩️ ${nf(n)} coin geri çağrıldı · iade bekleniyor` };
   if (s === "iade_geldi") return { c: "rc-geldi", t: `✅ ↩️ +${nf(n)} geri geldi · coin hesabımıza yattı${o.rc.refunded_at ? " · " + rcTarih(o.rc.refunded_at) : ""}` };
   if (s === "inceleme_reddetti") return { c: "rc-red", t: "⛔ Sugo reddetti · iade edilmedi — satış geri açıldı" };
   return null; }
 function rcRozet(o) { if (!o.rc || !o.rc.state || !RCB[o.rc.state]) return ""; const b = RCB[o.rc.state];
-  return ` · <span class="rcr" style="color:${b[1]}">${b[0]}${o.rc.state === "iade_geldi" && o.rc.refunded_at ? " " + rel(Date.parse(o.rc.refunded_at)) : ""}</span>`; }
+  return ` · <span class="rcr" style="color:${b[1]}">${b[0]}${o.rc.state === "iade_geldi" && o.rc.refunded_at ? " " + pSaat(o.rc.refunded_at) : ""}</span>`; }
 let rcCur = null;
 async function rcOpen(oid) { if (!rcOwn()) return; const o = ((coinData && coinData.orders) || []).find((x) => String(x.order_id) === String(oid)); if (!o) return;
   rcCur = { o, prev: null };
   openModal(`<div style="padding:4px 2px"><h3 style="margin:0 0 6px">↩️ Coin geri çağır</h3>
-    <div class="s">👤 <b style="color:var(--text)">${esc(o.buyer_name || "UID " + o.buyer_uid)}</b> · UID ${esc(o.buyer_uid)}<br>🪙 <b style="color:var(--text)">${nf(o.coins)} coin</b> · ${azn(o.expected_azn || 0)} · ${rel(Date.parse(o.ordered_at))} · sipariş …${esc(String(o.order_id).slice(-4))}</div>
+    <div class="s">👤 <b style="color:var(--text)">${esc(o.buyer_name || "UID " + o.buyer_uid)}</b> · UID ${esc(o.buyer_uid)}<br>🪙 <b style="color:var(--text)">${nf(o.coins)} coin</b> · ${azn(o.expected_azn || 0)} · ${pSaat(o.ordered_at)} · sipariş …${esc(String(o.order_id).slice(-4))}</div>
     <div id="rcBody" style="margin-top:10px;min-height:120px"><div class="s">⏳ Panel kontrol ediliyor…</div></div></div>`);
   const d = await api("coin_recall_check", { order_id: String(oid) }); // ön kontrol: pencere açılınca BİR kez (panelde hiçbir şey göndermez)
   if (!rcCur || rcCur.o !== o || !$("rcBody")) return;
@@ -3503,11 +3510,11 @@ function dmMenApply() { if (!dmData || dmMenSig() === dmMenDrawn) return; if (!d
   if (!ch.length || ch.every((b) => b.getBoundingClientRect().bottom >= innerHeight)) renderDm(); }
 function dmMenHtml(p) { return dmMenOf(p).map((x) => `<button class="dmmen" onclick="event.stopPropagation();msgHit('${esc(String(x.c))}','${esc(String(x.mid))}')">↪ <b>${nmH(x.c, x.n || "")}</b> yazdı · ${rel(Date.parse(x.at))}${x.t ? ` <q>${esc(String(x.t).slice(0, 60))}</q>` : ""} ›</button>`).join(""); }
 function dmRow(r, noPay) { if (dmOwn(r)) return `<div class="row dmown"><div class="av" style="background:linear-gradient(135deg,#38bdf8,#0369a1)">💎</div>
-  <div class="b"><div class="t"><b>🔁 Kendi bozum</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="b"><div class="t"><b>🔁 Kendi bozum</b><span class="s">${pSaat(r.at)}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · bayi hesabı</div></div>
   <div style="text-align:right;color:#4ade80;font-weight:700;white-space:nowrap">+${nf(r.amount)} coin</div></div>`;
   return `<div class="row" ${r.conv || r.uid ? `onclick="openChat('${esc(r.conv || r.uid)}')"` : ""}><div class="av">${avHtml(r.nickname, r.avatar)}</div>
-  <div class="b"><div class="t"><b>${r.uid ? nmH(r.uid, r.nickname || "UID " + r.uid) : esc(r.nickname || "")}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  <div class="b"><div class="t"><b>${r.uid ? nmH(r.uid, r.nickname || "UID " + r.uid) : esc(r.nickname || "")}</b><span class="s">${pSaat(r.at)}</span></div>
   <div class="s">💎 <b>${nf(r.diamonds)} elmas</b> → ${nf(r.amount)} coin · UID ${esc(r.uid || "")}</div></div>
   <div style="text-align:right">${r.paid_at ? `<div style="color:#4ade80;font-weight:700">✅ ${azn(r.pay_azn)}</div><div class="s">${whoPaid(r.paid_note)}</div><button style="padding:4px 8px;font-size:12px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',false)">geri al</button>`
     : `<div style="color:var(--warn);font-weight:700">${azn(r.paid_part > 0 ? Math.max(0, Math.round((r.pay_azn - r.paid_part) * 100) / 100) : r.pay_azn)}</div>${noPay ? "" : `<button class="go" style="padding:6px 10px;font-size:13px" data-pe onclick="event.stopPropagation();coinPaid('${esc(r.tx)}',true)">💸 Ödendi</button>`}`}</div></div>`
@@ -3545,7 +3552,7 @@ async function crOpen(more) { if (!can("coins")) { toast("Coin hareketlerini gö
   const d = await api("bayi_coins_get", { all: true, limit: crLimit }); const rep = d.report || {}, rows = rep.coins || [], u = rep.unpaid || {};
   if (!$("crList")) return; if (d.error) { $("crList").innerHTML = `<div class="row s">❌ ${esc(d.error)}</div>`; return; }
   $("crSum").textContent = `(${rows.length}/${Math.max(rows.length, (rep.total || 0) - (Number(rep.gizli) || 0))}${u.n ? ` · ${u.n} ödenmemiş elmas, ${azn(u.pay)}` : ""})`;
-  $("crList").innerHTML = rows.length ? rows.filter((r) => yonOk() || !dmOwn(r)).map((r) => r.diamonds ? dmRow(r) : `<div class="row"><div class="av">${avHtml(r.nickname, r.avatar)}</div><div class="b"><div class="t"><b>${esc(r.nickname || (r.uid ? "UID " + r.uid : r.type_name || ""))}</b><span class="s">${rel(Date.parse(r.at))}</span></div>
+  $("crList").innerHTML = rows.length ? rows.filter((r) => yonOk() || !dmOwn(r)).map((r) => r.diamonds ? dmRow(r) : `<div class="row"><div class="av">${avHtml(r.nickname, r.avatar)}</div><div class="b"><div class="t"><b>${esc(r.nickname || (r.uid ? "UID " + r.uid : r.type_name || ""))}</b><span class="s">${pSaat(r.at)}</span></div>
       <div class="s">${esc(r.type_name || "")}${r.uid ? " · UID " + esc(r.uid) : ""}${r.result_amount != null && yonOk() ? " · bakiye sonrası " + nf(r.result_amount) : ""}</div></div><b style="color:${r.op_type === 1 ? "#4ade80" : "#f87171"}">${r.op_type === 1 ? "+" : "−"}${nf(r.amount)}</b></div>`).join("")
     + ((rep.total || 0) - (Number(rep.gizli) || 0) > rows.length ? `<div style="padding:12px;text-align:center"><button onclick="crOpen(true)">⬇️ Daha fazla (+20)</button></div>` : "") : '<div class="row s">Henüz coin kaydı yok.</div>'; }
 // 💎 Tüm elmas bozumları (ödenen / ödenmeyen): yalnız müşterilerin elmas bozumları (bayi_coins_get, all OLMADAN; sunucu op_type 1 / function_type 22 / uid'li süzer), 20'şer sayfa (offset)
@@ -3739,7 +3746,7 @@ function oxDraw() { const b = $("oxBody"); if (b) b.innerHTML = oxHtml(); }
 /** Bozum yapıldı (bayi_exchange cevabı): hemen listede + özette, sonra sunucudan tazele (kayıt Sugo'dan birkaç saniye sonra düşebilir) */
 function oxAfter(ex) { if (ex && Number(ex.diamonds) > 0) oxPend.unshift({ tx: "yerel-" + Date.now(), at: new Date().toISOString(), diamonds: Number(ex.diamonds), coins: Number(ex.coins) || 0, by: (me && me.name) || "", pend: true });
   if (ox) ox.at = 0; oxDraw(); if ($("oxBody")) { oxLoad(); setTimeout(() => { if ($("oxBody") && oxPend.length) oxLoad(); }, 8000); } }
-const oxWhen = (t) => { try { return new Date(t).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+const oxWhen = (t) => pSaat(t); // para işlemi saati: İstanbul + Bakü
 const oxRow = (r) => `<div class="row oxrow"><div class="av" style="background:linear-gradient(135deg,#38bdf8,#0369a1)">💎</div><div class="b"><div class="t"><b>${nf(r.diamonds)} elmas</b><span class="s">${r.pend ? "az önce" : oxWhen(r.at)}</span></div>
   <div class="s">→ <b style="color:#fbbf24">${nf(r.coins)} coin</b> · ${r.pend ? "⏳ kayıt bekleniyor" : r.by ? "👤 " + esc(r.by) : "📱 tablet / Sugo"}</div></div></div>`;
 function oxHtml() { const x = ox, S = (x && x.sums) || {}, pd = oxPend.reduce((a, r) => ({ n: a.n + 1, diamonds: a.diamonds + r.diamonds, coins: a.coins + r.coins }), { n: 0, diamonds: 0, coins: 0 });
@@ -3773,8 +3780,7 @@ function nkSifirla() { nk = null; nkErr = ""; nkIlk = false; nkRed = false; nkAc
   try { localStorage.removeItem("bw_pane_nakit"); } catch (e) {} const b = $("nkBody"); if (b) { b.innerHTML = ""; b.__h = ""; b.hidden = true; } }
 const nkPara = (x, isaret) => { const n = Number(x) || 0, a = Math.abs(n).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }), i = a.lastIndexOf(",");
   return `<span class="nkn">${n < 0 ? "−" : isaret && n > 0 ? "+" : ""}${a.slice(0, i)}<small>${a.slice(i)}</small>&nbsp;₼</span>`; };
-const nkSaat = (t) => { if (!t) return ""; const d = new Date(t); if (isNaN(d)) return ""; const hm = d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }), g = new Date(); g.setHours(0, 0, 0, 0);
-  if (d >= g) return hm; if (d >= g.getTime() - 86400e3) return "dün " + hm; return d.toLocaleDateString("tr-TR", { day: "numeric", month: "short" }) + " " + hm; };
+const nkSaat = (t) => pSaat(t); // para işlemi saati: İstanbul + Bakü (pSaat)
 const nkBankAd = (h, kisi) => { const l = String(h.label || h.bank || ""); return kisi && l.toLocaleLowerCase("tr").startsWith(kisi.toLocaleLowerCase("tr") + " ") ? l.slice(kisi.length + 1) : l; };
 const NK_DAY = { banka: "banka bildirimi", elle: "elle bakiye", hesaplanan: "hesaplanan" };
 const nkTag = (h) => `<span class="nktag ${esc(h.src)}">${NK_DAY[h.src] || "hesaplanan"}${h.src_at ? " · " + esc(nkSaat(h.src_at)) : ""}</span>`;
@@ -5984,7 +5990,7 @@ function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0,
     <input id="cnIn" inputmode="numeric" placeholder="Coin miktarı (ör. 50000)" oninput="coinAmt(Number(this.value.replace(/\\D/g,'')),true)">
     ${me && (me.coin_max || me.coin_day) ? `<div class="s" style="margin-top:6px;color:var(--warn)">🪙 Limitiniz: ${me.coin_max ? "tek seferde en fazla " + nf(me.coin_max) : ""}${me.coin_max && me.coin_day ? " · " : ""}${me.coin_day ? "günde en fazla " + nf(me.coin_day) : ""} coin</div>` : ""}
     <div id="cnInfo" class="s" style="margin:10px 0;min-height:40px">Miktar seçin.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); }
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button onclick="closeModal()">Vazgeç</button><button class="go" id="cnGo" disabled onclick="coinSend()">Gönder</button></div>`); kbFocus("cnIn"); } // ⌨️ miktar kutusuna hemen odak + klavye (dokunuşun içinde; odak olayı pencereyi ilk boyamadan önce üste taşır)
 let cnT = 0;
 function coinAmt(c, typing) { if (!cn) return; cn.coins = c || 0; if (!typing) $("cnIn").value = c ? String(c) : ""; $("cnGo").disabled = true;
   $("cnInfo").innerHTML = c >= 1000 ? `⏳ kontrol ediliyor…` : "En az 1.000 coin"; clearTimeout(cnT); if (c < 1000) return;
@@ -6557,8 +6563,8 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.128"></script>
-<script src="durum.js?v=2.1.128"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.128"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.129"></script>
+<script src="durum.js?v=2.1.129"></script>
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.129"></script><!-- </sugo-veri> -->
 </body>
 </html>
