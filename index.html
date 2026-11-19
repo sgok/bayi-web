@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.139">
+<meta name="build" content="2.1.140">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.139">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.139">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.139">
+<link rel="manifest" href="manifest.json?v=2.1.140">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.140">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.140">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -916,7 +916,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.139" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.140" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -925,7 +925,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.139" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.140" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -987,7 +987,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.139"></script>
+<script src="emoji.js?v=2.1.140"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1446,10 +1446,10 @@ function tkSor(ne) { const yap = ne === "yap"; tkIstek = tkYeni();
   openModal(`<h3 style="margin:0 0 8px">${yap ? "🚨 Tablet kayboldu mu?" : "✅ Tablet bulundu mu?"}</h3><div class="tkm">`
     + (yap ? `<b>Onaylarsanız şunlar olur:</b><ul><li>Tabletin sunucuyla bağlantısı <b>hemen kesilir</b>: veri okuyamaz, coin gönderemez, mesaj atamaz, komut alamaz.</li><li>Tabletteki Web Bayi oturumu kapanır; işaret kalkana kadar giriş yapamaz.</li><li>Banka telefonları, bu panel ve öteki cihazlar <b>etkilenmez</b>.</li><li>Hiçbir kayıt silinmez; kimin ne zaman işaretlediği saklanır.</li></ul><div class="tkw">Ofisteki tablet de kapanır. Tablet bulunursa buradan geri açarsınız. Tabletin içinde kayıtlı Sugo şifreleri sunucudan silinemez: çalındıysa Sugo şifrelerini de değiştirin.</div>`
       : `<b>Onaylarsanız:</b><ul><li>Tablet sunucuya yeniden bağlanır; veri okur, komut alır.</li><li>Tabletteki Web Bayi'ye yeniden giriş yapılması gerekir.</li></ul><div class="tkw">Tablet çalındıysa ve elinize geçmediyse bunu yapmayın.</div>`)
-    + `</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="sysPop()">Vazgeç</button><button class="go" onclick="tkOnay('${ne}')">${yap ? "Devam: PIN gir" : "Devam: PIN gir"}</button></div>`, true); }
-async function tkOnay(ne) { if (tkBusy) return; const pin = await askPin(ne === "yap" ? "Tablet kayboldu: işlem PIN'i" : "Tablet bulundu: işlem PIN'i", true); if (!pin) { sysPop(); return; }
-  tkBusy = true; let d; try { d = await api(ne === "yap" ? "tablet_kayip_yap" : "tablet_kayip_geri", { pin, istek: tkIstek || tkYeni() }); } finally { tkBusy = false; }
-  if (d && d.pin === "wrong") { toast("❌ " + (d.error || "PIN yanlış"), true); tkSor(ne); return; } // aynı pencere, aynı istek kimliği olmasın: yeni kimlik
+    + `</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="sysPop()">Vazgeç</button><button class="go" onclick="tkOnay('${ne}')">Devam</button></div>`, true); }
+async function tkOnay(ne) { if (tkBusy) return; const yap = ne === "yap"; // 19.11: PIN yok; son onay açıklamalı kartta (sunucuda kalan kapı: yalnız yönetici oturumu)
+  if (!(await onayKart({ baslik: yap ? "Tablet kayboldu olarak işaretlensin mi?" : "Tablet bulundu olarak işaretlensin mi?", metin: yap ? "Tabletin sunucu erişimi hemen kesilir; Web Bayi oturumu kapanır." : "Tablet sunucuya yeniden bağlanır; Web Bayi'ye yeniden giriş gerekir.", ayrinti: yap ? "Hiçbir kayıt silinmez; kimin ne zaman işaretlediği saklanır. Geri alma: Tablet bulundu." : "Tablet çalındıysa ve elinize geçmediyse bunu yapmayın.", onay: yap ? "Evet, erişimi kes" : "Evet, yeniden yetkilendir", tehlike: yap }))) return;
+  tkBusy = true; let d; try { d = await api(yap ? "tablet_kayip_yap" : "tablet_kayip_geri", { istek: tkIstek || tkYeni() }); } finally { tkBusy = false; }
   if (!d || d.error) { toast("❌ " + ((d && d.error) || "Kaydedilemedi"), true); sysPop(); return; }
   if (d.report && d.report.tablet) tkD = d.report.tablet; toast(d.ok || "Tamam"); sysPop(); }
 // 📋 Sistem durumu › Sürüm notları (15.11, kullanıcı: "sistem durumu içinde bir sekme koy oradan tıklayıp detaylara bakalım. sadece yönetici görebilir").
@@ -3181,6 +3181,7 @@ function renderChat(scroll) {
     items.push({ k: "o" + o.id, at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? "📷 Resim" : o.kind === "media" ? "🎤 Sesli mesaj" : emo(esc(obText(o))) + cardTag(obText(o))}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${stt}</div></div>` });
   }
   for (const p of rpend) if (p.c === cur && Date.now() - p.at < 60_000) items.push({ k: "p" + p.at, at: p.at, html: `<div class="m me ${p.fail ? "fail" : "pend"}">${emo(esc(p.t || ""))}<div class="tm">${p.fail ? "❌ gitmedi: " + esc(p.fail) : "⏳ gönderiliyor…"}</div></div>` });
+  try { if (window.GolgeKutu && cur && !isSys(cur)) { const gc = String(cur); GolgeKutu.ekle(items, { conv: gc, sahip: () => isSahip(), api: api, yenile: () => { if (cur === gc) renderChat(false); }, aktif: () => cur === gc && !document.hidden }); } } catch (e) {} // 🌘 gölge kutusu (yalnız sahip, her çizimde CANLI denetlenir: sahip değilse bağlam / önbellek temizlenir; dosya yüklenmezse / hata olursa sohbet aynen)
   items.sort((a, b) => a.at - b.at);
   let lastDay = "", h = "";
   for (const it of items) { const d = new Date(it.at).toLocaleDateString("tr-TR"); if (d !== lastDay) { h += `<div class="day" data-k="d${d}">${d}</div>`; lastDay = d; }
@@ -4534,13 +4535,13 @@ function odaBkHtml() { const d = odaBkDurum(), bek = !!odaBk.bekle;
   if (bek || (!d.bilinen && !d.koltuk)) h = h.replace('<button type="button"', `<button type="button" disabled${bek ? ' aria-busy="true"' : ""}`).replace('class="swrow"', bek ? 'class="swrow bkw"' : 'class="swrow"');
   return h; }
 function odaBkApply() { const b = $("odaBody") && $("odaBody").querySelector(":scope > .otopw .obkr"); if (!b) return;
-  const h = odaBkVar() ? odaBkHtml() : ""; if (b.dataset.h !== h || (h && !b.firstChild)) { b.dataset.h = h; b.innerHTML = h; } }
-window.odaBkDegis = async function (ac, no) { if (odaBk.bekle || !odaBkVar()) return; let pin = ""; no = Number.isInteger(no) && no >= 1 ? no : 0; // no: boş koltuk menüsünden (1 tabanlı; sunucu ve tablet de 1 tabanlı)
-  if (ac) { if (!(await onayKart({ baslik: no ? `Selçuk ${no}. koltuğa oturtulsun mu?` : "Selçuk mikrofona oturtulsun mu?", metin: `Selçuk hesabı odada ${no ? no + ". koltuğa" : "boş bir koltuğa"} oturur. Mikrofon KAPALI kalır, ses gitmez (ses ayrı aşama). 30 dakika sonra kendiliğinden kalkar.`, ayrinti: "Komut Selçuk hesabıyla tablete gönderilir; istediğiniz an anahtarı kapatıp kaldırabilirsiniz (kaldırmak için PIN gerekmez). Dakikada en çok 2 deneme yapılabilir.", onay: "Evet, oturt" }))) return;
-    pin = await askPin("Selçuk'u koltuğa oturtmak için işlem PIN'iniz", true); if (!pin) return; }
-  odaBk.bekle = 1; odaBkApply(); const body = ac ? (no ? { kind: "mikotur", pin, no } : { kind: "mikotur", pin }) : { kind: "mikkalk" }; let r; try { r = await odaModIste(body); } finally { odaBk.bekle = 0; }
+  const h = odaBkVar() ? odaBkHtml() : ""; if (b.dataset.h !== h || (h && !b.firstChild)) { b.dataset.h = h; b.innerHTML = h; }
+  try { if (window.bk2Apply) bk2Apply(b); } catch (e) {} } // 🎙️ aşama 2 (web/baskonus.js): bas-konuş anahtarı + düğme aynı kartta hemen altta; dosya yüklenmezse / hata olursa aşama 1 aynen
+window.odaBkDegis = async function (ac, no) { if (odaBk.bekle || !odaBkVar()) return; no = Number.isInteger(no) && no >= 1 ? no : 0; // no: boş koltuk menüsünden (1 tabanlı; sunucu ve tablet de 1 tabanlı)
+  if (ac) { if (!(await onayKart({ baslik: no ? `Selçuk ${no}. koltuğa oturtulsun mu?` : "Selçuk mikrofona oturtulsun mu?", metin: `Selçuk hesabı odada ${no ? no + ". koltuğa" : "boş bir koltuğa"} oturur. Mikrofon KAPALI kalır, ses gitmez (ses ayrı aşama). 30 dakika sonra kendiliğinden kalkar.`, ayrinti: "Komut Selçuk hesabıyla tablete gönderilir; istediğiniz an anahtarı kapatıp kaldırabilirsiniz. Dakikada en çok 2 deneme yapılabilir.", onay: "Evet, oturt" }))) return;}
+  odaBk.bekle = 1; odaBkApply(); const body = ac ? (no ? { kind: "mikotur", no } : { kind: "mikotur" }) : { kind: "mikkalk" }; let r; try { r = await odaModIste(body); } finally { odaBk.bekle = 0; }
   if (r.ok) { const d = r.data || {}; odaBk.yanit = { koltuk: !!d.oturdu, no: d.no, t: Date.now(), bitis: Date.now() + ODA_BK_DK * 60000 }; toast(ac ? "🎙️ Selçuk koltuğa oturdu (mikrofon kapalı)" : "🎙️ Selçuk koltuktan kalktı"); }
-  else { if (/PIN/i.test(r.err || "")) pinCache = null; odaBk.yanit = null; await onayKart({ baslik: ac ? "Selçuk oturtulamadı" : "Selçuk kaldırılamadı", metin: String(r.err || "Bilinmeyen hata").slice(0, 300), ayrinti: "Anahtar eski hâline döndü; bir şey değişmedi. Birkaç saniye sonra yeniden deneyebilirsiniz.", onay: "Tamam", vazgec: "Kapat", tehlike: true }); }
+  else { odaBk.yanit = null; await onayKart({ baslik: ac ? "Selçuk oturtulamadı" : "Selçuk kaldırılamadı", metin: String(r.err || "Bilinmeyen hata").slice(0, 300), ayrinti: "Anahtar eski hâline döndü; bir şey değişmedi. Birkaç saniye sonra yeniden deneyebilirsiniz.", onay: "Tamam", vazgec: "Kapat", tehlike: true }); }
   odaModIz(r, { kind: body.kind }); odaBkApply(); };
 /** Koltuk altı puan + oda satırı (odaMicApply sonunda; değişmeyen yeniden yazılmaz) */
 function odaIciApply(g, byU) { odaBkApply(); try { yzCiz(); } catch (e) {} const r = odaData && odaData.room, v = odaIciGecerli(r), pkVar = !!(v && v.o && v.o.pk);
@@ -4718,9 +4719,8 @@ window.odaKarDuz = function (id) { const k = odaKt; if (!k) return; k.mid = k.mi
 async function odaKtUygula() { const k = odaKt; if (!k || !k.d || k.gid) return; const d = k.d, sm = d.simdi || {}, s = (d.secenek || []).find((x) => x.k === k.sec);
   if (!s || !s.acik || s.k === sm.k || sm.pk || sm.bilinmiyor) return; if (s.mod === 1 && d.video !== true) { toast("Sugo bu odaya video izni vermemiş", true); return; }
   if (!(await onayKart({baslik:"Oda düzeni değişsin mi?",metin:`🪑 Oda modu / koltuk düzeni değişecek\n${odaKtOnay(d, s).join("\n")}\nSelçuk hesabıyla yapılacak. Onaylıyor musunuz?`,ayrinti:"Komut Selçuk hesabıyla tablete gönderilir ve hemen uygulanır; sonucu üstte bildirim olarak görürsünüz.",onay:"Evet, uygula"}))) return;
-  const dur = odaAyarDurum(), pin = await askPin("Oda modu / koltuk düzeni", true); if (odaKt === k) await odaAyarAc(dur); if (!pin) return; // W30: PIN'de onay da vazgeç de pencereyi kapatmaz (seçim korunur)
   const body = { kind: "koltuk", mod: s.mod, n: s.n, col: s.mod === 1 ? -1 : Number(s.col) || 0, lay: s.lay, once: sm.k, dolu: (d.koltuk && d.koltuk.dolu || []).length };
-  k.gid = true; odaKtCiz(); toast("⏳ Koltuk düzeni: tablete gönderildi…"); const r = await odaModIste({ ...body, pin }); k.gid = false;
+  k.gid = true; odaKtCiz(); toast("⏳ Koltuk düzeni: tablete gönderildi…"); const r = await odaModIste(body); k.gid = false;
   if (r.ok && r.data && odaKt === k) odaKtAl(k, r.data); if (odaKt === k) odaKtCiz();
   const son = r.ok ? (r.data && r.data.zaten ? "✅ Düzen zaten buydu" : r.data && r.data.gorundu === 0 ? "✅ Sugo kabul etti (görünüm henüz değişmedi — yeniden okuyun)" : "✅ " + odaKtAd((r.data && r.data.simdi) || s)) : "❌ " + r.err;
   k.sonuc = { ok: !!r.ok, m: "Koltuk düzeni: " + son }; if (odaKt === k) odaKtCiz(); toast(son, !r.ok); // W30: sonuç pencerede de
@@ -6156,9 +6156,9 @@ async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.tes
   const d = await api("change_pin", { password: $("pcPw").value, new_pin: n }); if (d.error) { toast(d.error, true); return; } pinCache = null; if (me) me.has_pin = true; toast("✅ PIN değiştirildi"); closeModal(); }
 // İşlem PIN'i: 5 dakika hatırlanır (tablet gibi). taze=true (↩️ geri çağırma, geri alınamaz): HER SEFERİNDE sorulur, önbellek ne okunur ne yazılır
 let pinCache = null;
-function askPin(title, taze) { if (!taze && pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
+function askPin(title, taze, ozet) { if (!taze && pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
   return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v && !taze) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
-    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3>${swOn() ? `<div class="s swpin" style="margin:-4px 0 8px">👑 Kendi PIN'iniz (${esc(me.switched.by || "ajans sahibi")})</div>` : ""}<input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
+    openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3>${ozet ? `<div class="pinoz" style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-size:14px;line-height:1.45">${ozet}</div>` : ""}${swOn() ? `<div class="s swpin" style="margin:-4px 0 8px">👑 Kendi PIN'iniz (${esc(me.switched.by || "ajans sahibi")})</div>` : ""}<input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
     // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor); tablette köprüyle (kbFocus)
     const i = $("pinIn"); if (i) { kbFocus(i); i.addEventListener("input", () => { if (/^\d{4}$/.test(i.value)) __pinRes(i.value); }); }
@@ -6249,8 +6249,8 @@ function acHtml() { const cur0 = me && me.switched ? me.name : "";
   return `<div class="s" style="margin:0 4px 10px">Dokunduğunuz kişinin panelini onun gördüğü gibi kullanırsınız; şifre sorulmaz. Üstteki şeritten ya da Çıkış'tan kendi hesabınıza dönersiniz. PIN isteyen işlemlerde kendi PIN'iniz sorulur.</div>`
     + (acData ? (rows.length ? `<div class="setlist">${rows.join("")}</div>` : `<div class="s" style="margin:0 4px">Geçilebilecek başka hesap yok.</div>`) : `<div class="setlist">${SKR(3)}</div>`); }
 function ownFill(key, id, h) { const el = $(id); if (el && el.innerHTML !== h) el.innerHTML = h; const t = setStack.find((x) => x.key === key); if (t) t.h = `<div id="${id}">${h}</div>`; }
-async function ownAct(action, body, title) { const pin = await askPin(title || "Değişiklik için işlem PIN'iniz"); if (!pin) return null;
-  const d = await api(action, { ...body, pin }); if (d.pin === "wrong") pinCache = null;
+async function ownAct(action, body, title) { const pinsiz = action === "bayi_link_set" || action === "bayi_toggle"; /* 19.11: PIN yalnız para / muhasebe / giriş koruması; bunlar PIN istemez */ const pin = pinsiz ? "" : await askPin(title || "Değişiklik için işlem PIN'iniz"); if (!pinsiz && !pin) return null;
+  const d = await api(action, pinsiz ? body : { ...body, pin }); if (d.pin === "wrong") pinCache = null;
   if (d.error) { toast("❌ " + d.error, true); return null; } toast(typeof d.ok === "string" ? d.ok : "✅ Kaydedildi"); return d; }
 
 // 💳 Kartları yönet: ekle (tek / toplu yapıştırma), düzenle, sıra, hak sıfırla; kart silinmez, pasif yapılır
@@ -6491,11 +6491,11 @@ function olHtml() { const L = olData && olData.link, S = olData && olData.st, sk
   <div class="s" style="margin:8px 4px">Kapatınca eski kayıtlar silinmez; istediğiniz zaman tekrar açabilirsiniz. Değişiklikler işlem PIN'inizle.</div>`; }
 async function olMode(m) { const L = olData && olData.link; if (!L || L.mode === m) return;
   if (!(await onayKart({baslik:m === "server" ? "Bağlantı sunucuya alınsın mı?" : "Bağlantı tablete alınsın mı?",metin:m === "server" ? "Bayi bağlantısı sunucuya alınsın mı?\n\nSugo bayi hesabı 7/24 sunucuda açık kalır; tablet artık Sugo'ya bağlanmaz. Tablet kapalı ya da internetsiz olsa da mesajlar gelir."
-    : "Bayi bağlantısı tablete alınsın mı?\n\nSunucu bağlantıyı bırakır, tablet tekrar Sugo'ya bağlanır. Tablet kapalıyken bayi mesajları durur.",ayrinti:"Onaydan sonra işlem PIN i istenir; değişiklik hemen uygulanır ve istediğiniz an geri alınabilir.",onay:"Evet, değiştir"}))) return;
-  if (await ownAct("bayi_link_set", { mode: m }, "Bağlantıyı değiştirmek için işlem PIN'iniz")) olLoad(); }
+    : "Bayi bağlantısı tablete alınsın mı?\n\nSunucu bağlantıyı bırakır, tablet tekrar Sugo'ya bağlanır. Tablet kapalıyken bayi mesajları durur.",ayrinti:"Değişiklik hemen uygulanır ve istediğiniz an geri alınabilir.",onay:"Evet, değiştir"}))) return;
+  if (await ownAct("bayi_link_set", { mode: m })) olLoad(); }
 async function olToggle(on) { const S = olData && olData.st; if (!S || !!S.on === on) return;
   if (!(await onayKart({baslik:on ? "Sugo Bayi açılsın mı?" : "Sugo Bayi kapatılsın mı?",metin:on ? "Sugo Bayi açılsın mı?\n\nBayi hesabının mesaj takibi, bildirimleri, elmas bozumları ve ajans okuması yeniden başlar." : "Sugo Bayi kapatılsın mı?\n\nBayi hesabıyla ilgili takip, bildirimler, elmas bozumları ve ajans okuması durur. Eski kayıtlar silinmez.",ayrinti:"Hiçbir kayıt silinmez; istediğiniz an yeniden değiştirilebilir.",onay:on ? "Evet, aç" : "Evet, kapat",tehlike:!on}))) return;
-  if (await ownAct("bayi_toggle", { on }, "Sugo Bayi aç / kapa için işlem PIN'iniz")) olLoad(); }
+  if (await ownAct("bayi_toggle", { on })) olLoad(); }
 // 🪙 Yükleme Yap: alıcı panelden doğrulanır, tutar 1.000 coin = 1 ₼, gönderim işlem PIN'iyle (geri alınamaz)
 let cn = null;
 function coinOpen() { if (!cur || isSys(cur)) return; cn = { uid: cur, coins: 0, chk: null };
@@ -6537,8 +6537,10 @@ async function coinSend(again, force) { if (!cn || !cn.chk) return; const html0 
   if (lk && !force) { if (!canForce()) { toast(lk.msg || "🔒 Kilitli", true); return; } // 🔒 başkası bu kişiye az önce gönderdi / sohbeti yürütüyor
     if (!(await onayKart({baslik:"Başka biri ilgileniyor",metin:`${lk.kind === "coin" ? `${lk.by} bu kişiye az önce ${nf(lk.coins || 0)} coin gönderdi` : `${lk.by} bu müşteriyle ilgileniyor`}, yine de göndermek istiyor musun?`,ayrinti:"Yine de gönderirseniz çift gönderim olabilir; gönderilen coin geri alınamaz.",onay:"Evet, yine de devam"}))) return; force = true; }
   const ciftBilindi = canForce() && !!cn.cift && cn.cift.uid === String(cn.uid) && cn.cift.coins === c && !!$("cnCiftN") && $("cnCiftN").style.visibility === "visible"; // sarı not görünüyor ve aynı alıcı + miktara ait → ilk kart atlanır (güvenlik sunucuda: PIN + iki çift onay kartı sürer)
-  if (!ciftBilindi && !(await onayKart({baslik:"Coin gönderilsin mi?",metin:`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Onaydan sonra işlem PIN i istenir. Gönderilen coin geri alınamaz.",onay:"Evet, gönder",tehlike:true}))) return;
-  const pin = await askPin("Coin göndermek için işlem PIN'iniz"); if (!pin) return;
+  const pinVar = !!(pinCache && pinCache.until > Date.now()); // 19.11: PIN sorulacaksa kart yok (özet PIN penceresinde); PIN bellekteyse (art arda gönderim) kart çıkar
+  if (!ciftBilindi && pinVar && !(await onayKart({baslik:"Coin gönderilsin mi?",metin:`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Gönderilen coin geri alınamaz.",onay:"Evet, gönder",tehlike:true}))) return;
+  const ozet = `👤 <b>${esc(name)}</b> · UID ${esc(String(cn.uid))}<br>🪙 <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${(cn.azn ?? c / 1000).toLocaleString("tr-TR")} ₼</b><br>⚠️ Geri alınamaz.`;
+  const pin = await askPin("Coin göndermek için işlem PIN'iniz", false, ozet); if (!pin) return;
   openModal(`<div style="text-align:center;padding:20px">⏳ Gönderiliyor…<div class="s" style="margin-top:6px">Kesinleşmesi bekleniyor (en fazla 10 sn)</div></div>`);
   const gonder = (gecis) => api("coin_send", { uid: cn.uid, coins: c, azn: cn.azn ?? c / 1000, pin, ...(force ? { force: true } : {}), ...(gecis ? { gecis } : {}) });
   let d = await gonder(); if (d.pin === "wrong") pinCache = null;
@@ -7093,8 +7095,10 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.139"></script>
-<script src="durum.js?v=2.1.139"></script>
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.139"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.140"></script>
+<script src="durum.js?v=2.1.140"></script>
+<script src="baskonus.js?v=2.1.140"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.140"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.140"></script><!-- </sugo-veri> -->
 </body>
 </html>
