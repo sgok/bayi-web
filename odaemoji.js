@@ -17,6 +17,12 @@ window.emoListeTemiz = function (g) { var out = [];
       if (!(Number.isInteger(id) && id >= 1 && id <= 999999) || !gif) return; var t = Number(e.tur), o = { id: id, ad: String(e.ad || "").slice(0, 40), tur: t === 2 || t === 3 ? t : 1, gif: gif }, u = window.emoUrl(e.u); if (u) o.u = u; L.push(o); });
     if (L.length) { var o2 = { tag: Number(x.tag) || 0, ad: String(x.ad || "").slice(0, 30), kapak: window.emoUrl(x.kapak), emo: L }, ku = window.emoUrl(x.ku); if (ku) o2.ku = ku; out.push(o2); } });
   return out; };
+/** seçici hücresi için KÜÇÜK, hareketsiz önizleme (19.11, kullanıcı: seçici "çok yavaş yükleniyor"): Sugo görselleri Aliyun OSS'te (oss-image.*), hareketli webp ort. ~280 KB;
+ *  OSS görsel işleme ilk kareyi 120 px PNG olarak verir (~5 KB, CDN önbellekli). Yalnız oss-image.* + sorgusuz .webp/.gif/.png adresinde; başka adres → "" (hücre eski yoldan). */
+window.emoKucuk = function (u) { u = String(u == null ? "" : u); return /^https:\/\/oss-image\.[a-z0-9.-]+\/[^?#\s"'<>]+\.(webp|gif|png)$/i.test(u) && u.length <= 300 ? u + "?x-oss-process=image/resize,w_120/format,png" : ""; };
+/** hücre görseli sırası: önizleme → bizdeki dosya → Sugo adresi (her biri açılmazsa sıradakine düşülür; hepsi biterse gizlenir) → { src, fb: "adres adres" } */
+window.emoHucreAdres = function (e, now, kapak) { var a = window.emoAdres(e, now, kapak), k = window.emoKucuk(kapak ? e.kapak : e.gif), L = (k ? [a.src, a.fb] : [a.fb]).filter(function (x, i, s) { return x && x !== (k || a.src) && s.indexOf(x) === i; });
+  return { src: k || a.src, fb: L.join(" ") }; };
 /** imzalı adresin süresi (s=bitiş epoch sn) dolmuş mu / dolmak üzere mi (60 sn pay); süre bilgisi yoksa geçerli say (bozuksa resim kendisi Sugo adresine düşer) */
 window.emoAdresGecerli = function (u, now) { var m = /[?&]s=(\d{9,11})(?:&|$)/.exec(String(u || "")); return !m || Number(m[1]) * 1000 > now + 60_000; };
 /** gösterilecek adres: bizdeki dosya (süresi dolmadıysa) → yoksa Sugo adresi; fb = bozulursa düşülecek Sugo adresi ("" = düşecek yer yok) */
@@ -98,10 +104,10 @@ window.emoSonucUyari = function (r) { if (!r) return { metin: "Emoji gönderilem
   var denemeYaz = function (n) { try { W.localStorage.setItem(ANAHTAR + "_d", String(n)); } catch (e) { /* zararsız */ } };
   var listeHazirla = function () { if (E.g) return; var o = W.emoOnbellekOku(depoOku(), dep.now()); if (o) { E.g = o.g; E.at = o.at; E.v = o.v; E.den = o.den; } };
   var adresOf = function (e) { return W.emoAdres(e, dep.now(), false); };
-  var hucre = function (e) { var a = adresOf(e); return '<button type="button" class="emxc" data-id="' + e.id + '" title="' + esc(e.ad) + '" aria-label="' + esc(e.ad || "emoji") + '" onclick="emoAt(' + e.id + ')"><img loading="lazy" decoding="async" alt="" src="' + esc(a.src) + '"' + (a.fb ? ' data-f="' + esc(a.fb) + '"' : "") + ' onerror="emoHata(this)"></button>'; };
-  var sekme = function (x, i) { var k = x.kapak ? W.emoAdres(x, dep.now(), true) : null; return '<button type="button" class="emxtab' + (i === E.sek ? " on" : "") + '" role="tab" aria-selected="' + (i === E.sek) + '" aria-label="' + esc(x.ad || "grup") + '" onclick="emoSek(' + i + ')">' + (k && k.src ? '<img loading="lazy" decoding="async" alt="" src="' + esc(k.src) + '"' + (k.fb ? ' data-f="' + esc(k.fb) + '"' : "") + ' onerror="emoHata(this)">' : esc((x.ad || "?").slice(0, 2))) + "</button>"; };
+  var hucre = function (e) { var a = W.emoHucreAdres(e, dep.now(), false); return '<button type="button" class="emxc" data-id="' + e.id + '" title="' + esc(e.ad) + '" aria-label="' + esc(e.ad || "emoji") + '" onclick="emoAt(' + e.id + ')"><img loading="lazy" decoding="async" alt="" src="' + esc(a.src) + '"' + (a.fb ? ' data-f="' + esc(a.fb) + '"' : "") + ' onerror="emoHata(this)"></button>'; };
+  var sekme = function (x, i) { var k = x.kapak ? W.emoHucreAdres(x, dep.now(), true) : null; return '<button type="button" class="emxtab' + (i === E.sek ? " on" : "") + '" role="tab" aria-selected="' + (i === E.sek) + '" aria-label="' + esc(x.ad || "grup") + '" onclick="emoSek(' + i + ')">' + (k && k.src ? '<img loading="lazy" decoding="async" alt="" src="' + esc(k.src) + '"' + (k.fb ? ' data-f="' + esc(k.fb) + '"' : "") + ' onerror="emoHata(this)">' : esc((x.ad || "?").slice(0, 2))) + "</button>"; };
   // bozuk / süresi dolmuş görsel: Sugo adresine düş (bir kez); düşecek yer yoksa gizle (bozuk resim görünmesin)
-  W.emoHata = function (img) { try { var f = img.getAttribute("data-f"); if (f && img.getAttribute("src") !== f) { img.removeAttribute("data-f"); img.setAttribute("src", f); } else img.style.visibility = "hidden"; } catch (e) { /* zararsız */ } };
+  W.emoHata = function (img) { try { var f = String(img.getAttribute("data-f") || "").split(" ").filter(Boolean); if (f.length) { var n = f.shift(); if (f.length) img.setAttribute("data-f", f.join(" ")); else img.removeAttribute("data-f"); img.setAttribute("src", n); } else img.style.visibility = "hidden"; } catch (e) { /* zararsız */ } };
   // ---------------- seçici (alt sayfa)
   var govde = function () { var g = E.g;
     if (!g) return E.hata ? '<div class="emxs" style="color:var(--bad)">' + esc(E.hata) + '</div><button type="button" class="b" onclick="emoYenile()">Yeniden dene</button>' : "";
@@ -193,8 +199,8 @@ window.emoSonucUyari = function (r) { if (!r) return { metin: "Emoji gönderilem
   var koltukBul = function (uid) { var box = D.getElementById("odaBody"), g = box && box.querySelector(":scope > .oseats"); if (!g) return null;
     for (var i = 0; i < g.children.length; i++) { var c = g.children[i]; if ((c.dataset.u || "") === uid) return c.querySelector(".ovbox") || c.querySelector(".avw"); } return null; };
   var oynat = function (o) { var host = koltukBul(o.uid); if (!host) return; stil(); temizle(o.uid); var plan = W.emoPlan(o), i = 0, y = (E.yer[o.uid] = { t: 0, el: null, n: null });
-    var el = D.createElement("img"); el.className = "emxo"; el.alt = ""; el.decoding = "async"; el.setAttribute("aria-hidden", "true"); if (o.gifFb) el.onerror = function () { if (el.getAttribute("src") !== o.gifFb) el.setAttribute("src", o.gifFb); }; /* bizim dosya açılmazsa Sugo adresi */ host.appendChild(el); y.el = el;
-    var adim = function () { if (E.yer[o.uid] !== y) return; if (i >= plan.length) { temizle(o.uid); return; } var s = plan[i++]; if (el.getAttribute("src") !== s.src) el.src = s.src;
+    var el = D.createElement("img"); el.className = "emxo"; el.alt = ""; el.decoding = "async"; el.setAttribute("aria-hidden", "true"); el.onerror = function () { if (o.gifFb && el.getAttribute("src") === o.gif) { el.setAttribute("src", o.gifFb); return; } el.style.visibility = "hidden"; }; /* bizim dosya açılmazsa Sugo adresi; düşecek adres yoksa gizlenir (bozuk resim simgesi görünmez) */ host.appendChild(el); y.el = el;
+    var adim = function () { if (E.yer[o.uid] !== y) return; if (i >= plan.length) { temizle(o.uid); return; } var s = plan[i++]; if (el.getAttribute("src") !== s.src) { el.style.visibility = ""; el.src = s.src; } /* yeni adım: önceki görsel açılmadıysa bile bu adımın görseli görünür */
       if (y.n && y.n.parentNode) y.n.parentNode.removeChild(y.n); y.n = null; if (s.sayi != null) { var n = D.createElement("span"); n.className = "emxn"; n.textContent = String(s.sayi); host.appendChild(n); y.n = n; }
       y.t = setTimeout(adim, s.ms); };
     adim(); };
