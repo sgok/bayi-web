@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.145">
+<meta name="build" content="2.1.146">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.145">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.145">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.145">
+<link rel="manifest" href="manifest.json?v=2.1.146">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.146">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.146">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -360,8 +360,9 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .olistb { flex: none; height: 44px; padding: 0 12px; margin-right: 10px; font-size: 14px; white-space: nowrap; }
   .ogoz .ogeri { flex: none; width: 44px; height: 44px; padding: 0; margin: 0 8px 0 10px; font-size: 24px; line-height: 1; }
   .ogozt { flex: 1; min-width: 0; display: flex; flex-direction: column; } .ogozt b, .ogozt .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .olist { max-height: 62vh; overflow-y: auto; margin: 0 -4px; } .olrow { width: 100%; text-align: left; align-items: center; gap: 10px; min-height: 52px; }
+  .olist { height: min(62vh, calc(100dvh - 355px)); min-height: 160px; overflow-y: auto; margin: 0 -4px; } /* sabit boy: sekme değişince / liste gelince pencere oynamaz */ .olrow { width: 100%; text-align: left; align-items: center; gap: 10px; min-height: 52px; }
   .olrow .b { flex: 1; min-width: 0; } .olrow .b b, .olrow .b .s { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .olsek { margin-bottom: 8px; } .olsek button { min-height: 44px; white-space: nowrap; } .olsek .olsn { display: inline-block; min-width: 4ch; text-align: left; font-variant-numeric: tabular-nums; }
   .olrow .olnum { flex: none; } .olown { box-shadow: inset 3px 0 0 #fbbf24; } .olrow.on { background: #7c3aed33; } .olbiz { color: #fbbf24; }
   /* 📲 W17 Tableti gönder (yalnız yönetici): göz atma şeridinin altında tek satır + tabletten gelen son kare */
   /* W24: yükseklik sabit (metin 2 satır yeri + düğme satırı): durum değişince (48 → 94/108 px) alttaki oda kaymasın */
@@ -916,7 +917,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.145" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.146" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -925,7 +926,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.145" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.146" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -987,7 +988,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.145"></script>
+<script src="emoji.js?v=2.1.146"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -4831,20 +4832,28 @@ function odaLSatir(x, now, acik) { const id = String(x.id), own = !!x.own, ek = 
   return `<button class="row olrow${own ? " olown" : ""}${String(acik) === id ? " on" : ""}" data-oda="${esc(id)}" onclick="odaListPick('${esc(id)}')"><div class="b"><b>${own ? "🏠 " : ""}${esc(x.title || "Oda " + id)}</b><div class="s">${ek.join(" · ")}</div></div><b class="olnum">👥 ${nf(Number(x.online) || 0)}</b></button>`; }
 /** Listeden seçim: bizim oda → göz atma biter; başka oda → göz atma (ilk geçişte geçmişe bir kayıt: geri tuşu bizim odaya döndürür) */
 function odaLSec(goz, x) { return !x || x.own ? { tur: "kendi" } : { tur: "goz", goz: { id: String(x.id), title: String(x.title || ""), online: Number(x.online) || 0 }, push: !goz }; }
+/** 🎙️📹 Sekme (kullanıcı 20.11: "oda listesinde iki sekme yap biri mikrofon biri video açık olan odalar"): "mik" = sesli (kamerasız) odalar, "vid" = kamerası açık odalar */
+function odaLSekme(L, sek) { return (L || []).filter((x) => x && (sek === "vid" ? !!x.video : !x.video)); }
+/** Sekme şeridi: iki sekme, her birinde o türdeki oda sayısı (liste henüz yoksa sayı yok) */
+function odaLSekHtml(L, sek, yuklu) { const say = (k) => ` <span class="olsn">(${yuklu ? odaLSekme(L, k).length : "…"})</span>`; // sayı yeri sabit: liste gelince yazı kaymaz
+  return [["mik", "🎙️ Mikrofon"], ["vid", "📹 Video"]].map(([k, t]) => `<button role="tab" data-olsek="${k}" class="${k === sek ? "on" : ""}" aria-selected="${k === sek}" onclick="odaLSekSec('${k}')">${t}${say(k)}</button>`).join(""); }
 /** Geri hareketi (popstate): göz atılırken geçmişteki göz kaydından çıkıldıysa → bizim odaya dön */
 function odaGeriKarar(goz, st) { return !!goz && !(st && st.odaGoz); }
 // </oda-liste>
 let odaGoz = null, odaL = (() => { try { const x = JSON.parse(localStorage.getItem("bw_oda_list") || "null"); return x && Array.isArray(x.rooms) ? x : null; } catch (e) { return null; } })(); // 👀 göz atılan oda (bellekte; yeniden açılınca bizim oda) · 📋 son liste (telefonda saklı → anında çizilir)
-function odaLHtml() { const now = Date.now(), L = odaLSirala(odaL && odaL.rooms), acik = odaData && odaData.room ? odaData.room.id : "";
-  return L.length ? L.map((x) => odaLSatir(x, now, acik)).join("") : `<div class="row s">${odaL ? "Listede oda yok." : "⏳ Liste yükleniyor…"}</div>`; }
-function odaLAt() { return odaL && odaL.at ? `Sugo önerilen odaları · ${hm(Date.parse(odaL.at))} kaydı (15 dk'da bir) · 🖼️ = elimizde görüntüsü var` : "Sugo önerilen odaları"; }
+let odaLSek = (() => { try { return localStorage.getItem("bw_oda_lsek") === "vid" ? "vid" : "mik"; } catch (e) { return "mik"; } })(); // 🎙️📹 seçili sekme (telefonda hatırlanır)
+function odaLHtml() { const now = Date.now(), L = odaLSekme(odaLSirala(odaL && odaL.rooms), odaLSek), acik = odaData && odaData.room ? odaData.room.id : "";
+  return L.length ? L.map((x) => odaLSatir(x, now, acik)).join("") : `<div class="row s">${!odaL ? "⏳ Liste yükleniyor…" : odaLSek === "vid" ? "Şu an kamerası açık oda yok." : "Şu an mikrofonlu (sesli) oda yok."}</div>`; }
+function odaLSekCiz() { const t = $("odaLSek"), h = odaLSekHtml(odaL && odaL.rooms, odaLSek, !!odaL); if (t && t.innerHTML !== h) t.innerHTML = h; }
+window.odaLSekSec = function (k) { if (k !== "mik" && k !== "vid") return; odaLSek = k; try { localStorage.setItem("bw_oda_lsek", k); } catch (e) {} odaLSekCiz(); const b = $("odaLList"); if (b) { b.innerHTML = odaLHtml(); b.scrollTop = 0; } };
+function odaLAt() { return `Sugo önerilen odaları · ${odaL && odaL.at ? hm(Date.parse(odaL.at)) : "--:--"} kaydı (15 dk'da bir) · 🖼️ = elimizde görüntüsü var`; } // kayıt gelmeden de aynı uzunluk: satır sayısı değişip sekmeler kaymaz
 async function odaListOpen() { let son = odaLHtml();
-  openModal(`<h3 style="margin:0 0 4px">📋 Oda Listesi</h3><div class="s" id="odaLAt" style="margin-bottom:8px">${odaLAt()}</div><div class="olist" id="odaLList">${son}</div>
+  openModal(`<h3 style="margin:0 0 4px">📋 Oda Listesi</h3><div class="s" id="odaLAt" style="margin-bottom:8px">${odaLAt()}</div><div class="seg olsek" role="tablist" id="odaLSek">${odaLSekHtml(odaL && odaL.rooms, odaLSek, !!odaL)}</div><div class="olist" id="odaLList">${son}</div>
     ${can("oda_izlenen") && me ? `<button style="width:100%;margin-top:10px;min-height:44px" onclick="closeModal();odaWatchEdit()">⚙️ İzlenen odalar (ayar)</button>` : ""}<button style="width:100%;margin-top:8px;min-height:44px" onclick="closeModal()">Kapat</button>`);
   let d = null; try { d = await api("room_list", {}); } catch (e) {} const box = $("odaLList"); if (!box) return;
   if (!d || d.error || !d.report) { if (!odaL) box.innerHTML = `<div class="row s">❌ ${esc((d && d.error) || "Bağlantı yok")}</div>`; return; }
   odaL = { at: d.report.at || null, rooms: (d.report.rooms || []).slice(0, 200) }; try { localStorage.setItem("bw_oda_list", JSON.stringify(odaL)); } catch (e) {}
-  const h = odaLHtml(); if (h !== son) box.innerHTML = h; const a = $("odaLAt"); if (a) a.textContent = odaLAt(); } // değişmeyen liste yeniden çizilmez
+  odaLSekCiz(); const h = odaLHtml(); if (h !== son) box.innerHTML = h; const a = $("odaLAt"); if (a) a.textContent = odaLAt(); } // değişmeyen liste yeniden çizilmez
 function odaListPick(id) { const x = ((odaL && odaL.rooms) || []).find((r) => String(r.id) === String(id)); closeModal(); const k = odaLSec(odaGoz, x || { id, own: false });
   if (k.tur === "kendi") { if (odaGoz) odaGeriBas(); else odaPickRoom(x && x.own ? String(x.id) : ""); return; } // bizim oda: göz atma biter (geçmiş kaydı da düşer)
   if (k.push) history.pushState({ odaGoz: 1 }, ""); odaGoz = k.goz; odaSel = k.goz.id; odaRwAt = 0; odaRwBek = 0; odaData = null; odaErr = ""; odaDraw(); odaTick(); } // odaSel saklanmaz
@@ -7159,11 +7168,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.145"></script>
-<script src="durum.js?v=2.1.145"></script>
-<script src="odaemoji.js?v=2.1.145"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.145"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.145"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.145"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.146"></script>
+<script src="durum.js?v=2.1.146"></script>
+<script src="odaemoji.js?v=2.1.146"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.146"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.146"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.146"></script><!-- </sugo-veri> -->
 </body>
 </html>
