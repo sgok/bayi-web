@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.142">
+<meta name="build" content="2.1.143">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.142">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.142">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.142">
+<link rel="manifest" href="manifest.json?v=2.1.143">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.143">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.143">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -916,7 +916,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.142" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.143" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -925,7 +925,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.142" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.143" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -987,7 +987,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.142"></script>
+<script src="emoji.js?v=2.1.143"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -4342,11 +4342,18 @@ async function odaModYap(i) { const c = odaModCur; if (!c) return; const it = c.
 function odaSeatKilitli(c) { const no = String(c.dataset.no || ""), t = odaTb && odaTb.seats.find((x) => !x.uid && String(x.no) === no); return t ? !!t.locked : c.classList.contains("olkd") || !c.dataset.e; }
 document.addEventListener("click", (ev) => { const c = ev.target && ev.target.closest && ev.target.closest("#odaBody .oseat.oemp"); if (!c || !odaMod() || !odaModOda() || !c.dataset.no || c.querySelector(".sk")) return;
   const no = Number(c.dataset.no), kilit = odaSeatKilitli(c); const m = odaWhoKur();
-  m.innerHTML = `<div class="owt">🪑 Koltuk ${no}${kilit ? " · kilitli" : " · boş"}</div>` + (odaModYetkisiz() ? '<div class="omods bad">🛡️ Selçuk hesabı bu odada yetkili değil</div>'
+  m.innerHTML = `<div class="owt">🪑 Koltuk ${no}${kilit ? " · kilitli" : " · boş"}</div>` + odaSeatGecHtml(no, kilit) + (odaModYetkisiz() ? '<div class="omods bad">🛡️ Selçuk hesabı bu odada yetkili değil</div>'
     : `<button role="menuitem" onclick="odaSeatKilit(${no},${!kilit})">${kilit ? "🔓 Kilidi aç" : "🔒 Koltuğu kilitle"}</button>`) + odaSeatOturHtml(no, kilit) + '<button role="menuitem" class="owx" onclick="odaWhoClose()">Vazgeç</button>';
   odaWhoAc(m, c); });
 /** 🎙 Boş koltuk menüsü: "Mikrofona otur" (yalnız sahip; "Selçuk mikrofonda" anahtarıyla aynı kart + PIN akışı, koltuk no ile) */
+/** 🔁 Koltuk değiştirme (19.11, kullanıcı: "Koltuk değiştirme de olsun basınca o koltuğa geçme"): Selçuk koltuktayken boş + kilitsiz başka koltuğa dokununca menünün
+ *  EN ÜSTÜNDE; ek onay kartı yok (tek dokunuş). Dolu koltukta menü zaten açılmaz; kilitli / aynı koltukta seçenek yok. Yalnız sahip (odaBkVar = oturtmayla aynı kapı). */
+function odaSeatGecHtml(no, kilit) { if (!odaBkVar() || odaModYetkisiz()) return ""; const d = odaBkDurum();
+  if (!d.koltuk || d.no == null || Number(d.no) === no || kilit) return "";
+  if (odaBk.bekle) return '<button role="menuitem" disabled aria-busy="true">🎙 Bekleniyor…</button>';
+  return `<button role="menuitem" class="ogec" onclick="odaWhoClose();odaBkGec(${no})">🎙 Selçuk bu koltuğa geçsin</button>`; }
 function odaSeatOturHtml(no, kilit) { if (!odaBkVar() || odaModYetkisiz()) return ""; const d = odaBkDurum();
+  if (d.koltuk && d.no != null && Number(d.no) !== no && !kilit) return ""; // geçiş seçeneği menünün en üstünde (odaSeatGecHtml)
   if (d.koltuk) return `<div class="omods">🎙️ Selçuk zaten ${d.no != null ? esc(String(d.no)) + ". koltukta" : "koltukta"}</div>`;
   if (odaBk.bekle) return '<button role="menuitem" disabled aria-busy="true">🎙 Bekleniyor…</button>';
   if (kilit) return '<button role="menuitem" disabled title="Önce kilidi açın">🎙 Mikrofona otur <span class="s">· önce kilidi açın</span></button>';
@@ -4565,7 +4572,7 @@ function odaInfSol(b) { const s = b.scrollWidth > b.clientWidth + 1 && b.scrollL
 // 🎙️ Bas-konuş aşama 1 (18.11): "Selçuk mikrofonda" anahtarı (YALNIZ sahip, kendi odamızda). Açma: açıklamalı onay kartı + işlem PIN'i → room_mod {kind:"mikotur", pin};
 // kapatma: PIN'siz, kartsız → {kind:"mikkalk"}. Durum SUNUCUDAN (tabletin room_seats yayınındaki oda.bk.koltuk); iyimser çizim yok: istek sürerken "bekleniyor",
 // cevap gelince cevaptaki durum, sonra tabletin yeni durumu. Ses yok (aşama 2). Satır yeri baştan ayrılı; değişmeyen yeniden yazılmaz.
-const ODA_BK_DK = 30; let odaBk = { bekle: 0, yanit: null };
+const ODA_BK_DK = 30; let odaBk = { bekle: 0, yanit: null, gec: 0 }; // gec: geçilen koltuk no (istek sürerken durum satırında)
 const odaBkVar = () => yonOk() && !odaGoz && !!odaModOda();
 /** Gösterilecek durum: cevap, tabletin son durumundan yeniyse o; yoksa tabletin oda.bk'sı. → { bilinen, koltuk, no, kalanDk } */
 function odaBkDurum() { const r = odaData && odaData.room, v = odaIciGecerli(r), bk = v && v.o && v.o.bk && typeof v.o.bk === "object" ? v.o.bk : null, y = odaBk.yanit;
@@ -4574,7 +4581,7 @@ function odaBkDurum() { const r = odaData && odaData.room, v = odaIciGecerli(r),
   let bit = Number(bk.bitis) || 0; if (bit && bit < 1e12) bit *= 1000;
   return { bilinen: true, koltuk: bk.koltuk, no: bk.no, kalanDk: bk.koltuk && bit ? Math.max(1, Math.ceil((bit - odaTabNow(v)) / 60000)) : null }; }
 function odaBkHtml() { const d = odaBkDurum(), bek = !!odaBk.bekle;
-  const alt = bek ? "bekleniyor…" : !d.bilinen ? "tablet durumu henüz gelmedi" : d.koltuk ? `Koltuk ${d.no != null ? esc(String(d.no)) : "?"}${d.kalanDk ? " · kalan " + d.kalanDk + " dk" : ""}` : "mikrofon kapalı kalır, ses gitmez";
+  const alt = bek ? (odaBk.gec ? `${odaBk.gec}. koltuğa geçiyor…` : "bekleniyor…") : !d.bilinen ? "tablet durumu henüz gelmedi" : d.koltuk ? `Koltuk ${d.no != null ? esc(String(d.no)) : "?"}${d.kalanDk ? " · kalan " + d.kalanDk + " dk" : ""}` : "mikrofon kapalı kalır, ses gitmez";
   let h = swHtml("odaBkSw", "Selçuk mikrofonda", alt, d.koltuk, `odaBkDegis(${!d.koltuk})`);
   if (bek || (!d.bilinen && !d.koltuk)) h = h.replace('<button type="button"', `<button type="button" disabled${bek ? ' aria-busy="true"' : ""}`).replace('class="swrow"', bek ? 'class="swrow bkw"' : 'class="swrow"');
   return h; }
@@ -4585,8 +4592,21 @@ window.odaBkDegis = async function (ac, no) { if (odaBk.bekle || !odaBkVar()) re
   if (ac) { if (!(await onayKart({ baslik: no ? `Selçuk ${no}. koltuğa oturtulsun mu?` : "Selçuk mikrofona oturtulsun mu?", metin: `Selçuk hesabı odada ${no ? no + ". koltuğa" : "boş bir koltuğa"} oturur. Mikrofon KAPALI kalır, ses gitmez (ses ayrı aşama). 30 dakika sonra kendiliğinden kalkar.`, ayrinti: "Komut Selçuk hesabıyla tablete gönderilir; istediğiniz an anahtarı kapatıp kaldırabilirsiniz.", onay: "Evet, oturt" }))) return;}
   odaBk.bekle = 1; odaBkApply(); const body = ac ? (no ? { kind: "mikotur", no } : { kind: "mikotur" }) : { kind: "mikkalk" }; let r; try { r = await odaModIste(body); } finally { odaBk.bekle = 0; }
   if (r.ok) { const d = r.data || {}; odaBk.yanit = { koltuk: !!d.oturdu, no: d.no, t: Date.now(), bitis: Date.now() + ODA_BK_DK * 60000 }; toast(ac ? "🎙️ Selçuk koltuğa oturdu (mikrofon kapalı)" : "🎙️ Selçuk koltuktan kalktı"); }
-  else { odaBk.yanit = null; await onayKart({ baslik: ac ? "Selçuk oturtulamadı" : "Selçuk kaldırılamadı", metin: String(r.err || "Bilinmeyen hata").slice(0, 300), ayrinti: "Anahtar eski hâline döndü; bir şey değişmedi. Birkaç saniye sonra yeniden deneyebilirsiniz.", onay: "Tamam", vazgec: "Kapat", tehlike: true }); }
+  else { odaBk.yanit = null; await onayKart({ baslik: ac ? "Selçuk oturtulamadı" : "Selçuk kaldırılamadı", metin: String(r.err || "Bilinmeyen hata").slice(0, 300), ayrinti: "Anahtar eski hâline döndü; bir şey değişmedi. İsterseniz hemen yeniden deneyebilirsiniz.", onay: "Tamam", vazgec: "Kapat", tehlike: true }); }
   odaModIz(r, { kind: body.kind }); odaBkApply(); };
+/** 🔁 Selçuk koltuktayken başka boş koltuğa geçiş: ek onay kartı YOK (kullanıcı isteği: "basınca o koltuğa geçme"); bekleme durum satırında (yer baştan ayrılı).
+ *  30 dk süre geçişte BAŞTAN BAŞLAMAZ (kalan süre korunur). Sonuç görülmezse "olmadı" denmez: "Sonuç görülmedi — odaya bakın". */
+window.odaBkGec = async function (no) { if (odaBk.bekle || !odaBkVar() || odaModYetkisiz()) return; no = Number(no); if (!Number.isInteger(no) || no < 1 || no > 60) return;
+  const d0 = odaBkDurum(); if (!d0.koltuk || Number(d0.no) === no) return;
+  const eskiBit = odaBk.yanit && odaBk.yanit.koltuk ? odaBk.yanit.bitis : d0.kalanDk ? Date.now() + d0.kalanDk * 60000 : 0;
+  odaBk.bekle = 1; odaBk.gec = no; odaBkApply(); const body = { kind: "mikotur", no, gecis: true }; if (d0.no != null && Number(d0.no) >= 1) body.once = Number(d0.no);
+  let r; try { r = await odaModIste(body); } finally { odaBk.bekle = 0; odaBk.gec = 0; }
+  if (r.ok) { const d = r.data || {}; let bit = Number(d.bitis) || 0; if (bit && bit < 1e12) bit *= 1000;
+    odaBk.yanit = { koltuk: true, no: d.no != null ? d.no : no, t: Date.now(), bitis: bit || eskiBit || Date.now() + ODA_BK_DK * 60000 }; toast(`🎙️ Selçuk ${odaBk.yanit.no}. koltuğa geçti (mikrofon kapalı)`); }
+  else { const bel = r.belirsiz || /Sonuç görülmedi|bilinmiyor/i.test(String(r.err || "")); odaBk.yanit = null;
+    await onayKart({ baslik: bel ? "Koltuk değişimi: sonuç görülmedi" : "Selçuk koltuk değiştiremedi", metin: bel ? "Sonuç görülmedi — odaya bakın. " + String(r.err || "").slice(0, 240) : String(r.err || "Bilinmeyen hata").slice(0, 300),
+      ayrinti: bel ? "Selçuk'un hangi koltukta olduğu birkaç saniye içinde tabletten gelen durumla yenilenir." : "Selçuk eski koltuğunda kalır; mikrofon kapalıdır.", onay: "Tamam", vazgec: "Kapat", tehlike: !bel }); }
+  odaModIz(r, { kind: "mikotur" }); odaBkApply(); };
 /** Koltuk altı puan + oda satırı (odaMicApply sonunda; değişmeyen yeniden yazılmaz) */
 function odaIciApply(g, byU) { odaBkApply(); try { yzCiz(); } catch (e) {} const r = odaData && odaData.room, v = odaIciGecerli(r), pkVar = !!(v && v.o && v.o.pk);
   for (const c of g.children) { const sn = c.querySelector(".osn"), sg = sn && sn.querySelector(".osg"); if (!sg) continue;
@@ -4750,7 +4770,7 @@ function odaKtCiz() { const e = $("oaKt"), k = odaKt; if (!e || !k) return; cons
     <div class="s">Mod</div><span class="ohc" role="group" aria-label="Oda modu">${[[0, "🎙️ Ses"], [1, "🎥 Video"]].map(([m, t]) => `<button class="${k.mod === m ? "on" : ""}" aria-pressed="${k.mod === m}" ${m === 1 && !vOk ? "disabled" : ""} onclick="odaKtMod(${m})">${t}</button>`).join("")}</span>
     ${vOk ? "" : `<div class="s">${d.video === false ? "Video: Sugo bu odaya video izni vermemiş." : "Video izni okunamadı."}</div>`}
     <div class="s">Koltuk sayısı · düzen</div>${d.secHata ? `<div class="s bad">❌ ${esc(d.secHata)}</div>` : `<span class="ohc" role="group" aria-label="Koltuk düzeni">${S.map(chip).join("") || '<span class="s">Sugo bu mod için seçenek vermedi</span>'}</span>${kilitli ? '<div class="s">🔒 Kilitli düzenler: oda seviyesi yetmiyor (Sv = gereken seviye).</div>' : ""}`}
-    <div class="oayr"><span class="s" style="flex:1">${sm.pk ? "Odalar arası PK sürüyor: değiştirilemez." : "Yalnız Ajans sahibi · PIN ister · dakikada en çok 2."}</span><button id="oaKtU" ${!sm.pk && k.sec && k.sec !== sm.k && !k.gid ? "" : "disabled"} onclick="odaKtUygula()">${k.gid ? "⏳ Gönderiliyor…" : "Uygula"}</button></div>
+    <div class="oayr"><span class="s" style="flex:1">${sm.pk ? "Odalar arası PK sürüyor: değiştirilemez." : "Yalnız Ajans sahibi."}</span><button id="oaKtU" ${!sm.pk && k.sec && k.sec !== sm.k && !k.gid ? "" : "disabled"} onclick="odaKtUygula()">${k.gid ? "⏳ Gönderiliyor…" : "Uygula"}</button></div>
     ${swPasif(swHtml("oaOtoSw", "Otomatik koltuk kilidi", d.otokilit == null ? "okunamadı" : sm.mod !== 0 ? "yalnız ses modunda" : "", !!d.otokilit, "odaKtOto()"), d.otokilit == null || sm.mod !== 0 || k.gid)}
     ${d.kapak || d.arka ? `<div class="oayr">${d.kapak ? `<img class="oakg" src="${esc(d.kapak)}" alt="Kapak" loading="lazy">` : ""}${d.arka ? `<img class="oakg" src="${esc(d.arka)}" alt="Arka plan" loading="lazy">` : ""}<span class="s" style="flex:1">Kapak / arka plan (yalnız görüntü)</span></div>` : ""}
     <div class="s">Karşılama mesajı${d.sahipHesap ? "" : " (tabletteki hesap oda sahibi değil: yalnız görüntü)"}</div>
@@ -7139,11 +7159,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.142"></script>
-<script src="durum.js?v=2.1.142"></script>
-<script src="odaemoji.js?v=2.1.142"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.142"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.142"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.142"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.143"></script>
+<script src="durum.js?v=2.1.143"></script>
+<script src="odaemoji.js?v=2.1.143"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.143"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.143"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.143"></script><!-- </sugo-veri> -->
 </body>
 </html>
