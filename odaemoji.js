@@ -14,15 +14,16 @@ window.emoUrl = function (u) { u = String(u == null ? "" : u).slice(0, 400); if 
 window.emoListeTemiz = function (g) { var out = [];
   (Array.isArray(g) ? g : []).slice(0, 12).forEach(function (x) { if (!x || typeof x !== "object") return; var L = [];
     (Array.isArray(x.emo) ? x.emo : []).slice(0, 80).forEach(function (e) { if (!e || typeof e !== "object") return; var id = Number(e.id), gif = window.emoUrl(e.gif);
-      if (!(Number.isInteger(id) && id >= 1 && id <= 999999) || !gif) return; var t = Number(e.tur), o = { id: id, ad: String(e.ad || "").slice(0, 40), tur: t === 2 || t === 3 ? t : 1, gif: gif }, u = window.emoUrl(e.u); if (u) o.u = u; L.push(o); });
-    if (L.length) { var o2 = { tag: Number(x.tag) || 0, ad: String(x.ad || "").slice(0, 30), kapak: window.emoUrl(x.kapak), emo: L }, ku = window.emoUrl(x.ku); if (ku) o2.ku = ku; out.push(o2); } });
+      if (!(Number.isInteger(id) && id >= 1 && id <= 999999) || !gif) return; var t = Number(e.tur), o = { id: id, ad: String(e.ad || "").slice(0, 40), tur: t === 2 || t === 3 ? t : 1, gif: gif }, u = window.emoUrl(e.u), k = window.emoUrl(e.k); if (u) o.u = u; if (k) o.k = k; L.push(o); });
+    if (L.length) { var o2 = { tag: Number(x.tag) || 0, ad: String(x.ad || "").slice(0, 30), kapak: window.emoUrl(x.kapak), emo: L }, ku = window.emoUrl(x.ku), kk = window.emoUrl(x.kk); if (ku) o2.ku = ku; if (kk) o2.kk = kk; out.push(o2); } });
   return out; };
 /** seçici hücresi için KÜÇÜK, hareketsiz önizleme (19.11, kullanıcı: seçici "çok yavaş yükleniyor"): Sugo görselleri Aliyun OSS'te (oss-image.*), hareketli webp ort. ~280 KB;
  *  OSS görsel işleme ilk kareyi 120 px PNG olarak verir (~5 KB, CDN önbellekli). Yalnız oss-image.* + sorgusuz .webp/.gif/.png adresinde; başka adres → "" (hücre eski yoldan). */
 window.emoKucuk = function (u) { u = String(u == null ? "" : u); return /^https:\/\/oss-image\.[a-z0-9.-]+\/[^?#\s"'<>]+\.(webp|gif|png)$/i.test(u) && u.length <= 300 ? u + "?x-oss-process=image/resize,w_120/format,png" : ""; };
-/** hücre görseli sırası: önizleme → bizdeki dosya → Sugo adresi (her biri açılmazsa sıradakine düşülür; hepsi biterse gizlenir) → { src, fb: "adres adres" } */
-window.emoHucreAdres = function (e, now, kapak) { var a = window.emoAdres(e, now, kapak), k = window.emoKucuk(kapak ? e.kapak : e.gif), L = (k ? [a.src, a.fb] : [a.fb]).filter(function (x, i, s) { return x && x !== (k || a.src) && s.indexOf(x) === i; });
-  return { src: k || a.src, fb: L.join(" ") }; };
+/** hücre görseli sırası: bizdeki önizleme (k / kk) → Sugo önizlemesi → bizdeki dosya → Sugo adresi (her biri açılmazsa sıradakine düşülür; hepsi biterse gizlenir) → { src, fb: "adres adres" } */
+window.emoHucreAdres = function (e, now, kapak) { var a = window.emoAdres(e, now, kapak), bk = kapak ? e.kk : e.k, ok = window.emoKucuk(kapak ? e.kapak : e.gif);
+  var L = [bk && window.emoAdresGecerli(bk, now) ? bk : "", ok, a.src, a.fb].filter(function (x, i, s) { return x && s.indexOf(x) === i; }); // sunucu (0261, 19.11): k / kk = bizdeki önizleme
+  return { src: L[0] || "", fb: L.slice(1).join(" ") }; };
 /** imzalı adresin süresi (s=bitiş epoch sn) dolmuş mu / dolmak üzere mi (60 sn pay); süre bilgisi yoksa geçerli say (bozuksa resim kendisi Sugo adresine düşer) */
 window.emoAdresGecerli = function (u, now) { var m = /[?&]s=(\d{9,11})(?:&|$)/.exec(String(u || "")); return !m || Number(m[1]) * 1000 > now + 60_000; };
 /** gösterilecek adres: bizdeki dosya (süresi dolmadıysa) → yoksa Sugo adresi; fb = bozulursa düşülecek Sugo adresi ("" = düşecek yer yok) */
@@ -32,11 +33,11 @@ window.emoAdres = function (e, now, kapak) { var u = kapak ? e.ku : e.u, s = kap
 window.emoBirlestir = function (mevcut, gelen) { var g = JSON.parse(JSON.stringify(window.emoListeTemiz(mevcut))), yeni = [], degisti = false;
   window.emoListeTemiz(gelen).forEach(function (x) { var m = null; for (var i = 0; i < g.length; i++) if (g[i].tag === x.tag) m = g[i];
     if (!m) { if (g.length < 12) { g.push(x); degisti = true; x.emo.forEach(function (e) { yeni.push(e.id); }); } return; }
-    if (x.ad && x.ad !== m.ad) { m.ad = x.ad; degisti = true; } if (x.kapak && x.kapak !== m.kapak) { m.kapak = x.kapak; if (x.ku) m.ku = x.ku; else delete m.ku; degisti = true; } else if (x.ku && x.ku !== m.ku) { m.ku = x.ku; degisti = true; }
+    if (x.ad && x.ad !== m.ad) { m.ad = x.ad; degisti = true; } if (x.kapak && x.kapak !== m.kapak) { m.kapak = x.kapak; if (x.ku) m.ku = x.ku; else delete m.ku; if (x.kk) m.kk = x.kk; else delete m.kk; degisti = true; } else { if (x.ku && x.ku !== m.ku) { m.ku = x.ku; degisti = true; } if (x.kk && x.kk !== m.kk) { m.kk = x.kk; degisti = true; } }
     x.emo.forEach(function (e) { var o = null; for (var j = 0; j < m.emo.length; j++) if (m.emo[j].id === e.id) o = m.emo[j];
       if (!o) { if (m.emo.length < 80) { m.emo.push(e); yeni.push(e.id); degisti = true; } return; }
-      if (o.gif === e.gif) { if (e.u && e.u !== o.u) { o.u = e.u; degisti = true; } if (e.ad && e.ad !== o.ad) { o.ad = e.ad; degisti = true; } if (e.tur !== o.tur) { o.tur = e.tur; degisti = true; } }
-      else { o.gif = e.gif; if (e.u) o.u = e.u; else delete o.u; o.ad = e.ad || o.ad; o.tur = e.tur; degisti = true; } }); });
+      if (o.gif === e.gif) { if (e.u && e.u !== o.u) { o.u = e.u; degisti = true; } if (e.k && e.k !== o.k) { o.k = e.k; degisti = true; } if (e.ad && e.ad !== o.ad) { o.ad = e.ad; degisti = true; } if (e.tur !== o.tur) { o.tur = e.tur; degisti = true; } }
+      else { o.gif = e.gif; if (e.u) o.u = e.u; else delete o.u; if (e.k) o.k = e.k; else delete o.k; o.ad = e.ad || o.ad; o.tur = e.tur; degisti = true; } }); });
   return { g: g, yeni: yeni, degisti: degisti }; };
 /** liste boş mu (grup yok / emoji yok) */
 window.emoBosMu = function (g) { return !Array.isArray(g) || !g.some(function (x) { return x && Array.isArray(x.emo) && x.emo.length; }); };
