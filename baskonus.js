@@ -26,7 +26,7 @@ window.bkSaatEkle = function (st, c, s, simdi) { var rtt = simdi - c; if (!(c > 
   st.l = (st.l || []).concat([[rtt, s - (c + rtt / 2)]]).slice(-5); var en = st.l.reduce(function (a, b) { return b[0] < a[0] ? b : a; }); st.rtt = en[0]; st.fark = Math.round(en[1]); return st; };
 window.bkNedenMetni = function (h) { return ({ kapali: "Bas-konuş anahtarı kapalı: ses gitmedi", yazilamadi: "Ayar sunucuda kaydedilemedi: açılmadı", deger: "Geçersiz ayar", yetki: "Yalnız Ajans sahibi konuşabilir", kaynak_yok: "Tablet bağlı değil (bekleniyor…)", mesgul: "Başka biri konuşuyor", parca: "Ses parçası bozuk",
   koltukta_degil: "Selçuk koltukta değil: ses gitmedi", akis_yok: "Oda sayfası mikrofon akışını açmamış: ses gitmedi", kapi: "Tablet kapıyı açmadı", sayfa_yok: "Tablette oda sayfası yok",
-  baglanti: "Bağlantı yok (yedek yolda ses gönderilmez)", izin: "Mikrofon izni yok", hata: "Tablet hatası" })[h] || ("Tablet: " + h); };
+  baglanti: "Bağlantı yok (yedek yolda ses gönderilmez)", izin: "Mikrofon izni yok", mikhata: "Mikrofon açılamadı", hata: "Tablet hatası" })[h] || ("Tablet: " + h); };
 /** ölçüm satırı: toplam (panel yakalama → tablette çalma) ve bileşenler; ms → "0,34 sn". Kural ≤ 0,5 sn: aşılırsa ⚠️ ile yazılır. Saat eşitlenmemişse toplam null → "" */
 window.BK_GEC_SINIR = 500;
 window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam >= 0)) return ""; var sn = function (ms) { return (Math.max(0, ms) / 1000).toFixed(2).replace(".", ","); };
@@ -85,8 +85,13 @@ window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam 
   // ---- mikrofon (yalnız basılıyken parça üretilir)
   var akisKur = function (ms) { var c = bk.ctx; bk.akis = ms; try { bk.src = c.createMediaStreamSource(ms); bk.proc = c.createScriptProcessor(1024, 1, 1); bk.src.connect(bk.proc); bk.proc.connect(c.destination);
       bk.proc.onaudioprocess = isle; } catch (e) { mikKapat(); bk.durum = "hata"; birak("hata"); } };
+  // 🎧 iOS: ses oturumu "playback" iken (oda dinlemesi) mikrofon yakalama anında reddedilir → basışta "play-and-record", mikrofon kapanınca geri (W.__bkMik: index.html'in "playback" atamasını atlatır)
+  var oturumAl = function () { var as = W.navigator && W.navigator.audioSession; if (!as || bk.otBizim) return; try { bk.otEski = as.type; as.type = "play-and-record"; bk.otBizim = true; W.__bkMik = 1; } catch (e) { /* oturum türü yok / yazılamaz */ } };
+  var oturumVer = function () { W.__bkMik = 0; if (!bk.otBizim) return; bk.otBizim = false; var as = W.navigator && W.navigator.audioSession; if (!as) return;
+    try { if (as.type === "play-and-record") { var o = dep.os(); as.type = o && o.acik ? "playback" : (bk.otEski || "auto"); } } catch (e) { /* */ } };
+  var hataAdi = function (e) { return String((e && e.name) || "Hata").replace(/[^A-Za-z0-9_]/g, "").slice(0, 40) || "Hata"; };
   var mikKapat = function () { clearTimeout(bk.bosT); try { if (bk.proc) { bk.proc.onaudioprocess = null; bk.proc.disconnect(); } } catch (e) { /* */ } try { if (bk.src) bk.src.disconnect(); } catch (e) { /* */ }
-    try { if (bk.akis) bk.akis.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { /* */ } bk.proc = null; bk.src = null; bk.akis = null; bk.dus = {}; bk.tam = []; };
+    try { if (bk.akis) bk.akis.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { /* */ } bk.proc = null; bk.src = null; bk.akis = null; bk.dus = {}; bk.tam = []; oturumVer(); };
   var isle = function (e) { if (!bk.basili) { bk.tam = []; return; } var x = e.inputBuffer.getChannelData(0), y = W.bkDusur(bk.dus, x, bk.ctx.sampleRate, SR);
     for (var i = 0; i < y.length; i++) bk.tam.push(y[i]);
     while (bk.tam.length >= PARCA && bk.basili) { var p = bk.tam.splice(0, PARCA), u = new Uint8Array(PARCA); for (var j = 0; j < PARCA; j++) u[j] = W.bkUlaw(p[j]); parcaYolla(u); } };
@@ -102,11 +107,14 @@ window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam 
     if (!N || !N.mediaDevices || !N.mediaDevices.getUserMedia || !AC) { bk.durum = "izin"; ciz(); izinKart(); return; }
     if (!bk.ctx || bk.ctx.state === "closed") { try { bk.ctx = new AC({ latencyHint: "interactive" }); } catch (e) { bk.ctx = new AC(); } }
     try { bk.ctx.resume(); } catch (e) { /* */ } // ⚠️ dokunuşun İÇİNDE (iOS)
-    clearTimeout(bk.bosT); bk.basili = true; bk.basAt = Date.now(); bk.parca = 0; bk.tam = []; bk.durum = ""; belgeDinle(true); kis(true); katil();
+    clearTimeout(bk.bosT); bk.basili = true; bk.basAt = Date.now(); bk.parca = 0; bk.tam = []; bk.durum = ""; bk.hataAd = ""; belgeDinle(true); kis(true); katil();
     clearTimeout(bk.enCokT); bk.enCokT = setTimeout(function () { birak("sure"); dep.toast("Bas-konuş en çok 60 sn: kesildi"); }, EN_COK_MS);
-    if (!bk.akis) { if (bk.bekIzin) { ciz(); return; } bk.bekIzin = true;
-      N.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }).then(function (ms) { bk.bekIzin = false; bk.izinRed = false;
-        if (!bk.basili) { try { ms.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { /* */ } return; } akisKur(ms); ciz(); }, function () { bk.bekIzin = false; bk.izinRed = true; birak("izin"); bk.durum = "izin"; ciz(); izinKart(); }); }
+    if (!bk.akis) { if (bk.bekIzin) { ciz(); return; } bk.bekIzin = true; oturumAl(); // ⚠️ dokunuşun İÇİNDE, getUserMedia'dan ÖNCE (eşzamanlı)
+      var iste = function (kisit, deneme) { N.mediaDevices.getUserMedia(kisit).then(function (ms) { bk.bekIzin = false; bk.izinRed = false;
+        if (!bk.basili) { try { ms.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { /* */ } oturumVer(); return; } akisKur(ms); ciz(); }, function (e) { var ad = hataAdi(e), izin = ad === "NotAllowedError" || ad === "SecurityError";
+          if (!izin && !deneme && bk.basili) { iste({ audio: true }, 1); return; } // izin dışı hata: bir kez sade kısıtla yeniden dene
+          bk.bekIzin = false; bk.hataAd = ad; bk.izinRed = izin; birak(izin ? "izin" : "mikhata"); oturumVer(); bk.durum = izin ? "izin" : "mikhata"; ciz(); izin ? izinKart() : hataKart(ad); }); };
+      iste({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }, 0); }
     ciz(); };
   // 🔒 KESİN kural (mikrofon mutlaka kesilir): basılıyken parmağın kalktığı olay düğmeye ulaşmayabilir (Oda sekmesi yeniden çizilirken düğme DOM'dan kopup geri takılır).
   // Bu yüzden basılı olduğu SÜRECE belgede YAKALAMALI (capture) bırakma dinleyicileri vardır (pointerup / pointercancel + touchend / touchcancel / mouseup yedekleri);
@@ -117,12 +125,14 @@ window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam 
   /** neden: birak | kaydi | iptal | tus | odak | gizli | sayfa | baglanti | kopuk | sure | izin | red | hata */
   var birak = function (neden) { if (!bk.basili) return; bk.basili = false; belgeDinle(false); bk.tam = []; clearTimeout(bk.enCokT); gonder("bk_birak", {}); kis(false);
     var ms = Date.now() - bk.basAt, n = bk.parca; bk.sonNeden = neden;
-    if (n > 0 || neden === "izin") iz({ kind: "bkkonus", ok: n > 0, ms: ms, n: n, ...(n > 0 ? {} : { err: W.bkNedenMetni(neden) }) });
+    if (n > 0 || neden === "izin" || neden === "mikhata") iz({ kind: "bkkonus", ok: n > 0, ms: ms, n: n, ...(n > 0 ? {} : { err: W.bkNedenMetni(neden) + ((neden === "izin" || neden === "mikhata") && bk.hataAd ? " (" + bk.hataAd + ")" : "") }) });
     clearTimeout(bk.bosT); bk.bosT = setTimeout(mikKapat, neden === "gizli" || neden === "sayfa" ? 0 : BOS_MS); ciz(); };
   W.bk2Birak = birak; // dışarıdan YALNIZ bırakma (açma yolu yok)
   var iz = function (o) { var oda = dep.oda(); if (!oda) return; try { var pr = dep.api("room_mod_sonuc", { room: oda, id: "bk-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ...o }); if (pr && pr.catch) pr.catch(function () {}); } catch (e) { /* iz yazılamadı */ } };
   var izinKart = function () { dep.onay({ baslik: "Mikrofon izni verilmedi", metin: "Bas-konuş için bu telefonun mikrofonu gerekir. İzin verilmediği için hiçbir ses gönderilmedi. Tabletin mikrofonu zaten hiç kullanılmaz.",
-    ayrinti: "iPhone: adres çubuğundaki “aA” › Web Sitesi Ayarları › Mikrofon › İzin Ver (ya da Ayarlar › Safari › Mikrofon). Sonra düğmeye yeniden basılı tutun.", onay: "Tamam", vazgec: "Kapat" }); };
+    ayrinti: "iPhone: Ayarlar › Uygulamalar › Safari › Mikrofon › “Sor” ya da “İzin Ver” (eski sürümde Ayarlar › Safari › Mikrofon). Sonra paneli kapatıp açın, düğmeye yeniden basılı tutun.", onay: "Tamam", vazgec: "Kapat" }); };
+  var hataKart = function (ad) { dep.onay({ baslik: "Mikrofon açılamadı", metin: "Telefon mikrofonu açamadı (" + ad + "). İzin sorunu değil; hiçbir ses gönderilmedi. Tabletin mikrofonu zaten hiç kullanılmaz.",
+    ayrinti: "Başka bir uygulama ya da sekme mikrofonu kullanıyor olabilir; telefon sesi kapalı/aramada olabilir. Paneli kapatıp açın, düğmeye yeniden basılı tutun. Sürerse hata adını (" + ad + ") bildirin.", onay: "Tamam", vazgec: "Kapat" }); };
   // ---- olaylar: bırakılmış sayılanlar
   try { D.addEventListener("visibilitychange", function () { if (D.visibilityState !== "visible") birak("gizli"); }); } catch (e) { /* */ }
   try { W.addEventListener("pagehide", function () { birak("sayfa"); }); W.addEventListener("blur", function () { birak("odak"); }); } catch (e) { /* */ }
@@ -134,7 +144,7 @@ window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam 
     D.head.appendChild(st); }
   var altMetin = function () { var k = kosul(); if (k === "anahtar") return bk.ayar === null ? "durum sunucudan bekleniyor…" : bk.kaliciYok ? "kapalı — ses gitmez · ⚠️ kapatma kalıcı yazılamadı; sunucu yeniden başlarsa açık dönebilir" : "kapalı — ses gitmez"; if (k) return W.bkNedenMetni(k);
     if (bk.basili) return bk.bekIzin ? "mikrofon izni bekleniyor…" : bk.durum ? W.bkNedenMetni(bk.durum) : "🔴 konuşuyor" + (bk.son ? " · " + W.bkGecikmeMetni(bk.son) : "");
-    if (bk.durum) return W.bkNedenMetni(bk.durum); return bk.son ? "hazır · son " + W.bkGecikmeMetni(bk.son) : "hazır: basılı tutun"; };
+    if (bk.durum === "mikhata") return "Mikrofon açılamadı (" + (bk.hataAd || "Hata") + ")"; if (bk.durum) return W.bkNedenMetni(bk.durum); return bk.son ? "hazır · son " + W.bkGecikmeMetni(bk.son) : "hazır: basılı tutun"; };
   var dugmeMetni = function () { return bk.basili ? "🔴 Konuşuyor — bırakınca kesilir" : "🎙️ Basılı tut, konuş"; };
   var ciz = function () { var el = bk.el; if (!el || !el.isConnected) return; var b = el.querySelector("#bk2B"), sw = el.querySelector("#bk2Sw"), sm = sw && sw.querySelector("small");
     var on = anahtarOku(); dep.swAyar(sw, gorunen()); if (sw && sw.disabled !== (bk.ayar === null)) sw.disabled = bk.ayar === null; /* durum bilinmeden anahtar dokunulmaz */
