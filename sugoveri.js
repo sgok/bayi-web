@@ -14,7 +14,7 @@
   const avI = (n, av) => (typeof avHtml === "function" ? avHtml(n || "?", av || null) : esc(String(n || "?").slice(0, 1)));
   const tap = (uid) => /^\d{3,15}$/.test(String(uid || "")) ? ` data-uid="${esc(String(uid))}" onclick="svPick('${esc(String(uid))}')" role="button" style="cursor:pointer"` : "";
   window.svPick = (uid) => { if (typeof can === "function" && can("profil")) prof(String(uid)); else if (typeof openChat === "function") openChat(String(uid)); };
-  const temizle = () => { for (const k of ["bw_sv", "bw_svrisk", "bw_svsub"]) ls.del(k); try { Object.keys(localStorage).filter((k) => k.startsWith("sv_pf_")).forEach((k) => localStorage.removeItem(k)); } catch (e) {} };
+  const temizle = () => { for (const k of ["bw_sv", "bw_svrisk", "bw_svsub"]) ls.del(k); try { Object.keys(localStorage).filter((k) => k.startsWith("sv_pf_") || k.startsWith("sv_dv_")).forEach((k) => localStorage.removeItem(k)); } catch (e) {} };
   window.svOk = ok;
   // 🔐 yönetici değilse (rol biliniyorsa) bu cihazdaki Sugo verisi kopyaları bir kez silinir (hesap geçişi / rol değişimi)
   let temizlendi = false; const yetkisiz = () => { if (!temizlendi && typeof me !== "undefined" && me && typeof meGuven !== "undefined" && meGuven) { temizlendi = true; temizle(); } };
@@ -30,6 +30,8 @@
     .svpf { margin: 8px 0 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); } .svpf b { color: var(--text); }
     /* W24: dört satırın yeri baştan ayrılı (iskelet de dört satır, her satır 26 px, tek satır; uzunsa yatay kayar): sunucu cevabı gelince alttaki kartlar inmez */
     .svpf > div { height: 26px; line-height: 26px; white-space: nowrap; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; } .svpf > div::-webkit-scrollbar { display: none; }
+    .svpf .svdv { margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--muted); } .svpf .svdv > span { display: block; height: 20px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .svpf .svdv b { color: var(--text); }
+    .svpf .svdv .sk { height: 20px; margin: 0; box-sizing: border-box; border: 4px solid transparent; background-clip: padding-box; } .svpf .svl .svhata { white-space: nowrap; color: #ef4444; }
     .svpf .svl { display: flex; flex-wrap: nowrap; gap: 4px; align-items: center; } .svpf .svl > * { flex: none; } .svpf .svl .sk { margin: 0; } .svpf button { padding: 2px 10px; font-size: 13px; line-height: 18px; border-radius: 999px; }
     .svkart { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--tint, rgba(127,127,127,.08)); max-width: 260px; }
     .svkart .svkb { font-weight: 700; font-size: 13px; } .svkart .svkm { margin-top: 4px; overflow-wrap: anywhere; } .svkart img { display: block; max-width: 100%; max-height: 160px; border-radius: 8px; margin-top: 6px; }
@@ -180,12 +182,12 @@
   window.svProfilH = (p) => {
     if (!ok()) { yetkisiz(); return ""; }
     if (!p || !p.uid) return "";
-    const uid = String(p.uid), c = ls.get("sv_pf_" + uid) || pfMem[uid]; // bellek kopyası: boş sonuç (hepsi boş) kayda yazılmasa da profil yeniden çizilince iskelete dönmez
+    dvTohum(p); const uid = String(p.uid), c = ls.get("sv_pf_" + uid) || pfMem[uid]; // bellek kopyası: boş sonuç (hepsi boş) kayda yazılmasa da profil yeniden çizilince iskelete dönmez
     if (!pfYuk[uid] || Date.now() - pfYuk[uid] > 60_000) { pfYuk[uid] = Date.now(); setTimeout(() => pfYukle(uid), 0); }
     return `<div class="svpf" id="svPf" data-uid="${escA(uid)}">${pfIc(uid, c)}</div>`;
   };
   function pfIc(uid, c) {
-    if (!c) return [9, 13, 8, 11].map((w) => `<div class="svl"><span class="sk" style="width:${w}em"></span></div>`).join(""); // dört satır yeri (kayma yok)
+    if (!c) return [9, 13, 8, 11].map((w) => `<div class="svl"><span class="sk" style="width:${w}em"></span></div>`).join("") + dvIc(uid); // dört satır yeri (kayma yok)
     const out = [];
     const r = c.risk || {}, rk = rz(r.kodlar), app = r.uygulama != null ? `<span class="svrz" title="Sugo kayıt uygulaması kodu (anlamı doğrulanmadı)">📱 uyg. ${esc(r.uygulama)}</span>` : "";
     out.push(rk || app ? `<div class="svl">⚠️ ${rk}${app}</div>` : `<div>⚠️ Sugo risk işareti yok</div>`);
@@ -194,8 +196,33 @@
     const cp = c.cp;
     out.push(`<div class="svl">💞 Yakınlık: ${cp ? `<b>seviye ${N(cp.seviye)}</b> · puan ${N(cp.puan)}${cp.sonraki_puan ? " / " + N(cp.sonraki_puan) : ""}${cp.tur_adi ? " · " + esc(cp.tur_adi) : ""} <span class="s">(${T(cp.at)})</span>` : '<span class="s">bilinmiyor</span>'}
       <button onclick="svCp('${escA(uid)}')"${c.cpBusy ? " disabled" : ""}>${c.cpBusy ? "⏳" : cp ? "tazele" : "Sugo'dan oku"}</button>${c.cpHata ? ` <span class="s">${esc(c.cpHata)}</span>` : ""}</div>`);
-    return out.join("");
+    return out.join("") + dvIc(uid);
   }
+  // 🎁 Hediye duvarı İSTEK ÜZERİNE (19.11): toplu okuma kapalı; düğmeye basılınca YALNIZ bu kişinin duvarı (bayi-web "hediye_duvari_getir"; sunucu: kişi başına 60 sn, dakikada 6, Sugo durdurursa 10 dk kapalı).
+  // Önce son hâl (bu cihazdaki kopya / profilin veritabanı değeri), düğme adı hep aynı ("Yenile" anlamında), yanında son alınma zamanı. Okurken satırlar iskelet (yer değişmez).
+  const dvS = {}; // uid → { wall, at, busy, hata, not }
+  const dvOku = (uid) => { const s = dvS[uid] || (dvS[uid] = {}); if (!s.wall) { const k = ls.get("sv_dv_" + uid); if (k && k.wall) { s.wall = k.wall; s.at = k.at; } } return s; };
+  const dvTop = (w) => (Array.isArray(w && w.top) ? w.top.slice(0, 6) : []);
+  function dvIc(uid) {
+    const s = dvOku(uid), w = s.wall, n = dvTop(w).length;
+    const ozet = s.busy ? `<span class="sk" style="width:12em"></span>` : w ? `<span>🎁 Hediye duvarı: <b>${N(w.total)} coin</b> · ${N(w.kinds)} çeşit hediye</span>` : `<span>🎁 Hediye duvarı: henüz indirilmedi</span>`;
+    const liste = s.busy ? Array.from({ length: n || 6 }, (_, i) => `<span class="sk" style="width:${[14, 11, 12, 9, 13, 10][i % 6]}em"></span>`).join("")
+      : dvTop(w).map((x) => `<span><b>${esc(x.name || "?")}</b> · ${N(x.count)} adet · ${N(Number(x.price) * Number(x.count))} coin</span>`).join("");
+    const zaman = s.busy ? "alınıyor…" : s.at ? "son alınma: " + T(s.at) : "";
+    return `<div class="svl"><button type="button" onclick="svDv('${escA(uid)}')"${s.busy ? ' disabled aria-busy="true"' : ""}>🎁 Hediye duvarını getir</button> <span class="s">${esc(zaman)}</span>${s.hata && !s.busy ? ` <span class="s svhata">${esc(s.hata)}</span>` : ""}${s.not && !s.busy ? ` <span class="s">${esc(s.not)}</span>` : ""}</div>
+      <section class="svdv">${ozet}${liste}</section>`;
+  }
+  window.svDv = async (uid) => {
+    uid = String(uid); const s = dvOku(uid); if (s.busy) return; s.busy = true; s.hata = ""; s.not = ""; pfCiz(uid, ls.get("sv_pf_" + uid) || pfMem[uid]);
+    const d = await api("hediye_duvari_getir", { uid }).catch(() => null), r = d && d.report && d.report.hediye_duvari;
+    s.busy = false;
+    if (r && r.wall && r.wall.total != null) { s.wall = { total: r.wall.total, kinds: r.wall.kinds, top: r.wall.top || [] }; s.at = r.wall.at || s.at; ls.put("sv_dv_" + uid, { wall: s.wall, at: s.at }); }
+    s.hata = r ? r.hata || "" : (d && d.error) || "Bağlantı hatası";
+    s.not = r && r.onbellek && !r.hata ? "az önce okundu; " + (r.bekle_sn || 60) + " sn sonra yenilenir" : "";
+    pfCiz(uid, ls.get("sv_pf_" + uid) || pfMem[uid]);
+  };
+  // profil açılınca veritabanındaki son hâl (toplu okumadan / daha önceki okumadan): bu cihazdaki kopyadan yeniyse onu al
+  const dvTohum = (p) => { const uid = String(p.uid), s = dvOku(uid), r = p.recv; if (!r || r.total == null || !r.at) return; if (!s.wall || (Date.parse(r.at) || 0) > (Date.parse(s.at || "") || 0)) { s.wall = { total: r.total, kinds: r.kinds, top: r.top || [] }; s.at = r.at; } };
   function pfCiz(uid, c) { const e = document.getElementById("svPf"); if (!e || e.dataset.uid !== uid) return; const h = pfIc(uid, c); if (e.innerHTML !== h) e.innerHTML = h; }
   async function pfYukle(uid) {
     const d = await api("sugo_profil_get", { uid }).catch(() => null), r = d && d.report; if (!r) return;
