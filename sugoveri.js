@@ -176,11 +176,11 @@
   window.svSusle = (root) => { if (!ok()) { yetkisiz(); return; } if (!root) return; susle(root, false); riskTazele(); };
 
   // ---------------------------------------------------------------- 👤 profil kartı
-  const pfYuk = {}; // uid → son istek anı
+  const pfYuk = {}, pfMem = {}; // uid → son istek anı · son gelen sonuç (bellekte)
   window.svProfilH = (p) => {
     if (!ok()) { yetkisiz(); return ""; }
     if (!p || !p.uid) return "";
-    const uid = String(p.uid), c = ls.get("sv_pf_" + uid);
+    const uid = String(p.uid), c = ls.get("sv_pf_" + uid) || pfMem[uid]; // bellek kopyası: boş sonuç (hepsi boş) kayda yazılmasa da profil yeniden çizilince iskelete dönmez
     if (!pfYuk[uid] || Date.now() - pfYuk[uid] > 60_000) { pfYuk[uid] = Date.now(); setTimeout(() => pfYukle(uid), 0); }
     return `<div class="svpf" id="svPf" data-uid="${escA(uid)}">${pfIc(uid, c)}</div>`;
   };
@@ -199,8 +199,9 @@
   function pfCiz(uid, c) { const e = document.getElementById("svPf"); if (!e || e.dataset.uid !== uid) return; const h = pfIc(uid, c); if (e.innerHTML !== h) e.innerHTML = h; }
   async function pfYukle(uid) {
     const d = await api("sugo_profil_get", { uid }).catch(() => null), r = d && d.report; if (!r) return;
-    const eski = ls.get("sv_pf_" + uid) || {}, c = { risk: r.risk || null, coin: r.coin || null, aile_uye: r.aile_uye || null, cp: r.cp || eski.cp || null };
-    if (JSON.stringify(c) !== JSON.stringify({ risk: eski.risk || null, coin: eski.coin || null, aile_uye: eski.aile_uye || null, cp: eski.cp || null })) ls.put("sv_pf_" + uid, c);
+    const kayitli = ls.get("sv_pf_" + uid), eski = kayitli || {}, c = { risk: r.risk || null, coin: r.coin || null, aile_uye: r.aile_uye || null, cp: r.cp || eski.cp || null };
+    pfMem[uid] = c; // 🐛 11.19: hepsi boş sonuç eskiyle "aynı" sayılıp hiç yazılmıyordu → profil başka cevapla yeniden çizilince iskelet kalıyor, 60 sn istek de atılmıyordu
+    if (!kayitli || JSON.stringify(c) !== JSON.stringify({ risk: eski.risk || null, coin: eski.coin || null, aile_uye: eski.aile_uye || null, cp: eski.cp || null })) ls.put("sv_pf_" + uid, c);
     pfCiz(uid, c);
   }
   window.svCp = async (uid) => {
