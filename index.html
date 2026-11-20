@@ -13,11 +13,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localSt
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.151">
+<meta name="build" content="2.1.152">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.151">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.151">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.151">
+<link rel="manifest" href="manifest.json?v=2.1.152">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.152">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.152">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -918,7 +918,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.151" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.152" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -927,7 +927,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.151" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.152" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -989,7 +989,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.151"></script>
+<script src="emoji.js?v=2.1.152"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -6803,18 +6803,18 @@ async function navReset(toChat) { if ($("modal").style.display === "flex") { if 
   if (typeof odaGoz !== "undefined" && odaGoz) { if (history.state && history.state.odaGoz) await popWait(() => history.back()); if (odaGoz) odaGozBit(); } // 👀 W12: başka odaya göz atma kapanır (geçmiş kaydı düşer → Oda'ya dönünce bizim oda; sohbetten geri → mesaj listesi)
   if (!toChat) for (let i = 0; i < 4 && $("chat").classList.contains("on"); i++) await popWait(() => history.back()); } // sekmeye: sohbetten listeye
 async function navOpen(url) { let u; try { u = new URL(url, location.href); } catch (e) { return false; } const c = u.searchParams.get("c"), t = u.searchParams.get("t"), pz = u.searchParams.get("pz");
-  const k = navKey(u.href); if (!k) return false; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
+  const k = navKey(u.href), t0 = Date.now(); if (!k) return false; if (navLast.k === k && Date.now() - navLast.at < 5000) return true; navLast = { k, at: Date.now() };
   try { if (k === "mola") molaSayfa(); // ☕ mola bildirimi
     else if (pz) pzLoad(pz); // onay bandı her ekranın üstünde: ekran değişmez
     // sohbet: Sohbetler sekmesi seçilir (Oda / Durum / Elmas … açıkken de; geri → mesaj listesi, Oda yoklaması durur). Sekme sohbet ekranı açıldıktan sonra (gizli listede) değişir: kayma yok
-    else { await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); await op; navDogrula(c); } else { if (!$("inbox").classList.contains("on")) show("inbox"); if (t === "aj" && u.searchParams.get("s") === "basvuru" && typeof ajTab === "function") ajTab("basvuru"); tab(t); } } // 🆕 W14: ?t=aj&s=basvuru → Ajansım › Başvurular
+    else { await navReset(!!c); if (c) { if (!$("inbox").classList.contains("on") && !$("chat").classList.contains("on")) show("inbox"); const op = openChat(c); if (curTab !== "msg") tab("msg"); navDogrula(c, t0); await op; } else { if (!$("inbox").classList.contains("on")) show("inbox"); if (t === "aj" && u.searchParams.get("s") === "basvuru" && typeof ajTab === "function") ajTab("basvuru"); tab(t); } } // 🆕 W14: ?t=aj&s=basvuru → Ajansım › Başvurular
   } catch (e) { navLast = { k: "", at: 0 }; return false; } // yarıda kaldı: sonraki deneme (öne gelme yoklaması) yeniden açabilsin
   await navDone(k); return true; }
 // 🔔 Kullanıcı 20.11: "gelen mesaj bildirimine bastığımda eğer başka bir yer açıksa mesajı açmıyor … sayfalar üst üste binmesin". iPhone'da kapatılan katmanın
 // geri olayı 2 sn'den de geç gelip yeni açılan sohbeti kapatabiliyor: açılıştan sonra 3 sn boyunca sohbet gerçekten açık mı bakılır, değilse (kullanıcı bu arada
 // ekrana dokunmadıysa) üstteki katman kapatılıp sohbet yeniden açılır.
 let navDokunAt = 0; ["pointerdown", "keydown", "touchstart"].forEach((t) => addEventListener(t, () => { navDokunAt = Date.now(); }, { capture: true, passive: true }));
-function navDogrula(c) { const t0 = Date.now(); [700, 1600, 3000].forEach((ms) => setTimeout(async () => { if (navDokunAt > t0 || document.hidden) return;
+function navDogrula(c, t0) { [700, 1600, 3000].forEach((ms) => setTimeout(async () => { if (navDokunAt > t0 || document.hidden) return;
   if (cur === String(c) && $("chat").classList.contains("on") && !setOn() && !$("prof").classList.contains("on")) return;
   try { await navReset(true); if (navDokunAt > t0) return; if (!(cur === String(c) && $("chat").classList.contains("on"))) { const op = openChat(String(c)); if (curTab !== "msg") tab("msg"); await op; } } catch (e) {} }, ms)); }
 async function takeNavOpen(force) { if (!tok || !(force || navReady) || navBusy || !window.caches) return false; navBusy = true;
@@ -7272,11 +7272,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.151"></script>
-<script src="durum.js?v=2.1.151"></script>
-<script src="odaemoji.js?v=2.1.151"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.151"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.151"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.151"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.152"></script>
+<script src="durum.js?v=2.1.152"></script>
+<script src="odaemoji.js?v=2.1.152"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.152"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.152"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.152"></script><!-- </sugo-veri> -->
 </body>
 </html>
