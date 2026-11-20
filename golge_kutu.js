@@ -71,7 +71,7 @@
   function temizle() { try { var vardi = !!CTX || Object.keys(S).length > 0; CTX = null; for (var k in S) delete S[k];
       if (TIK) { clearInterval(TIK); TIK = null; }
       var d = depo(); if (d && vardi) { for (var cv in YAZ) { try { d.removeItem("gk_" + cv); } catch (e) {} } YAZ = {}; var sil = []; for (var i = 0; i < d.length; i++) { var n = d.key(i); if (n && n.indexOf("gk_") === 0) sil.push(n); } sil.forEach(function (n) { d.removeItem(n); }); } } catch (e) {} }
-  function tik() { try { var x = CTX; if (!x) return; if (!sahipMi(x)) { temizle(); return; } if (!x.aktif || !x.aktif()) return; if (typeof document !== "undefined" && document.hidden) return; var c = S[x.conv]; if (c) yokla(x, c, false); } catch (e) {} }
+  function tik() { try { if (typeof window !== "undefined" && window.__yedek) return; var x = CTX; if (!x) return; /* 🛟 yedekte yoklama yok */ if (!sahipMi(x)) { temizle(); return; } if (!x.aktif || !x.aktif()) return; if (typeof document !== "undefined" && document.hidden) return; var c = S[x.conv]; if (c) yokla(x, c, false); } catch (e) {} }
   /** items'a bu sohbetin kutularını ekler (önbellekten hemen; veritabanı arkada). Hata ya da sahip değilse items aynen döner. */
   function ekle(items, ctx) {
     try {

@@ -66,8 +66,9 @@
     render(cached ? JSON.parse(cached) : { uid, name: k.n || "", avatar: k.av || null, __sk: true }); // önbellek yoksa aynı düzen yer tutucularla: veri gelince yalnız içerik dolar
     sync(!!pfRefreshing[uid]);
     delete pfLive[uid];
-    pfLiveSeq++; pfLiveUcan = null; api("profile_live", { uid }).then(onLive);
-    clearInterval(pfLiveT); pfLiveT = setInterval(() => liveTazele(false), PF_LIVE_MS); pfLiveSon = Date.now();
+    pfLiveSeq++; pfLiveUcan = null; clearInterval(pfLiveT); pfLiveT = 0;
+    if (window.__yedek) { pfLive[uid] = { uid, error: "yedek", yedek: true }; const el = $("pfLive"); if (el) el.innerHTML = liveHtml(uid); } // 🛟 yedekte canlı profil istenmez, tazeleme kurulmaz
+    else { api("profile_live", { uid }).then(onLive); pfLiveT = setInterval(() => liveTazele(false), PF_LIVE_MS); pfLiveSon = Date.now(); }
     const d = await api("profile", { uid });
     onNet(d, false);
   };
@@ -81,7 +82,7 @@
     pfCache.put(p.uid, JSON.stringify(p));
     if (typeof people !== "undefined") people[p.uid] = { n: p.name, av: p.avatar };
     if (pfUid === p.uid) render(p);
-    if (p.stale && !noRefresh && !pfRefreshing[p.uid]) { // Sugo'dan tazele (en fazla 6 saatte bir), sonra kayıtlarımızdan tekrar oku
+    if (p.stale && !noRefresh && !pfRefreshing[p.uid] && !window.__yedek) { // 🛟 yedekte Sugo'dan tazeleme yok // Sugo'dan tazele (en fazla 6 saatte bir), sonra kayıtlarımızdan tekrar oku
       pfRefreshing[p.uid] = 1; if (pfUid === p.uid) sync(true);
       api("profile_refresh", { uid: p.uid }).then(async () => { delete pfRefreshing[p.uid]; if (pfUid !== p.uid) return; sync(false); onNet(await api("profile", { uid: p.uid }), true); });
     }
@@ -97,6 +98,7 @@
   async function liveTazele(hemen) {
     const uid = pfUid, ac = $("prof") && $("prof").classList.contains("on");
     if (!uid || !ac) { clearInterval(pfLiveT); pfLiveT = 0; return; }
+    if (window.__yedek) { clearInterval(pfLiveT); pfLiveT = 0; return; } // 🛟 yedekte durur
     if (document.hidden || pfLiveUcan === uid) return;
     if (!hemen && ((window.bostaMi && window.bostaMi()) || Date.now() - pfLiveSon < pfAralik() - 1500)) return;
     const n = ++pfLiveSeq; pfLiveUcan = uid; pfLiveSon = Date.now(); let d;
@@ -112,7 +114,7 @@
   function liveHtml(uid) {
     const l = pfLive[uid];
     if (!l) return '<span class="s">📡 Anlık durum okunuyor…</span>';
-    if (l.error) return '<span class="s">📡 Anlık durum okunamadı</span>';
+    if (l.error) return l.yedek || window.__yedek ? '<span class="s">🛟 Anlık durum yedek modunda kapalı — ana sunucu dönünce açılır</span>' : '<span class="s">📡 Anlık durum okunamadı</span>';
     if (l.room) return `<span class="pfroom">🏠 Şu an: ${esc(l.room.title || "oda " + l.room.id)} <span class="eqw"><i></i><i></i><i></i><i></i><i></i></span></span>`;
     if (l.online) return '<b style="color:#10b981">🟢 Çevrimiçi</b><span class="s"> · şu an bir odada değil</span>';
     const s = l.last_online_sec, ago = s ? (s < 3600 ? Math.round(s / 60) + " dk" : s < 86400 ? Math.round(s / 3600) + " saat" : Math.round(s / 86400) + " gün") + " önce" : "";
