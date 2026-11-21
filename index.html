@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.162">
+<meta name="build" content="2.1.163">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.162">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.162">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.162">
+<link rel="manifest" href="manifest.json?v=2.1.163">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.163">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.163">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -245,6 +245,11 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .row { isolation: isolate; }
   .tagbar button.rall { font-size: 13px; } .tagbar button.rall:disabled { opacity: .45; }
   .tagbar button { flex: none; padding: 7px 12px; font-size: 14px; border-radius: 999px; } .tagbar button b { color: var(--accent); margin-left: 2px; }
+  /* 👁 HZ1 sohbet gözü (tabletle aynı): sohbet başlığı altında özet satırı, listede risk / bekleme işareti, şeritte cevap bekleyen sayısı */
+  .chgoz { padding: 6px 12px; font-size: 14px; line-height: 1.35; background: rgba(99,102,241,.14); border-bottom: 1px solid rgba(99,102,241,.35); color: var(--text); overflow-wrap: anywhere; }
+  .chgoz .gr { color: #fca5a5; font-weight: 700; } .chgoz .gb { color: #bfdbfe; font-weight: 700; }
+  .gozl { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; min-width: 0; } .gozl span { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 999px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gozl .gr { background: rgba(239,68,68,.2); color: #fecaca; } .gozl .gb { background: rgba(96,165,250,.18); color: #bfdbfe; }
   .tagbar button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; } .tagbar button.on b { color: var(--gofg); }
   .tagic { margin-left: 5px; font-size: 13px; }
   .chtags { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--line); overflow-x: auto; } .chtags:empty { display: none; } .chtags > .s { flex: none; white-space: nowrap; }
@@ -949,7 +954,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.162" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.163" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -958,7 +963,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.162" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.163" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -990,6 +995,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 <div id="lb" hidden onclick="lbClose(event)"><img id="lbImg" alt=""><a id="lbOpen" href="#" target="_blank" onclick="event.stopPropagation()">↗ Aç</a><button type="button" class="lbdk" id="lbDk" data-dk="lb" hidden>📎 Dekont olarak bağla</button></div>
 <section class="screen" id="chat">
   <header><button onclick="back()">‹</button><div class="avw"><div class="av" id="chAv" onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer"></div><i id="chOn" class="ondot" hidden></i></div><h1 onclick="if(cur&&!isSys(cur))prof(cur)" style="cursor:pointer;min-width:0"><span id="chName"></span><span id="chSub"><span id="chRoom" hidden></span><span id="chPres" role="status" hidden></span></span></h1><button id="coinBtn" onclick="coinOpen()" style="border-color:#f59e0b;color:#fbbf24;font-weight:800;padding:8px 10px"><span class="gc"></span> Yükle</button></header>
+  <div id="chGoz" class="chgoz" hidden></div>
   <div id="chTrust"></div>
   <div id="chTags" class="chtags"></div>
   <div class="warnbar" id="tabWarn2"></div>
@@ -1020,7 +1026,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.162"></script>
+<script src="emoji.js?v=2.1.163"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1307,7 +1313,7 @@ async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!(
   await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } } finally { /* AE: ağ / abonelik adımı hata verse de temizlik atlanmaz */ tok = ""; ["bw_tok", "bw_me", "bw_me_t", "bw_inbox", "bw_pane_om"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
   try { cacheClear(); rtBitir(); loginMsg("Çıkış yapıldı", "wait"); show("login"); } finally { oturumSil(); } } } /* önce giriş ekranı: temizlik görünür ekranı kaydırmaz */
 /** 🔐 T: çıkış / oturum düştü — kimlik, yönetici verisi ve çizilmiş ekranlar bellekten ve DOM'dan silinir (sonraki girişte me gelene kadar hiçbir yönetici öğesi kalmaz) */
-function oturumSil() { try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
+function oturumSil() { try { gozSil(); } catch (e) {} /* 👁 HZ1 */ try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
   for (const id of ["ajBody", "dmBody", "coinBody", "cardBody"]) { const el = $(id); if (el) el.innerHTML = SKEL[id] ? SKEL[id]() : ""; }
   for (const id of ["nkBody", "pfBody"]) { const el = $(id); if (el) el.innerHTML = ""; } /* oda: yalnız sohbet kutusu (yonSil); koltuk / dinleyici herkesin · ödenmemiş müşteri bozumu şeridi ekip verisi: kalır (girişte yer değişmesin) */ }
 
@@ -2218,7 +2224,7 @@ async function convPin(id, on) { const d = await api("conv_pin", { conv: String(
   setCpins(d.report || { cpins: [] }); sortInbox(); renderInbox(); toast(d.ok || "Tamam"); }
 let inboxV = null, inboxVAt = 0; // 📉 liste özeti: değişmediyse sunucu listeyi yeniden göndermez ({ same }); dakikada bir yine tam liste (yerel durum sapmasın)
 async function loadInbox() { const q = Object.keys(vipm).length ? { vipsVer } : {}; if (inboxV && Date.now() - inboxVAt < 60_000) q.v = inboxV;
-  const d = await api("bayi_inbox_get", q); if (d.report && d.report.same) { openRead(); return; } if (d.report && d.report.v) { inboxV = d.report.v; inboxVAt = Date.now(); } else inboxV = null; try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); if (window.odaModeSet) odaModeSet(s.state === "open" && s.roomMode ? s.roomMode : { mode: "audio", live: false }); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
+  const d = await api("bayi_inbox_get", q); if (d && d.goz) gozAl(d.goz); if (d.report && d.report.same) { openRead(); return; } if (d.report && d.report.v) { inboxV = d.report.v; inboxVAt = Date.now(); } else inboxV = null; try { const s = d.report && d.report.link && d.report.link.status; if (s) { STAT.link = s.state === "open" ? "bağlı" : String(s.state || "–"); statLine(); if (window.odaModeSet) odaModeSet(s.state === "open" && s.roomMode ? s.roomMode : { mode: "audio", live: false }); } } catch (e) {} if (d.error) { toast(d.error, true); return; }
   if (d.report && !!d.report.seenMine !== seenMine) { seenMine = !!d.report.seenMine; try { localStorage.setItem("bw_seenMine", seenMine ? "1" : "0"); } catch (e) {} } // 👁️ sunucu kişiye özel okunmamış veriyor
   const its = (d.report && d.report.inbox && d.report.inbox.items) || []; try { apInboxIzle(its); } catch (e) {}
   sysRows = noSys() ? [] : mergeRows(its.filter((x) => isSys(x.id)), sysRows); try { localStorage.setItem("bw_sysrows", JSON.stringify(sysRows)); } catch (e) {} // 📢 sistem sohbetleri: listede tek SUGO TEAM satırında
@@ -2239,6 +2245,28 @@ function sysPurge() { if (!noSys()) { sysPurged = false; return; } document.quer
   for (const c of ks) chCache.drop(c);
   try { const k = JSON.parse(localStorage.getItem("bw_ch_keys") || "[]"); const k2 = k.filter((x) => !isSys(x)); if (k2.length !== k.length) localStorage.setItem("bw_ch_keys", JSON.stringify(k2)); } catch (e) {}
   try { const r = JSON.parse(localStorage.getItem("bw_resume") || "null"); if (r && r.cur && isSys(r.cur)) localStorage.removeItem("bw_resume"); localStorage.removeItem("bw_sysrows"); } catch (e) {} sysRows = []; }
+// 👁 HZ1 sohbet gözü (22.11; tabletle aynı yer / aynı metinler): veri bayi_inbox_get "goz" (sohbet → o özet, r risk, rn risk sebebi, b beklediği, dk) + "bk" (şu an
+//   cevap bekleyenler, tablet alarmındaki ölçüt) ve açık sohbette chat_history "goz1". Yalnız gösterim; Haiku müşteriye yazmaz. 150 sn tazelenmezse gösterilmez.
+const GOZ_B = { kart: "kart bekliyor", coin: "coin bekliyor", cevap: "cevap bekliyor", elmas_odemesi: "elmas ödemesi bekliyor" };
+const GOZ_R = { sikayet: "Şikâyet", iade: "İade istiyor", kandirildi: "Kandırıldığını söylüyor", tehdit: "Tehdit", kizgin: "Kızgın" };
+const GOZ_BAYAT = 150_000;
+var goz = (() => { try { const g = JSON.parse(localStorage.getItem("bw_goz") || "null"); return g && g.c && Date.now() - (Number(g.t) || 0) < GOZ_BAYAT ? g : { c: {}, bk: [], t: 0 }; } catch (e) { return { c: {}, bk: [], t: 0 }; } })();
+const gozTaze = () => Date.now() - (Number(goz.t) || 0) < GOZ_BAYAT;
+function gozSatir(id) { return gozTaze() ? goz.c[String(id)] || null : null; }
+function gozBk() { return gozTaze() && Array.isArray(goz.bk) ? goz.bk.map(String) : []; }
+/** Liste yoklamasından: alan yoksa (kapalı / yedek / eski sunucu) eskisi 150 sn sonra kendiliğinden düşer */
+function gozAl(g) { if (!g || typeof g !== "object" || !g.c) return; const eski = JSON.stringify([goz.c, goz.bk]);
+  goz = { c: g.c, bk: Array.isArray(g.bk) ? g.bk : [], t: Date.now() }; try { localStorage.setItem("bw_goz", JSON.stringify(goz)); } catch (e) {}
+  if (JSON.stringify([goz.c, goz.bk]) !== eski) { try { renderInbox(); } catch (e) {} } chGozUi(); }
+/** Açık sohbetin geçmiş cevabından (null = bu sohbet için değerlendirme yok) */
+function gozBir(c, e) { if (!goz.c) goz.c = {}; const eski = JSON.stringify(goz.c[c] || null); if (e) goz.c[c] = e; else delete goz.c[c]; if (!goz.t || !gozTaze()) goz.t = Date.now();
+  if (JSON.stringify(goz.c[c] || null) !== eski) { try { localStorage.setItem("bw_goz", JSON.stringify(goz)); } catch (e2) {} } chGozUi(); }
+function gozRozet(id) { const g = gozSatir(id); if (!g || (!g.r && !g.b)) return "";
+  return `<div class="gozl">${g.r ? `<span class="gr" title="${esc(g.rn || "")}">⚠️ ${esc(GOZ_R[g.r] || g.r)}</span>` : ""}${g.b ? `<span class="gb">⏳ ${Number(g.dk) || 0} dk · ${esc(GOZ_B[g.b] || "cevap bekliyor")}</span>` : ""}</div>`; }
+function chGozUi() { const el = $("chGoz"); if (!el) return; const g = cur && !isSys(cur) ? gozSatir(cur) : null;
+  const h = !g || (!g.o && !g.r && !g.b) ? "" : `👁 ${g.o ? esc(g.o) : ""}${g.b ? ` <span class="gb">· ⏳ ${Number(g.dk) || 0} dk'dır ${esc(GOZ_B[g.b] || "cevap bekliyor")}</span>` : ""}${g.r ? ` <span class="gr">· ⚠️ ${esc(GOZ_R[g.r] || g.r)}${g.rn ? ": " + esc(g.rn) : ""}</span>` : ""}`;
+  if (el.innerHTML !== h) el.innerHTML = h; el.hidden = !h; }
+function gozSil() { goz = { c: {}, bk: [], t: 0 }; try { localStorage.removeItem("bw_goz"); } catch (e) {} }
 let inboxDrawn = ""; // liste HTML'i değişmediyse DOM'a dokunulmaz
 function inboxMorph(box, h) { if (h === inboxDrawn && box.firstElementChild) return; inboxDrawn = h; morphKeyed(box, h); }
 function renderInbox() {
@@ -2250,8 +2278,9 @@ function renderInbox() {
   const pinUn = inbox.filter((x) => pinRank(x) < 999 && Number(x.u) && !isQuiet(x.id)).length; // 📌 başlıkta: sabitlenenlerden kaçında yeni mesaj var
   const unRows = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)), unN = unRows.length; // 📩 okunmayanlar (filtre + hepsini okundu yap)
   const readAll = ""; // CLS: okundu düğmesi artık sekme şeridinde (belirip kaybolarak listeyi itmesin)
-  const shown = lf === "all" ? inbox.filter((x) => !isBlocked(x.id)) : lf === "unread" ? unRows : tagRows(lf), nBlk = tagRows("blocked").length, nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
-  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall${lf === "unread" ? " on" : ""}" onclick="setLf('unread')" title="Yalnız okunmamış sohbetler">📩 Okunmayanlar <b>${unN}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button><button class="${lf === "blocked" ? "on" : ""}" onclick="setLf('blocked')">🚫 Bloklu <b>${nBlk}</b></button></div>`;
+  const bkSet = new Set(gozBk()), bkRows = inbox.filter((x) => bkSet.has(String(x.id)) && !isBlocked(x.id)); // 👁 HZ1: cevap bekleyen müşteriler
+  const shown = lf === "all" ? inbox.filter((x) => !isBlocked(x.id)) : lf === "unread" ? unRows : lf === "bekle" ? bkRows : tagRows(lf), nBlk = tagRows("blocked").length, nSel = tagRows("seller").length, nBuy = tagRows("buyer").length, nBoss = tagRows("boss").length, nOpera = tagRows("opera").length, nDebt = tagRows("debtor").length;
+  const chips = `<div class="tagbar" data-k="tagbar"><button class="rall${lf === "unread" ? " on" : ""}" onclick="setLf('unread')" title="Yalnız okunmamış sohbetler">📩 Okunmayanlar <b>${unN}</b></button><button class="${lf === "bekle" ? "on" : ""}" onclick="setLf('bekle')" title="Müşteri yazdı, birkaç dakikadır ekipten kimse cevap vermedi (Haiku sohbet gözü; yalnız uyarır, para / coin kararı vermez)">⏳ Cevap bekliyor <b>${bkRows.length}</b></button><button class="${lf === "all" ? "on" : ""}" onclick="setLf('all')">💬 Genel</button><button class="${lf === "seller" ? "on" : ""}" onclick="setLf('seller')">💎 Elmas satıcıları <b>${nSel}</b></button><button class="${lf === "buyer" ? "on" : ""}" onclick="setLf('buyer')"><span class="gc"></span> Coin alıcıları <b>${nBuy}</b></button><button class="${lf === "boss" ? "on" : ""}" onclick="setLf('boss')">👑 Patronlar <b>${nBoss}</b></button><button class="${lf === "opera" ? "on" : ""}" onclick="setLf('opera')">🎭 Opera <b>${nOpera}</b></button><button class="${lf === "debtor" ? "on" : ""}" onclick="setLf('debtor')">🧾 Borçlular <b>${nDebt}</b></button><button class="${lf === "blocked" ? "on" : ""}" onclick="setLf('blocked')">🚫 Bloklu <b>${nBlk}</b></button></div>`;
   const lpane = $("convs").closest(".pane"); let anc = null;
   if (lpane && lpane.scrollTop > 8) { const top = lpane.getBoundingClientRect().top + 60; for (const r of $("convs").querySelectorAll(".row[data-cid]")) { const b = r.getBoundingClientRect(); if (b.bottom > top) { anc = { id: r.dataset.cid, y: b.top }; break; } } }
   const grpRowH = grpSatir(); // 👥 W19: yalnız yönetici (Sohbetler › Genel'de, SUGO TEAM'in altında)
@@ -2259,11 +2288,11 @@ function renderInbox() {
   inboxMorph($("convs"), chips + (lf === "all" ? readAll + teamRow + grpRowH : rallRow) + (shown.length ? shown.slice(0, listLim).map((x, i, a) => `${pinRank(x) < 999 && i === 0 ? `<div class="lhd pin" data-k="lhd-pin">📌 Sabitlenenler${pinUn ? `<span class="pinun">${pinUn} yeni mesaj</span>` : ""}</div>` : ""}${pinRank(x) === 999 && i > 0 && pinRank(a[i - 1]) < 999 ? '<div class="lhd" data-k="lhd-other">💬 Diğer sohbetler</div>' : ""}<div class="row${pinRank(x) < 999 ? " pinned" : ""}${Number(x.u) && !isQuiet(x.id) ? " unr" : ""}" data-cid="${esc(x.id)}" onclick="openChat('${esc(x.id)}')">
     <div class="avw${vipAttr(vipConv(x.id))}"><div class="av tap" onclick="event.stopPropagation();prof('${esc(x.id)}')" title="Profili aç">${avHtml(x.n, x.av)}</div>${onDot(x)}${vipLab(vipConv(x.id))}</div>
     <div class="b"><div class="t"><b>${pinRank(x) < 999 ? '<span class="pinic">📌</span>' : ""}${nmH(x.id, x.n)}${pinRank(x) < 999 && cpinsBy[String(x.id)] ? `<span class="pinby">${esc(cpinsBy[String(x.id)])}</span>` : ""}${tagIcons(x.id)}${isMuted(x.id) ? `<span class="tagic" title="Sessizde · ${esc(muteLeft(x.id))}">🔕</span>` : ""}${remIcon(x.id)}${asg(x.id) ? `<span class="asg">🙋${esc(asg(x.id).by)}</span>` : ""}${sbSatir(x.id)}</b>${timeSlot(x)}</div>
-      <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : taslakOf(x.id) ? `<span>${taslakOnizleme(taslakOf(x.id).t)}</span>` : `<span>${x.own && !x.rx ? (x.rd ? '<b class="ltk rd">✓✓</b> ' : '<span class="ltk">✓</span> ') : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
-    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
+      <div class="p">${typingBy(x.id) ? `<span class="typ">✍️ ${esc(typingBy(x.id))} yazıyor…</span>` : taslakOf(x.id) ? `<span>${taslakOnizleme(taslakOf(x.id).t)}</span>` : `<span>${x.own && !x.rx ? (x.rd ? '<b class="ltk rd">✓✓</b> ' : '<span class="ltk">✓</span> ') : ""}${emo(esc(x.p || "—"))}</span>`}${Number(x.u) ? `<span class="badge${isQuiet(x.id) ? " mute" : ""}">${esc(x.u)}</span>` : ""}</div>${dmBadge(x.id)}${trust(x.id)}${gozRozet(x.id)}</div></div>`).join("") + (shown.length > listLim ? `<div class="row more" data-k="more" onclick="moreRows()">⬇️ Daha fazla göster <b>${shown.length - listLim}</b></div>` : "")
+    : `<div class="row s">${lf === "all" ? "Sohbet yok (tablet bayi listesini henüz göndermedi)." : lf === "unread" ? "✅ Okunmamış mesaj yok." : lf === "bekle" ? "✅ Şu an cevap bekleyen müşteri yok." : `Henüz ${lf === "seller" ? "💎 elmas satıcısı" : lf === "boss" ? "👑 patron" : lf === "opera" ? "🎭 Opera" : lf === "debtor" ? "🧾 borçlu" : "<span class='gc'></span> coin alıcısı"} etiketli kişi yok. Sohbeti açıp adın altındaki etikete dokunun.`}</div>`));
   if (anc) { const r = $("convs").querySelector(`.row[data-cid="${CSS.escape(anc.id)}"]`); if (r) { const d = r.getBoundingClientRect().top - anc.y; if (Math.abs(d) > 1) lpane.scrollTop += d; } } // sıra değişse de bakılan satır yerinde
   // Güven bilgisi eksik ya da 2 dk'dan eskiyse arka planda alınır, gelince liste bir kez yeniden çizilir
-  const ids = (lf === "all" ? inbox : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
+  const ids = (lf === "all" ? inbox : lf === "bekle" ? bkRows : tagRows(lf)).slice(0, listLim).map((x) => String(x.id)); // yalnızca ekranda gösterilen (en fazla listLim) kişiler; "Daha fazla göster" ile devamı
   loadBuyers(ids, Date.now() - buyersAt > 120_000).then((got) => { if (got && curTab === "msg") renderInbox(); }); }
 // Hepsini okundu (tabletteki gibi): müşterilere "görüldü" gider
 async function readAll() { const list = inbox.filter((x) => Number(x.u) && !x.own && !isBlocked(x.id)); if (!list.length) return;
@@ -2340,7 +2369,7 @@ async function openChat(id, snap) {
   stopMedia(); replyTo = null; try { renderReply(); } catch (e) {} chatAnchor = null;
   const yeniSohbet = String(id) !== cur; if (yeniSohbet) { chX = { pay: null, notes: [], rems: [], sent: null }; if (rec) recCancel(); chFresh = null; if (cur && $("txt")) taslakYaz(cur, $("txt").value); } cur = String(id);
   if (yeniSohbet && $("txt")) { const tk = taslakOf(cur); $("txt").value = tk ? tk.t : ""; grow($("txt")); } /* ✏️ bu sohbetin taslağı (yoksa boş kutu: önceki sohbetin yazısı taşınmaz) */ const x = inbox.find((i) => String(i.id) === cur) || (people[cur] ? { n: people[cur].n, av: people[cur].av } : {}); const sy = SYS.find((s) => s[0] === cur); curName = sy ? sy[1] : x.n || cur;
-  hsYer = null; /* 🤝 W29e: şerit yeri bu sohbetin önbelleğiyle aşağıda (ilk çizimden önce) kararlaştırılır */ $("chTrust").innerHTML = sy ? "" : trust(cur); renderChTags(); sbCiz(); sbTik(); /* 👥 yeni sohbetin "sohbette olanlar"ı hemen (öncekinin adı kalmasın) */ if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
+  hsYer = null; /* 🤝 W29e: şerit yeri bu sohbetin önbelleğiyle aşağıda (ilk çizimden önce) kararlaştırılır */ $("chTrust").innerHTML = sy ? "" : trust(cur); chGozUi(); /* 👁 HZ1 özet satırı: önbellekten hemen (sonra geçmiş cevabıyla tazelenir) */ renderChTags(); sbCiz(); sbTik(); /* 👥 yeni sohbetin "sohbette olanlar"ı hemen (öncekinin adı kalmasın) */ if (!sy) loadBuyers([cur], true).then(() => { if (cur === String(id)) $("chTrust").innerHTML = trust(cur); });
   if (sy) $("chName").textContent = "📢 SUGO TEAM" + (cur !== "30000" ? " › " + sy[1] : ""); else $("chName").innerHTML = nmH(cur, curName); $("chAv").innerHTML = sy ? sy[2] : avHtml(curName, x.av); $("chAv").style.background = sy ? sy[3] : "";
   chVip(); sendBtnUpd(); lockShow(); if (micOk()) setTimeout(() => loadAmr().catch(() => 0), 1500); // 🎤 kaydedici arka planda hazır olsun (dokunuş anında mikrofon izni beklemesin)
   chOnUpd(); roomWatch(); $("sysTabs").hidden = !sy; $("roBar").hidden = !sy; $("compWrap").hidden = !!sy; $("coinBtn").hidden = !!sy || !can("coin");
@@ -2463,7 +2492,8 @@ async function loadChat1(c, scroll) { const gen = ++LC.gen, sys = isSys(c);
     if (hob) { o = { outbox: hob }; if (!obInHist) lsOb(true); } // ayrı outbox isteği gerekmez
     else if (!o) { if (h && h.report) lsOb(false); o = await api("outbox", { conv: c }); } } // sunucu (henüz) vermiyor: eski yol
   if (c !== cur || gen < LC.applied) return; LC.applied = gen; if (h && h.report) pollAt = Date.now();
-  if (!sys && h && h.report && "lock" in h) clockSet(c, h.lock); // 🔒 sunucu: bu sohbetin kilidi (yoksa null → açılır)
+  if (!sys && h && h.report && "lock" in h) clockSet(c, h.lock);
+  if (!sys && h && h.report && "goz1" in h) gozBir(c, h.goz1); // 👁 HZ1: açık sohbetin özeti / risk / bekleme (yedekte alan gelmez) // 🔒 sunucu: bu sohbetin kilidi (yoksa null → açılır)
   if (h && h.report) { const before = hist.length ? hist[hist.length - 1].id : null; const latest = h.report.chat || [];
     if (!sys) { hidFromHist(c, h.report.hid, latest); // 🙈 bu sohbetin gizli mid'leri (sunucu her role verir; içerik yok)
       if (!isSahip() && hidM[c] && hidM[c].size && liveKeep[c]) for (const x of hidM[c]) liveKeep[c].delete(x); }
@@ -7717,11 +7747,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.162"></script>
-<script src="durum.js?v=2.1.162"></script>
-<script src="odaemoji.js?v=2.1.162"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.162"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.162"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.162"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.163"></script>
+<script src="durum.js?v=2.1.163"></script>
+<script src="odaemoji.js?v=2.1.163"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.163"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.163"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.163"></script><!-- </sugo-veri> -->
 </body>
 </html>
