@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.167">
+<meta name="build" content="2.1.168">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.167">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.167">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.167">
+<link rel="manifest" href="manifest.json?v=2.1.168">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.168">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.168">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -969,7 +969,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.167" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.168" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -978,7 +978,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.167" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.168" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1041,7 +1041,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.167"></script>
+<script src="emoji.js?v=2.1.168"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -2647,9 +2647,16 @@ function idChips(u, at) { const st = cur && !isSys(cur) && idState(cur); if (!st
   const nm = esc(String(o.name || "").replace(/\[[^\]]+\]/g, "").trim()), tl = esc((o.name ? o.name + " · " : "") + "UID " + u).replace(/\[/g, "&#91;").replace(/\]/g, "&#93;"); // ad içinde [emoji] kodu çizilmesin
   const gs = (o.groups || []).filter((g) => { const ga = Date.parse(g.at); return (!g.paid && !(Number.isFinite(at) && Number.isFinite(ga) && ga > at + ID_AFTER)) || !Number.isFinite(at) || !Number.isFinite(ga) || (ga >= at - ID_BEFORE && ga <= at + ID_AFTER); }); // 23.11: ödenmemiş bozum mesajdan önce ne zaman olursa olsun (dün atılan da); mesajdan sonrakiler eski mesaja girmez
   if (!gs.length) return no;
-  return gs.map((g) => `<div class="idk${g.paid ? " ok" : g.part > 0 ? " part" : ""}" title="${tl}" data-iu="${esc(u)}" data-ik="${esc(String(g.key))}"><div class="ia"><b>💎 ${dk(g.diamonds)} elmas → ${azn(g.pay)}</b>${nm ? `<span class="inm">${nm}</span>` : ""}</div>`
+  return idBirlesik(gs).map((g) => `<div class="idk${g.paid ? " ok" : g.part > 0 ? " part" : ""}" title="${tl}" data-iu="${esc(u)}" data-ik="${esc(String(g.key))}"><div class="ia"><b>💎 ${dk(g.diamonds)} elmas → ${azn(g.pay)}</b>${nm ? `<span class="inm">${nm}</span>` : ""}</div>`
     + (g.paid ? `<div class="ib"><span class="ist">✅ Ödendi${g.mahsup ? " · 🧾 mahsup" : ""}${g.hs ? " · 🤝" : ""}</span></div></div>` : g.part > 0 ? `<div class="ib" title="${esc(partTxt(g.part, g.pay))}"><span class="ist">🟡 Kısmen ${partN(g.part)}/${partN(g.pay)} ₼</span><button type="button" class="idb" data-iu="${esc(u)}" data-ik="${esc(String(g.key))}" onclick="idPay(this)" aria-label="${esc(partTxt(g.part, g.pay))} — kalanı öde">💸 Kalan ${partN(g.pay - g.part)} ₼</button></div></div>`
     : `<div class="ib"><span class="ist">⏳ Ödenmedi</span><button type="button" class="idb" data-iu="${esc(u)}" data-ik="${esc(String(g.key))}" onclick="idPay(this)">💸 Ödendi yap</button></div></div>`)).join(""); }
+// 23.11 (kullanıcı: "ayrı ayrı göstermesin bir id nin altında iki çip çıkıyor biri 50k elmas 16m diğeri 100k elmas 33 diyor birleşik göstersin tek"):
+// bir ID'nin ödenmemiş (kısmen dahil) bozumları TEK çip (elmas + tutar + kısmi ödenen toplanır; "Ödendi yap" hepsini öder), ödenmişleri de tek çip. Anahtar "+k1,k2".
+function idBirlesik(gs) { const tek = (L) => { if (L.length < 2) return L[0];
+    const r2 = (x) => Math.round(x * 100) / 100;
+    return { key: "+" + L.map((g) => String(g.key)).join(","), at: L[L.length - 1].at, diamonds: L.reduce((t, g) => t + (Number(g.diamonds) || 0), 0), pay: r2(L.reduce((t, g) => t + (Number(g.pay) || 0), 0)),
+      part: r2(L.reduce((t, g) => t + (Number(g.part) || 0), 0)), paid: L.every((g) => g.paid), mahsup: L.some((g) => g.mahsup), hs: L.some((g) => g.hs), txs: L.flatMap((g) => g.txs || []) }; };
+  return [tek(gs.filter((g) => !g.paid)), tek(gs.filter((g) => g.paid))].filter(Boolean); }
 const ID_ODENMEMIS_MS = 60_000; // 22.11: "ödenmedi" görünen bozumu olan ID en çok bu aralıkla yeniden sorulur (ödeme başka cihazdan / sunucudan yapılınca şerit ve çip düzelsin)
 function idWant(c) { if (!c || c !== cur || isSys(c) || chFresh !== c || !canSee("elmas_gor")) return; const st = idState(c);
   const mt = {}, cand = idCands(hist, mt), uAt = st.uAt || (st.uAt = {});
@@ -2685,7 +2692,7 @@ async function idMentions(uids, force) { uids = [...new Set((uids || []).map(Str
 function idmWant(c) { if (!c || c !== cur || isSys(c) || chFresh !== c || idmFly[c]) return; const e = idmC[c]; if (e && Date.now() - e.at < IDM_TTL) return;
   const t3 = Date.now() - 3 * 86400_000; if (!coins.some((x) => !x.other && Date.parse(x.at) >= t3)) return;
   const had = JSON.stringify(idmGet(c) || []); idMentions([c]).then(() => { if (cur === c && JSON.stringify(idmGet(c) || []) !== had) renderChat(); }); }
-async function idPay(el) { const u = el.dataset.iu, st = cur && idSt[cur], o = st && st.got[u], g = o && (o.groups || []).find((x) => String(x.key) === el.dataset.ik); if (!g) return;
+async function idPay(el) { const u = el.dataset.iu, st = cur && idSt[cur], o = st && st.got[u], k = el.dataset.ik || "", g = !o ? null : k.charAt(0) === "+" ? (() => { const ks = new Set(k.slice(1).split(",")), L = (o.groups || []).filter((x) => ks.has(String(x.key)) && !x.paid); return L.length ? idBirlesik(L)[0] : null; })() : (o.groups || []).find((x) => String(x.key) === k); if (!g) return; // 23.11: birleşik çipin anahtarı +k1,k2
   if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
   const nm = String(o.name || "").replace(/\[[^\]]+\]/g, "").trim(); // onay penceresinde [emoji] kodu görünmesin
   const what = `${nm || "UID " + u} · ${dk(g.diamonds)} elmas → ${azn(g.pay).replace(/ ₼/, "\u00a0₼")}`;
@@ -7804,11 +7811,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.167"></script>
-<script src="durum.js?v=2.1.167"></script>
-<script src="odaemoji.js?v=2.1.167"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.167"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.167"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.167"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.168"></script>
+<script src="durum.js?v=2.1.168"></script>
+<script src="odaemoji.js?v=2.1.168"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.168"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.168"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.168"></script><!-- </sugo-veri> -->
 </body>
 </html>
