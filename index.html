@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.172">
+<meta name="build" content="2.1.173">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.172">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.172">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.172">
+<link rel="manifest" href="manifest.json?v=2.1.173">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.173">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.173">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -969,7 +969,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.172" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.173" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -978,7 +978,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.172" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.173" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1041,7 +1041,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.172"></script>
+<script src="emoji.js?v=2.1.173"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1581,7 +1581,7 @@ const GS_AN = [
   { k: "gk", kok: "gkKok", sw: "gkSw", uc: "oto_golge_kart_ayar", ls: "bw_pane_gk", satir: 3, baslik: "💳 Gölge kartı kendisi versin", alt: { kapali: "Müşteri açıkça coin isteyince Günel'in boşta kartını gönderir. Coin'i ekip yükler.", acik: "Müşteri açıkça coin isteyince Günel'in boşta kartını gönderir. Coin'i ekip yükler." },
     onay: { baslik: "Gölge kartı kendisi versin mi?", metin: "Açılırsa: müşteri açıkça coin isteyince sistem Günel'in boşta kartını ve 'ödeyince dekontu gönderin' yazısını kendisi gönderir. Coin'i sistem göndermez; ekip yükler. 10 dakikada ödeme gelmezse kartın hakkı geri alınır ve kart mesajı geri çekilir. İlk kez alan, başkası için isteyen, resim ya da sesle yazan müşteri ve tavanı aşan istek ekibe kalır. Ekip sohbete yazdıysa ya da kart verdiyse sistem susar." } },
   { k: "ge", kok: "geKok", sw: "geSw", uc: "oto_golge_elmas_ayar", ls: "bw_pane_ge", satir: 3, baslik: "💎 Elmas bilgisini kendisi versin", alt: { kapali: "Bozum gelince ödeme zamanını yazar, kartı ister; ID'yi ve nasıl bozulacağını sorana anlatır.", acik: "Bozum gelince ödeme zamanını yazar, kartı ister; ID'yi ve nasıl bozulacağını sorana anlatır." },
-    onay: { baslik: "Elmas bilgisini kendisi versin mi?", metin: "Açılırsa: elmas bozduran müşteriye sistem bozumun ulaştığını ve ödemenin ne zaman yapılacağını (gündüz 1–2 saat içinde, gece bozumunda sabah 10–12 arası) yazar. 16 haneli kart numarası yazılmadıysa ister; parça parça ya da araya harf koyarak yazana tek mesajda, yalnız rakamla yazmasını söyler; 15 dakika sonra bir kez hatırlatır. 'Hangi ID'ye göndereyim' diye sorana bayi ID'mizi, nasıl bozduracağını bilmeyene adımları yazar. Ödemeyi sistem yapmaz; ekip yapar. Ekip sohbete yazdıysa sistem susar." } },
+    onay: { baslik: "Elmas bilgisini kendisi versin mi?", metin: "Açılırsa: elmas bozduran müşteriye sistem bozumun ulaştığını ve ödemenin ne zaman yapılacağını ({SOZ}) yazar. 16 haneli kart numarası yazılmadıysa ister; parça parça ya da araya harf koyarak yazana tek mesajda, yalnız rakamla yazmasını söyler; 15 dakika sonra bir kez hatırlatır. 'Hangi ID'ye göndereyim' diye sorana bayi ID'mizi, nasıl bozduracağını bilmeyene adımları yazar. Ödemeyi sistem yapmaz; ekip yapar. Ekip sohbete yazdıysa sistem susar." } },
   { k: "gz", kok: "gzKok", sw: "gzSw", uc: "oto_golge_elmas_soz_ayar", ls: "bw_pane_gz", satir: 2, ikili: true, baslik: "💎 Elmas sırası ve ödeme sözü", alt: { kapali: "Kapalı: sıra ve ödeme saatini siz söylersiniz; Gölge yalnız kaydeder.", acik: "Açık: önündeki kişi sayısını, ödeme saatini ve sırasını müşteriye Gölge yazar. Ödemeyi yine siz yaparsınız." },
     onay: { baslik: "Elmas sırası ve ödeme sözü açılsın mı?", metin: "Açılırsa: elmas bozduran müşteriye sistem sırasını (önünde kaç kişi var), ödeme saatini ve söz verilen en geç saati yazar; saatler Gölge › Elmas sekmesindeki tabloya göre belirlenir. Ödemeyi sistem yapmaz; ödemeyi siz yaparsınız. Ekip sohbete yazdıysa sistem susar. İstediğiniz an buradan kapatırsınız." } },
   // 💎 (21.11) EA1: Patrona bilgi + Alım sırası (sunucu: oto_golge_elmas_patron_ayar / oto_golge_elmas_alim_ayar; settings.oto_golge_elmas_patron / _alim; satır yoksa KAPALI). Yalnız kullanıcı açar.
@@ -1620,7 +1620,7 @@ async function gsYukle(a) { if (!a) { GS_AN.forEach(gsYukle); return; } if (!isS
   gsCiz(a); GS_AN.filter((x) => x.gerek === a.k).forEach((x) => gsCiz(x)); }
 async function gsTik(k) { const a = gsBul(k); if (!a || a.busy || a.kartta || !isSahip() || !a.d || (!a.d.golge_acik && !a.golgesiz)) return; const onceki = a.d, yeni = !onceki.acik; if (yeni && yedekMod) return; // 🛟 yedekte açılmaz
   let pin = ""; if (yeni && a.pin) { a.kartta = true; try { pin = await askPin(a.baslik.replace(/^\S+\s/, ""), true, a.pinOzet); } finally { a.kartta = false; } if (!pin || !a.d || a.d.acik) return; } // 🪙 para / coin çıkışı: taze PIN kartı (onay kartı yerine)
-  else if (yeni) { a.kartta = true; let ok = false; try { ok = await onayKart({ baslik: a.onay.baslik, metin: a.onay.metin + (omAcik() ? "\n\n🤖 Otomatik mesajlar kapanır." : ""), onay: "Aç", vazgec: "Vazgeç" }); } finally { a.kartta = false; } if (!ok) return; } // 21.11: kart açıkken ikinci dokunma arkaya ikinci kart sıralamaz
+  else if (yeni) { a.kartta = true; let ok = false; try { ok = await onayKart({ baslik: a.onay.baslik, metin: a.onay.metin.replace("{SOZ}", eaSozOzet) + (omAcik() ? "\n\n🤖 Otomatik mesajlar kapanır." : ""), onay: "Aç", vazgec: "Vazgeç" }); } finally { a.kartta = false; } if (!ok) return; } // 21.11: kart açıkken ikinci dokunma arkaya ikinci kart sıralamaz
   if (a.busy || !isSahip()) return; a.busy = true; a.d = { ...onceki, acik: yeni }; gsCiz(a);
   let r = null; try { r = await api(a.uc, { acik: yeni, ...(pin ? { pin } : {}) }); } catch (e) { r = { error: "Bağlantı yok" }; }
   a.busy = false; if (!isSahip()) { gsSil(); return; } if (r && r.pin === "wrong") pinCache = null;
@@ -1677,6 +1677,14 @@ const eaKop = (x) => JSON.parse(JSON.stringify(x));
 const eaDk = (s, bit) => bit && s === "24:00" ? 1440 : EA_SAAT.test(String(s || "")) ? Number(String(s).slice(0, 2)) * 60 + Number(String(s).slice(3)) : -1; // bit "24:00" (gün sonu) sözleşmede geçerli; saat alanı 24:00 göstermez → ekranda 23:59, gövdede 24:00
 const eaSay = (v) => Number(String(v == null ? "" : v).replace(/\D/g, "")) || 0;
 const eaAyarOk = (a) => !!a && ["var", "yok", "stok"].includes(a.alim) && Array.isArray(a.dilimler) && !!a.varsayilan && !!a.varsayilan.en_gec;
+/** 💎 (25.11) Onay kartındaki ödeme sözü: gizli sabit yok, Gölge › Elmas saat tablosundan (settings.oto_elmas.dilimler; önce açık sayfadaki, yoksa bu cihazdaki son okuma).
+ *  "10:00–23:00: 2 saat içinde; 23:00–10:00: sabah 10–11 arası" — gece yarısını aşan dilim birleşik yazılır. Tablo okunmadıysa tabloya yönlendirir. */
+function eaSozOzet() { const d = eaD || eaOku(), l = d && eaAyarOk(d.ayar) ? d.ayar.dilimler.filter((x) => x && String(x.soz_tr || "").trim() && eaDk(x.bas) >= 0 && eaDk(x.bit, 1) > eaDk(x.bas)).map((x) => ({ b: eaDk(x.bas), e: eaDk(x.bit, 1), s: String(x.soz_tr).trim() })).sort((x, y) => x.b - y.b) : [];
+  if (!l.length) return "saatler Gölge › Elmas sekmesindeki tablodan";
+  const g = []; for (const x of l) { const o = g[g.length - 1]; if (o && o.s === x.s && o.e === x.b) o.e = x.e; else g.push({ ...x }); } // aynı sözlü bitişik satırlar tek aralık
+  if (g.length > 1 && g[0].b === 0 && g[g.length - 1].e === 1440 && g[0].s === g[g.length - 1].s) { const son = g.pop(); g[0] = { b: son.b, e: g[0].e, s: g[0].s }; g.sort((x, y) => x.b - y.b); } // gece yarısını aşan dilim (başlangıcına göre sırada)
+  const z = (m) => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+  return g.map((x) => `${z(x.b)}–${z(x.e)}: ${x.s}`).join("; ") + " — Bakü saati"; }
 function eaOku() { try { const x = JSON.parse(localStorage.getItem(EA_LS) || "null"); return x && eaAyarOk(x.ayar) ? x : null; } catch (e) { return null; } }
 function eaSakla() { try { if (eaD) localStorage.setItem(EA_LS, JSON.stringify(eaD)); } catch (e) {} }
 function eaEnGec(g) { g = g || {}; return g.tur === "saat" ? { tur: "saat", gun: Number(g.gun) === 1 ? 1 : 0, saat: String(g.saat || "") } : { tur: "sure", dk: Math.round(Number(g.dk)) || 0 }; }
@@ -7823,11 +7831,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.172"></script>
-<script src="durum.js?v=2.1.172"></script>
-<script src="odaemoji.js?v=2.1.172"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.172"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.172"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.172"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.173"></script>
+<script src="durum.js?v=2.1.173"></script>
+<script src="odaemoji.js?v=2.1.173"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.173"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.173"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.173"></script><!-- </sugo-veri> -->
 </body>
 </html>
