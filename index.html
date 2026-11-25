@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.173">
+<meta name="build" content="2.1.174">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.173">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.173">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.173">
+<link rel="manifest" href="manifest.json?v=2.1.174">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.174">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.174">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -187,7 +187,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .hsrow { display: flex; gap: 8px; align-items: center; min-width: 0; margin-top: 6px; } .hsrow > button { flex: 1; min-width: 0; min-height: 44px; padding: 5px 10px; text-align: left; font-size: 14.5px; line-height: 1.3; border-radius: 12px; overflow-wrap: anywhere; }
   .hsrow > button .s { font-size: 12.5px; font-weight: 400; } .hsrow.on > button { border-color: var(--go); box-shadow: inset 0 0 0 1px var(--go); font-weight: 700; } .hsrow:not(.on) > button { opacity: .6; text-decoration: line-through; }
   .hsrow > b { flex: none; min-width: 64px; text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; }
-  .hsrow.oto:not(.on) > button { opacity: 1; text-decoration: none; } .hsrow.oto.yok > button { opacity: .5; cursor: default; } /* 🔁 kendiliğinden eşleşmiş satırlar: işaretsiz hali normal, yönetici değilse soluk */
+  .hsrow.oto:not(.on) > button, .hsrow.dost:not(.on) > button { opacity: 1; text-decoration: none; } .hsdost { margin-top: 10px; } .hsdost > summary { min-height: 44px; display: flex; align-items: center; padding: 0 10px; border: 1px dashed var(--line); border-radius: 12px; cursor: pointer; font-size: 14.5px; list-style: none; } .hsdost > summary::-webkit-details-marker { display: none; } .hsetk { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--go); font-size: 11.5px; font-weight: 700; vertical-align: 1px; } /* 🤝 dost borcu (0296) */ .hsrow.oto.yok > button { opacity: .5; cursor: default; } /* 🔁 kendiliğinden eşleşmiş satırlar: işaretsiz hali normal, yönetici değilse soluk */
   .hsplan { color: var(--text); font-weight: 600; overflow-wrap: anywhere; } /* 🧭 W29b: alış / kalem nasıl kapanacak (onaydan önce) */
   /* 🤝 W29d: özet + onay pencerenin altına YAPIŞIK (tek kaydırma: pencerenin kendisi; liste altından akar). Pencerenin alt dolgusunu da örter */
   .hsalt { position: sticky; bottom: calc(-16px - env(safe-area-inset-bottom)); z-index: 2; margin: 12px -16px calc(-16px - env(safe-area-inset-bottom)); padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--panel); border-top: 1px solid var(--line); box-shadow: 0 -6px 12px rgba(0,0,0,.18); }
@@ -969,7 +969,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.173" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.174" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -978,7 +978,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.173" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.174" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1041,7 +1041,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.173"></script>
+<script src="emoji.js?v=2.1.174"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -2755,9 +2755,12 @@ function hsDraw() { const el = $("hsBar"); if (!el) return; const c = cur, izin 
   el.classList.toggle("bos", !borc || !yap); if (el.innerHTML !== h) el.innerHTML = h;
   if (deg && ust && atB) { toBottom(); requestAnimationFrame(() => { if (stick) toBottom(); }); } } // geç belirişte son mesaj alt hizada (şeridin üstünde) kalır
 /** 🔁 kendiliğinden eşleşmiş satışlar (sunucu report.hesap.oto[]): yalnız yönetici işaretleyebilir; işaretli olan mahsup kalemi gibi sayılır */
+/** 🤝 (25.11, göç 0296) Dost borcu: aracının tanıdığı başka birinin açık alacağı (report.hesap.dost), YALNIZ yönetici elle seçer; kalem { tur: "alacak", ref, tutar, dost: true } gider (işaretsiz sunucu reddeder) */
+const hsDostL = () => { const D = (hsSt && hsSt.d) || {}; return Array.isArray(D.dost) ? D.dost.filter((k) => k && k.tur === "alacak" && k.ref != null && Number(k.tutar) > 0) : []; };
+const hsDostOn = () => !(me && me.yon) ? [] : hsDostL().filter((k) => hsSt.onD.has("alacak:" + k.ref)).map((k) => ({ tur: "alacak", ref: k.ref, tutar: k.tutar, dost: true }));
 const hsOtoOn = () => { const st = hsSt, D = (st && st.d) || {}; return Array.isArray(D.oto) ? D.oto.filter((o) => o && o.oto && st.onO.has(String(o.oto.claim))) : []; };
 const hsHesap = () => { const st = hsSt, D = st.d || {}, ku = (x) => Math.round(Number(x) * 100);
-  const A = (D.alislar || []).filter((a) => !st.offA.has(String(a.batch))), K = (D.kalemler || []).filter((k) => !st.offK.has(k.tur + ":" + k.ref)).concat(hsOtoOn().map((o) => ({ tur: "satis", ref: o.ref, tutar: o.tutar })));
+  const A = (D.alislar || []).filter((a) => !st.offA.has(String(a.batch))), K = (D.kalemler || []).filter((k) => !st.offK.has(k.tur + ":" + k.ref)).concat(hsOtoOn().map((o) => ({ tur: "satis", ref: o.ref, tutar: o.tutar }))).concat(hsDostOn());
   const B = A.reduce((t, a) => t + ku(a.tutar), 0), Al = K.reduce((t, k) => t + ku(k.tutar), 0), M = Math.min(B, Al);
   // satır satır plan (sunucu hesaplasma_yaz ile AYNI dağıtım): mahsup alışlara EN SON alıştan, kalemlere sırayla (en eski önce) — onaydan önce görünür
   const pa = new Map(), pk = new Map(); let r0 = M; for (const a of [...A].sort((x, y) => Number(y.batch) - Number(x.batch))) { const m = Math.min(ku(a.tutar), r0); r0 -= m; pa.set(String(a.batch), m / 100); }
@@ -2774,14 +2777,14 @@ const hsKartlar = (pid) => { const seen = new Map(); for (const c of ((hsSt.d ||
 async function hsAc() { if (!can("elmas")) { toast("Ödendi yapma yetkiniz yok (sadece görme)", true); return; }
   const c = cur, L = hsBorclar(); if (!c || !L.length) return;
   const pin = await askPin("Hesaplaşma için işlem PIN'iniz"); if (!pin || cur !== c) return;
-  hsSt = { c, ad: curName || c, L, d: null, offA: new Set(), offK: new Set(), onO: new Set(), person: "", bank: "", busy: false, idem: mhIdem(), pin };
+  hsSt = { c, ad: curName || c, L, d: null, offA: new Set(), offK: new Set(), onO: new Set(), onD: new Set(), dAcik: false, person: "", bank: "", busy: false, idem: mhIdem(), pin };
   openModal(`<h3 style="margin:0 0 4px;overflow-wrap:anywhere">🤝 Hesaplaşma · ${esc(hsAd(hsSt.ad))}</h3><div id="hsBody"><div class="s" style="padding:18px 0">⏳ Sunucudaki güncel tutarlar okunuyor…</div></div>`);
   await hsYukle(); }
 async function hsYukle() { const st = hsSt; if (!st) return; let d = null;
   try { d = await api("hesaplasma_onizle", { conv: st.c, txs: [...new Set(st.L.flatMap((x) => x.txs))].slice(0, 80) }); } catch (e) {}
   if (hsSt !== st || !$("hsBody")) return;
   if (!d || d.error || !d.report || !d.report.hesap) { $("hsBody").innerHTML = `<div class="s" style="padding:12px 0">${esc((d && d.error) || "Bağlantı yok")}</div><button onclick="hsKapat()" style="width:100%;min-height:44px">Kapat</button>`; return; }
-  st.d = d.report.hesap; st.onO = new Set(); // 🔁 yeni önizleme: oto seçimleri sıfırlanır
+  st.d = d.report.hesap; st.onO = new Set(); st.onD = new Set(); // 🔁 yeni önizleme: oto ve dost seçimleri sıfırlanır
   // 10'dan fazla açık kalem / alış: en eski 10'u seçili gelir, kalanı seçilmemiş (sunucu sınırı; pencerede not var)
   (st.d.kalemler || []).slice(HS_KALEM).forEach((k) => st.offK.add(k.tur + ":" + k.ref)); (st.d.alislar || []).slice(HS_KALEM).forEach((a) => st.offA.add(String(a.batch)));
   hsCiz(); }
@@ -2794,6 +2797,10 @@ function hsCiz() { const st = hsSt, D = st && st.d, w = $("hsBody"); if (!D || !
   const otoL = Array.isArray(D.oto) ? D.oto.filter((o) => o && o.oto) : [], yonO = !!(me && me.yon);
   const otoHtml = otoL.length ? `<div class="s" style="margin:12px 0 2px">🔁 Kendiliğinden eşleşmiş (son 48 saat)</div>` + otoL.map((o) => { const on = yonO && st.onO.has(String(o.oto.claim)), hd = o.oto.hedef;
     return `<div class="hsrow oto${on ? " on" : ""}${yonO ? "" : " yok"}"><button type="button" data-hs="o" data-k="${esc(String(o.oto.claim))}" onclick="hsTik(this)" aria-pressed="${on}" ${yonO ? "" : "disabled"}>${on ? "☑️" : "⬜"} 🪙 ${esc(o.etiket || "coin satışı")}<div class="s">${esc(hsAd(o.ad))}${o.oto.olay_at ? " · " + esc(nkSaat(o.oto.olay_at)) : ""}</div><div class="s">${hd ? `Banka parası → ${esc(hsAd(hd.ad))} siparişine taşınacak` : "Banka parası eşleşmemiş paraya dönecek, gruba sorulacak"}</div>${on ? `<div class="s hsplan">${esc(hsPlanK({ tur: "satis", ref: o.ref, tutar: o.tutar }, h))}</div>` : ""}${yonO ? "" : `<div class="s">yalnız yönetici</div>`}</button><b>${payN(o.tutar)} ₼</b></div>`; }).join("") : "";
+  const dostL = yonO ? hsDostL() : [], dSat = (k) => { const on = st.onD.has("alacak:" + k.ref), kk = { tur: "alacak", ref: k.ref, tutar: k.tutar };
+      return `<div class="hsrow dost${on ? " on" : ""}"><button type="button" data-hs="d" data-k="${esc("alacak:" + k.ref)}" onclick="hsTik(this)" aria-pressed="${on}">${on ? "☑️" : "⬜"} 🤝 ${esc(hsAd(k.ad) || (k.uid ? "UID " + k.uid : "dost"))}<span class="hsetk">dost</span><div class="s">${esc(k.etiket || "dost borcu #" + k.ref)}${k.at ? " · " + esc(nkSaat(k.at)) : ""}${Number(k.toplam) > Number(k.tutar) + 0.009 ? ` · toplam ${payN(k.toplam)} ₼, açık` : " · açık"}</div>${on ? `<div class="s hsplan">${esc(hsPlanK(kk, h))}</div>` : ""}</button><b>${payN(k.tutar)} ₼</b></div>`; };
+  const dSec = dostL.filter((k) => st.onD.has("alacak:" + k.ref)), dBos = dostL.filter((k) => !st.onD.has("alacak:" + k.ref));
+  const dostHtml = !dostL.length ? "" : dSec.map(dSat).join("") + (dBos.length ? `<details class="hsdost"${st.dAcik ? " open" : ""} ontoggle="if(hsSt)hsSt.dAcik=this.open"><summary>＋ Dost borcu ekle <span class="s" style="margin-left:6px">(${dBos.length} açık borç · başka kişinin)</span></summary><div class="s" style="margin:6px 2px 0">Aracının tanıdığı birinin açık borcu da bu ödemeden düşülür. Yalnız yönetici seçer.</div>${dBos.map(dSat).join("")}</details>` : "");
   const kartHtml = h.gonder > 0.009 ? `<div class="s" style="margin:12px 0 6px">💳 ${payN(h.gonder)} ₼ hangi karttan gönderildi? <b>Kişi</b></div><div class="paychips">${ppl.map((p) => `<button type="button" data-hs="p" data-k="${esc(String(p.id))}" class="${String(p.id) === st.person ? "on" : ""}" onclick="hsTik(this)">${esc(p.name)}</button>`).join("")}</div>
       ${st.person ? `<div class="s" style="margin:10px 0 6px">Banka</div><div class="paychips">${kartlar.length ? kartlar.map((c) => `<button type="button" data-hs="b" data-k="${esc(String(c.bank))}" class="${String(c.bank) === st.bank ? "on" : ""}" onclick="hsTik(this)">${esc(c.label || c.bank)} ${c.l4.map((x) => "···" + esc(String(x))).join(", ")}</button>`).join("") : `<span class="s">Bu kişinin kayıtlı kartı yok — aşağıdan bankayı seçin</span>`}</div>
       <select id="hsOther" onchange="hsBanka(this.value)" style="width:100%;height:44px;margin-top:8px;font-size:16px;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 10px"><option value="">Diğer banka…</option>${(D.banks || []).map((b) => `<option value="${esc(String(b.code))}" ${!inK && String(b.code) === st.bank ? "selected" : ""}>${esc(b.label || b.code)}</option>`).join("")}</select>` : ""}` : "";
@@ -2804,7 +2811,8 @@ function hsCiz() { const st = hsSt, D = st && st.d, w = $("hsBody"); if (!D || !
     <div class="hstop">Toplam borç: ${payN(h.borc)} ₼ (${kisi} kişi)</div>${D.bekleyen > 0 ? `<div class="s" style="color:#facc15">⏳ ${D.bekleyen} bozum henüz alışa dönüşmedi — birkaç dakika sonra yeniden açın</div>` : ""}
     <div class="s" style="margin:12px 0 2px">🪙 ${esc(hsAd(st.ad))}'ın bize borcu — bizden aldığı coin / eski borç</div>${(D.kalemler || []).some((k) => /^🆔/.test(k.etiket || "")) ? `<div class="s" style="color:#facc15">🆔 ${esc(hsAd(st.ad))} ID verdi, o kişilere coin yüklendi: mahsup edilsin mi? İstemediğinizin işaretini kaldırın.</div>` : ""}${kr || `<div class="s">Açık coin satışı ya da borç yok: mahsupsuz toplu ödeme</div>`}
     ${(D.kalemler || []).length > HS_KALEM ? `<div class="s" style="color:#facc15">En çok ${HS_KALEM} kalem: en eski ${HS_KALEM}'u seçili; kalanlar için bu hesaplaşmadan sonra yeniden açın</div>` : ""}${(D.alislar || []).length > HS_KALEM ? `<div class="s" style="color:#facc15">En çok ${HS_KALEM} alış: en eski ${HS_KALEM}'u seçili; kalanlar için yeniden açın</div>` : ""}
-    ${kr || hsOtoOn().length ? `<div class="hstop">Toplam alacak: ${payN(h.alacak)} ₼</div>` : ""}${otoHtml}
+    ${dostHtml}
+    ${kr || hsOtoOn().length || hsDostOn().length ? `<div class="hstop">Toplam alacak: ${payN(h.alacak)} ₼</div>` : ""}${otoHtml}
     ${kartHtml}
     ${son ? `<div class="hsson"><div class="s">Bu sohbetin son hesaplaşmaları${yon ? "" : " (geri almayı yalnız yönetici yapar)"}</div>${son}</div>` : ""}
     <div class="hsalt"><div class="hssonuc" id="hsSonuc">${esc(hsSonuc(h))}</div>
@@ -2814,6 +2822,7 @@ function hsTik(el) { const st = hsSt; if (!st || st.busy) return; const t = el.d
   if (t === "a") { if (st.offA.has(k) && hsHesap().A.length >= HS_KALEM) { toast(`Tek hesaplaşmada en çok ${HS_KALEM} alış`, true); return; } st.offA.has(k) ? st.offA.delete(k) : st.offA.add(k); }
   else if (t === "k") { if (st.offK.has(k) && hsHesap().K.length >= HS_KALEM) { toast(`Tek hesaplaşmada en çok ${HS_KALEM} satış / borç`, true); return; } st.offK.has(k) ? st.offK.delete(k) : st.offK.add(k); }
   else if (t === "o") { if (!(me && me.yon)) { toast("Yalnız yönetici işaretleyebilir", true); return; } if (!st.onO.has(k) && hsHesap().K.length >= HS_KALEM) { toast(`Tek hesaplaşmada en çok ${HS_KALEM} satış / borç`, true); return; } st.onO.has(k) ? st.onO.delete(k) : st.onO.add(k); }
+  else if (t === "d") { if (!(me && me.yon)) { toast("Dost borcunu yalnız yönetici ekler", true); return; } if (!st.onD.has(k) && hsHesap().K.length >= HS_KALEM) { toast(`Tek hesaplaşmada en çok ${HS_KALEM} satış / borç`, true); return; } st.onD.has(k) ? st.onD.delete(k) : st.onD.add(k); }
   else if (t === "p") { if (st.person !== k) { st.person = k; st.bank = ""; } } // kişi değişince banka SIFIRLANIR (tahmin yok)
   else if (t === "b") st.bank = k;
   else if (t === "g") { hsGeri(k); return; }
@@ -2823,14 +2832,14 @@ async function hsGo() { const st = hsSt; if (!st || st.busy || !st.d) return; co
   if (h.gonder > 0.009 && (!st.person || !st.bank)) { toast("Gönderilen tutarın kartını seçin (kişi + banka)", true); return; }
   st.busy = true; hsCiz();
   const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin, pid = isNaN(Number(st.person)) ? st.person : Number(st.person);
-  const body = { conv: st.c, conv_ad: hsAd(st.ad).slice(0, 60), alis: h.A.map((a) => ({ batch: Number(a.batch), tutar: a.tutar })), kalem: h.K.map((k) => ({ tur: k.tur, ref: k.ref, tutar: k.tutar })), idem: st.idem, pin,
+  const body = { conv: st.c, conv_ad: hsAd(st.ad).slice(0, 60), alis: h.A.map((a) => ({ batch: Number(a.batch), tutar: a.tutar })), kalem: h.K.map((k) => ({ tur: k.tur, ref: k.ref, tutar: k.tutar, ...(k.dost ? { dost: true } : {}) })), idem: st.idem, pin,
     ...(h.gonder > 0.009 ? { person_id: pid, bank: st.bank } : {}),
     ...(hsOtoOn().length ? { cevir: hsOtoOn().map((o) => ({ claim: o.oto.claim, hedef: (o.oto.hedef && o.oto.hedef.order) ?? null })) } : {}) }; // 🔁 hiçbiri işaretli değilse alan hiç gitmez
   let d, ag = false; try { d = await api("hesaplasma_yap", body); } catch (e) { ag = true; d = { error: "Bağlantı hatası: " + (e && e.message || e) }; }
   // sunucu KESİN hata dediyse (hiçbir şey yazılmadı) yeni kimlik; yanıt alınamadıysa aynısı kalır — ilk istek işlenmiş olabilir, yeniden deneme ikinci kez yazmaz
   if (d && d.error && !ag && !d._http && !/^(Bağlantı yok|Yanıt okunamadı)/.test(String(d.error))) st.idem = mhIdem();
   if (hsSt !== st) return; if (d.pin === "wrong") pinCache = null; st.busy = false;
-  if (d.error) { toast(hsKisa(d.error), true); if (d.yenile) { st.d = null; st.onO = new Set(); $("hsBody").innerHTML = `<div class="s" style="padding:18px 0">⏳ Yenileniyor…</div>`; await hsYukle(); if (hsSt === st && st.d && Array.isArray(st.d.oto) && st.d.oto.length) toast("Liste yenilendi — kendiliğinden eşleşme seçimleri sıfırlandı"); } else hsCiz(); return; }
+  if (d.error) { toast(hsKisa(d.error), true); if (d.yenile) { st.d = null; st.onO = new Set(); st.onD = new Set(); $("hsBody").innerHTML = `<div class="s" style="padding:18px 0">⏳ Yenileniyor…</div>`; await hsYukle(); if (hsSt === st && st.d && Array.isArray(st.d.oto) && st.d.oto.length) toast("Liste yenilendi — kendiliğinden eşleşme seçimleri sıfırlandı"); } else hsCiz(); return; }
   // TEK mesaj (W29d): sunucunun özeti + dekont varsa nereden ekleneceği (📎 şeridi sohbet LİSTESİNİN üstünde; sohbet açıkken görünmez)
   const dk = d.report && d.report.dekont, ok0 = (typeof d.ok === "string" ? d.ok : "✅ Hesaplaşma kaydedildi").replace(/ · 📎 [^·]*$/, "");
   hsSt = null; closeModal(); toast(dk ? `${ok0} · 📎 Dekont: sohbetlere dönünce listenin üstündeki 📎 şeridinden ekleyin` : ok0);
@@ -7831,11 +7840,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.173"></script>
-<script src="durum.js?v=2.1.173"></script>
-<script src="odaemoji.js?v=2.1.173"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.173"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.173"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.173"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.174"></script>
+<script src="durum.js?v=2.1.174"></script>
+<script src="odaemoji.js?v=2.1.174"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.174"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.174"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.174"></script><!-- </sugo-veri> -->
 </body>
 </html>
