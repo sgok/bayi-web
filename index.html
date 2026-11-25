@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.174">
+<meta name="build" content="2.1.175">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.174">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.174">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.174">
+<link rel="manifest" href="manifest.json?v=2.1.175">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.175">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.175">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -969,7 +969,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.174" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.175" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -978,7 +978,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.174" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.175" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1041,7 +1041,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.174"></script>
+<script src="emoji.js?v=2.1.175"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1880,7 +1880,7 @@ const gmYedekKart = () => onayKart({ baslik: "🛟 Yedek modunda değiştirileme
 function gmOku(k) { if (!isSahip()) return null; try { const x = JSON.parse(localStorage.getItem(k) || "null"); return x && typeof x === "object" ? x : null; } catch (e) { return null; } }
 function gmSil() { gmD = null; gmK = null; gmBusy = false; try { localStorage.removeItem(GM_LS); localStorage.removeItem(GMK_LS); } catch (e) {} const k = $("gmKok"); if (k) { k.innerHTML = ""; k.__h = ""; } }
 const gmSn = (x) => String(Math.round(Number(x) * 10) / 10).replace(".", ",");
-const gmDurum = (r) => r && typeof r.acik === "boolean" ? { acik: r.acik, saglayici: r.saglayici === "haiku" ? "haiku" : "gemma", yardim: r.yardim === true } : null;
+const gmDurum = (r) => r && typeof r.acik === "boolean" ? { acik: r.acik, saglayici: r.saglayici === "haiku" ? "haiku" : "gemma", yardim: r.yardim === true, elmas_yardim: r.elmas_yardim === true } : null;
 function gmKarneSatir() { const k = gmK; // [üst satır, Gemma, Haiku]: hep üç satır (boy değişmez)
   if (!k) return ["Karne okunuyor…", "", ""];
   if (k.yedek) return ["🛟 Yedekteyken çalışmaz", "Karne ana sunucu dönünce görünür", ""];
@@ -1892,7 +1892,9 @@ function gmHtml() { const d = gmD, [a, b, c] = gmKarneSatir(), dis = !d || gmBus
   const sec = `<div class="seg gms" role="radiogroup" aria-label="Model">${GM_SAG.map(([sg, ad]) => { const on = !!d && d.saglayici === sg; return `<button type="button" role="radio" data-gms="${sg}" aria-checked="${on}"${on ? ' class="on"' : ""}${dis ? " disabled" : ""} onclick="gmSec('${sg}')">${esc(ad)}</button>`; }).join("")}</div>`;
   // 🤝 25.11 Haiku yardımı (kullanıcı: "Gölge konuşmayı anlamadıysa haiku dan neden yardım almıyor" → "Önerdiğini yap"): yalnız ikinci göz açık + Haiku seçiliyken dokunulur; yazısı sabit
   const yr = swPasif(swHtml("gmYrSw", "🤝 Haiku yardımı", "Gölge anlamadığı mesajda Haiku'ya bakar: coin / elmas isteği ve selamda kendi akışına devam eder. Para kuralları aynı. Yalnız ikinci göz açık ve Haiku seçiliyken çalışır.", !!d && d.yardim, "gmYrTik()"), dis || !d.acik || d.saglayici !== "haiku", gmBusy ? 'aria-busy="true"' : "");
-  return `<div class="sdb gsb gmb${gmBusy ? " gsm" : ""}">${sw}${sec}${yr}<div class="gmk" id="gmKarne" aria-live="polite">${[a, b, c].map((x) => `<span>${esc(x) || "&nbsp;"}</span>`).join("")}</div></div>`; }
+  // 💎 25.11 Haiku elmas yardımı (kullanıcı Öneri A: "evet yazılsın"): Haiku yardımının hemen altında, aynı kapı (ikinci göz açık + Haiku); kayıt { elmas_yardim }
+  const ey = swPasif(swHtml("gmEySw", "💎 Haiku elmas yardımı", "Gölge'nin anlamadığı elmas mesajında Haiku türü anlar; Gölge onaylı hazır metniyle cevaplar; rakam / söz motordan. Yalnız ikinci göz açık ve Haiku seçiliyken çalışır.", !!d && d.elmas_yardim, "gmEyTik()"), dis || !d.acik || d.saglayici !== "haiku", gmBusy ? 'aria-busy="true"' : "");
+  return `<div class="sdb gsb gmb${gmBusy ? " gsm" : ""}">${sw}${sec}${yr}${ey}<div class="gmk" id="gmKarne" aria-live="polite">${[a, b, c].map((x) => `<span>${esc(x) || "&nbsp;"}</span>`).join("")}</div></div>`; }
 function gmCiz() { const k = $("gmKok"); if (!k) return; if (!isSahip()) { gmSil(); return; } const h = gmHtml(); if (k.__h !== h) { k.__h = h; k.innerHTML = h; } }
 function gmDYaz(d) { gmD = d; try { localStorage.setItem(GM_LS, JSON.stringify(d)); } catch (e) {} }
 async function gmYukle() { if (!isSahip() || !$("gmKok")) return; if (!gmD) gmD = gmDurum(gmOku(GM_LS)); if (!gmK) { const x = gmOku(GMK_LS); gmK = x && (x.yedek || Array.isArray(x.modeller)) ? x : null; } gmCiz();
@@ -1918,6 +1920,11 @@ async function gmYrTik() { if (gmBusy || gmKartta || !isSahip() || !gmD || !gmD.
   if (yedekMod) { gmYedekKart(); return; }
   if (yeni) { gmKartta = true; let ok = false; try { ok = await onayKart({ baslik: "Haiku yardımı açılsın mı?", metin: GM_YARDIM_ONAY, onay: "Aç", vazgec: "Vazgeç" }); } finally { gmKartta = false; } if (!ok || !gmD || gmD.yardim) return; }
   await gmYaz({ yardim: yeni }, (d) => d.yardim ? "🤝 Haiku yardımı açıldı" : "Haiku yardımı kapandı"); }
+const GM_ELMAS_ONAY = "Açılırsa: elmas sohbetinde Gölge bir mesajı anlayamadığında hemen operatöre devretmez; Claude Haiku'nun mesaja verdiği türü en çok 90 saniye bekler.\nTür elmas alımı, miktar, tutar, nasıl bozulur, ne zaman ödenir ya da kabul ise Gölge kendi onaylı hazır metniyle cevaplar. Rakam, tutar ve ödeme sözü Gölge'nin kendi kurallarından gelir; Haiku metin yazmaz.\nÖteki durumlarda, tür gelmezse ya da ekip yazarsa eskisi gibi operatöre devreder.\nİstediğiniz an buradan kapatırsınız.";
+async function gmEyTik() { if (gmBusy || gmKartta || !isSahip() || !gmD || !gmD.acik || gmD.saglayici !== "haiku") return; const yeni = !gmD.elmas_yardim;
+  if (yedekMod) { gmYedekKart(); return; }
+  if (yeni) { gmKartta = true; let ok = false; try { ok = await onayKart({ baslik: "Haiku elmas yardımı açılsın mı?", metin: GM_ELMAS_ONAY, onay: "Aç", vazgec: "Vazgeç" }); } finally { gmKartta = false; } if (!ok || !gmD || gmD.elmas_yardim) return; }
+  await gmYaz({ elmas_yardim: yeni }, (d) => d.elmas_yardim ? "💎 Haiku elmas yardımı açıldı" : "Haiku elmas yardımı kapandı"); }
 async function gmSec(sg) { if (gmBusy || gmKartta || !isSahip() || !gmD || gmD.saglayici === sg || !GM_SAG.some((x) => x[0] === sg)) return;
   if (yedekMod) { gmYedekKart(); return; }
   const kapaliNot = gmD.acik ? "" : "\n\nAnahtar kapalı: seçim kaydedilir, anahtarı açınca bu model çalışır.";
@@ -7840,11 +7847,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.174"></script>
-<script src="durum.js?v=2.1.174"></script>
-<script src="odaemoji.js?v=2.1.174"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.174"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.174"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.174"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.175"></script>
+<script src="durum.js?v=2.1.175"></script>
+<script src="odaemoji.js?v=2.1.175"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.175"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.175"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.175"></script><!-- </sugo-veri> -->
 </body>
 </html>
