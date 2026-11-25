@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.175">
+<meta name="build" content="2.1.176">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.175">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.175">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.175">
+<link rel="manifest" href="manifest.json?v=2.1.176">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.176">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.176">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -628,6 +628,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .nkr:active, .nka:active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
   .nkr .b, .nka .b { flex: 1; min-width: 0; } .nkr .b b, .nka .b b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .nkr .s, .nka .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nkkl { margin-top: 4px; display: grid; gap: 2px; } .nkk { display: flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 400; line-height: 1.3; min-width: 0; } .nkk > .l { flex: none; white-space: nowrap; } .nkk > .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 12px; } .nkk > .v { flex: none; font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 600; line-height: 1.3; } .nkk > .v .nkn small { font-size: 1em; } .nkk.eski { opacity: .55; } .nkusd { display: inline-block; padding: 0 5px; border-radius: 7px; border: 1px solid #22c55e; color: #4ade80; font-size: 11px; font-weight: 700; margin-left: 3px; } /* 💳 kart başına bakiye (25.11) */
   .nks { display: flex; align-items: center; gap: 4px; } .nks > .e, .nks > .nktag { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .nks > .z { flex: none; white-space: nowrap; } /* uzun ad / etiket kısalır, saat ve son 4 hane görünür kalır */
   .nkr .av { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; }
   /* kişi satırı (21.11): ad + tutar üst satırda, "N hesap · son hareket <saat>" alt satırda tutarın altına da uzanır → saat 320 px'te de kesilmez
@@ -969,7 +970,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.175" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.176" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -978,7 +979,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.175" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.176" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1041,7 +1042,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.175"></script>
+<script src="emoji.js?v=2.1.176"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1595,6 +1596,11 @@ const GS_AN = [
   { k: "gc", kok: "gcKok", sw: "gcSw", uc: "oto_golge_coin_ayar", ls: "bw_pane_gc", satir: 0, pin: true, golgesiz: true, baslik: "🪙 Gölge coin göndersin",
     sabitAlt: "Açıkken Gölge, parası gelen müşterinin coin'ini kendisi gönderir: dekont ile banka bildirimi tutmalı (tutar, saat, tarih), kart o anda başkasına verilmemiş olmalı. Ekip yazdıysa ya da coin'i ekip gönderdiyse, müşterinin borcu varsa ya da ilk alışverişse coin size kalır ve tablet alarmı çalar.",
     pinOzet: "🪙 Gölge, parası gelen müşterinin coin'ini kendisi gönderecek. Açmak için işlem PIN'i." },
+  // 🪪 (25.11) Başka ID'ye yükleme (kullanıcı aynen: "emin olduktan sonra göndersin coinsi ama müşteri teyidi alsın mutlaka"): settings.oto_golge.baska_id (sunucu oto_golge_baska_id_ayar; öteki alanlar korunur).
+  // Kapalı gelir, yalnız sahip açar; açarken onay kartı (PIN yok); açıklama sabit (gc kalıbı); Gölge kapalıyken kilitlenmez; otomatik mesajlara dokunmaz (omYok).
+  { k: "gb", kok: "gbKok", sw: "gbSw", uc: "oto_golge_baska_id_ayar", ls: "bw_pane_gb", satir: 0, golgesiz: true, omYok: true, baslik: "🪪 Başka ID'ye yükleme",
+    sabitAlt: "Müşteri başka ID'ye coin isterse Gölge ID'nin adını sorup teyit alır; yalnız 'bəli' gelirse yükler.",
+    onay: { baslik: "Başka ID'ye yükleme açılsın mı?", metin: "Açılırsa: müşteri kendi hesabı yerine başka bir ID'ye coin isterse Gölge o ID'nin Sugo'daki adını bulur ve müşteriye bu kişi mi diye sorar.\nYalnız müşteri “bəli” derse kart verir; ödeme gelince coin o ID'ye yüklenir.\nAd bulunamazsa, başka bir cevap gelirse ya da 10 dakika cevap gelmezse iş ekibe kalır.\nCoin yine yalnız ödeme bildirimi ve bütün sınırlarla gider.\nİstediğiniz an buradan kapatırsınız." } },
 ];
 GS_AN.forEach((a) => { a.d = null; a.busy = false; }); // d: { acik, golge_acik } | null
 GS_AN.forEach((a) => { try { Object.defineProperty(window, a.k + "D", { get: () => a.d, set: (v) => { a.d = v; }, configurable: true }); Object.defineProperty(window, a.k + "Busy", { get: () => a.busy, set: (v) => { a.busy = v; }, configurable: true }); } catch (e) {} }); // gsD / gsBusy, gkD / gkBusy, geD / geBusy: kısa adlar (senaryolar bunlarla okur / sıfırlar)
@@ -1620,7 +1626,7 @@ async function gsYukle(a) { if (!a) { GS_AN.forEach(gsYukle); return; } if (!isS
   gsCiz(a); GS_AN.filter((x) => x.gerek === a.k).forEach((x) => gsCiz(x)); }
 async function gsTik(k) { const a = gsBul(k); if (!a || a.busy || a.kartta || !isSahip() || !a.d || (!a.d.golge_acik && !a.golgesiz)) return; const onceki = a.d, yeni = !onceki.acik; if (yeni && yedekMod) return; // 🛟 yedekte açılmaz
   let pin = ""; if (yeni && a.pin) { a.kartta = true; try { pin = await askPin(a.baslik.replace(/^\S+\s/, ""), true, a.pinOzet); } finally { a.kartta = false; } if (!pin || !a.d || a.d.acik) return; } // 🪙 para / coin çıkışı: taze PIN kartı (onay kartı yerine)
-  else if (yeni) { a.kartta = true; let ok = false; try { ok = await onayKart({ baslik: a.onay.baslik, metin: a.onay.metin.replace("{SOZ}", eaSozOzet) + (omAcik() ? "\n\n🤖 Otomatik mesajlar kapanır." : ""), onay: "Aç", vazgec: "Vazgeç" }); } finally { a.kartta = false; } if (!ok) return; } // 21.11: kart açıkken ikinci dokunma arkaya ikinci kart sıralamaz
+  else if (yeni) { a.kartta = true; let ok = false; try { ok = await onayKart({ baslik: a.onay.baslik, metin: a.onay.metin.replace("{SOZ}", eaSozOzet) + (omAcik() && !a.omYok ? "\n\n🤖 Otomatik mesajlar kapanır." : ""), onay: "Aç", vazgec: "Vazgeç" }); } finally { a.kartta = false; } if (!ok) return; } // 21.11: kart açıkken ikinci dokunma arkaya ikinci kart sıralamaz
   if (a.busy || !isSahip()) return; a.busy = true; a.d = { ...onceki, acik: yeni }; gsCiz(a);
   let r = null; try { r = await api(a.uc, { acik: yeni, ...(pin ? { pin } : {}) }); } catch (e) { r = { error: "Bağlantı yok" }; }
   a.busy = false; if (!isSahip()) { gsSil(); return; } if (r && r.pin === "wrong") pinCache = null;
@@ -2008,7 +2014,7 @@ function golgePage() { if (!me || !(isSahip() || can("oto_ayar"))) return; const
   sheet("golge", `<h3>🌘 Gölge</h3><div class="gsi">Gölge açıkken otomatik mesajlar kapalıdır; biri açılınca öteki kapanır.</div>
     <div id="hhKok">${hhHtml()}</div>
     <div class="seg ${sh ? "seg3 " : ""}gsek" role="tablist">${gpSekler().map((k) => `<button type="button" role="tab" data-gsek="${k}" aria-selected="${k === gpSek}"${k === gpSek ? ' class="on"' : ""} onclick="golgeSekSec('${k}')">${ad[k]}</button>`).join("")}</div>
-    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"))}<div id="gsnKok"></div><div id="gmKok"></div></div>` : ""}
+    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"))}<div id="gsnKok"></div><div id="gmKok"></div></div>` : ""}
     <div class="gpn" id="gp_elmas" role="tabpanel"${gz("elmas")}><div id="eaKok"><div id="eaDurum"></div>${sh ? kok(gsBul("ge"), gsBul("gz"), gsBul("gp"), gsBul("ga")) : ""}<div id="eaForm"></div>${sh ? `<div id="ealKok"></div>` : ""}</div></div>
     <div class="gpn" id="gp_oto" role="tabpanel"${gz("oto")}><div id="omKok"></div></div>`); if (!setOn()) golgeDolur(); } // ayarlarda: setRender doldurur (geri dönüşte de)
 // 👥 Gruplar (W19, 16.11): bayi hesabının Sugo grupları ("AZ Opera", aile grubu) — YALNIZ yönetici, SALT OKUNUR (yazma kutusu yok, okunmamış sayısı yok).
@@ -4518,9 +4524,16 @@ const nkSaat = (t) => pSaat(t); // para işlemi saati: İstanbul + Bakü (pSaat)
 const nkBankAd = (h, kisi) => { const l = String(h.label || h.bank || ""); return kisi && l.toLocaleLowerCase("tr").startsWith(kisi.toLocaleLowerCase("tr") + " ") ? l.slice(kisi.length + 1) : l; };
 const NK_DAY = { banka: "banka bildirimi", elle: "elle bakiye", hesaplanan: "hesaplanan" };
 const nkTag = (h) => `<span class="nktag ${esc(h.src)}">${NK_DAY[h.src] || "hesaplanan"}${h.src_at ? " · " + esc(nkSaat(h.src_at)) : ""}</span>`;
-function nkHesap(h, kisi) { const l4 = (h.last4 || []).length ? `<span class="z">· ${h.last4.map((x) => "••" + esc(x)).join(" ")}</span>` : ""; // son 4 hane küçülmez (etiket kısalır)
+/** 💳 (25.11) kart başına bakiye: kullanıcı (aynen) "tüm kartları son 4 haneye göre ayır bakiyeyi öyle görünmesini sağlasın ... bir bankada 2 kart var ikisi ayrı görünsün.
+ *  birbank bir manat hesabı bir dolar var. dostbankta da öyle". Hesapta birden çok kart ya da dolar kartı varsa her kart kendi satırında: ••son 4 · (dolar hesabında yeşil rozette dolar tutarı) · son bildirim saati · ₼ bakiye.
+ *  Hesap toplamı değişmez (sunucuda zaten kartların toplamı + sonraki işaretlemeler). Tabana girmeyen eski kart soluk. */
+const nkUsd = (x) => (Number(x) || 0).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " $";
+function nkKartlar(h) { const K = Array.isArray(h.kartlar) ? h.kartlar.filter((k) => k && /^\d{4}$/.test(String(k.l4))) : [];
+  if (!(K.length > 1 || K.some((k) => k.doviz === "USD"))) return "";
+  return `<div class="nkkl">${K.map((k) => `<div class="nkk${k.sayildi === false ? " eski" : ""}"><span class="l">💳 ••${esc(String(k.l4))}${k.doviz === "USD" ? `<span class="nkusd" title="dolar hesabı">${k.usd != null ? esc(nkUsd(k.usd)) : "$ hesabı"}</span>` : ""}</span><span class="t">${k.at ? esc(nkSaat(k.at)) : ""}${k.sayildi === false ? " · sayılmadı" : ""}</span><span class="v">${nkPara(k.bakiye)}</span></div>`).join("")}</div>`; }
+function nkHesap(h, kisi) { const kk = nkKartlar(h), l4 = !kk && (h.last4 || []).length ? `<span class="z">· ${h.last4.map((x) => "••" + esc(x)).join(" ")}</span>` : ""; // son 4 hane küçülmez (etiket kısalır); kart satırları varsa orada
   return `<button class="nka${h.active ? "" : " pasif"}" data-card="${Number(h.id)}" onclick="nkBanka(${Number(h.id)})"><div class="nkbi">🏦</div><div class="b"><b>${esc(nkBankAd(h, kisi))}</b>
-    <div class="s nks">${h.active ? nkTag(h) : '<span class="nktag">pasif · toplama girmez</span>'}${l4}</div></div><div class="nkamt${h.balance < 0 ? " neg" : ""}">${nkPara(h.balance)}</div><span class="nkchev">›</span></button>`; }
+    <div class="s nks">${h.active ? nkTag(h) : '<span class="nktag">pasif · toplama girmez</span>'}${l4}</div>${kk}</div><div class="nkamt${h.balance < 0 ? " neg" : ""}">${nkPara(h.balance)}</div><span class="nkchev">›</span></button>`; }
 function nkKisiHtml(p) { const on = nkAc.has(p.id), sifir = Math.abs(p.total) < 0.005, n = Number(p.n) || 0;
   return `<div class="nkp${on ? " on" : ""}${sifir ? " zero" : ""}" id="nkp-${Number(p.id)}"><button class="nkr" aria-expanded="${on}" onclick="nkKisi(${Number(p.id)})"><div class="av">${initial(p.name)}</div>
     <div class="b"><b>${esc(p.name)}</b><div class="s nks"><span class="e">${n ? n + " hesap" : "hesap yok"}${p.son_at ? " · son hareket" : ""}</span>${p.son_at ? `<span class="z">${esc(nkSaat(p.son_at))}</span>` : ""}</div></div>
@@ -4532,7 +4545,7 @@ function nkHtml() { const x = nk;
   const hs = x.people.reduce((t, p) => t + (Number(p.n) || 0), 0);
   return `<div class="nktop"><div class="k">💵 Ekibin toplam nakdi</div><div class="v${x.total < 0 ? " nkamt neg" : ""}">${nkPara(x.total)}</div><div class="s" id="nkUpd">${x.people.length ? `${x.people.length} kişi · ${hs} hesap` : "Henüz hesap yok"}${nkErr ? " · ⚠️ tazelenemedi " + tekrar : x.at ? " · " + esc(nkSaat(x.at)) + " itibarıyla" : ""}</div></div>
     <div class="nkl">${x.people.map(nkKisiHtml).join("")}</div>
-    <div class="s" id="nkNot" style="padding:10px 14px 18px">Bakiye = son banka bildirimi ya da elle bakiye + sonraki işaretlemeler (tablet Varlık ve /varlik ile aynı hesap). Kişiye dokun: hesaplar · hesaba dokun: hareketler.</div>`; }
+    <div class="s" id="nkNot" style="padding:10px 14px 18px">Bakiye = son banka bildirimi ya da elle bakiye + sonraki işaretlemeler (tablet Varlık ve /varlik ile aynı hesap). Birden çok kartlı hesapta her kartın son bildirdiği bakiye ayrı satırda; $ hesabı manat karşılığıyla toplanır. Kişiye dokun: hesaplar · hesaba dokun: hareketler.</div>`; }
 function nkTekrar() { nkErr = ""; nkDraw(); nkLoad(); }
 function nkDraw() { const el = $("nkBody"); if (!el) return; const on = ajSub === "nakit" && nkOk(); el.hidden = !on; $("p-aj") && $("p-aj").classList.toggle("nkon", on);
   if (!nkOk() && el.innerHTML) { el.innerHTML = ""; el.__h = ""; } /* 🔒 yönetici değil: tutarlar DOM'da da kalmaz */ if (!on) return; const h = nkHtml(); if (el.__h !== h) { el.innerHTML = h; el.__h = h; } }
@@ -4568,7 +4581,7 @@ function nkListe(c) { if (!c || !c.rows) return c && c.err ? `<div class="row s"
   for (const r of c.rows) { if (tAt && !base && Date.parse(r.at) <= tAt) { base = true; h += `<div class="nkbase">Dayanak: ${NK_DAY[tb.src] || "bakiye"} ${esc(nkSaat(tb.at))}${tb.base != null ? " · " + nkPara(tb.base) : ""}</div>`; } h += nkSatir(r); }
   return h + (c.more ? `<button class="nkmore" id="nkMore" ${c.busy ? "disabled" : ""} onclick="nkHLoad(true)">${c.busy ? "⏳ yükleniyor…" : "⬇️ Daha eski"}</button>` : `<div class="s" style="text-align:center;padding:12px">— daha eski hareket yok —</div>`); }
 function nkShHtml() { const S = nkSh, f = nkHesapBul(S.id), c = nkH[S.id + ":" + S.tur], h = (c && c.hesap) || (f && f.h) || {};
-  return `<div class="nksh" id="nkSh"><div class="nkshh"><div class="b"><b>${esc(h.label || "Hesap")}</b><div class="s">${h.src ? nkTag(h) : ""}</div></div><div class="nkamt${h.balance < 0 ? " neg" : ""}" id="nkShAmt">${h.balance != null ? nkPara(h.balance) : ""}</div>
+  return `<div class="nksh" id="nkSh"><div class="nkshh"><div class="b"><b>${esc(h.label || "Hesap")}</b><div class="s">${h.src ? nkTag(h) : ""}</div>${nkKartlar(h)}</div><div class="nkamt${h.balance < 0 ? " neg" : ""}" id="nkShAmt">${h.balance != null ? nkPara(h.balance) : ""}</div>
     <button class="nkx" onclick="closeModal()" aria-label="Kapat">✕</button></div>
     <div class="sub nkflt" style="padding-left:0;padding-right:0">${NK_TUR.map(([k, l]) => `<button class="${k === S.tur ? "on" : ""}" data-tur="${k}" onclick="nkTur('${k}')">${l}</button>`).join("")}</div>
     <div class="nkml" id="nkMl">${nkListe(c)}</div></div>`; }
@@ -7847,11 +7860,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.175"></script>
-<script src="durum.js?v=2.1.175"></script>
-<script src="odaemoji.js?v=2.1.175"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.175"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.175"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.175"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.176"></script>
+<script src="durum.js?v=2.1.176"></script>
+<script src="odaemoji.js?v=2.1.176"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.176"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.176"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.176"></script><!-- </sugo-veri> -->
 </body>
 </html>
