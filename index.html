@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.176">
+<meta name="build" content="2.1.177">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.176">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.176">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.176">
+<link rel="manifest" href="manifest.json?v=2.1.177">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.177">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.177">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -970,7 +970,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.176" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.177" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -979,7 +979,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.176" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.177" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1042,7 +1042,7 @@ html.ro-elmas [data-pe]{display:none!important} /* 👁 yardımcı: elmas bozuml
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.176"></script>
+<script src="emoji.js?v=2.1.177"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1601,6 +1601,10 @@ const GS_AN = [
   { k: "gb", kok: "gbKok", sw: "gbSw", uc: "oto_golge_baska_id_ayar", ls: "bw_pane_gb", satir: 0, golgesiz: true, omYok: true, baslik: "🪪 Başka ID'ye yükleme",
     sabitAlt: "Müşteri başka ID'ye coin isterse Gölge ID'nin adını sorup teyit alır; yalnız 'bəli' gelirse yükler.",
     onay: { baslik: "Başka ID'ye yükleme açılsın mı?", metin: "Açılırsa: müşteri kendi hesabı yerine başka bir ID'ye coin isterse Gölge o ID'nin Sugo'daki adını bulur ve müşteriye bu kişi mi diye sorar.\nYalnız müşteri “bəli” derse kart verir; ödeme gelince coin o ID'ye yüklenir.\nAd bulunamazsa, başka bir cevap gelirse ya da 10 dakika cevap gelmezse iş ekibe kalır.\nCoin yine yalnız ödeme bildirimi ve bütün sınırlarla gider.\nİstediğiniz an buradan kapatırsınız." } },
+  // 🔁 (25.11) Kart değişimi (kullanıcı aynen: "müşteri bazen kart değiştirmek isteyebilir başka kart yazabilir o zaman kart değişimi yapılsın"): settings.oto_golge.kart_degis (sunucu oto_golge_kart_degis_ayar). gb kalıbı birebir: yalnız sahip, onay kartı, satır yoksa KAPALI.
+  { k: "gd", kok: "gdKok", sw: "gdSw", uc: "oto_golge_kart_degis_ayar", ls: "bw_pane_gd", satir: 0, golgesiz: true, omYok: true, baslik: "🔁 Kart değişimi",
+    sabitAlt: "Müşteri başka kart / başka banka isterse ya da ödemesi geri dönerse Gölge eski kartı geri alıp başka bankadan yeni kart verir; dekont gelip para görünmezse 30 sn sonra 'Pul sizə geri qayıtdı?' diye sorar.",
+    onay: { baslik: "Kart değişimi açılsın mı?", metin: "Açılırsa: müşteri başka kart / başka banka isterse ya da ödemesi geri dönerse Gölge eski kartı geri alıp başka bankadan yeni kart verir.\nDekont gelip para görünmezse 30 sn sonra müşteriye 'Pul sizə geri qayıtdı?' diye sorar.\nEski karta para gelmişse, değişim sayısı aşıldıysa ya da boş kart yoksa iş ekibe kalır.\nİstediğiniz an buradan kapatırsınız." } },
 ];
 GS_AN.forEach((a) => { a.d = null; a.busy = false; }); // d: { acik, golge_acik } | null
 GS_AN.forEach((a) => { try { Object.defineProperty(window, a.k + "D", { get: () => a.d, set: (v) => { a.d = v; }, configurable: true }); Object.defineProperty(window, a.k + "Busy", { get: () => a.busy, set: (v) => { a.busy = v; }, configurable: true }); } catch (e) {} }); // gsD / gsBusy, gkD / gkBusy, geD / geBusy: kısa adlar (senaryolar bunlarla okur / sıfırlar)
@@ -2014,7 +2018,7 @@ function golgePage() { if (!me || !(isSahip() || can("oto_ayar"))) return; const
   sheet("golge", `<h3>🌘 Gölge</h3><div class="gsi">Gölge açıkken otomatik mesajlar kapalıdır; biri açılınca öteki kapanır.</div>
     <div id="hhKok">${hhHtml()}</div>
     <div class="seg ${sh ? "seg3 " : ""}gsek" role="tablist">${gpSekler().map((k) => `<button type="button" role="tab" data-gsek="${k}" aria-selected="${k === gpSek}"${k === gpSek ? ' class="on"' : ""} onclick="golgeSekSec('${k}')">${ad[k]}</button>`).join("")}</div>
-    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"))}<div id="gsnKok"></div><div id="gmKok"></div></div>` : ""}
+    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"), gsBul("gd"))}<div id="gsnKok"></div><div id="gmKok"></div></div>` : ""}
     <div class="gpn" id="gp_elmas" role="tabpanel"${gz("elmas")}><div id="eaKok"><div id="eaDurum"></div>${sh ? kok(gsBul("ge"), gsBul("gz"), gsBul("gp"), gsBul("ga")) : ""}<div id="eaForm"></div>${sh ? `<div id="ealKok"></div>` : ""}</div></div>
     <div class="gpn" id="gp_oto" role="tabpanel"${gz("oto")}><div id="omKok"></div></div>`); if (!setOn()) golgeDolur(); } // ayarlarda: setRender doldurur (geri dönüşte de)
 // 👥 Gruplar (W19, 16.11): bayi hesabının Sugo grupları ("AZ Opera", aile grubu) — YALNIZ yönetici, SALT OKUNUR (yazma kutusu yok, okunmamış sayısı yok).
@@ -7860,11 +7864,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.176"></script>
-<script src="durum.js?v=2.1.176"></script>
-<script src="odaemoji.js?v=2.1.176"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.176"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.176"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.176"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.177"></script>
+<script src="durum.js?v=2.1.177"></script>
+<script src="odaemoji.js?v=2.1.177"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.177"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.177"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.177"></script><!-- </sugo-veri> -->
 </body>
 </html>
