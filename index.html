@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.189">
+<meta name="build" content="2.1.190">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.189">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.189">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.189">
+<link rel="manifest" href="manifest.json?v=2.1.190">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.190">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.190">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -778,7 +778,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .ocrow.surukleniyor { position: relative; z-index: 5; background: var(--bg); box-shadow: 0 6px 18px rgba(0,0,0,.35); border-radius: 10px; } .suruklemede { user-select: none; -webkit-user-select: none; } .ocrow.surukleniyor .ocgrip { cursor: grabbing; }
   .ocrow { flex-wrap: wrap; } .ocrow .b { flex: 1 1 130px; } .ocb { margin-left: auto; } .pcr .b b, .pcr .b .s { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } @media (max-width: 440px) { .pcr { gap: 6px; } .pcr .av { display: none; } .pcr .b b { font-size: 14.5px; } .pcr .pcrb { width: 34px !important; } } /* Kartlar sekmesi: ad / sayaç tek satır; dar ekranda simge gizlenir, düğmeler daralır (anahtar kartın kendi satırında) */ .ocrow > .swrow { order: 2; } .ocb { order: 3; } .ocrow .b .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ocrow.dolu .b b { opacity: .6; } /* satır: tutamaç + bilgi (+ düğmeler sığarsa yanında, sığmazsa altında) + altta tam genişlik anahtar */
   #bwgSw .bwgd { display: block; margin-top: 3px; } #bwgSw .bwgd:empty { display: none; } .bwguy { color: #f59e0b; } /* 🪟 Windows girişi durum satırı */
-  .ocrow .ocgv { flex: 1 0 100%; order: 9; } .ocrow .ocgv .swrow { min-height: 40px; padding: 2px 0; } .ocrow .ocgv .st { font-size: 14px; } .ogv { color: #a78bfa; white-space: nowrap; } /* 🌘 Gölge bu kartı versin */
+  .ocrow .ocgv { flex: 1 0 100%; order: 9; } .ocrow .ocgv .swrow { min-height: 40px; padding: 2px 0; } .ocrow .ocgv .st { font-size: 14px; } .ocrow .ocgv.pasif .swrow { opacity: .5; } .ocrow .ocgv small { font-size: 11.5px; } .ogv { color: #a78bfa; white-space: nowrap; } /* 🌘 Gölge bu kartı versin */
   .ocrow.off .b { opacity: .55; } .ocb { display: flex; gap: 4px; flex: none; } .ocb button { width: 38px; height: 38px; padding: 0; font-size: 15px; } .ocb button:disabled { opacity: .3; }
   .ocform { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--tint, var(--panel)); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: 8px; } .ocform .full { grid-column: 1 / -1; } .ocform label.s { display: grid; gap: 4px; }
   .ocform select, .auhead select { height: 42px; width: 100%; } .occk { display: flex; gap: 8px; align-items: center; } .occk input, .ouck input { width: 22px; height: 22px; flex: none; }
@@ -995,7 +995,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.189" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.190" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1004,7 +1004,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.189" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.190" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1067,7 +1067,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.189"></script>
+<script src="emoji.js?v=2.1.190"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -7062,15 +7062,23 @@ async function waTik() { if (waBusy || waD === null || !isSahip()) return; const
   else { waD = once; waCiz(); onayKart({ baslik: r && r.yedek ? "Şu an değiştirilemez" : "Ayar kaydedilemedi", metin: String((r && r.error) || "Ayar kaydedilemedi") + "\nAnahtar eski konumuna döndü.", onay: "Tamam", vazgec: "Kapat" }); } }
 function waSil() { waD = null; waBusy = false; try { localStorage.removeItem(WA_LS); } catch (e) {} const k = $("waSw"); if (k) k.remove(); }
 // 🌘 (26.11) Kart başına "Gölge bu kartı versin" (kullanıcı aynen: "evet ben açıncaya kadar afb yi vermesin ben zaten elle dolu işaretliyorum ama benden önce davranabilir o yüzden vermesin").
-// Uç oto_golge_kart_ver_ayar: {} → { kartlar:[{id,acik}] } · { id, acik } → { id, acik, degisti }; yalnız ajans sahibi (yetkisiz → perm: oto_golge, anahtar gösterilmez); yedekte yazma reddedilir.
-// Açık = verir (varsayılan). Kapalı kart satırında "🌘 Gölge vermez" işareti ("🔒 dolu"dan ayrı). Önce bu cihazdaki son bilinen (bw_ocg; çıkışta silinir), sonra sunucu.
-let ocgD = null, ocgBusy = 0, ocgAt = 0, ocgYasak = false; const OCG_LS = "bw_ocg";
+// Kural B (gölge -129): anahtar GERÇEK — Günel'in kartlarında açık, ötekilerde kapalı; başkasının kartı açılırsa Gölge onu da verir (ödeme o kişi adına).
+// Uç oto_golge_kart_ver_ayar: {} → { kartlar:[{ id, acik, pasif, son_bildirim_at, telefon? }] } · { id, acik } → { id, acik, degisti }; açarken pasif → { neden: "pasif" }.
+// Yalnız ajans sahibi (perm: oto_golge → gösterilmez); yedekte yazma reddedilir. "🌘 Gölge vermez" işareti yalnız Günel'in kapalı kartında (ötekiler zaten çoğunlukla kapalı: anahtar yeter).
+// Önce bu cihazdaki son bilinen (bw_ocg2; çıkışta silinir), sonra sunucu. ocgD[id] = { acik, pasif, son, tel }
+let ocgD = null, ocgBusy = 0, ocgAt = 0, ocgYasak = false; const OCG_LS = "bw_ocg2";
 function ocgOku() { if (ocgD) return ocgD; if (!isSahip()) return null; try { const v = JSON.parse(localStorage.getItem(OCG_LS) || "null"); if (v && typeof v === "object") ocgD = v; } catch (e) {} return ocgD; }
-const ocgGorur = () => isSahip() && !ocgYasak;
-function ocgIsaret(id, bas) { const d = ocgGorur() ? ocgOku() : null; return d && d[id] === false ? (bas ? '<span class="ogv">🌘 Gölge vermez</span> · ' : ' · <span class="ogv">🌘 Gölge vermez</span>') : ""; } // bas: satır başında (kart sekmesi dar; sonda kesiliyordu)
-function ocgRow(id) { if (!ocgGorur()) return ""; const d = ocgOku(), bil = !!d && typeof d[id] === "boolean", on = bil ? d[id] : true, busy = ocgBusy === Number(id);
-  return `<div class="ocgv">${swPasif(swHtml("ocg" + id, "🌘 Gölge bu kartı versin", "", on, `ocgTik(${Number(id)})`), !bil || !!ocgBusy, busy ? 'aria-busy="true"' : "")}</div>`; }
-function ocgYaz(liste) { const d = {}; for (const k of liste || []) if (k && Number(k.id) > 0) d[Number(k.id)] = k.acik !== false; ocgD = d; try { localStorage.setItem(OCG_LS, JSON.stringify(d)); } catch (e) {} }
+const ocgGorur = () => isSahip() && !ocgYasak, ocgKart = (id) => ((pcs && pcs.cards) || []).find((k) => Number(k.id) === Number(id)), ocgGunel = (x) => !!x && /^g[üu]nel/i.test(String(x.owner || "").trim());
+const ocgK = (id) => { const d = ocgGorur() ? ocgOku() : null, k = d && d[id]; return k && typeof k.acik === "boolean" ? k : null; };
+function ocgIsaret(id, bas) { const k = ocgK(id); if (!k || k.acik || !ocgGunel(ocgKart(id))) return ""; return bas ? '<span class="ogv">🌘 Gölge vermez</span> · ' : ' · <span class="ogv">🌘 Gölge vermez</span>'; } // bas: satır başında (kart sekmesi dar)
+function ocgYas(at) { const t = Date.parse(at || ""); if (!t) return "bildirim yok"; const dk = Math.max(0, Math.round((Date.now() - t) / 60000)); return "son bildirim " + (dk < 1 ? "az önce" : dk < 60 ? dk + " dk önce" : dk < 2880 ? Math.round(dk / 60) + " sa önce" : Math.round(dk / 1440) + " gün önce"); }
+const OCG_TEL = { canli: "📱 canlı", sessiz: "📵 sessiz", yok: "📵 telefon yok" }; // gölge -130: canli = verebilir · sessiz = şu an vermez · yok = sahibinin banka telefonu yok, HİÇ vermez
+function ocgRow(id) { if (!ocgGorur()) return ""; const k = ocgK(id), bil = !!k, on = bil ? k.acik : false, busy = ocgBusy === Number(id);
+  const alt = !bil ? "" : k.pasif ? "Pasif kart / ayrılmış kişi: açılamaz" : esc([ocgYas(k.son), OCG_TEL[k.tel] || ""].filter(Boolean).join(" · "));
+  return `<div class="ocgv${bil && k.pasif ? " pasif" : ""}">${swPasif(swHtml("ocg" + id, "🌘 Gölge bu kartı versin", alt || "&nbsp;", on, `ocgTik(${Number(id)})`), !bil || !!ocgBusy || k.pasif, busy ? 'aria-busy="true"' : "")}</div>`; }
+function ocgYaz(liste) { const d = {}; for (const k of liste || []) if (k && Number(k.id) > 0) d[Number(k.id)] = { acik: k.acik === true, pasif: k.pasif === true, son: k.son_bildirim_at || null, tel: typeof k.telefon === "string" ? k.telefon : null };
+  ocgD = d; ocgSakla(); }
+function ocgSakla() { try { localStorage.setItem(OCG_LS, JSON.stringify(ocgD)); } catch (e) {} }
 function ocgCiz() { if ($("ocBody")) ocDraw(); if ($("cardBody") && pcs) loadCardsIsaret(); } // kart sekmesinde yalnız işaret metni değişir (liste yeniden çizilmez)
 function loadCardsIsaret() { const cards = ((pcs && pcs.cards) || []).filter((x) => x.number); const satir = document.querySelectorAll("#cardBody .pcr .b .s"); if (satir.length !== cards.length) return;
   cards.forEach((x, i) => { const s = satir[i], var_ = s.querySelector(".ogv"), ist = ocgIsaret(x.id, 1); if (!!var_ === !!ist) return; if (var_) { s.innerHTML = s.innerHTML.replace(/<span class="ogv">[^<]*<\/span> · /, ""); } else s.insertAdjacentHTML("afterbegin", ist); }); }
@@ -7079,18 +7087,21 @@ async function ocgYukle(zorla) { if (!isSahip() || (!zorla && Date.now() - ocgAt
   if (!isSahip() || ocgBusy) return; if (r && r.perm) { ocgYasak = true; ocgCiz(); return; }
   if (r && !r.error && Array.isArray(r.kartlar)) { const once = JSON.stringify(ocgD); ocgYaz(r.kartlar); if (once !== JSON.stringify(ocgD)) ocgCiz(); else if ($("ocBody") && document.querySelector("#ocBody .ocgv button:disabled")) ocgCiz(); } }
 const ocgHataMetni = (r) => r && r.yedek ? "Sunucu yedek modunda: Gölge'nin kart anahtarı şu an yalnız okunur. Ana sunucu dönünce yeniden deneyin."
-  : r && r.kod === "yok" ? "Bu kart sunucuda bulunamadı. Liste yenilendi; yeniden deneyin." : r && r.kod === "gecersiz" ? "Geçersiz istek (kart kimliği ya da değer hatalı). Sayfayı yenileyip yeniden deneyin."
+  : r && r.neden === "pasif" ? "Bu kart pasif (ya da sahibi ayrılmış): Gölge'ye açılamaz." : r && r.kod === "yok" ? "Bu kart sunucuda bulunamadı. Liste yenilendi; yeniden deneyin." : r && r.kod === "gecersiz" ? "Geçersiz istek (kart kimliği ya da değer hatalı). Sayfayı yenileyip yeniden deneyin."
   : String((r && r.error) || "Ayar kaydedilemedi");
-async function ocgTik(id) { id = Number(id); const d = ocgOku(); if (ocgBusy || !isSahip() || !d || typeof d[id] !== "boolean") return; const once = d[id], yeni = !once;
-  const x = ((pcs && pcs.cards) || []).find((k) => Number(k.id) === id), ad = x ? `${x.owner} ${PCS[x.bank] || x.bank} ••${String(x.number || "").slice(-4)}` : "Bu kart";
+async function ocgTik(id) { id = Number(id); const k = ocgK(id); if (ocgBusy || !isSahip() || !k) return; const once = k.acik, yeni = !once;
+  const x = ocgKart(id), ad = x ? `${x.owner} ${PCS[x.bank] || x.bank} ••${String(x.number || "").slice(-4)}` : "Bu kart";
   if (yedekMod) { onayKart({ baslik: "Şu an değiştirilemez", metin: ocgHataMetni({ yedek: true }), onay: "Tamam", vazgec: "Kapat" }); return; }
-  ocgBusy = id; let ok = false; try { ok = await onayKart({ baslik: yeni ? "Gölge bu kartı versin mi?" : "Gölge bu kartı vermesin mi?", metin: yeni ? `${ad}: Gölge müşteriye bu kartı yeniden verebilir (sırası ve hakkı uygunsa).` : `${ad}: Siz yeniden açana kadar Gölge bu kartı müşteriye vermez. Elle vermeniz ve "Dolu" işareti bundan etkilenmez.`, onay: yeni ? "Evet, versin" : "Evet, vermesin", vazgec: "Vazgeç" }); } finally { ocgBusy = 0; }
-  if (!ok || !isSahip() || !ocgD || ocgD[id] !== once) return; ocgBusy = id; ocgD[id] = yeni; ocgCiz();
+  if (k.pasif) { onayKart({ baslik: "Açılamaz", metin: ocgHataMetni({ neden: "pasif" }), onay: "Tamam", vazgec: "Kapat" }); return; }
+  const uyar = [yeni && x && !ocgGunel(x) ? `Gölge bu kartı da müşterilere verecek. Ödeme ${x.owner || "kart sahibi"} adına yazılır.` : "",
+    !yeni ? "" : k.tel === "yok" ? "⛔ Bu kartın sahibinin banka telefonu kayıtlı değil; anahtar açık olsa da Gölge bu kartı vermez." : k.tel === "sessiz" ? "⚠️ Telefon şu an sessiz; canlanınca verir." : !k.son ? "⚠️ Bu karta banka bildirimi gelmiyor; Gölge kartı verir ama otomatik coin gönderemez." : ""].filter(Boolean);
+  ocgBusy = id; let ok = false; try { ok = await onayKart({ baslik: yeni ? "Gölge bu kartı versin mi?" : "Gölge bu kartı vermesin mi?", metin: yeni ? `${ad}: Gölge müşteriye bu kartı verebilir (sırası ve hakkı uygunsa).${uyar.length ? "\n\n" + uyar.join("\n\n") : ""}` : `${ad}: Siz yeniden açana kadar Gölge bu kartı müşteriye vermez. Elle vermeniz ve "Dolu" işareti bundan etkilenmez.`, onay: yeni ? "Evet, versin" : "Evet, vermesin", vazgec: "Vazgeç" }); } finally { ocgBusy = 0; }
+  if (!ok || !isSahip() || !ocgK(id) || ocgD[id].acik !== once) return; ocgBusy = id; ocgD[id] = { ...ocgD[id], acik: yeni }; ocgCiz();
   let r = null; try { r = await api("oto_golge_kart_ver_ayar", { id, acik: yeni }); } catch (e) { r = { error: "Bağlantı yok" }; }
   ocgBusy = 0; if (!isSahip()) { ocgSil(); return; }
-  if (r && !r.error && typeof r.acik === "boolean") { ocgD[id] = r.acik; try { localStorage.setItem(OCG_LS, JSON.stringify(ocgD)); } catch (e) {} ocgCiz(); toast(r.acik ? "🌘 Gölge bu kartı verebilir" : "🌘 Gölge bu kartı vermeyecek"); }
-  else { ocgD[id] = once; ocgCiz(); if (r && r.perm) { ocgYasak = true; ocgCiz(); } onayKart({ baslik: r && r.yedek ? "Şu an değiştirilemez" : "Ayar kaydedilemedi", metin: ocgHataMetni(r) + "\nAnahtar eski konumuna döndü.", onay: "Tamam", vazgec: "Kapat" }); if (r && r.kod === "yok") ocgYukle(true); } }
-function ocgSil() { ocgD = null; ocgBusy = 0; ocgAt = 0; ocgYasak = false; try { localStorage.removeItem(OCG_LS); } catch (e) {} }
+  if (r && !r.error && typeof r.acik === "boolean") { ocgD[id] = { ...ocgD[id], acik: r.acik }; ocgSakla(); ocgCiz(); toast(r.acik ? "🌘 Gölge bu kartı verebilir" : "🌘 Gölge bu kartı vermeyecek"); }
+  else { ocgD[id] = { ...ocgD[id], acik: once, ...(r && r.neden === "pasif" ? { pasif: true } : {}) }; ocgCiz(); if (r && r.perm) { ocgYasak = true; ocgCiz(); } onayKart({ baslik: r && r.yedek ? "Şu an değiştirilemez" : r && r.neden === "pasif" ? "Açılamaz" : "Ayar kaydedilemedi", metin: ocgHataMetni(r) + "\nAnahtar eski konumuna döndü.", onay: "Tamam", vazgec: "Kapat" }); if (r && (r.kod === "yok" || r.neden === "pasif")) ocgYukle(true); } }
+function ocgSil() { ocgD = null; ocgBusy = 0; ocgAt = 0; ocgYasak = false; try { localStorage.removeItem(OCG_LS); localStorage.removeItem("bw_ocg"); } catch (e) {} }
 // 🪟 (26.11) Bayi girişi Windows'tan (kullanıcı aynen: "ben herhangi bi yerden switch işaretlemeyecek miyim windowsda açılsın bayi gibisinden").
 // Uç bayi_win_giris_ayar: {} → { acik, etkin, tablet_kira_taze, hizmet_nabiz_sn, son_giris } · { acik } → aynı + degisti; açarken tablet eskiyse { error, neden: "tablet_eski" }.
 // Yalnız ajans sahibi (perm: bayi_win_giris → satır gizlenir); iki yönde onay kartı; yedekte yazma reddedilir → kart. Önce bu cihazdaki son bilinen (bw_bwg; çıkışta silinir), sonra sunucu.
@@ -7360,7 +7371,7 @@ function ocHtml() { const cards = (pcs && pcs.cards) || [], cu = pcs && pcs.curr
   return `${cu ? `<div class="card ocnext"><div class="k">⭐ Sıradaki kart</div><div class="v">${esc(cu.owner)} ${esc(PCS[cu.bank] || cu.bank)}</div><div class="ocnum">${esc(pcNum(cu.number, cu.bank))}</div><div class="s">${cu.uses}/${cu.max_uses} hak kullanıldı</div></div>` : `<div class="card ocnext">⛔ Verilecek kart yok: tüm kartların hakkı dolmuş ya da pasif.</div>`}
   <div class="ownacts"><button class="go" onclick="ocEdit=0;ocBulk=null;ocDraw()">➕ Kart ekle</button><button onclick="ocBulk=ocBulk?null:{text:'',owner:'',items:[]};ocEdit=null;ocDraw()">📋 Toplu ekle</button><button onclick="ocReset()">🔄 Tüm hakları sıfırla</button></div>
   ${ocEdit === 0 ? form({ id: 0, owner: "", bank: "ABB", number: "", max_uses: 5, active: true }) : ""}${ocBulk ? ocBulkHtml() : ""}
-  <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}${x.dolu ? " dolu" : ""}" data-id="${x.id}">${ocEdit === null ? `<span class="ocgrip" role="button" aria-label="Sırayı değiştirmek için sürükleyin" title="Sürükleyin">⠿</span>` : ""}<div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${pcU(x)}/${x.max_uses} hak${x.dolu ? " · 🔒 dolu" : ""}${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}${x.son_kullanma ? " · 📅 " + esc(x.son_kullanma) : ""}${ocgIsaret(x.id)}</div></div>
+  <div class="setlbl">Kart sırası · ${cards.length} kart</div><div class="setlist">${cards.map((x, i) => `<div class="ocrow${x.active ? "" : " off"}${x.dolu ? " dolu" : ""}" data-id="${x.id}">${ocEdit === null ? `<span class="ocgrip" role="button" aria-label="Sırayı değiştirmek için sürükleyin" title="Sürükleyin">⠿</span>` : ""}<div class="b"><b>${esc(x.owner)} ${esc(PCS[x.bank] || x.bank)} ···${esc(String(x.number || "").slice(-4) || "????")}</b><div class="s">${ocgIsaret(x.id, 1)}${pcU(x)}/${x.max_uses} hak${x.dolu ? " · 🔒 dolu" : ""}${x.active ? "" : " · ⏸ pasif"}${cu && cu.id === x.id ? " · ⭐ sıradaki" : ""}${x.number ? "" : " · ⚠️ numara yok"}${x.son_kullanma ? " · 📅 " + esc(x.son_kullanma) : ""}</div></div>
     <div class="ocb"><button onclick="ocMove(${x.id},'up')" ${i ? "" : "disabled"} aria-label="Yukarı">▲</button><button onclick="ocMove(${x.id},'down')" ${i < cards.length - 1 ? "" : "disabled"} aria-label="Aşağı">▼</button><button onclick="ocEdit=${x.id};ocBulk=null;ocDraw()" aria-label="Düzenle">✏️</button><button onclick="ocReset(${x.id})" ${x.uses ? "" : "disabled"} aria-label="Hakkı sıfırla">🔄</button></div>${swHtml("ocd" + x.id, "Dolu", "", x.dolu, `cardDolu(${x.id},${!x.dolu})`, 1)}${ocgRow(x.id)}</div>${ocEdit === x.id ? form(x) : ""}`).join("") || '<div class="s" style="padding:12px">Kart yok.</div>'}</div>
   <div class="s" style="margin:10px 4px">Kartlar silinmez: kullanılmayacak kartı ✏️ ile <b>pasif</b> yapın. Değişiklikler işlem PIN'inizle kaydedilir; tablet ve açık sayfalar hemen görür.</div>`; }
 function ocBulkHtml() { const b = ocBulk, known = (pcs && pcs.cards) || [], ok = b.items.length && b.items.every((x) => x.bank && pcNoOk(x.bank, x.number));
@@ -8160,11 +8171,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.189"></script>
-<script src="durum.js?v=2.1.189"></script>
-<script src="odaemoji.js?v=2.1.189"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.189"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.189"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.189"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.190"></script>
+<script src="durum.js?v=2.1.190"></script>
+<script src="odaemoji.js?v=2.1.190"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.190"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.190"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.190"></script><!-- </sugo-veri> -->
 </body>
 </html>
