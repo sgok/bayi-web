@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.182">
+<meta name="build" content="2.1.183">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.182">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.182">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.182">
+<link rel="manifest" href="manifest.json?v=2.1.183">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.183">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.183">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -975,7 +975,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.182" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.183" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -984,7 +984,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.182" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.183" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1047,7 +1047,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.182"></script>
+<script src="emoji.js?v=2.1.183"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -3786,7 +3786,7 @@ function renderChat(scroll) {
     const stt = o.status === "failed" ? `❌ gitmedi: ${esc(o.err || "")}` : o.status === "unsure" ? "⏳ kontrol ediliyor…" : `${rel(Date.parse(o.created_at))} <span class="tk">${o.status === "sent" ? "✓" : "⏳"}</span>`; // asıl balonla aynı düzen (saat + işaret): gelince kaymaz
     items.push({ k: "o" + o.lid, at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? (o.prev ? `<img src="${esc(o.prev)}" alt="">` : "📷 Resim") : o.kind === "media" ? `🎤 <button class="vplay" disabled style="padding:6px 12px;border-radius:999px">⏳ Sesli mesaj</button>` : emo(esc(o.body)) + cardTag(o.body)}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${stt}</div>${o.status === "failed" ? `<button class="retry" style="margin-top:6px;padding:5px 12px;font-size:13px" onclick="event.stopPropagation();outRetry('${o.lid}')">↻ Yeniden gönder</button>` : ""}</div>` }); } // resim/ses: asıl balonla aynı boyda (gelince zıplamaz)
   // Sayfadan (başka ekip üyesi / önceki oturum) gönderilenler: sunucunun outbox listesi; asıl mesajı (oid → mesaj no) ya da aynı yazılısı geldiyse gösterilmez
-  const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map((m) => String(m.t || "").trim()));
+  const sentTexts = new Set(hist.filter((m) => m.m).slice(-40).map(msgT)); // ↩️ geri alınanın asıl yazısı da (kopyası yeniden görünmesin)
   for (const o of outbox) { const oid = String(o.id);
     if (myOut.some((x) => x.oid === oid) || (oidMid[oid] && inHist.has(oidMid[oid]))) continue;
     if (o.status === "sent" && (o.kind === "image" || o.kind === "media" || sentTexts.has(obText(o).trim()))) continue;
@@ -3872,7 +3872,9 @@ async function outCheck(o) { for (const ms of OUT_CHECK) { await new Promise((r)
 function outRetry(lid) { const o = myOut.find((x) => x.lid === lid); if (!o || o.status !== "failed") return; o.gone = true; // eski kırmızı balon yerine yenisi (aynı içerik)
   const n = outAdd(o.c, o.kind, o.body, o.q, o.extra); Object.assign(n, { prev: o.prev || null, data: o.data || null, dur: o.dur }); renderChat(true); outRun(n); }
 const outKind = (o) => (o.kind === "media" ? "voice" : o.kind);
-const outLike = (o, m, c) => !!m && (c == null || String(c) === o.c) && (m.k === outKind(o) || (o.kind === "media" && m.k === "video")) && (o.kind !== "text" || String(m.t || "").trim() === o.body.trim());
+// ↩️ (26.11) geri alınan mesaj (k = withdraw) asıl türü (origK) ve yazısıyla (orig) eşleşir: yoksa kuyruk kopyası tam kart numarasıyla yeniden görünüyordu (Gölge her satıştan sonra kartı geri alır)
+const msgK = (m) => (m.k === "withdraw" && m.origK ? m.origK : m.k), msgT = (m) => String((m.k === "withdraw" ? (m.orig ?? m.t) : m.t) || "").trim();
+const outLike = (o, m, c) => !!m && (c == null || String(c) === o.c) && (msgK(m) === outKind(o) || (o.kind === "media" && msgK(m) === "video")) && (o.kind !== "text" || msgT(m) === o.body.trim());
 function outBind(o, mid) { o.mid = mid; o.status = "sent"; o.prev = null; o.data = null; keyAlias[mid] = "o" + o.lid; aliasAt[mid] = Date.parse(o.created_at); obDone(o.oid || "l" + o.lid, true); }
 // Belirsiz gönderimin kuyruk satırı (yazı + zaman) ve kuyruk no'su bilinen gönderimin sunucudaki durumu
 function outSyncRows(o, rows) {
@@ -7920,11 +7922,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.182"></script>
-<script src="durum.js?v=2.1.182"></script>
-<script src="odaemoji.js?v=2.1.182"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.182"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.182"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.182"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.183"></script>
+<script src="durum.js?v=2.1.183"></script>
+<script src="odaemoji.js?v=2.1.183"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.183"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.183"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.183"></script><!-- </sugo-veri> -->
 </body>
 </html>
