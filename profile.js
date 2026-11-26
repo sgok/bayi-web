@@ -297,6 +297,7 @@
         ${card("🧾 Açık borç", sk ? SK("3em") : debtSum > 0.009 ? az(debtSum) : "yok", sk ? SK("5em") : (p.debts || []).length ? (p.debts || []).length + " kayıt" : "borcu yok", debtSum > 0.009 ? "#f87171" : "#4ade80")}
       </div>
       ${dmCard(p.dm)}
+      ${typeof gkPfHtml === "function" && !T ? gkPfHtml(p.uid) : "" /* 🌘 (26.11) kişi bazında Gölge anahtarı: yalnız sahip */}
       ${window.durumPfHtml && can("mesaj") && !T ? durumPfHtml(p.uid) : ""}
       ${sk ? `<div class="pfsec">Son alımları</div><table><tr class="h"><th>Tarih</th><th class="n">Coin</th></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr><tr><td>${SK("6em")}</td><td class="n">${SK("4em")}</td></tr></table>` : ""}
       ${(b.recent || []).length ? `<div class="pfsec">Son alımları</div>` + tbl([["Tarih"], ["Coin", "n"]], b.recent.map((x) => `<tr><td>${tm(x.at)}</td><td class="n">${coin(x.coins)}</td></tr>`), "") : ""}
