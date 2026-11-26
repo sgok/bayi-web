@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.183">
+<meta name="build" content="2.1.184">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.183">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.183">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.183">
+<link rel="manifest" href="manifest.json?v=2.1.184">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.184">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.184">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -700,6 +700,17 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   #lb { position: fixed; inset: 0; background: #000e; z-index: 60; display: flex; align-items: center; justify-content: center; } #lb[hidden] { display: none; } #lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
   #lb a { position: absolute; top: calc(10px + env(safe-area-inset-top) + var(--swh, 0px)); right: 12px; background: #0008; color: #fff; padding: 8px 12px; border-radius: 10px; text-decoration: none; font-size: 14px; }
   /* Profil (tabletteki gibi) */
+  /* 💳 kart çipi: klasik kredi kartı (85,6 × 54 mm oranı), düzen sabit; bankanın rengi --kb (BIN); animasyon yok */
+  .kcw { align-self: flex-start; max-width: 82%; width: 300px; margin: -2px 0 4px; }
+  .kcip { --kb: #312e81; position: relative; display: grid; grid-template-rows: auto auto auto 1fr auto; align-content: start; width: 100%; aspect-ratio: 1.586; box-sizing: border-box; padding: 12px 14px 10px; border-radius: 14px; border: 1px solid #ffffff2e; background: radial-gradient(120% 90% at 100% 0%, #ffffff26, transparent 55%), linear-gradient(135deg, color-mix(in srgb, var(--kb) 85%, #000), color-mix(in srgb, var(--kb) 45%, #0b1020)); color: #fff; text-align: left; font: inherit; cursor: pointer; box-shadow: 0 2px 8px #0005; overflow: hidden; }
+  .kcip .kcu { display: flex; align-items: flex-start; gap: 8px; min-width: 0; } .kcip .kcb { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px; white-space: nowrap; overflow: hidden; } .kcip .kcb b { font-size: 16px; font-weight: 800; letter-spacing: .3px; } .kcip .kcb small { font-size: 11px; opacity: .8; } .kcip .kcb0 b { font-weight: 600; opacity: .85; font-size: 14px; }
+  .kcip .kck { font-size: 11px; opacity: .85; white-space: nowrap; } .kcip .kcd { min-height: 15px; font-size: 11px; line-height: 15px; color: #e0e7ff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kcip .kcc { margin: 4px 0 6px; width: 34px; height: 25px; border-radius: 5px; background: linear-gradient(135deg, #fde68a, #d97706); box-shadow: inset 0 0 0 1px #92400e80, inset 11px 0 0 -10px #92400e80, inset -11px 0 0 -10px #92400e80; }
+  .kcip .kcn { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 21px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; font-variant-numeric: tabular-nums; text-shadow: 0 1px 1px #0006; }
+  .kcip .kca { display: flex; gap: 10px; align-items: flex-end; padding-right: 66px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px; font-weight: 600; } .kcip .kca > span { display: flex; flex-direction: column; } .kcip .kca .kcad { flex: 1; min-width: 0; } .kcip .kca small { font-family: system-ui, sans-serif; font-size: 9px; letter-spacing: .4px; opacity: .75; font-weight: 500; }
+  .kcip .kcag { position: absolute; right: 12px; bottom: 10px; height: 26px; display: flex; align-items: center; } .kcip .kcag-visa { font: italic 900 20px/1 system-ui, sans-serif; letter-spacing: .5px; color: #fff; }
+  .kcip .kcag-mc i { width: 24px; height: 24px; border-radius: 50%; background: #eb001b; } .kcip .kcag-mc i + i { margin-left: -10px; background: #f79e1b; mix-blend-mode: normal; opacity: .9; }
+  .kcip:active { filter: brightness(1.15); } .kcip.kcbad { border-color: #fca5a5; box-shadow: 0 0 0 2px #ef444499, 0 2px 8px #0005; } .kcip.kcbad .kcd { color: #fecaca; font-weight: 600; }
   #pfBody .pfgk { margin: 10px 0 4px; padding: 2px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; } /* 🌘 kişi bazında Gölge anahtarı */
   #pfBody { padding: 12px 14px; } #pfBody .card { margin: 0; } #pfBody .card.empty { color: var(--muted); font-size: 14px; }
   .pgrid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: 6px 0; }
@@ -975,7 +986,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.183" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.184" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -984,7 +995,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.183" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.184" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1047,7 +1058,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.183"></script>
+<script src="emoji.js?v=2.1.184"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1334,7 +1345,7 @@ async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!(
   await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } } finally { /* AE: ağ / abonelik adımı hata verse de temizlik atlanmaz */ tok = ""; ["bw_tok", "bw_me", "bw_me_t", "bw_inbox", "bw_pane_om"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
   try { cacheClear(); rtBitir(); loginMsg("Çıkış yapıldı", "wait"); show("login"); } finally { oturumSil(); } } } /* önce giriş ekranı: temizlik görünür ekranı kaydırmaz */
 /** 🔐 T: çıkış / oturum düştü — kimlik, yönetici verisi ve çizilmiş ekranlar bellekten ve DOM'dan silinir (sonraki girişte me gelene kadar hiçbir yönetici öğesi kalmaz) */
-function oturumSil() { try { gozSil(); } catch (e) {} /* 👁 HZ1 */ try { hhSil(); } catch (e) {} /* 💵 Haiku harcaması */ try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
+function oturumSil() { pinCache = null; /* 🔢 26.11: çıkışta PIN belleği */ try { gozSil(); } catch (e) {} /* 👁 HZ1 */ try { hhSil(); } catch (e) {} /* 💵 Haiku harcaması */ try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
   for (const id of ["ajBody", "dmBody", "coinBody", "cardBody"]) { const el = $(id); if (el) el.innerHTML = SKEL[id] ? SKEL[id]() : ""; }
   for (const id of ["nkBody", "pfBody"]) { const el = $(id); if (el) el.innerHTML = ""; } /* oda: yalnız sohbet kutusu (yonSil); koltuk / dinleyici herkesin · ödenmemiş müşteri bozumu şeridi ekip verisi: kalır (girişte yer değişmesin) */ }
 
@@ -2853,7 +2864,7 @@ async function hsGo() { const st = hsSt; if (!st || st.busy || !st.d) return; co
   if (!h.A.length) { toast("Ödenecek alış seçin", true); return; }
   if (h.gonder > 0.009 && (!st.person || !st.bank)) { toast("Gönderilen tutarın kartını seçin (kişi + banka)", true); return; }
   st.busy = true; hsCiz();
-  const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin, pid = isNaN(Number(st.person)) ? st.person : Number(st.person);
+  const pin = pinGecerli() ? pinCache.pin : st.pin, pid = isNaN(Number(st.person)) ? st.person : Number(st.person);
   const body = { conv: st.c, conv_ad: hsAd(st.ad).slice(0, 60), alis: h.A.map((a) => ({ batch: Number(a.batch), tutar: a.tutar })), kalem: h.K.map((k) => ({ tur: k.tur, ref: k.ref, tutar: k.tutar, ...(k.dost ? { dost: true } : {}) })), idem: st.idem, pin,
     ...(h.gonder > 0.009 ? { person_id: pid, bank: st.bank } : {}),
     ...(hsOtoOn().length ? { cevir: hsOtoOn().map((o) => ({ claim: o.oto.claim, hedef: (o.oto.hedef && o.oto.hedef.order) ?? null })) } : {}) }; // 🔁 hiçbiri işaretli değilse alan hiç gitmez
@@ -2872,7 +2883,7 @@ async function hsGo() { const st = hsSt; if (!st || st.busy || !st.d) return; co
 const hsKisa = (e) => { const t = String(e || ""), ana = t.split(" — ")[0].replace(/ \((başka biri|şu an açık)[^)]*\)/g, "").trim(); return /hiçbir şey kaydedilmedi/.test(t) && !/hiçbir şey kaydedilmedi/.test(ana) ? `${ana} — kaydedilmedi` : ana; }; // 📎 dekont isteği kartlı ödemeyle aynı kuralla açıldı
 async function hsGeri(id) { const st = hsSt; if (!st || st.busy) return; if (!(me && me.yon)) { toast("Hesaplaşmayı yalnız yönetici geri alabilir", true); return; }
   if (!(await onayKart({baslik:"Hesaplaşma geri alınsın mı?",metin:"🤝 Bu hesaplaşma TÜMÜYLE geri alınsın mı?\n\nAlışlar yeniden \"ödenmedi\" olur; karttan gönderilen ödeme ve mahsup (iki taraf) geçersiz sayılır. Kayıtlar silinmez.".replace(/^[^\n]*\n+/, ""),ayrinti:"Alışlar yeniden ödenecek duruma döner; gerekirse hesaplaşma yeniden yapılır. Hiçbir kayıt silinmez.",onay:"Evet, geri al",tehlike:true}))) return;
-  st.busy = true; hsCiz(); const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin;
+  st.busy = true; hsCiz(); const pin = pinGecerli() ? pinCache.pin : st.pin;
   let d; try { d = await api("hesaplasma_geri_al", { id, pin }); } catch (e) { d = { error: "Bağlantı hatası" }; }
   if (hsSt !== st) return; st.busy = false; if (d.pin === "wrong") pinCache = null;
   if (d.error) { toast(hsKisa(d.error), true); hsCiz(); return; }
@@ -3424,7 +3435,7 @@ async function payGo() { const st = paySt; if (!st || st.busy) return; const s =
   if (st.dk && st.dk.items.some((x) => Number.isNaN(dkTutar(x.tutar)))) { toast("📎 Parça tutarı geçersiz (boş bırakın ya da sayı yazın)", true); return; }
   if (s.part && !(await onayKart({baslik:"Kısmi ödeme",metin:`Kısmen ödenecek: ${payN(s.sum)}/${payN(s.total)} ₼\nKalan ${payN(s.left)} ₼ ödenmedi olarak kalır, sonra "Ödendi yap" ile ödenir.\nDevam edilsin mi?`,ayrinti:"Yazılan tutar ödeme olarak kaydedilir, kalan ödenmedi kalır. Kalan sonradan ödenebilir; kayıt gerekirse geri alınabilir.",onay:"Evet, kısmen öde"}))) return;
   st.busy = true; payDraw();
-  const pin = pinCache && pinCache.until > Date.now() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
+  const pin = pinGecerli() ? pinCache.pin : st.pin; // PIN yeniden sorulmaz
   const pid = (x) => isNaN(Number(x)) ? x : Number(x), one = (st.np.batches || []).length === 1;
   const mh = s.m.sum > 0 ? { mahsup: s.m.items.map((x) => ({ tur: x.tur, ref: x.ref, tutar: x.v })), idem: st.idem } : {}; // idem: aynı pencerenin yeniden denemesi aynı mahsup (sunucu ikinci kez yazmaz) // 🧾 sunucu açık olduğunu ve tutarı kendisi doğrular
   const body = { ...st.body, paid: true, pin, ask: true, ...mh, ...(s.mOnly ? {} : st.parts.length === 1 && !s.part // tek hesaptan tamamı: eski biçim (eski sunucu da anlar)
@@ -3782,6 +3793,7 @@ function renderChat(scroll) {
       : c.paid_part > 0 ? `<span class="partl">${partTxt(c.paid_part, c.pay_azn)}</span>${whoPaid(c.paid_note)} <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button> <button style="padding:4px 10px;font-size:13px" data-pe onclick="coinPaid('${esc(c.tx)}',false,1)">geri al</button>` : `⏳ Ödenmedi · ödenecek <b>${esc(String(c.pay_azn))} ₼</b> <button class="go" style="padding:6px 12px;font-size:14px" data-pe onclick="coinPaid('${esc(c.tx)}',true)">💸 Ödendi yap</button>`}
       <div class="s">${pSaat(c.at)} · sadece sizde görünür</div>${okSatir(c.odeme, c.odeme && c.batch ? cns.filter((x) => x.batch === c.batch).length : 1)}</div>` }); // 🧾 yönetici: ödeme kartı (sunucu yalnız ona koyar)
   // Bu ekrandan gönderilenler (myOut): Sugo onayına kadar soluk, hata olursa kırmızı; asıl mesaj gelince AYNI balon (düğüm) onun hâlini alır (keyAlias)
+  try { const kz = KC.zincir(hist); for (const m of hist) { const c = kz[String(m.id)]; if (c && !(hs && hs.has(String(m.id)) && !isSahip())) items.push({ k: "kc" + m.id, at: Date.parse(m.at) + 0.5, html: `<div class="kcw">${kcHtml(c)}</div>` }); } } catch (e) {} // 💳 kart çipi (mesajın hemen altında)
   for (const o of mine) { if (o.mid && inHist.has(o.mid)) continue;
     const stt = o.status === "failed" ? `❌ gitmedi: ${esc(o.err || "")}` : o.status === "unsure" ? "⏳ kontrol ediliyor…" : `${rel(Date.parse(o.created_at))} <span class="tk">${o.status === "sent" ? "✓" : "⏳"}</span>`; // asıl balonla aynı düzen (saat + işaret): gelince kaymaz
     items.push({ k: "o" + o.lid, at: Date.parse(o.created_at), html: `<div class="m me ${o.status === "failed" ? "fail" : o.status === "sent" ? "" : "pend"}">${o.q ? quoteHtml(o.q) : ""}${o.kind === "image" ? (o.prev ? `<img src="${esc(o.prev)}" alt="">` : "📷 Resim") : o.kind === "media" ? `🎤 <button class="vplay" disabled style="padding:6px 12px;border-radius:999px">⏳ Sesli mesaj</button>` : emo(esc(o.body)) + cardTag(o.body)}<div class="tm"><b>(${esc(o.by_user || (me && me.name) || "")})</b> ${stt}</div>${o.status === "failed" ? `<button class="retry" style="margin-top:6px;padding:5px 12px;font-size:13px" onclick="event.stopPropagation();outRetry('${o.lid}')">↻ Yeniden gönder</button>` : ""}</div>` }); } // resim/ses: asıl balonla aynı boyda (gelince zıplamaz)
@@ -3993,6 +4005,68 @@ const pcWho = (c) => `${c.owner || ""} ${PCS[String(c.bank || "").toUpperCase()]
 /** Bizim gönderdiğimiz mesaj tam bir kart numarasıysa yanında soluk "(Sahip Banka)" — mesajın içinde değil, sadece bu ekranda (eski mesajlarda da: numara kart listesinden bulunur) */
 function cardTag(text) { const d = pcMsgNo(text); if (!d || !pcs || !pcs.cards) return "";
   const c = pcs.cards.find((x) => String(x.number || "").replace(/\D/g, "") === d); return c ? `<span class="cardtag">(${esc(pcWho(c))})</span>` : ""; }
+// <kart-cip> 💳 (26.11) Müşterinin yazdığı kart numarası → mesajın altında kredi kartı görünümlü çip (mesaj AYNEN kalır). Kullanıcı aynen: "kart numaraları gönderiyorlar bazen onun altında bir çip çıksın
+// kredi kartı gibi … 16 rakamı onları 4 erli ayırsın … araya harf koyuyorlar 4532bb7326bb2313bb1233 gibi … alt çizgi vs … 4 er hanelik mesajlarda gönderiyorlar bunların hepsini alıp parse edip bir tane kredi kartı görüntüsünde çip çıkarsın".
+// Geçmiş veride (90 gün, gelen mesaj) görülen biçimler: bitişik 16 · "9999 9999 9999 9999" · satır sonlu · araya harf / - / . / @ / _ / ! · karışık gruplar (999A999A999A999A9999, 9999A99999A9999A999) · 4'erli / 8'erli AYRI mesajlar (çoğu < 30 sn arayla).
+// KURAL (tablet de aynısını kullanır; kendi başına kopyalanabilir, dışa bağımlılığı yok):
+//   tek mesaj: rakam grupları (2–8 hane; tek grupsa 15–19) arasında en çok 6 karakterlik ayraç (boşluk, satır sonu, . _ - @ ! * # , : ; | + ve en çok 3 harf; "/" AYRAÇ DEĞİL: ay/yıl karışmasın);
+//     grup başından başlayan, grup sınırında biten parçalardan toplam 15–19 hane + Luhn tutan EN UZUN (eşitse 16) alınır; +994… telefonlar önce çıkarılır. İlk grup ≥ 2 hane, sonrakiler 1–8.
+//     Luhn tutmayan ama TAM 4×4 grup ya da bitişik 16 hane: hatali = true (uyarılı çip: "kontrol hanesi tutmuyor").
+//     Aynı mesajda numaradan sonra ay/yıl (AA/YY, AA.YY, AA-YY, AA/YYYY; ay 01–12) ve CVV (YALNIZ "cvv / cvc / cv2 / kod / code" sözünden sonra 3–4 hane; çıplak 3 hane çoğu kez tutardır) aranır.
+//   ardışık mesajlar: aynı sohbette art arda gelen müşteri mesajları, her biri YALNIZ rakam + ayraç (2–12 hane; fazlası baştan düşer), aralarında ≤ 60 sn → toplam 16 hane + Luhn olunca tek çip (son parçanın altında).
+//     Numaradan sonra ≤ 60 sn içinde gelen YALNIZ ay/yıl ya da YALNIZ "cvv 123" mesajı aynı çipe eklenir (çip yer değiştirmez). Bizim mesajımız araya girerse zincir kopar.
+const KC = (() => {
+  const luhn = (d) => { let t = 0, ik = false; for (let i = d.length - 1; i >= 0; i--) { let x = d.charCodeAt(i) - 48; if (ik) { x *= 2; if (x > 9) x -= 9; } t += x; ik = !ik; } return d.length > 0 && t % 10 === 0; };
+  const AYRAC = /^[\s._\-@!*#,:;|+]*\p{L}{0,3}[\s._\-@!*#,:;|+]*$/u, AY = /(?<!\d)(0[1-9]|1[0-2])\s*[\/.\-]\s*(\d{2}|20\d{2})(?!\d)/, CVV = /(?:cvv|cvc|cv2|kod|code)\D{0,4}(\d{3,4})(?!\d)/i;
+  const ayYaz = (m) => m ? m[1] + "/" + m[2].slice(-2) : "";
+  /** metin → [{ no, ay, cvv }] (no: yalnız rakam) */
+  function bul(metin) { const t = String(metin == null ? "" : metin).replace(/\+?994[\s\-]?\d{2}[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}/g, " "); const gr = [...t.matchAll(/\d+/g)].map((x) => ({ d: x[0], b: x.index, s: x.index + x[0].length })), out = [];
+    for (let i = 0; i < gr.length; i++) { let en = null, top = "";
+      for (let j = i; j < gr.length; j++) { const g = gr[j]; if (j > i) { const ara = t.slice(gr[j - 1].s, g.b); if (ara.length > 6 || !AYRAC.test(ara)) break; }
+        if ((g.d.length > 8 || (j === i && g.d.length < 2)) && !(j === i && g.d.length >= 15 && g.d.length <= 19)) break; top += g.d; if (top.length > 19) break;
+        if (top.length >= 15 && luhn(top) && (!en || top.length === 16 || en.no.length !== 16)) en = { no: top, j }; if (j === i && g.d.length >= 15) break; }
+      if (!en) { const dort = gr.length - i >= 4 && [0, 1, 2, 3].every((k) => gr[i + k].d.length === 4 && (k === 0 || (t.slice(gr[i + k - 1].s, gr[i + k].b).length <= 6 && AYRAC.test(t.slice(gr[i + k - 1].s, gr[i + k].b))))) && !(gr[i + 4] && t.slice(gr[i + 3].s, gr[i + 4].b).length <= 1);
+        const tek16 = gr[i].d.length === 16; if (dort || tek16) { const no = tek16 ? gr[i].d : gr.slice(i, i + 4).map((x) => x.d).join(""); out.push({ no, ay: "", cvv: "", hatali: true }); i += tek16 ? 0 : 3; } continue; } // 16 hane ama Luhn tutmuyor: uyarılı çip (müşteri yanlış yazmış olabilir)
+      const son = gr[en.j].s, kalan = t.slice(son), ay = AY.exec(kalan), cv = CVV.exec(kalan);
+      const cvv = cv ? cv[1] : ""; // yalnız "cvv / cvc / kod" sözüyle: tek başına 3 hane çoğu kez TUTAR ("100") — geçmiş veride görüldü
+      out.push({ no: en.no, ay: ayYaz(ay), cvv }); i = en.j; }
+    return out; }
+  const parcaMi = (t) => /^[\s\d._\-@!*#,:;|+]+$/.test(String(t || "")) && /\d/.test(t);
+  /** mesaj dizisi (zaman sırasıyla; { id, at, m (bizim mi), k, t }) → { [mid]: { no, ay, cvv, parca } } (çip o mesajın altında) */
+  function zincir(list) { const r = {}; let buf = [], son = null; const ZAMAN = 60_000;
+    for (const m of list) { const at = Date.parse(m.at), t = m.k === "text" ? String(m.t || "") : "";
+      if (m.m || m.k !== "text") { buf = []; if (m.m) son = null; continue; }
+      if (son && at - son.at <= ZAMAN) { const yal = t.trim(), ay = AY.exec(yal); if (ay && ay[0].length >= yal.length - 1) { son.c.ay = ayYaz(ay); son.at = at; continue; } const cvm = CVV.exec(yal); if (cvm && !son.c.cvv && yal.replace(cvm[0], "").trim().length <= 2) { son.c.cvv = cvm[1]; son.at = at; continue; } }
+      const tek = bul(t); if (tek.length) { const c = { ...tek[tek.length - 1], parca: 1 }; r[String(m.id)] = c; son = { c, at }; buf = []; continue; }
+      if (parcaMi(t)) { const d = t.replace(/\D/g, ""); if (d.length < 2 || d.length > 12) { buf = []; continue; } // 26.11 kullanıcı: "2 hane boşluklarla yazan da oluyor 48 68 75 36 46" (tek mesajda zaten; ayrı mesajlarda da)
+        if (buf.length && at - buf[buf.length - 1].at > ZAMAN) buf = []; buf.push({ d, at, id: m.id }); let top = buf.map((x) => x.d).join("");
+        while (top.length > 16 && buf.length > 1) { buf.shift(); top = buf.map((x) => x.d).join(""); }
+        if (top.length === 16 && buf.length > 1 && luhn(top)) { const c = { no: top, ay: "", cvv: "", parca: buf.length }; r[String(m.id)] = c; son = { c, at }; buf = []; }
+        continue; }
+      buf = []; }
+    return r; }
+  const grup = (no) => no.replace(/(\d{4})(?=\d)/g, "$1 ");
+  // 🏦 Banka (ilk 6 hane; kullanıcının verdiği tablo, 26.11): ad + renk (logo yerine bankanın renginde yazı işareti). Bilinmeyen → "".
+  const BIN = { "416973": ["Birbank", "Kapital Bank", "#e30613"], "409858": ["Birbank", "Kapital Bank", "#e30613"], "523915": ["Birbank", "Kapital Bank", "#e30613"], "412720": ["ABB", "TamKart", "#00539b"], "520123": ["ABB", "TamKart", "#00539b"],
+    "529935": ["Leobank", "Unibank", "#111827"], "416974": ["Unibank", "UCard", "#d71920"], "524332": ["PAŞA Bank", "", "#0b2a4a"], "412730": ["PAŞA Bank", "Miles", "#0b2a4a"], "402630": ["Bank Respublika", "NeoKart", "#c8102e"], "525483": ["Bank Respublika", "NeoKart", "#c8102e"],
+    "412740": ["AccessBank", "myCard", "#0057a8"], "412765": ["Rabitabank", "Kartmane", "#5b2c83"], "535938": ["Rabitabank", "Kartmane", "#5b2c83"], "532623": ["Expressbank", "Expresso", "#00843d"], "436589": ["Yelo Bank", "", "#f5c400"],
+    "525480": ["Bank of Baku", "Bolkart", "#00754a"], "412750": ["TuranBank", "", "#1f4e9c"], "535311": ["M10", "PashaPay", "#6d28d9"] };
+  const banka = (no) => { const b = BIN[String(no).slice(0, 6)]; return b ? { ad: b[0], alt: b[1], renk: b[2] } : null; };
+  const ag = (no) => /^4/.test(no) ? "visa" : /^(5[1-5]|2(2[2-9]|[3-6]\d|7[01]|720))/.test(no) ? "mc" : "";
+  return { luhn, bul, zincir, grup, banka, ag };
+})();
+/** Çip (ekranda): KLASİK kredi kartı görünümü, düzen HEP AYNI (kullanıcı 26.11: "isim soy isim kısımları **** şeklinde yine aynı tarih cvv de o şekilde ** görünsün eğer verirse verdiği görünsün").
+ *  Üstte banka (BIN) yazı işareti + durum (bizim kart / N mesajdan / Luhn uyarısı), altın çip, numara 4'erli, altta ad soyad · ay/yıl · CVV, sağ altta Visa / Mastercard. Dokununca numara (rakamlar) kopyalanır. Animasyon yok. */
+function kcHtml(c) { const biz = pcs && pcs.cards ? pcs.cards.find((x) => String(x.number || "").replace(/\D/g, "") === c.no) : null, bk = KC.banka(c.no), ag = KC.ag(c.no);
+  const durum = c.hatali ? "⚠️ Kontrol hanesi tutmuyor · müşteriyle teyit edin" : biz ? `Bizim kart · ${esc(pcWho(biz))}` : c.parca > 1 ? `${c.parca} mesajdan birleştirildi` : "";
+  return `<button type="button" class="kcip${c.hatali ? " kcbad" : ""}" data-kc="${esc(c.no)}"${bk ? ` style="--kb:${bk.renk}"` : ""} aria-label="Kart numarasını kopyala: ${esc(KC.grup(c.no))}">`
+    + `<span class="kcu"><span class="kcb${bk ? "" : " kcb0"}">${bk ? `<b>${esc(bk.ad)}</b>${bk.alt ? `<small>${esc(bk.alt)}</small>` : ""}` : "<b>Banka kartı</b>"}</span><span class="kck">📋 Kopyala</span></span>`
+    + `<span class="kcd">${durum}</span><i class="kcc" aria-hidden="true"></i><span class="kcn">${esc(KC.grup(c.no))}</span>`
+    + `<span class="kca"><span class="kcad"><small>AD SOYAD</small>**** ****</span><span><small>AY/YIL</small>${c.ay ? esc(c.ay) : "**/**"}</span><span><small>CVV</small>${c.cvv ? esc(c.cvv) : "***"}</span></span>`
+    + `<span class="kcag kcag-${ag || "yok"}" aria-hidden="true">${ag === "visa" ? "VISA" : ag === "mc" ? "<i></i><i></i>" : ""}</span></button>`; }
+document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest(".kcip[data-kc]"); if (!b) return; e.stopPropagation(); const no = b.dataset.kc;
+  try { navigator.clipboard.writeText(no).then(() => toast("📋 Kart numarası kopyalandı"), () => toast("Kopyalanamadı", true)); } catch (x) { toast("Kopyalanamadı", true); } }, true);
+// </kart-cip>
 const pcCan = (c) => c.active && c.number && c.uses < c.max_uses && !c.dolu; // 💳 dolu = bugünlük dolu (sunucu işaretler: Bakü günü)
 const pcU = (c) => c.dolu ? c.max_uses : c.uses; // görünen kullanılan hak: bugünlük doluysa 5/5 (gerçek sayaç değişmez)
 const pcFull = (c) => c.dolu ? " · ⛔ bugünlük dolu" : " · ⛔ hakkı doldu";
@@ -4212,7 +4286,7 @@ async function rcSend() { const c = rcCur; if (!c || !c.prev || !rcOwn()) return
   if (reason.length < 3) { toast("Açıklama zorunlu (en az 3 karakter)", true); return; }
   const o = c.o, act = c.prev.preview && c.prev.preview.actual != null ? c.prev.preview.actual : null;
   if (!(await onayKart({baslik:"Geri çağırma — geri alınamaz",metin:`↩️ GERİ ÇAĞIRMA — GERİ ALINAMAZ\n\nKimden: ${o.buyer_name || ""} (UID ${o.buyer_uid})\nDüşülecek: ${nf(act != null ? act : o.coins)} coin\nAçıklama: ${reason}\n\nBu ayın geri çağırma hakkından 1 düşer. Onaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Onaydan sonra işlem PIN i istenir. Coin geri çağrılır; bu işlem geri alınamaz.",onay:"Evet, geri çağır",tehlike:true}))) return;
-  $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz", true); if (!pin) { rcCur = null; return; } // 5 dk önbellek kullanılmaz
+  $("rcGo").disabled = true; const pin = await askPin("Geri çağırmak için işlem PIN'iniz", true); if (!pin) { rcCur = null; return; } // 10 dk önbellek kullanılmaz
   openModal(`<div style="text-align:center;padding:20px">⏳ Geri çağırılıyor…<div class="s" style="margin-top:6px">Panelin cevabı bekleniyor</div></div>`);
   const d = await api("coin_recall", { order_id: String(o.order_id), reason, expect: act, pin }); rcCur = null;
   // Belirsiz: sunucu certain:false dedi, ya da istek sonucu bilinmeden koptu (yönlendirici 504 + belirsiz, ağ hatası, zaman aşımı, 5xx) → panel işlemiş olabilir
@@ -4350,7 +4424,7 @@ function rolUygula() { const yon = yonOk(), degisti = document.documentElement.c
   if (yon) return; if (degisti) try { IO.yonVeri = true; } catch (e) {} /* rol yönetici-değile düştü: Giriş/Çıkış belleği işarete bakmadan sıfırlanır, açık ekran yeniden okunur (yonSil) */ yonSil();
   if (degisti) try { if (ajSub === "alt") { ajSub = ""; try { localStorage.removeItem("bw_aj"); } catch (e) {} } if (ajData) renderAj(); } catch (e) {} } /* AR: açık sekme "Alt ajanslar" idiyse rolün ilk sekmesine; şerit yeniden çizilir */
 /** Yönetici verisini bu telefonun önbelleğinden, bellekten ve ekrandan siler (rol yönetici değil, kimlik doğrulanmadı ya da çıkış) */
-function yonSil() { try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil(); } catch (e) {} try { skSil(); } catch (e) {} /* 🪟 */ try { for (const k of Object.keys(gkD)) delete gkD[k]; for (const k of Object.keys(gkAt)) delete gkAt[k]; } catch (e) {} /* 🌘 */ try { gsSil(); } catch (e) {} /* 🌘 gölge anahtarı */ try { gmSil(); } catch (e) {} /* 👁 ikinci göz */ /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
+function yonSil() { try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil(); } catch (e) {} try { skSil(); } catch (e) {} /* 🪟 */ try { pinCache = null; } catch (e) {} /* 🔢 çıkış / yöneticilikten düşüş: PIN belleği */ try { for (const k of Object.keys(gkD)) delete gkD[k]; for (const k of Object.keys(gkAt)) delete gkAt[k]; } catch (e) {} /* 🌘 */ try { gsSil(); } catch (e) {} /* 🌘 gölge anahtarı */ try { gmSil(); } catch (e) {} /* 👁 ikinci göz */ /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
   try { for (const k of Object.keys(localStorage)) { if (YON_LS.test(k)) { localStorage.removeItem(k); continue; }
     if (/^pf_\d/.test(k)) { const v = localStorage.getItem(k) || ""; if (!v.includes('"temel":true')) localStorage.removeItem(k); continue; } // eski tam profil kopyası
     if (k === "bw_pane_sd") { const v = localStorage.getItem(k) || ""; if (!v.includes('"sade":true')) localStorage.removeItem(k); continue; }
@@ -6967,10 +7041,13 @@ function pinChange() { sheet("pin", `<h3 style="margin:0 0 8px">🔢 İşlem PIN
   <button class="go" onclick="pinSave()">Kaydet</button><button onclick="closeModal()">Vazgeç</button></div>`); }
 async function pinSave() { const n = $("pcNew").value.trim(); if (!/^\d{4}$/.test(n)) { toast("PIN 4 rakam olmalı", true); return; } if (n !== $("pcNew2").value.trim()) { toast("PIN'ler aynı değil", true); return; }
   const d = await api("change_pin", { password: $("pcPw").value, new_pin: n }); if (d.error) { toast(d.error, true); return; } pinCache = null; if (me) me.has_pin = true; toast("✅ PIN değiştirildi"); closeModal(); }
-// İşlem PIN'i: 5 dakika hatırlanır (tablet gibi). taze=true (↩️ geri çağırma, geri alınamaz): HER SEFERİNDE sorulur, önbellek ne okunur ne yazılır
-let pinCache = null;
-function askPin(title, taze, ozet) { if (!taze && pinCache && pinCache.until > Date.now()) return Promise.resolve(pinCache.pin);
-  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v && !taze) pinCache = { pin: v, until: Date.now() + 5 * 60_000 }; res(v); };
+// İşlem PIN'i: 26.11'den beri 10 dakika hatırlanır (kullanıcı aynen: "bir kere pin girildiğinde 10 dakika pin istemesin ancak 10 dakika sonra pin istesin"); süre GİRİŞ anından sayılır (kullandıkça uzamaz).
+// Yalnız bu sekmenin belleğinde (localStorage'a yazılmaz); sunucu her istekte PIN'i yine doğrular (sunucuda PIN'siz pencere YOK: güvenlik aynı). Kimlik (ad / rol / hesap geçişi) değişince ve çıkışta geçersiz. taze=true (↩️ geri çağırma, geri alınamaz): HER SEFERİNDE sorulur, önbellek ne okunur ne yazılır
+let pinCache = null; const PIN_SURE_MS = 10 * 60_000;
+const pinKim = () => (me ? [me.name || "", me.role || "", me.switched ? me.switched.by || "1" : ""].join("|") : "");
+function pinGecerli() { if (!pinCache) return null; if (!(pinCache.until > Date.now()) || pinCache.kim !== pinKim()) { pinCache = null; return null; } return pinCache; }
+function askPin(title, taze, ozet) { if (!taze && pinGecerli()) return Promise.resolve(pinCache.pin);
+  return new Promise((res) => { window.__pinRes = (v) => { closeModal(); if (v && !taze) pinCache = { pin: v, until: Date.now() + PIN_SURE_MS, kim: pinKim() }; res(v); };
     openModal(`<h3 style="margin:0 0 8px">🔢 ${esc(title || "İşlem PIN'i")}</h3>${ozet ? `<div class="pinoz" style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-size:14px;line-height:1.45">${ozet}</div>` : ""}${swOn() ? `<div class="s swpin" style="margin:-4px 0 8px">👑 Kendi PIN'iniz (${esc(me.switched.by || "ajans sahibi")})</div>` : ""}<input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="font-size:28px;letter-spacing:12px;text-align:center" autocomplete="off">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button onclick="__pinRes('')">Vazgeç</button><button class="go" onclick="__pinRes(($('pinIn').value||'').trim())">Onayla</button></div>`, true);
     // Klavye kendiliğinden açılsın: odak dokunmayla aynı anda verilir (gecikmeli odakta iPhone klavyeyi açmıyor); tablette köprüyle (kbFocus)
@@ -7230,7 +7307,7 @@ async function ouAddSave() { const name = $("ouName").value.trim(), role = ouRol
 
 // 🔐 W32 İzinler (17.11; kullanıcı: "Bir çok yetkiyi izinler kısminde sekme sekme koy default olarak şuanki ayarlarımız default ayar olsun"): yalnız Ajans sahibi
 // (kendi hesabında). Sekme sekme; satır = özellik + açıklama; sütun = rol (👑 sahip her zaman açık, kilitli). Varsayılandan farklı olan • ile işaretli.
-// Anahtar başına tek istek (işlem PIN'i 5 dk önbellekli), iyimser; hata olursa geri alınır. Kilitli kalemler (yalnız sahip) nedeniyle görünür. Sunucu: izin_tablo / izin_ayarla.
+// Anahtar başına tek istek (işlem PIN'i 10 dk önbellekli), iyimser; hata olursa geri alınır. Kilitli kalemler (yalnız sahip) nedeniyle görünür. Sunucu: izin_tablo / izin_ayarla.
 let izT = null, izSek = (() => { try { return localStorage.getItem("bw_izsek") || "sohbet"; } catch (e) { return "sohbet"; } })(), izBek = new Set();
 const IZ_ROL = [["yetkili", "🏪", "Yetkili"], ["yardimci", "🤝", "Yardımcı"]];
 function izinAc() { if (!yonOk()) { toast("İzinleri yalnız Ajans sahibi görür", true); return; } sheet("izinler", `<h3>🔐 İzinler</h3><div id="izBody">${izHtml()}</div>`); izYukle(); }
@@ -7353,7 +7430,7 @@ async function coinSend(again, force) { if (!cn || !cn.chk) return; const html0 
   if (lk && !force) { if (!canForce()) { toast(lk.msg || "🔒 Kilitli", true); return; } // 🔒 başkası bu kişiye az önce gönderdi / sohbeti yürütüyor
     if (!(await onayKart({baslik:"Başka biri ilgileniyor",metin:`${lk.kind === "coin" ? `${lk.by} bu kişiye az önce ${nf(lk.coins || 0)} coin gönderdi` : `${lk.by} bu müşteriyle ilgileniyor`}, yine de göndermek istiyor musun?`,ayrinti:"Yine de gönderirseniz çift gönderim olabilir; gönderilen coin geri alınamaz.",onay:"Evet, yine de devam"}))) return; force = true; }
   const ciftBilindi = canForce() && !!cn.cift && cn.cift.uid === String(cn.uid) && cn.cift.coins === c && !!$("cnCiftN") && $("cnCiftN").style.visibility === "visible"; // sarı not görünüyor ve aynı alıcı + miktara ait → ilk kart atlanır (güvenlik sunucuda: PIN + iki çift onay kartı sürer)
-  const pinVar = !!(pinCache && pinCache.until > Date.now()); // 19.11: PIN sorulacaksa kart yok (özet PIN penceresinde); PIN bellekteyse (art arda gönderim) kart çıkar
+  const pinVar = !!pinGecerli(); // 19.11: PIN sorulacaksa kart yok (özet PIN penceresinde); PIN bellekteyse (art arda gönderim) kart çıkar
   if (!ciftBilindi && pinVar && !(await onayKart({baslik:"Coin gönderilsin mi?",metin:`🪙 COIN GÖNDERİLECEK — GERİ ALINAMAZ\n\nKime: ${name} (UID ${cn.uid})\nMiktar: ${c.toLocaleString("tr-TR")} coin\nTutar: ${(cn.azn ?? c / 1000).toLocaleString('tr-TR')} ₼\n\nOnaylıyor musunuz?`.replace(/^[^\n]*\n+/, ""),ayrinti:"Gönderilen coin geri alınamaz.",onay:"Evet, gönder",tehlike:true}))) return;
   const ozet = `👤 <b>${esc(name)}</b> · UID ${esc(String(cn.uid))}<br>🪙 <b>${c.toLocaleString("tr-TR")} coin</b> = <b>${(cn.azn ?? c / 1000).toLocaleString("tr-TR")} ₼</b><br>⚠️ Geri alınamaz.`;
   const pin = await askPin("Coin göndermek için işlem PIN'iniz", false, ozet); if (!pin) return;
@@ -7922,11 +7999,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.183"></script>
-<script src="durum.js?v=2.1.183"></script>
-<script src="odaemoji.js?v=2.1.183"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.183"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.183"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.183"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.184"></script>
+<script src="durum.js?v=2.1.184"></script>
+<script src="odaemoji.js?v=2.1.184"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.184"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.184"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.184"></script><!-- </sugo-veri> -->
 </body>
 </html>
