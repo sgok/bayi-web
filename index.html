@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.192">
+<meta name="build" content="2.1.193">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.192">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.192">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.192">
+<link rel="manifest" href="manifest.json?v=2.1.193">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.193">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.193">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -346,6 +346,14 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .csub { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 10px 8px; } .csub button { min-height: 44px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
   .cbbtn { display: flex; align-items: center; gap: 8px; width: calc(100% - 20px); margin: 2px 10px 8px; min-height: 44px; font-size: 15px; text-align: left; white-space: nowrap; } .cbbtn .cbl { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; } .cbbtn #cbSay, .cbbtn .cbo { flex: none; } .cbbtn #cbSay { min-width: 64px; text-align: right; } .cbbtn .cbn { display: inline-block; min-width: 20px; padding: 0 6px; border-radius: 999px; background: var(--bad); color: #fff; font-size: 12.5px; text-align: center; } .cbbtn .cby { color: #4ade80; font-size: 13px; } /* 🪙⏳ coin bekleyen ödemeler */
   .cbr { align-items: center; } .cbr .b { min-width: 0; flex: 1; } .cbr .cbt { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; } .cbr .cbt > span:first-child { white-space: nowrap; font-size: 15px; } .cbr .cbt b { font-variant-numeric: tabular-nums; } .cbr .cbt .s { text-align: right; } .cbr .cbo { flex: none; font-size: 20px; color: var(--muted); padding-left: 6px; } .cbr .cbne { color: #fbbf24; } .cbr .cbz { color: var(--muted); } .cbh { height: 18px; line-height: 18px; padding: 4px 12px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gmtbtn { display: block; width: calc(100% - 0px); margin: 12px 0 4px; min-height: 44px; text-align: left; } /* ✏️ Gölge metinleri */
+  .gmti { font-size: 13px; color: var(--muted); margin: 2px 2px 10px; line-height: 1.4; } .gmth { margin: 14px 2px 6px; font-size: 14px; font-weight: 700; } .gmth.pas { color: var(--muted); }
+  .gmt { margin: 8px 0; padding: 10px 12px; } .gmt.pas { opacity: .62; } .gmt .gmtt { display: flex; gap: 8px; align-items: baseline; } .gmt .gmtt b { flex: 1; min-width: 0; font-size: 14.5px; } .gmt .gmtk { font-size: 11.5px; color: var(--muted); font-family: ui-monospace, monospace; }
+  .gmt .gmtm { display: flex; gap: 8px; align-items: center; margin-top: 2px; } .gmt .gmtd { padding: 0 7px; border-radius: 999px; background: #7c3aed33; color: #c4b5fd; font-size: 11.5px; font-weight: 600; visibility: hidden; } .gmt .gmtd.on { visibility: visible; }
+  .gmt textarea { display: block; box-sizing: border-box; width: 100%; min-height: 84px; margin: 8px 0 6px; font-size: 15px; line-height: 1.4; resize: vertical; }
+  .gmt .gmty { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 0; } .gmt .gmty button { min-height: 32px; padding: 0 10px; font-size: 13px; font-family: ui-monospace, monospace; } .gmt .gmty .s { font-size: 12px; }
+  .gmt .gmte { height: 18px; line-height: 18px; margin-top: 4px; font-size: 12.5px; color: #f87171; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .gmt .gmte.ok { color: var(--muted); }
+  .gmt .gmtb { display: flex; gap: 8px; margin-top: 4px; } .gmt .gmtb button { min-height: 40px; flex: 1; } .gmt .gmtb button { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .gmt .gmtb .gmtv { visibility: hidden; } .gmt .gmtb .gmtv.on { visibility: visible; }
   .csub button.on { background: linear-gradient(135deg, var(--go2), var(--go)); color: var(--gofg); border-color: var(--go); font-weight: 700; }
   #ioBox { min-height: 70vh; } .iof { display: flex; gap: 6px; margin: 0 10px 6px; flex-wrap: wrap; } .iof button { min-height: 44px; padding: 0 12px; font-size: 14px; } .iof button.on { background: #ffffff1f; border-color: var(--accent); font-weight: 700; }
   .iof select { flex: 1 1 120px; min-width: 0; min-height: 44px; font-size: 14px; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 12px; padding: 0 8px; }
@@ -997,7 +1005,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.192" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.193" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1006,7 +1014,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.192" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.193" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1069,7 +1077,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.192"></script>
+<script src="emoji.js?v=2.1.193"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -2002,6 +2010,57 @@ async function hhYukle() { if (!me || !(isSahip() || can("oto_ayar")) || hhYuk) 
   else hhHata = (d && d.error) || "Okunamadı";
   hhCiz(); }
 /** Otomatik mesaj ayrıntılarındaki "Elmas alımı" satırından: Gölge sayfasının Elmas sekmesi */
+// ✏️ (27.11) Gölge'nin müşteri metinleri (gölge oturumu: "oto_golge_metin_ayar"; yalnız ajans sahibi; yedekte yazılmaz, okuma serbest).
+// Gövde {} → liste; { kod, metin } → yaz; { kod, sifirla: true } → varsayılana dön. Cevap { degisti, metinler: [{ kod, metin, varsayilan, aciklama, yerler, degisti }] }.
+// Yer: Ayarlar › 🌘 Gölge › 🪙 Coin sekmesinin sonunda düğme → alt sayfa. Açıklamada "(2b)/(2d)/(G)" eki olanlar henüz gitmiyor: ayrı başlık altında soluk.
+// Önce bu cihazdaki son liste (bw_gmt; çıkışta silinir), sonra sunucu. Yazılan taslak (gmtT) yenilemede / geri dönüşte silinmez. Doğrulama sunucunun aynısı (golge_metin.ts metinGecerli).
+const GMT_LS = "bw_gmt", GMT_UZUN = 600, GMT_EK = /\s*\((2[a-z]|G)\)\s*$/;
+let gmtD = null, gmtT = {}, gmtBusy = "", gmtHata = "", gmtYasak = false;
+try { const x = JSON.parse(localStorage.getItem(GMT_LS) || "null"); if (x && Array.isArray(x.metinler)) gmtD = x; } catch (e) {}
+const gmtPas = (m) => GMT_EK.test(String(m.aciklama || ""));
+function gmtGecerli(m, t) { t = String(t || "").trim(); if (!t) return "Metin boş olamaz"; if (t.length > GMT_UZUN) return `Metin en çok ${GMT_UZUN} harf olabilir`; if (/[<>]/.test(t)) return "Metinde < ya da > olamaz";
+  const yer = m.yerler || [], izs = [...t.matchAll(/\{([^}]*)\}/g)].map((x) => x[1]).filter((y) => !yer.includes(y));
+  return izs.length ? `İzinsiz yer tutucu: {${izs[0]}} (izinli: ${yer.length ? yer.map((y) => `{${y}}`).join(", ") : "yok"})` : ""; }
+const gmtBul = (kod) => ((gmtD && gmtD.metinler) || []).find((m) => m.kod === kod);
+const gmtTaslak = (m) => (gmtT[m.kod] != null ? gmtT[m.kod] : m.metin);
+function gmtKart(m) { const pas = gmtPas(m), t = gmtTaslak(m), k = esc(m.kod);
+  return `<div class="card gmt${pas ? " pas" : ""}" data-gmt="${k}"><div class="gmtt"><b>${esc(String(m.aciklama || m.kod).replace(GMT_EK, ""))}</b></div><div class="gmtm"><span class="gmtk">${k}</span><span class="gmtd${m.degisti ? " on" : ""}">değiştirildi</span></div>
+    <textarea maxlength="${GMT_UZUN + 50}" rows="3" data-gmtx="${k}" aria-label="${esc(String(m.aciklama || m.kod))}">${esc(t)}</textarea>
+    <div class="gmty">${(m.yerler || []).length ? (m.yerler || []).map((y) => `<button type="button" data-gmty="${esc(y)}" title="Metne ekle">{${esc(y)}}</button>`).join("") : `<span class="s">Yer tutucu yok</span>`}</div>
+    <div class="gmte" role="alert"></div><div class="gmtb"><button type="button" class="go gmts" data-gmts="${k}">Kaydet</button><button type="button" class="gmtv${m.degisti ? " on" : ""}" data-gmtv="${k}" aria-label="Varsayılan metne dön">↩️ Varsayılan</button></div></div>`; }
+/** kartın düğme / not durumu (taslağa göre); boy değişmez */
+function gmtDurum(kod) { const m = gmtBul(kod), el = document.querySelector(`#gmtBody [data-gmt="${CSS.escape(kod)}"]`); if (!m || !el) return; const t = el.querySelector("textarea").value, h = gmtGecerli(m, t), kirli = t.trim() !== m.metin;
+  const e = el.querySelector(".gmte"), not = h || (gmtBusy === kod ? "Kaydediliyor…" : kirli ? `Kaydedilmedi · ${t.trim().length}/${GMT_UZUN}` : `${m.metin.length}/${GMT_UZUN}`); if (e.textContent !== not) e.textContent = not; e.classList.toggle("ok", !h);
+  el.querySelector(".gmts").disabled = !!h || !kirli || !!gmtBusy; el.querySelector(".gmtv").disabled = !!gmtBusy; el.querySelector(".gmtv").classList.toggle("on", !!m.degisti); el.querySelector(".gmtd").classList.toggle("on", !!m.degisti); } // hep yer tutar (visibility): rozet / düğme çıkınca boy değişmez
+function gmtHtml() { if (gmtYasak) return `<div class="gmti">Bu sayfa yalnız ajans sahibinde.</div>`; if (!gmtD) return `<div class="gmti">${gmtHata ? "⚠️ " + esc(gmtHata) : "Okunuyor…"}</div>${SKR(3)}`;
+  const l = gmtD.metinler || [], b = l.filter((m) => !gmtPas(m)), s = l.filter(gmtPas);
+  return `<div class="gmti">Gölge'nin müşteriye yazdığı hazır metinler. {…} yerine sistem o anki değeri koyar (dokununca metne eklenir). Kaydedince bir sonraki mesajdan geçerli olur.</div><div class="gmte gmtg" role="alert" style="height:18px;color:#f87171;font-size:12.5px">${gmtHata ? "⚠️ Son yenileme olmadı: " + esc(gmtHata) : ""}</div>
+    <div class="gmth">Bugün kullanılanlar (${b.length})</div>${b.map(gmtKart).join("")}${s.length ? `<div class="gmth pas">Sonraki aşamalar için hazır — henüz gönderilmiyor (${s.length})</div>${s.map(gmtKart).join("")}` : ""}`; }
+function gmtCiz() { const b = $("gmtBody"); if (!b) return; const h = gmtHtml(); if (b.dataset.h !== h) { b.dataset.h = h; b.innerHTML = h; } ((gmtD && gmtD.metinler) || []).forEach((m) => gmtDurum(m.kod)); }
+function gmtAl(r) { if (r && Array.isArray(r.metinler)) { gmtD = { metinler: r.metinler }; try { localStorage.setItem(GMT_LS, JSON.stringify(gmtD)); } catch (e) {} return true; } return false; }
+async function gmtYukle() { if (!isSahip()) return; let r = null; try { r = await api("oto_golge_metin_ayar", {}); } catch (e) { r = { error: "Bağlantı yok" }; }
+  if (r && r.perm) { gmtYasak = true; gmtD = null; try { localStorage.removeItem(GMT_LS); } catch (e) {} gmtCiz(); return; }
+  if (gmtAl(r)) gmtHata = ""; else gmtHata = (r && r.error) || "Olmadı"; gmtCiz(); }
+function gmtAc() { if (!isSahip()) return; sheet("gmetin", `<h3>✏️ Gölge'nin müşteri metinleri</h3><div id="gmtBody"></div>`); if (!setOn()) gmtDolur(); }
+function gmtDolur() { gmtCiz(); gmtYukle(); }
+function gmtSil() { gmtD = null; gmtT = {}; gmtHata = ""; gmtYasak = false; gmtBusy = ""; try { localStorage.removeItem(GMT_LS); } catch (e) {} }
+async function gmtYaz(kod, govde, basari) { if (gmtBusy) return; gmtBusy = kod; gmtDurum(kod); let r = null; try { r = await api("oto_golge_metin_ayar", { kod, ...govde }); } catch (e) { r = { error: "Bağlantı yok" }; } gmtBusy = "";
+  if (r && !r.error && gmtAl(r)) { delete gmtT[kod]; const el = document.querySelector(`#gmtBody [data-gmt="${CSS.escape(kod)}"]`), m = gmtBul(kod); if (el && m) el.querySelector("textarea").value = m.metin; ((gmtD && gmtD.metinler) || []).forEach((x) => gmtDurum(x.kod)); toast(r.degisti === false ? "Metin zaten böyleydi" : basari); return; }
+  gmtDurum(kod); if (r && r.yedek) { onayKart({ baslik: "🛟 Yedek modunda kaydedilemez", metin: "Sistem şu an yedek sunucuda; Gölge metinleri yedekteyken değiştirilemez. Metin değişmedi.\nYazdığınız taslak ekranda duruyor; ana sunucu dönünce kaydedebilirsiniz.", onay: "Tamam", vazgec: "Kapat" }); return; }
+  onayKart({ baslik: "Metin kaydedilemedi", metin: ((r && r.error) || "Olmadı") + "\nMetin değişmedi; taslağınız ekranda duruyor.", onay: "Tamam", vazgec: "Kapat" }); }
+async function gmtKaydet(kod) { const m = gmtBul(kod), el = document.querySelector(`#gmtBody [data-gmt="${CSS.escape(kod)}"]`); if (!m || !el || gmtBusy) return; const t = el.querySelector("textarea").value.trim();
+  const h = gmtGecerli(m, t); if (h) { gmtDurum(kod); return; } if (t === m.metin) return;
+  if (yedekMod) { onayKart({ baslik: "🛟 Yedek modunda kaydedilemez", metin: "Sistem şu an yedek sunucuda; Gölge metinleri yedekteyken değiştirilemez. Metin değişmedi.\nYazdığınız taslak ekranda duruyor; ana sunucu dönünce kaydedebilirsiniz.", onay: "Tamam", vazgec: "Kapat" }); return; }
+  await gmtYaz(kod, { metin: t }, "✅ Metin kaydedildi — sonraki mesajdan geçerli"); }
+async function gmtVarsayilan(kod) { const m = gmtBul(kod); if (!m || gmtBusy) return;
+  if (yedekMod) { onayKart({ baslik: "🛟 Yedek modunda değiştirilemez", metin: "Sistem şu an yedek sunucuda; Gölge metinleri yedekteyken değiştirilemez. Ana sunucu dönünce yeniden deneyin.", onay: "Tamam", vazgec: "Kapat" }); return; }
+  if (!(await onayKart({ baslik: "Varsayılan metne dönülsün mü?", metin: `“${String(m.aciklama || kod).replace(GMT_EK, "")}” metni koddaki onaylı hâline döner:\n\n${m.varsayilan}`, ayrinti: "Sizin yazdığınız metin denetim kaydında kalır; istediğiniz an yeniden yazabilirsiniz.", onay: "Varsayılana dön", vazgec: "Vazgeç" }))) return;
+  await gmtYaz(kod, { sifirla: true }, "↩️ Varsayılan metne dönüldü"); }
+document.addEventListener("input", (e) => { const x = e.target.closest && e.target.closest("#gmtBody textarea[data-gmtx]"); if (!x) return; const kod = x.dataset.gmtx, m = gmtBul(kod); if (!m) return; if (x.value.trim() === m.metin) delete gmtT[kod]; else gmtT[kod] = x.value; gmtDurum(kod); });
+document.addEventListener("click", (e) => { const t = e.target.closest && e.target.closest("#gmtBody button"); if (!t) return;
+  if (t.dataset.gmts) { gmtKaydet(t.dataset.gmts); return; } if (t.dataset.gmtv) { gmtVarsayilan(t.dataset.gmtv); return; }
+  if (t.dataset.gmty) { const el = t.closest("[data-gmt]"), x = el && el.querySelector("textarea"); if (!x) return; const y = "{" + t.dataset.gmty + "}", a = x.selectionStart != null ? x.selectionStart : x.value.length, b = x.selectionEnd != null ? x.selectionEnd : a;
+    x.value = x.value.slice(0, a) + y + x.value.slice(b); x.focus(); try { x.setSelectionRange(a + y.length, a + y.length); } catch (er) {} x.dispatchEvent(new Event("input", { bubbles: true })); } });
 function golgeElmasGit() { golgeSekSec("elmas"); if (setOn()) { const i = setStack.findIndex((t) => t.key === "golge"); if (i >= 0) { const n = setStack.length - 1 - i; if (n > 0) history.go(-n); return; } } closeModal(); golgePage(); }
 // 🏆 (22.11) Ayarlar › Maaş puanı (yalnız ajans sahibi; PIN YOK). Kullanıcı: "Gerçek konuşma ve yazışma gelenleri karşılama vs maaş puanlarına dahil edilsin" ·
 //   "Goruntuye kalkmak da yüksek puana girsin" · "Başka odalarda çok dolaşmak da eksi puan". Sunucu maas_puan_ayar (settings.sugo_maas_puan; _shared/maaspuan_web.ts).
@@ -2045,7 +2104,7 @@ function golgePage() { if (!me || !(isSahip() || can("oto_ayar"))) return; const
   sheet("golge", `<h3>🌘 Gölge</h3><div class="gsi">Gölge açıkken otomatik mesajlar kapalıdır; biri açılınca öteki kapanır.</div>
     <div id="hhKok">${hhHtml()}</div>
     <div class="seg ${sh ? "seg3 " : ""}gsek" role="tablist">${gpSekler().map((k) => `<button type="button" role="tab" data-gsek="${k}" aria-selected="${k === gpSek}"${k === gpSek ? ' class="on"' : ""} onclick="golgeSekSec('${k}')">${ad[k]}</button>`).join("")}</div>
-    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"), gsBul("gd"))}<div id="gsnKok"></div><div id="gmKok"></div></div>` : ""}
+    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"), gsBul("gd"))}<div id="gsnKok"></div><div id="gmKok"></div><button type="button" class="fullbtn gmtbtn" onclick="gmtAc()">✏️ Gölge'nin müşteri metinleri ›</button></div>` : ""}
     <div class="gpn" id="gp_elmas" role="tabpanel"${gz("elmas")}><div id="eaKok"><div id="eaDurum"></div>${sh ? kok(gsBul("ge"), gsBul("gz"), gsBul("gp"), gsBul("ga")) : ""}<div id="eaForm"></div>${sh ? `<div id="ealKok"></div>` : ""}</div></div>
     <div class="gpn" id="gp_oto" role="tabpanel"${gz("oto")}><div id="omKok"></div></div>`); if (!setOn()) golgeDolur(); } // ayarlarda: setRender doldurur (geri dönüşte de)
 // 👥 Gruplar (W19, 16.11): bayi hesabının Sugo grupları ("AZ Opera", aile grubu) — YALNIZ yönetici, SALT OKUNUR (yazma kutusu yok, okunmamış sayısı yok).
@@ -4523,7 +4582,7 @@ function rolUygula() { const yon = yonOk(), degisti = document.documentElement.c
   if (yon) return; if (degisti) try { IO.yonVeri = true; } catch (e) {} /* rol yönetici-değile düştü: Giriş/Çıkış belleği işarete bakmadan sıfırlanır, açık ekran yeniden okunur (yonSil) */ yonSil();
   if (degisti) try { if (ajSub === "alt") { ajSub = ""; try { localStorage.removeItem("bw_aj"); } catch (e) {} } if (ajData) renderAj(); } catch (e) {} } /* AR: açık sekme "Alt ajanslar" idiyse rolün ilk sekmesine; şerit yeniden çizilir */
 /** Yönetici verisini bu telefonun önbelleğinden, bellekten ve ekrandan siler (rol yönetici değil, kimlik doğrulanmadı ya da çıkış) */
-function yonSil() { try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil(); } catch (e) {} try { skSil(); } catch (e) {} /* 🪟 */ try { waSil(); } catch (e) {} /* 📲 */ try { ocgSil(); } catch (e) {} /* 🌘 kart */ try { bwgSil(); } catch (e) {} /* 🪟 bayi */ try { cbSil(); } catch (e) {} /* 🪙⏳ */ try { pinCache = null; } catch (e) {} /* 🔢 çıkış / yöneticilikten düşüş: PIN belleği */ try { for (const k of Object.keys(gkD)) delete gkD[k]; for (const k of Object.keys(gkAt)) delete gkAt[k]; } catch (e) {} /* 🌘 */ try { gsSil(); } catch (e) {} /* 🌘 gölge anahtarı */ try { gmSil(); } catch (e) {} /* 👁 ikinci göz */ /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
+function yonSil() { try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ try { tkD = null; tkSt = "yok"; } catch (e) {} try { snSil(); } catch (e) {} try { skSil(); } catch (e) {} /* 🪟 */ try { waSil(); } catch (e) {} /* 📲 */ try { ocgSil(); } catch (e) {} /* 🌘 kart */ try { bwgSil(); } catch (e) {} /* 🪟 bayi */ try { cbSil(); } catch (e) {} /* 🪙⏳ */ try { gmtSil(); } catch (e) {} /* ✏️ */ try { pinCache = null; } catch (e) {} /* 🔢 çıkış / yöneticilikten düşüş: PIN belleği */ try { for (const k of Object.keys(gkD)) delete gkD[k]; for (const k of Object.keys(gkAt)) delete gkAt[k]; } catch (e) {} /* 🌘 */ try { gsSil(); } catch (e) {} /* 🌘 gölge anahtarı */ try { gmSil(); } catch (e) {} /* 👁 ikinci göz */ /* 📋 sürüm notları (yalnız yönetici) */ try { grpSil(); } catch (e) {} /* 👥 gruplar (yalnız yönetici) */ try { if (IO.yonVeri) { IO.yonVeri = false; IO.rows = []; IO.off = 0; IO.total = 0; IO.end = false; IO.err = ""; IO.at = 0; ioDraw(); if (coinSub === "io" && curTab === "coin") ioNeed(); if ($("crList")) closeModal(); } } catch (e) {} /* AD: Giriş/Çıkış belleği (yöneticinin kendi bozum satırları ve bakiyesi) */ try { if (nk || localStorage.getItem("bw_pane_nakit")) nkSifirla(); } catch (e) {} /* 💵 Nakit belleği de (önbellek silinip bellek kalmasın) */
   try { for (const k of Object.keys(localStorage)) { if (YON_LS.test(k)) { localStorage.removeItem(k); continue; }
     if (/^pf_\d/.test(k)) { const v = localStorage.getItem(k) || ""; if (!v.includes('"temel":true')) localStorage.removeItem(k); continue; } // eski tam profil kopyası
     if (k === "bw_pane_sd") { const v = localStorage.getItem(k) || ""; if (!v.includes('"sade":true')) localStorage.removeItem(k); continue; }
@@ -7211,7 +7270,7 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
 let setStack = [], setPrev = "inbox";
 const setOn = () => !!$("set") && $("set").classList.contains("on");
 function setRender() { const t = setStack[setStack.length - 1]; if (!t) return; $("setTitle").textContent = t.title || "⚙️ Ayarlar"; $("setBk").style.visibility = setStack.length > 1 ? "visible" : "hidden";
-  $("setBody").innerHTML = t.h; $("setBody").scrollTop = 0; if (t.key === "golge") golgeDolur(); if ($("skSw")) skYukle(); if ($("waSw")) waYukle(); if ($("bwgSw")) bwgYukle(); } // 🪟 Selçuk konumu: ana menüde, önce önbellekten // 🌘 Gölge sayfası: kökler dolar (alt sayfadan geri dönüşte de; önce önbellekten hemen)
+  $("setBody").innerHTML = t.h; $("setBody").scrollTop = 0; if (t.key === "golge") golgeDolur(); if (t.key === "gmetin") gmtDolur(); if ($("skSw")) skYukle(); if ($("waSw")) waYukle(); if ($("bwgSw")) bwgYukle(); } // 🪟 Selçuk konumu: ana menüde, önce önbellekten // 🌘 Gölge sayfası: kökler dolar (alt sayfadan geri dönüşte de; önce önbellekten hemen)
 function setOpen() { if (setOn()) return; closeModal(); const on = document.querySelector(".screen.on"); setPrev = on ? on.id : "inbox";
   setStack = [{ key: "root", title: "⚙️ Ayarlar", h: menuHtml() }]; history.pushState({ set: 1 }, ""); show("set"); setRender(); }
 function setPage(key, h) { const m = /^\s*<h3[^>]*>([\s\S]*?)<\/h3>/.exec(h), title = m ? m[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim() : "", body = m ? h.slice(m[0].length) : h;
@@ -8205,11 +8264,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.192"></script>
-<script src="durum.js?v=2.1.192"></script>
-<script src="odaemoji.js?v=2.1.192"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.192"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.192"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.192"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.193"></script>
+<script src="durum.js?v=2.1.193"></script>
+<script src="odaemoji.js?v=2.1.193"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.193"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.193"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.193"></script><!-- </sugo-veri> -->
 </body>
 </html>
