@@ -55,6 +55,7 @@ window.bkGecikmeMetni = function (o) { if (!o || o.toplam == null || !(o.toplam 
   var gorunen = function () { return bk.ayar === null ? onbellek() : bk.ayar; };
   var bk = { ayar: null, ayarBekle: null, asim: 0, olcumYok: 0, ws: null, ok: 0, ref: 0, s: 0, basili: false, bekIzin: false, ctx: null, akis: null, src: null, proc: null, dus: {}, tam: [], saat: { l: [], fark: 0, rtt: -1 }, saatAt: 0,
     son: null, durum: "", basAt: 0, parca: 0, gonderilen: 0, bosT: 0, enCokT: 0, kisilan: null, el: null, izinRed: false, kaliciYok: false, olcum: [], bagli: typeof WeakSet === "function" ? new WeakSet() : null };
+  window.bkMesgul = function () { return !!(bk.basili || bk.akis); }; // 🔈 (26.11) bildirim sesi bağlamı askıya alınırken bakılır: basılıyken / mikrofon akışı açıkken dokunulmaz
   W.__bk2 = bk; // tanı / test (yalnız okuma amaçlı)
   var ayarYaz = function (v) { v = v === true; bk.ayar = v; try { W.localStorage.setItem(ANAHTAR, v ? "1" : "0"); } catch (e) { /* önbellek yazılamadı: zararsız */ }
     if (!v && bk.basili) birak("kapali"); ciz(); };
