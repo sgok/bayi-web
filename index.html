@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.196">
+<meta name="build" content="2.1.197">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.196">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.196">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.196">
+<link rel="manifest" href="manifest.json?v=2.1.197">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.197">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.197">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -1005,7 +1005,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.196" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.197" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1014,7 +1014,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.196" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.197" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1077,7 +1077,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.196"></script>
+<script src="emoji.js?v=2.1.197"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1435,7 +1435,7 @@ async function start() { swDraw(); // 🔀 geçişteyse şerit hemen (önbellekt
 }
 
 // ---------- tablet durumu (mesajları tablet gönderir)
-async function loadTablet() { const d = await api("tablet"); const age = Date.now() - (d.at || 0);
+async function loadTablet() { const d = await api("tablet"); if (d && d.selcuk_mola && isSahip()) { const u = Number(d.selcuk_mola.until) || 0; if (u !== smUntil && (u > Date.now() || smUntil)) smSet(u); } const age = Date.now() - (d.at || 0);
   const LIM = 8 * 60_000; // tablet liste değişmese de en geç 5 dk'da bir yazar
   const ok = d.bayi_on !== false && d.linked && age < LIM; $("tabDot").className = "dot " + (ok ? "ok" : "bad");
   const msg = d.bayi_on === false ? "⏸ Sugo Bayi kapalı – mesaj gönderilemez." : !d.linked ? (d.server ? "⚠️ Sugo bayi oturumu kapandı – tablette yeniden giriş yapılmalı, mesajlar gitmez." : "⚠️ Tablette bayi hesabı bağlı değil – mesajlar gitmez.") : age > LIM ? `⚠️ Tablet ${Math.round(age / 60000)} dk'dır okumuyor (kapalı ya da internet yok). Yazdıklarınız tablet açılınca gider.` : "";
@@ -7061,6 +7061,30 @@ function appCdDraw() { const el = $("appCd"); if (!el) return; const left = Math
   el.innerHTML = `<div class="apcd"><div class="s">Sunucu bekliyor · Sugo uygulamasını kullanabilirsiniz</div><div class="aptime">${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}</div>
     <div class="apbar"><i style="width:${Math.round(100 * left / tot)}%"></i></div></div>
     <button class="go apgo" onclick="linkPause(0, true)">✅ Bitti, sunucu bağlansın</button><button class="apgo" onclick="linkPause(Math.min(10, Math.ceil(${left} / 60) + 2), true)">⏱ +2 dk uzat</button>`; }
+// 📱 27.11 (kullanıcı aynen: "selçuk hesabı için sugoyu kullanıyorum butonu koy ona basınca selçuk hesabına giriş yapmaya çalışmasın süre boyunca ... kopya çek bayi hesabının özelliğinden"):
+// bayi appPage'in kopyası; yalnız yönetici (sahip), onay isteği yok. Sunucu: bayi-web "selcuk_mola" { minutes: 1–60 | 0 = bitti } → report.until (ms); canlı olay "selcuk_mola" { until, by }
+let smMin = 10, smUntil = 0, smT = 0;
+function smPage() { if (!isSahip()) return; sheet("smola", `<h3>📱 Selçuk hesabıyla Sugo</h3>
+  <div class="apbox"><p><b>Ne işe yarar?</b> Selçuk hesabı Sugo'da aynı anda <b>tek yerde</b> açık kalabilir. Bilgisayar bu hesaba kendiliğinden giriş yaptığı için telefondaki Sugo uygulamasıyla Selçuk hesabına girince biri diğerini atar.</p>
+    <p>Başlat'a basınca seçtiğiniz süre boyunca <b>Selçuk hesabına otomatik giriş yapılmaz</b>; bu sürede Sugo uygulamasını rahatça kullanabilirsiniz.</p>
+    <p><b>Bitince:</b> burada <b>✅ Bitti</b>'ye basın; otomatik giriş hemen yeniden çalışır. Süre dolarsa kendiliğinden çalışır ve uygulamadaki oturum kapanabilir.</p></div>
+  <div class="setlbl" id="smMinsL">Süre</div><div class="seg seg3" id="smMins">${[10, 30, 60].map((m) => `<button data-m="${m}" class="${m === smMin ? "on" : ""}" onclick="smMinSet(${m})">${m} dk</button>`).join("")}</div>
+  <div id="smCd"></div>`); smCdDraw(); }
+function smMinSet(m) { smMin = m; document.querySelectorAll("#smMins button").forEach((b) => b.classList.toggle("on", Number(b.dataset.m) === m)); smCdDraw(); }
+async function smStart() { if (!(await onayKart({ baslik: "Selçuk hesabıyla Sugo kullanılsın mı?", metin: `${smMin} dakika Selçuk hesabına otomatik giriş yapılmayacak.\n\nSugo uygulamasını kullanmaya başlansın mı?`, ayrinti: "Süre bitince ya da ✅ Bitti'ye basınca otomatik giriş yeniden çalışır.", onay: "Evet, başla" }))) return; smGonder(smMin); }
+async function smGonder(min) { let d = null; try { d = await api("selcuk_mola", { minutes: min }); } catch (e) { d = { error: "Bağlantı yok" }; }
+  if (!d || d.error) { toast("❌ " + ((d && d.error) || "Yapılamadı"), true); return; } toast(d.ok || "Tamam"); smSet(Number(d.report && d.report.until) || 0); }
+function smSet(until) { clearInterval(smT); smUntil = until && until > Date.now() ? until : 0; const cd = $("smCd"); if (cd) delete cd.dataset.tot; smCdDraw();
+  if (smUntil) smT = setInterval(() => { if (smUntil <= Date.now()) { clearInterval(smT); smUntil = 0; toast("🔌 Selçuk hesabına otomatik giriş yeniden çalışıyor"); } smCdDraw(); }, 1000); }
+function smCdDraw() { const el = $("smCd"); if (!el) return; const left = Math.max(0, Math.round((smUntil - Date.now()) / 1000)), mins = $("smMins");
+  if (mins) mins.style.display = left ? "none" : ""; if ($("smMinsL")) $("smMinsL").style.display = left ? "none" : "";
+  if (!left) { const h = `<button class="go apgo" onclick="smStart()">📱 Başlat · ${smMin} dk</button>`; if (el.innerHTML !== h) el.innerHTML = h; el.dataset.mode = ""; return; }
+  const tot = Math.max(left, Number(el.dataset.tot) || left); el.dataset.tot = tot; const tx = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`, w = Math.round(100 * left / tot) + "%";
+  if (el.dataset.mode === "cd") { el.querySelector(".aptime").textContent = tx; el.querySelector(".apbar i").style.width = w; el.querySelectorAll("button")[1].setAttribute("onclick", `smGonder(Math.min(60, Math.ceil(${left} / 60) + 10))`); return; } // saniyede yalnız süre ve çubuk
+  el.dataset.mode = "cd"; setTimeout(() => { try { el.scrollIntoView({ block: "end", behavior: "smooth" }); } catch (e) {} }, 50);
+  el.innerHTML = `<div class="apcd"><div class="s">Selçuk hesabına otomatik giriş yapılmıyor · Sugo uygulamasını kullanabilirsiniz</div><div class="aptime">${tx}</div>
+    <div class="apbar"><i style="width:${w}"></i></div></div>
+    <button class="go apgo" onclick="smGonder(0)">✅ Bitti, otomatik giriş çalışsın</button><button class="apgo" onclick="smGonder(Math.min(60, Math.ceil(${left} / 60) + 10))">⏱ +10 dk uzat</button>`; }
 function pauseShow(until) { let el = $("pauseBar"); if (!el) { el = document.createElement("div"); el.id = "pauseBar"; document.body.appendChild(el); }
   clearInterval(pauseT); pauseUntil = until && until > Date.now() ? until : 0; const cd = $("appCd"); if (cd) delete cd.dataset.tot; appCdDraw(); if (!pauseUntil) { el.hidden = true; return; }
   const tick = () => { const s = Math.max(0, Math.round((until - Date.now()) / 1000)); appCdDraw();
@@ -7283,7 +7307,8 @@ function menuHtml() { const row = (ic, bg, t, sub, fn) => `<button class="setrow
   <div class="setlbl" style="margin-top:0">Görünüm</div><div class="seg"><button class="${themeNow() === "sugo" ? "on" : ""}" onclick="setTheme('sugo')">💜 Sugo</button><button class="${themeNow() === "dark" ? "on" : ""}" onclick="setTheme('dark')">🌑 Karanlık</button></div>
   ${mola ? grp("Mola", [row("☕", "", "Mola veriyorum", molaAltYazi(), "molaSayfa()")]) : ""}
   ${grp("Bayi hesabı", [can("takip_gor") && me ? row("👥", "", "Takip ve arkadaşlar", "takip ettiklerimiz · takipçiler · arkadaşlar", "relOpen()") : "",
-    can("uygulama_iste") && me ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : ""])}
+    can("uygulama_iste") && me ? row("📱", "", "Sugo uygulamasını kullanacağım", "sunucuyu kısa süre bekletir, uygulama atılmaz", "appPage()") : "",
+    isSahip() ? row("📱", "", "Selçuk hesabıyla Sugo'yu kullanacağım", "bu sürede Selçuk hesabına otomatik giriş yapılmaz", "smPage()") : ""])}
   ${grp("Yönetim", [can("duzen") && me ? row("⚡", "", "Komutlar", "/id · /coins · /elmas metni ve resmi", "kmtPage()") : "", me && (isSahip() || can("oto_ayar")) ? row("🌘", "", "Gölge", "sorular · kart · elmas · otomatik mesajlar", "golgePage()") : "", can("ekip_rapor") && me ? row("📊", "", "Ekip raporu", "kim ne kadar yazdı, ilk cevap süresi", "teamReport()") : ""])}
   ${grp("👑 Ajans sahibi", isSahip() ? [row("💳", "", "Kartları yönet", "ekle · düzenle · sıra · hak sıfırla · pasif", "ownCards()"), row("👥", "", "Web kullanıcıları", "ekle · rol · izin · şifre / PIN · pasif", "ownUsers()"), yonOk() ? row("🔐", "", "İzinler", "rol rol: kim neyi görür, ne yapar", "izinAc()") : "",
     row("🔀", "", "Hesaplar arası geçiş", "şifresiz başka kullanıcının paneline geç", "acSwitch()"),
@@ -7978,6 +8003,7 @@ function connectRt(cfg) { cfg = cfg || rtConf(me) || rtCfg; if (!cfg) return; if
 function rtOlay(ev, pl) {
     if (ev === "coins") { if (pl.stock != null && can("coins")) { $("hStock").textContent = nf(pl.stock); if (coinData) coinData.stock = pl.stock; } clearTimeout(coinT); coinT = setTimeout(() => { coinPollAt = Date.now(); loadCoins(); }, 300); cbYukle(false); return; } // 🪙 13.11: panel okundu (yeni satış / bakiye / geri çağırma): üst bakiye hemen, liste kısa gecikmeyle
     if (ev === "wallet") { const w = pl.wallet || pl; if (walletOk() && (w.coin != null || w.diamond != null)) walletSet({ coin: w.coin, diamond: w.diamond, at: new Date().toISOString() }); else if (walletOk()) loadWallet(); /* 🔐 sinyal artık bakiye taşımaz: yönetici okur */ if (cur) idLive(); return; } // 💎 bayi hesabının elması / coini değişti
+    if (ev === "selcuk_mola") { if (isSahip()) smSet(Number(pl && pl.until) || 0); return; } // 📱 Selçuk mola başka cihazdan başlatıldı / bitti
     if (ev === "link") { if (pl.need_login) { STAT.needLogin = Date.now(); statLine(); } else if ("mode" in pl || "need_login" in pl) { STAT.needLogin = 0; statLine(); } if ("pauseUntil" in pl) { const pu = Number(pl.pauseUntil) || 0; if (pu !== pauseUntil) { pauseShow(pu); if (pu > Date.now()) toast(`📱 ${pl.pauseBy ? pl.pauseBy + " " : ""}Sugo uygulamasını açtı — sunucu bekliyor`); } } return; } // başka ekran Sugo uygulaması beklemesini başlattı/bitirdi
     if (ev === "room_seats") { if (window.odaSeatsSet) odaSeatsSet(pl); return; }
     if (ev === "room_spk") { if (window.odaSpkSet) odaSpkSet(pl); return; }
@@ -8295,11 +8321,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.196"></script>
-<script src="durum.js?v=2.1.196"></script>
-<script src="odaemoji.js?v=2.1.196"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.196"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.196"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.196"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.197"></script>
+<script src="durum.js?v=2.1.197"></script>
+<script src="odaemoji.js?v=2.1.197"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.197"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.197"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.197"></script><!-- </sugo-veri> -->
 </body>
 </html>
