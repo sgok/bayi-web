@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.199">
+<meta name="build" content="2.1.200">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.199">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.199">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.199">
+<link rel="manifest" href="manifest.json?v=2.1.200">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.200">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.200">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -776,6 +776,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .oykyt2 { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; } .oykyt2 th { text-align: left; color: var(--muted); font-weight: 600; padding: 4px 3px; } .oykyt2 td { padding: 5px 3px; border-top: 1px solid var(--line); }
   .oykyl { display: grid; font-size: 13px; } .oykyl > div { display: flex; justify-content: space-between; gap: 8px; padding: 6px 2px; border-top: 1px solid var(--line); } .oykyl small { color: var(--muted); } .oykya { flex: 1; text-align: right; min-width: 0; overflow-wrap: anywhere; }
   .oyso { min-height: 60px; }
+  nav.bn > [data-p="durum"] .oynav { font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center; } /* 🎮 Durum yerine Oyunlar (anahtar açıkken) */
   .oyhs { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px; margin: 2px 0 8px; } .oyhs .seg button { min-height: 40px; padding: 6px; }
   .oyust { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 40px; margin: 8px 0; font-size: 14px; } .oyust b { font-size: 16px; }
   .oyas { min-width: 118px; text-align: right; font-variant-numeric: tabular-nums; } .oyas.bet { color: var(--go2); font-weight: 700; }
@@ -933,7 +934,7 @@ try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classLi
   .sdtel { margin-top: 8px; } .sdtel .sdr { align-items: flex-start; } .sdne { display: block; font-size: 13px; opacity: .75; margin-top: 2px; }
   .lsw { flex: none; width: 46px; height: 28px; border-radius: 14px; background: #52525b; position: relative; transition: background .2s; } .lsw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s; }
   .lsw.on { background: #22c55e; } .lsw.on::after { left: 21px; }
-  #liteRow, #lite2Row, #skSw, #waSw, #bwgSw { padding-left: 16px; padding-right: 16px; box-sizing: border-box; }  .swrow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 6px 0; background: transparent; border: 0; border-radius: 0; text-align: left; color: inherit; font: inherit; } .swrow .st { flex: 1; min-width: 0; } .swrow .st small { display: block; color: var(--muted); font-size: 12.5px; } /* ortak ANAHTAR satırı: swHtml / swAyar (.lsw görünümü) */ .swrow.sw-ic { width: auto; flex: none; gap: 6px; padding: 0; } .swrow.sw-ic .st { flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; } /* satır içi varyant (swHtml 6. parametre): kısa yazı + anahtar, kartın kendi satırında sağda */
+  #liteRow, #lite2Row, #skSw, #waSw, #bwgSw, #oySw { padding-left: 16px; padding-right: 16px; box-sizing: border-box; }  .swrow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 6px 0; background: transparent; border: 0; border-radius: 0; text-align: left; color: inherit; font: inherit; } .swrow .st { flex: 1; min-width: 0; } .swrow .st small { display: block; color: var(--muted); font-size: 12.5px; } /* ortak ANAHTAR satırı: swHtml / swAyar (.lsw görünümü) */ .swrow.sw-ic { width: auto; flex: none; gap: 6px; padding: 0; } .swrow.sw-ic .st { flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; } /* satır içi varyant (swHtml 6. parametre): kısa yazı + anahtar, kartın kendi satırında sağda */
   /* 🔐 W32 İzinler ekranı: sekme çipleri 40 px (yatay kayar), satır = metin + 2 rol anahtarı + sahip (390 px'te sığar: 1fr 54 54 36) */
   .izsek { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -2px 8px; padding: 0 2px; } .izsek::-webkit-scrollbar { display: none; }
   .izsek button { flex: none; height: 40px; padding: 0 12px; border-radius: 20px; font-size: 13px; white-space: nowrap; } .izsek button.on { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 700; }
@@ -1026,7 +1027,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.199" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.200" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1035,7 +1036,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.199" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.200" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1098,7 +1099,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.199"></script>
+<script src="emoji.js?v=2.1.200"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1385,7 +1386,7 @@ async function logout() { if (swOn()) { swBack(); return; } closeModal(); if (!(
   await api("logout", ps && ps.endpoint ? { endpoint: ps.endpoint } : {}); if (ps) { try { await ps.unsubscribe(); } catch (e) {} } } finally { /* AE: ağ / abonelik adımı hata verse de temizlik atlanmaz */ tok = ""; ["bw_tok", "bw_me", "bw_me_t", "bw_inbox", "bw_pane_om"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
   try { cacheClear(); rtBitir(); loginMsg("Çıkış yapıldı", "wait"); show("login"); } finally { oturumSil(); } } } /* önce giriş ekranı: temizlik görünür ekranı kaydırmaz */
 /** 🔐 T: çıkış / oturum düştü — kimlik, yönetici verisi ve çizilmiş ekranlar bellekten ve DOM'dan silinir (sonraki girişte me gelene kadar hiçbir yönetici öğesi kalmaz) */
-function oturumSil() { pinCache = null; try { oyBilet = null; oyunDur(); oyAyD = null; localStorage.removeItem("bw_oyay"); } catch (e) {} /* 🎮 oyun bileti */ /* 🔢 26.11: çıkışta PIN belleği */ try { gozSil(); } catch (e) {} /* 👁 HZ1 */ try { hhSil(); } catch (e) {} /* 💵 Haiku harcaması */ try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
+function oturumSil() { pinCache = null; try { oyBilet = null; oyunDur(); oyAyD = null; localStorage.removeItem("bw_oyay"); oyNavCiz(); } catch (e) {} /* 🎮 oyun bileti */ /* 🔢 26.11: çıkışta PIN belleği */ try { gozSil(); } catch (e) {} /* 👁 HZ1 */ try { hhSil(); } catch (e) {} /* 💵 Haiku harcaması */ try { oknSil(); } catch (e) {} /* 🗣️ OK1 */ try { mpSil(); } catch (e) {} /* 🏆 maaş puanı */ omD = null; omBusy = false; try { localStorage.removeItem("bw_pane_om"); } catch (e) {} try { eaSil(); } catch (e) {} try { gsnSil(); } catch (e) {} try { gmSil(); } catch (e) {} try { IO.yonVeri = true; } catch (e) {} /* çıkışta Giriş/Çıkış belleği her durumda silinsin */ me = null; meGuven = false; try { yonSil(); } catch (e) {} try { ajData = null; dmData = null; coinData = null; setApStrip(""); apInboxAt = null; } catch (e) {} document.documentElement.classList.add("nyon", "ndurum"); /* çıkışta Durum sekmesi de kapanır: sonraki girişte me gelene kadar (izin bilinmiyor) görünmez */
   for (const id of ["ajBody", "dmBody", "coinBody", "cardBody"]) { const el = $(id); if (el) el.innerHTML = SKEL[id] ? SKEL[id]() : ""; }
   for (const id of ["nkBody", "pfBody"]) { const el = $(id); if (el) el.innerHTML = ""; } /* oda: yalnız sohbet kutusu (yonSil); koltuk / dinleyici herkesin · ödenmemiş müşteri bozumu şeridi ekip verisi: kalır (girişte yer değişmesin) */ }
 
@@ -2172,7 +2173,19 @@ async function oySoYukle(daha) { const g = $("oySoGov"); if (!g || !oyBilet) ret
 const OYAY_LS = "bw_oyay", OYAY_METIN = "Açıkken Aslan Kaplan · Rulet · Roket sayfası görünür (girişte PIN). Sonuç kaydı her durumda sürer.";
 let oyAyD = null, oyAyBusy = false; // { acik, hesap } | null
 function oyAyOku() { if (!isSahip()) return null; try { const v = JSON.parse(localStorage.getItem(OYAY_LS) || "null"); return v && typeof v.acik === "boolean" ? v : null; } catch (e) { return null; } }
-function oyAyYaz(v) { oyAyD = { acik: v.acik === true, hesap: v.hesap === "bayi" ? "bayi" : "selcuk" }; try { localStorage.setItem(OYAY_LS, JSON.stringify(oyAyD)); } catch (e) {} }
+function oyAyYaz(v) { oyAyD = { acik: v.acik === true, hesap: v.hesap === "bayi" ? "bayi" : "selcuk" }; try { localStorage.setItem(OYAY_LS, JSON.stringify(oyAyD)); } catch (e) {} oyNavCiz(); }
+// 🎮 (28.11) Kullanıcı (aynen): "durum sekmesi oyunlara dönüşsün oradan girilsin." → Oyunlar anahtarı AÇIKKEN (yalnız ajans sahibi, kendi hesabında) alt menünün
+// ortasındaki ⭕ Durum düğmesi 🎮 Oyunlar olur ve Oyunlar sayfasını açar; anahtar kapalıyken / başka rolde Durum aynen. Yer ve boy aynı (kayma yok).
+function oySahipMi() { try { if (me) return isSahip(); } catch (e) { /* açılışta me henüz tanımsız */ }
+  try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"), t = localStorage.getItem("bw_tok"); return !!(m && t && m.role === "sahip" && !m.switched && localStorage.getItem("bw_me_t") === t && !localStorage.getItem("bw_tok_owner")); } catch (e) { return false; } }
+function oyNavCiz() { const b = document.querySelector('nav.bn > [data-p="durum"]'); if (!b) return; if (b.__asil == null) b.__asil = b.innerHTML;
+  const d = oyAyD || oyAyOku(), oy = !!(d && d.acik) && oySahipMi();
+  if (oy === (b.dataset.oy === "1")) return; b.dataset.oy = oy ? "1" : "";
+  b.innerHTML = oy ? `<b class="oynav" aria-hidden="true">🎮</b>Oyunlar` : b.__asil; b.setAttribute("aria-label", oy ? "Oyunlar" : "Durumlar"); b.onclick = oy ? (e) => { e.preventDefault(); oyunNav(); } : () => tab("durum"); }
+/** Alt menüden: Oyunlar sayfası tam ekran (Ayarlar'ın içinden değil); ‹ / ✕ önceki ekrana döner */
+function oyunNav() { if (!oySahipMi() || !(oyAyD && oyAyD.acik)) return; if (setOn()) { oyunPage(); return; } closeModal(); const on = document.querySelector(".screen.on"); setPrev = on ? on.id : "inbox"; setStack = []; show("set"); oyunPage(); }
+document.addEventListener("DOMContentLoaded", () => { try { oyNavCiz(); } catch (e) {} }); // ilk çizimde (önbellekteki ayarla) — sonradan atlamasın
+let oyAyAt = 0; function oyAyTazele() { if (!oySahipMi() || Date.now() - oyAyAt < 300_000) return; oyAyAt = Date.now(); oyAyYukle(); }
 function oyAyHtml() { if (oyAyD === null) oyAyD = oyAyOku(); const d = oyAyD, alt = (yedekMod ? "🛟 yedekte değiştirilemez · " : "") + OYAY_METIN;
   return swPasif(swHtml("oySw", "🎮 Oyunlar", esc(alt), !!(d && d.acik), "oyAyTik()"), d === null || oyAyBusy, oyAyBusy ? 'aria-busy="true"' : "")
     + (d && d.acik ? `<button class="setrow" onclick="oyunPage()"><span class="si">🎮</span><span class="st">Oyunlar<small>Aslan Kaplan · Rulet · Roket (${d.hesap === "bayi" ? "bayi" : "Selçuk"} hesabı)</small></span><span class="chev">›</span></button>` : ""); } // menuHtml'deki row() ile aynı biçim (o yerel)
@@ -2200,7 +2213,7 @@ const oySekOku = () => { try { const v = localStorage.getItem("bw_oy_sek"); retu
 const oyIid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()) + Date.now()).replace(/[^A-Za-z0-9]/g, "").slice(0, 24);
 const oyTop = () => setOn() && setStack.length && setStack[setStack.length - 1].key === "oyun";
 const oySay1 = (n) => n == null ? "–" : n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e4 ? Math.round(n / 1e3) + "K" : String(n);
-async function oyunPage() { if (!me || !isSahip() || !(oyAyD && oyAyD.acik)) return; oySek = oySek || oySekOku(); oyBilet = null; oyMsg = "";
+async function oyunPage() { if (!me || !isSahip() || !(oyAyD && oyAyD.acik)) return; oyAyAt = 0; oyAyTazele(); oySek = oySek || oySekOku(); oyBilet = null; oyMsg = "";
   sheet("oyun", `<h3>🎮 Oyunlar</h3><div class="oyhs"><span class="s">Hesap</span><div class="seg"><button type="button" data-oyhs="selcuk" onclick="oyHesapSec('selcuk')">👤 Selçuk</button><button type="button" data-oyhs="bayi" onclick="oyHesapSec('bayi')">🏪 Bayi</button></div></div>
     <div class="seg oysek" role="tablist">${Object.keys(OY_AD).map((k) => `<button type="button" role="tab" data-oysek="${k}" aria-selected="${k === oySek}"${k === oySek ? ' class="on"' : ""} onclick="oySekSec('${k}')">${OY_AD[k]}</button>`).join("")}</div>
     <div id="oyKok">${oyHtml(oySek)}</div>`); oyHesapCiz(); }
@@ -4768,7 +4781,7 @@ const isSahip = () => !!(me && me.role === "sahip");
 // 🔐 Yönetici = Ajans sahibi, KENDİ hesabında (hesap geçişinde değil; sunucudaki arsivGorur / nakitGorur ile aynı). Bu kısıtlar role bağlı: izinle açılmaz.
 // Yalnız yöneticide: bayi hesabının elmasları (💎 sayaç, cüzdan, bozma, kendi bozumları), oda sohbeti, sistem ayrıntısı, depo kullanımı, takip / arkadaşlar, ⭕ Durum sekmesi, profilin temel dışı bölümleri.
 function yonOk() { return !!(meGuven && me && me.role === "sahip" && !me.switched); }
-const meSakla = (d) => { meGuven = true; try { localStorage.setItem("bw_me", JSON.stringify(d)); localStorage.setItem("bw_me_t", tok); } catch (e) {} }; // sunucunun me cevabı: bu oturumun kimliği // işlev: yukarıdaki kodlar (statLine) da güvenle çağırır
+const meSakla = (d) => { meGuven = true; setTimeout(() => { try { oyNavCiz(); oyAyTazele(); } catch (e) {} }, 0); /* 🎮 Durum ↔ Oyunlar düğmesi */ try { localStorage.setItem("bw_me", JSON.stringify(d)); localStorage.setItem("bw_me_t", tok); } catch (e) {} }; // sunucunun me cevabı: bu oturumun kimliği // işlev: yukarıdaki kodlar (statLine) da güvenle çağırır
 const YON_LS = /^(bw_wallet|bw_ownex|bw_pane_nakit|bw_pane_sn$|bw_pane_g[skez]$|bw_pane_grp$|bw_grp_m$|bw_auUser|bw_pane_depo|bw_oda_chat|bw_pane_durum_|bw_durum_tab|pfm_|pfl_)/;
 /** Rol yönetici değilse: yönetici verisi bu telefondan silinir ve çizilmez (Nakit'teki kimDegisti / nkSifirla düzeni) */
 function rolUygula() { const yon = yonOk(), degisti = document.documentElement.classList.contains("nyon") === yon; document.documentElement.classList.toggle("nyon", !yon);
@@ -8494,11 +8507,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.199"></script>
-<script src="durum.js?v=2.1.199"></script>
-<script src="odaemoji.js?v=2.1.199"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.199"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.199"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.199"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.200"></script>
+<script src="durum.js?v=2.1.200"></script>
+<script src="odaemoji.js?v=2.1.200"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.200"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.200"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.200"></script><!-- </sugo-veri> -->
 </body>
 </html>
