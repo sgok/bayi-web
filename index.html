@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.201">
+<meta name="build" content="2.1.202">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.201">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.201">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.201">
+<link rel="manifest" href="manifest.json?v=2.1.202">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.202">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.202">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -1027,7 +1027,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.201" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.202" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1036,7 +1036,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.201" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.202" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1099,7 +1099,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.201"></script>
+<script src="emoji.js?v=2.1.202"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1944,6 +1944,8 @@ async function gsnKaydet() { if (!isSahip() || gsnBusy || gsnPinde || !gsnT || !
 const GM_LS = "bw_pane_gm", GMK_LS = "bw_pane_gmk", GM_SAG = [["gemma", "Sunucudaki model (Gemma)", "Gemma"], ["haiku", "Claude Haiku", "Haiku"]];
 let gmD = null, gmK = null, gmBusy = false, gmKartta = false; // gmD: { acik, saglayici } | null · gmK: karne cevabı | null · gmKartta: onay kartı açıkken ikinci dokunma yeni kart açmaz
 const gmSagAd = (sg) => (GM_SAG.find((x) => x[0] === sg) || GM_SAG[0])[2];
+// 28.11: karne kümeleri sağlayıcıdan ayrı — Claude sağlayıcısı iş başına Haiku ya da Sonnet kullanır; karne üçünü ayrı sayar (kullanıcı: "sonnet modeli kullanılsın her yerde")
+const GM_KARNE = [["gemma", "Gemma"], ["haiku", "Haiku"], ["sonnet", "Sonnet"]], gmKumeAd = (k) => (GM_KARNE.find((x) => x[0] === k) || GM_KARNE[0])[1];
 const GM_HAIKU_BILGI = "Bayi müşteri mesajları (uzun rakamlar gizlenmiş hâlde) Anthropic'e gönderilir.\nAyda yaklaşık 3–4 $.\nSunucuda API anahtarı yoksa çalışmaz.";
 function gmOnayMetni(sg) { return sg === "haiku"
   ? "Açılırsa: Claude Haiku her yeni müşteri mesajına bakar ve \"model olsa ne derdi\" diye yalnız mesajın türünü kaydeder.\nMüşteriye hiçbir mesaj göndermez, Gölge'nin hiçbir kararını değiştirmez.\n\n" + GM_HAIKU_BILGI + "\nYedekteyken ve Hafif mod 2 açıkken çalışmaz.\nİstediğiniz an buradan kapatırsınız."
@@ -1953,20 +1955,20 @@ function gmOku(k) { if (!isSahip()) return null; try { const x = JSON.parse(loca
 function gmSil() { gmD = null; gmK = null; gmBusy = false; try { localStorage.removeItem(GM_LS); localStorage.removeItem(GMK_LS); } catch (e) {} const k = $("gmKok"); if (k) { k.innerHTML = ""; k.__h = ""; } }
 const gmSn = (x) => String(Math.round(Number(x) * 10) / 10).replace(".", ",");
 const gmDurum = (r) => r && typeof r.acik === "boolean" ? { acik: r.acik, saglayici: r.saglayici === "haiku" ? "haiku" : "gemma", yardim: r.yardim === true, elmas_yardim: r.elmas_yardim === true } : null;
-function gmKarneSatir() { const k = gmK; // [üst satır, Gemma, Haiku]: hep üç satır (boy değişmez)
-  if (!k) return ["Karne okunuyor…", "", ""];
-  if (k.yedek) return ["🛟 Yedekteyken çalışmaz", "Karne ana sunucu dönünce görünür", ""];
-  const M = GM_SAG.map(([sg]) => (k.modeller || []).find((m) => m.saglayici === sg) || { saglayici: sg, veri_yok: true }), son = Math.max(0, ...M.map((m) => Date.parse(m.son_at || "") || 0));
-  const satir = (m) => `${gmSagAd(m.saglayici)}: ${m.veri_yok ? "kayıt yok" : `${nf(m.mesaj || 0)} mesaj · ${m.ortanca_sn == null ? "süre yok" : `ortanca ${gmSn(m.ortanca_sn)} sn`} · hata ${nf(m.hata || 0)}`}`;
+function gmKarneSatir() { const k = gmK; // [üst satır, Gemma, Haiku, Sonnet]: hep dört satır (boy değişmez)
+  if (!k) return ["Karne okunuyor…", "", "", ""];
+  if (k.yedek) return ["🛟 Yedekteyken çalışmaz", "Karne ana sunucu dönünce görünür", "", ""];
+  const M = GM_KARNE.map(([sg]) => (k.modeller || []).find((m) => m.saglayici === sg) || { saglayici: sg, veri_yok: true }), son = Math.max(0, ...M.map((m) => Date.parse(m.son_at || "") || 0));
+  const satir = (m) => `${gmKumeAd(m.saglayici)}: ${m.veri_yok ? "kayıt yok" : `${nf(m.mesaj || 0)} mesaj · ${m.ortanca_sn == null ? "süre yok" : `ortanca ${gmSn(m.ortanca_sn)} sn`} · hata ${nf(m.hata || 0)}`}`;
   return [`Son ${k.pencere_saat || 24} saat${k.veri_yok ? ": henüz kayıt yok" : ""}${son ? ` · son kayıt ${rel(son)}` : ""}`, ...M.map(satir)]; }
-function gmHtml() { const d = gmD, [a, b, c] = gmKarneSatir(), dis = !d || gmBusy;
+function gmHtml() { const d = gmD, ks = gmKarneSatir(), dis = !d || gmBusy;
   const sw = swPasif(swHtml("gmSw", "👁 Yapay zekâ ikinci göz (deneme)", "Mesaj göndermez, karar değiştirmez; yalnız “model ne derdi” diye kayıt tutar.", !!d && d.acik, "gmTik()"), dis, gmBusy ? 'aria-busy="true"' : "");
   const sec = `<div class="seg gms" role="radiogroup" aria-label="Model">${GM_SAG.map(([sg, ad]) => { const on = !!d && d.saglayici === sg; return `<button type="button" role="radio" data-gms="${sg}" aria-checked="${on}"${on ? ' class="on"' : ""}${dis ? " disabled" : ""} onclick="gmSec('${sg}')">${esc(ad)}</button>`; }).join("")}</div>`;
   // 🤝 25.11 Haiku yardımı (kullanıcı: "Gölge konuşmayı anlamadıysa haiku dan neden yardım almıyor" → "Önerdiğini yap"): yalnız ikinci göz açık + Haiku seçiliyken dokunulur; yazısı sabit
   const yr = swPasif(swHtml("gmYrSw", "🤝 Haiku yardımı", "Gölge anlamadığı mesajda Haiku'ya bakar: coin / elmas isteği ve selamda kendi akışına devam eder. Para kuralları aynı. Yalnız ikinci göz açık ve Haiku seçiliyken çalışır.", !!d && d.yardim, "gmYrTik()"), dis || !d.acik || d.saglayici !== "haiku", gmBusy ? 'aria-busy="true"' : "");
   // 💎 25.11 Haiku elmas yardımı (kullanıcı Öneri A: "evet yazılsın"): Haiku yardımının hemen altında, aynı kapı (ikinci göz açık + Haiku); kayıt { elmas_yardim }
   const ey = swPasif(swHtml("gmEySw", "💎 Haiku elmas yardımı", "Gölge'nin anlamadığı elmas mesajında Haiku türü anlar; Gölge onaylı hazır metniyle cevaplar; rakam / söz motordan. Yalnız ikinci göz açık ve Haiku seçiliyken çalışır.", !!d && d.elmas_yardim, "gmEyTik()"), dis || !d.acik || d.saglayici !== "haiku", gmBusy ? 'aria-busy="true"' : "");
-  return `<div class="sdb gsb gmb${gmBusy ? " gsm" : ""}">${sw}${sec}${yr}${ey}<div class="gmk" id="gmKarne" aria-live="polite">${[a, b, c].map((x) => `<span>${esc(x) || "&nbsp;"}</span>`).join("")}</div></div>`; }
+  return `<div class="sdb gsb gmb${gmBusy ? " gsm" : ""}">${sw}${sec}${yr}${ey}<div class="gmk" id="gmKarne" aria-live="polite">${ks.map((x) => `<span>${esc(x) || "&nbsp;"}</span>`).join("")}</div></div>`; }
 function gmCiz() { const k = $("gmKok"); if (!k) return; if (!isSahip()) { gmSil(); return; } const h = gmHtml(); if (k.__h !== h) { k.__h = h; k.innerHTML = h; } }
 function gmDYaz(d) { gmD = d; try { localStorage.setItem(GM_LS, JSON.stringify(d)); } catch (e) {} }
 async function gmYukle() { if (!isSahip() || !$("gmKok")) return; if (!gmD) gmD = gmDurum(gmOku(GM_LS)); if (!gmK) { const x = gmOku(GMK_LS); gmK = x && (x.yedek || Array.isArray(x.modeller)) ? x : null; } gmCiz();
@@ -1974,7 +1976,7 @@ async function gmYukle() { if (!isSahip() || !$("gmKok")) return; if (!gmD) gmD 
   if (!isSahip()) { gmSil(); return; }
   const d = r && !r.error ? gmDurum(r) : null; if (!gmBusy && d && JSON.stringify(d) !== JSON.stringify(gmD)) gmDYaz(d);
   if (k && !k.error && typeof k.veri_yok === "boolean") { const n = { veri_yok: k.veri_yok, yedek: !!k.yedek, pencere_saat: Number(k.pencere_saat) || 24,
-      modeller: (Array.isArray(k.modeller) ? k.modeller : []).filter((m) => m && (m.saglayici === "gemma" || m.saglayici === "haiku")).map((m) => ({ saglayici: m.saglayici, veri_yok: !!m.veri_yok, mesaj: Number(m.mesaj) || 0, hata: Number(m.hata) || 0, ortanca_sn: m.ortanca_sn == null ? null : Number(m.ortanca_sn), son_at: m.son_at || null })) };
+      modeller: (Array.isArray(k.modeller) ? k.modeller : []).filter((m) => m && GM_KARNE.some((x) => x[0] === m.saglayici)).map((m) => ({ saglayici: m.saglayici, veri_yok: !!m.veri_yok, mesaj: Number(m.mesaj) || 0, hata: Number(m.hata) || 0, ortanca_sn: m.ortanca_sn == null ? null : Number(m.ortanca_sn), son_at: m.son_at || null })) };
     if (JSON.stringify(n) !== JSON.stringify(gmK)) { gmK = n; try { localStorage.setItem(GMK_LS, JSON.stringify(n)); } catch (e) {} } }
   gmCiz(); }
 /** ortak yazma: gövde { acik } ya da { saglayici }; meşgulken anahtar ve seçim kilitli; hata olursa eski hâline döner + kart */
@@ -2013,7 +2015,7 @@ function golgeDolur() { if (isSahip()) { gsYukle(); gsnYukle(); gmYukle(); ealYu
 //   bugün o saate kadar ne harcadığı aylık haftalık günlük gibi yazsın dolar cinsinden". Sunucu haiku_harcama (_shared/haikuharcama.ts; fiyat orada, tek sabit).
 //   Gölge sayfasını gören (sahip ya da oto_ayar) görür. Önce bu cihazdaki son bilinen (bw_haiku_hh; çıkışta silinir), sonra sunucu; aynıysa yeniden çizilmez.
 //   Kayma yok: dört kutu veri gelmeden de aynı boyda ("…"); ayrıntı kapalı gelir.
-const HH_LS = "bw_haiku_hh", HH_IS = { etiket: "Mesaj etiketleme", sohbet: "Sohbet gözü", secim: "Öneri seçimi", denetci: "Cevap denetçisi" };
+const HH_LS = "bw_haiku_hh", HH_IS = { etiket: "Mesaj etiketleme", sohbet: "Sohbet gözü", secim: "Öneri seçimi", denetci: "Cevap denetçisi", elmas: "Elmas türü (sürekli)" };
 var hhD = (() => { try { const x = JSON.parse(localStorage.getItem(HH_LS) || "null"); return x && x.ozet ? x : null; } catch (e) { return null; } })(), hhHata = "", hhYuk = false;
 function hhSil() { hhD = null; hhHata = ""; try { localStorage.removeItem(HH_LS); } catch (e) {} }
 function hhUsd(x) { x = Number(x) || 0; if (!x) return "$0"; if (x < 0.001) return "&lt;$0,001";
@@ -2021,11 +2023,14 @@ function hhUsd(x) { x = Number(x) || 0; if (!x) return "$0"; if (x < 0.001) retu
 const hhGunAd = (g) => { const t = new Date(g + "T12:00:00Z"); return `${String(t.getUTCDate()).padStart(2, "0")}.${String(t.getUTCMonth() + 1).padStart(2, "0")} ${["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"][t.getUTCDay()]}`; };
 function hhHtml() { if (!me || !(isSahip() || can("oto_ayar"))) return ""; const o = hhD && hhD.ozet, yd = hhD && hhD.yedek;
   const kutu = (ad, t) => `<div class="hhc"><span>${ad}</span><b>${o ? hhUsd(t.usd) : "…"}</b><span>${o ? nf(t.istek) + " istek" : "&nbsp;"}</span></div>`;
-  const isler = o ? Object.keys(HH_IS).map((k) => { const x = o.isler && o.isler[k] || { bugun: { usd: 0, istek: 0 }, ay: { usd: 0, istek: 0 } };
-    return `<tr><td>${HH_IS[k]}</td><td>${hhUsd(x.bugun.usd)}<small>${nf(x.bugun.istek)}</small></td><td>${hhUsd(x.ay.usd)}<small>${nf(x.ay.istek)}</small></td></tr>`; }).join("") : "";
+  // 28.11: sunucu isler_model verirse ('<iş>' = Haiku, '<iş>_sonnet' = Sonnet) Sonnet'i olan iş iki satır: "… · Haiku" / "… · Sonnet" (karşılaştırma); yoksa tek satır
+  const BOS = { bugun: { usd: 0, istek: 0 }, ay: { usd: 0, istek: 0 } }, var_ = (x) => !!x && ((Number(x.bugun && x.bugun.istek) || 0) + (Number(x.ay && x.ay.istek) || 0)) > 0;
+  const tr = (ad, x) => `<tr><td>${ad}</td><td>${hhUsd(x.bugun.usd)}<small>${nf(x.bugun.istek)}</small></td><td>${hhUsd(x.ay.usd)}<small>${nf(x.ay.istek)}</small></td></tr>`;
+  const isler = o ? Object.keys(HH_IS).map((k) => { const x = o.isler && o.isler[k] || BOS, im = o.isler_model, so = im && im[k + "_sonnet"];
+    return var_(so) ? tr(HH_IS[k] + " · Haiku", im[k] || BOS) + tr(HH_IS[k] + " · Sonnet", so) : tr(HH_IS[k], x); }).join("") : "";
   const gunler = o && o.gunluk && o.gunluk.length ? o.gunluk.map((g) => `<tr><td>${hhGunAd(g[0])}</td><td>${hhUsd(g[1])}</td><td>${nf(g[2])} istek</td></tr>`).join("") : "";
   const guncel = o && o.guncel_at ? new Date(o.guncel_at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Baku" }) : "";
-  return `<div class="hhk"><div class="hhb"><b>💵 Haiku harcaması</b><span class="s">${yd ? "yedek sunucudayken gösterilmez" : hhHata ? "⚠️ " + esc(hhHata) : guncel ? "son kayıt " + guncel + " (Bakü)" : hhYuk ? "yükleniyor…" : ""}</span></div>
+  return `<div class="hhk"><div class="hhb"><b>💵 Yapay zekâ harcaması</b><span class="s">${yd ? "yedek sunucudayken gösterilmez" : hhHata ? "⚠️ " + esc(hhHata) : guncel ? "son kayıt " + guncel + " (Bakü)" : hhYuk ? "yükleniyor…" : ""}</span></div>
     <div class="hhg">${kutu("Bugün", o && o.bugun)}${kutu("Bu hafta", o && o.hafta)}${kutu("Bu ay", o && o.ay)}${kutu("Toplam", o && o.toplam)}</div>
     <details class="hhd"><summary>İş başına ve günlük döküm</summary>${o ? `<table class="hht"><tr><th>İş</th><th>Bugün</th><th>Bu ay</th></tr>${isler}</table>
       ${gunler ? `<table class="hht hhgn"><tr><th>Gün</th><th>Harcama</th><th>İstek</th></tr>${gunler}</table>` : ""}` : `<div class="s">Henüz veri yok.</div>`}</details>
@@ -8516,11 +8521,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.201"></script>
-<script src="durum.js?v=2.1.201"></script>
-<script src="odaemoji.js?v=2.1.201"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.201"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.201"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.201"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.202"></script>
+<script src="durum.js?v=2.1.202"></script>
+<script src="odaemoji.js?v=2.1.202"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.202"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.202"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.202"></script><!-- </sugo-veri> -->
 </body>
 </html>
