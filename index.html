@@ -14,11 +14,11 @@ try { const m = JSON.parse(localStorage.getItem("bw_me") || "null"); if (m && m.
 try { if (localStorage.getItem("bw_tok_owner")) document.documentElement.classList.add("swon"); } catch (e) {} // 🔀 hesap geçişi: şerit payı ilk çizimden önce (sonradan kayma yok)
 </script>
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="2.1.197">
+<meta name="build" content="2.1.198">
 <title>Sugo Coins Bayi</title>
-<link rel="manifest" href="manifest.json?v=2.1.197">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.197">
-<link rel="icon" type="image/png" href="icon-192.png?v=2.1.197">
+<link rel="manifest" href="manifest.json?v=2.1.198">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.198">
+<link rel="icon" type="image/png" href="icon-192.png?v=2.1.198">
 <style>
   [hidden] { display: none !important; } /* "hidden" işaretli öğe her zaman gizli: display stili ezmesin (2 kez hata oldu: oda adı, 🎤 kayıt şeridi açılışta görünüyordu) */
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* iPhone uzun satırları kendiliğinden büyütmesin (listede bazı mesajlar iri görünüyordu) */
@@ -1005,7 +1005,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </div>
 
 <section class="screen" id="login">
-  <img src="icon-192.png?v=2.1.197" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
+  <img src="icon-192.png?v=2.1.198" alt="" style="width:72px;height:72px;border-radius:18px;display:block;margin:0 auto 10px"><h2 style="margin:0">Sugo Coins Bayi</h2>
   <div class="rolepick" id="rolePick"><button data-r="yetkili" onclick="pickRole('yetkili')">🏪 Bayi Yetkilisi</button><button data-r="yardimci" onclick="pickRole('yardimci')">🤝 Yardımcı</button><button data-r="sahip" onclick="pickRole('sahip')">👑 Ajans sahibi</button></div>
   <div class="s">Rolünüzü seçip şifrenizle girin</div>
   <input id="pin" type="password" autocomplete="current-password" placeholder="Şifre" style="max-width:280px;text-align:center;font-size:20px">
@@ -1014,7 +1014,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
 </section>
 
 <section class="screen" id="inbox">
-  <header><img src="icon-192.png?v=2.1.197" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
+  <header><img src="icon-192.png?v=2.1.198" alt="Sohbetler" title="Sohbetler" onclick="goChats()" style="width:32px;height:32px;border-radius:9px;flex:none;cursor:pointer"><h1 id="hTitle" onclick="tab('coin')" style="cursor:pointer" title="Coin bakiyemiz · dokun: Coins"><span class="gc"></span> <span id="hStock">…</span><span id="hDia" hidden onclick="event.stopPropagation();if(can('ajans'))tab('aj')" title="Bayi hesabının elmasları · dokun: Ajans"></span></h1><button id="osGos" class="sysb" hidden onclick="osGosTikla()" title="Oda sesi açık — dokun: kapat" aria-label="Oda sesi açık, kapatmak için dokunun">🔊<span class="sysl">Ses açık</span></button><button id="sysBtn" class="sysb" onclick="sysPop()" title="Sistem durumu" aria-label="Sistem durumu"><span id="tabDot" class="dot"></span><span class="sysl">Durum</span></button><button onclick="menu()" style="position:relative">⚙️<span id="molaRoz" class="molaroz" role="button" hidden onclick="event.stopPropagation();molaSayfa()" title="Moladakiler"></span></button></header>
   <div class="warnbar" id="tabWarn"></div>
   <div id="notifBar" style="display:none;padding:10px 12px;background:#12233a;border-bottom:1px solid var(--line);font-size:14px"></div>
   <div class="pane on" id="p-msg">
@@ -1077,7 +1077,7 @@ html.gizli *, html.gizli *::before, html.gizli *::after { animation-play-state: 
   </div>
 </section>
 
-<script src="emoji.js?v=2.1.197"></script>
+<script src="emoji.js?v=2.1.198"></script>
 <script>
 // <panel-yol> (tests/panelyol_test.ts bu bloğu ayrı çalıştırır)
 const API = "https://pspgaetjwmejfgouacbx.supabase.co/functions/v1/bayi-web"; // doğrudan Supabase (yedek yol)
@@ -1640,6 +1640,11 @@ const GS_AN = [
   { k: "gd", kok: "gdKok", sw: "gdSw", uc: "oto_golge_kart_degis_ayar", ls: "bw_pane_gd", satir: 0, golgesiz: true, omYok: true, baslik: "🔁 Kart değişimi",
     sabitAlt: "Müşteri başka kart / başka banka isterse ya da ödemesi geri dönerse Gölge eski kartı geri alıp başka bankadan yeni kart verir; dekont gelip para görünmezse 30 sn sonra 'Pul sizə geri qayıtdı?' diye sorar.",
     onay: { baslik: "Kart değişimi açılsın mı?", metin: "Açılırsa: müşteri başka kart / başka banka isterse ya da ödemesi geri dönerse Gölge eski kartı geri alıp başka bankadan yeni kart verir.\nDekont gelip para görünmezse 30 sn sonra müşteriye 'Pul sizə geri qayıtdı?' diye sorar.\nEski karta para gelmişse, değişim sayısı aşıldıysa ya da boş kart yoksa iş ekibe kalır.\nİstediğiniz an buradan kapatırsınız." } },
+  // 🌙 (28.11) Gece Dostbank en sonda (kullanıcı aynen: "Gece dostbank kartları verilmesin ancak hiç kart kalmazsa elimizde o zaman verilsin"): sunucu oto_golge_gece_dostbank_ayar (golge oturumu). gd kalıbı: yalnız sahip, onay kartı, PIN yok; satır yoksa AÇIK (sunucu söyler).
+  { k: "gn", kok: "gnKok", sw: "gnSw", uc: "oto_golge_gece_dostbank_ayar", ls: "bw_pane_gn", satir: 0, golgesiz: true, omYok: true, guvenliAcik: true, // güvenli yön AÇIK (yönetici D2): yedekte açmak serbest, kapatmak reddedilir
+    baslik: "🌙 Gece Dostbank en sonda",
+    sabitAlt: "Gece (23:00–10:00) Gölge Dostbank kartını yalnız başka uygun kart kalmazsa verir.",
+    onay: { baslik: "Gece Dostbank en sonda açılsın mı?", metin: "Açılırsa: gece 23:00–10:00 arasında Gölge önce Dostbank dışındaki boş kartları verir.\nBaşka uygun kart kalmazsa Dostbank kartını yine verir; müşteri kartsız kalmaz.\nGündüz değişiklik yok.\nİstediğiniz an buradan kapatırsınız." } },
 ];
 GS_AN.forEach((a) => { a.d = null; a.busy = false; }); // d: { acik, golge_acik } | null
 GS_AN.forEach((a) => { try { Object.defineProperty(window, a.k + "D", { get: () => a.d, set: (v) => { a.d = v; }, configurable: true }); Object.defineProperty(window, a.k + "Busy", { get: () => a.busy, set: (v) => { a.busy = v; }, configurable: true }); } catch (e) {} }); // gsD / gsBusy, gkD / gkBusy, geD / geBusy: kısa adlar (senaryolar bunlarla okur / sıfırlar)
@@ -1653,8 +1658,8 @@ function gsHtml(a) { if (a.sabitAlt) return gsHtmlSabit(a); const d = a.d, kapal
   const sw = swPasif(swHtml(a.sw, a.baslik, altH, !!d && d.golge_acik && d.acik, `gsTik('${a.k}')`), !d || kapali || yd || a.busy, a.busy ? 'aria-busy="true"' : "");
   return `<div class="sdb gsb gsb${a.satir}${a.busy ? " gsm" : ""}">${sw}</div>`; }
 /** 🪙 sabit açıklamalı anahtar (gc): açıklama hiç değişmez; altında tek not satırı hep yer tutar. Gölge kapalıyken kilitlenmez (golgesiz); yedekte yalnız kapatılabilir. */
-function gsHtmlSabit(a) { const d = a.d, yd = yedekMod && !!d && !d.acik;
-  const not = !d ? "Durum okunuyor…" : yd ? "🛟 Yedekte açılamaz; ayarınız değişmedi." : !d.golge_acik ? "⚠️ Gölge kapalı: anahtar açık olsa da coin gönderilmez." : "";
+function gsHtmlSabit(a) { const d = a.d, yd = yedekMod && !!d && (a.guvenliAcik ? d.acik : !d.acik);
+  const not = !d ? "Durum okunuyor…" : yd ? (a.guvenliAcik ? "🛟 Yedekte kapatılamaz; ayarınız değişmedi." : "🛟 Yedekte açılamaz; ayarınız değişmedi.") : !d.golge_acik ? "⚠️ Gölge kapalı: anahtar açık olsa da coin gönderilmez." : "";
   const sw = swPasif(swHtml(a.sw, a.baslik, `${esc(a.sabitAlt)}<span class="gsnot">${not ? esc(not) : "&nbsp;"}</span>`, !!d && d.acik, `gsTik('${a.k}')`), !d || yd || a.busy, a.busy ? 'aria-busy="true"' : "");
   return `<div class="sdb gsb gsbs${a.busy ? " gsm" : ""}">${sw}</div>`; }
 function gsCiz(a) { if (!a) { GS_AN.forEach(gsCiz); return; } const k = $(a.kok); if (!k) return; if (!isSahip()) { gsSil(); return; } const h = gsHtml(a); /* kayma yok: kartlar kendi sekmesinde (Durum gövdesinden bağımsız); önbellekten hemen, "okunuyor" yer tutucusu aynı boyda */ if (k.__h !== h) { k.__h = h; k.innerHTML = h; } } // değişmeyen yeniden çizilmez
@@ -1663,13 +1668,13 @@ async function gsYukle(a) { if (!a) { GS_AN.forEach(gsYukle); return; } if (!isS
   if (!isSahip()) { gsSil(); return; } if (a.busy) return; // yazma sürerken eski okuma sonucu konumu ezmesin
   if (r && !r.error && typeof r.acik === "boolean" && typeof r.golge_acik === "boolean") { if (!a.d || a.d.acik !== r.acik || a.d.golge_acik !== r.golge_acik) { a.d = { acik: r.acik, golge_acik: r.golge_acik }; gsKaydet(a); } }
   gsCiz(a); GS_AN.filter((x) => x.gerek === a.k).forEach((x) => gsCiz(x)); }
-async function gsTik(k) { const a = gsBul(k); if (!a || a.busy || a.kartta || !isSahip() || !a.d || (!a.d.golge_acik && !a.golgesiz)) return; const onceki = a.d, yeni = !onceki.acik; if (yeni && yedekMod) return; // 🛟 yedekte açılmaz
+async function gsTik(k) { const a = gsBul(k); if (!a || a.busy || a.kartta || !isSahip() || !a.d || (!a.d.golge_acik && !a.golgesiz)) return; const onceki = a.d, yeni = !onceki.acik; if (yedekMod && yeni !== !!a.guvenliAcik) return; // 🛟 yedekte açılmaz (gn: kapatılmaz)
   let pin = ""; if (yeni && a.pin) { a.kartta = true; try { pin = await askPin(a.baslik.replace(/^\S+\s/, ""), true, a.pinOzet); } finally { a.kartta = false; } if (!pin || !a.d || a.d.acik) return; } // 🪙 para / coin çıkışı: taze PIN kartı (onay kartı yerine)
   else if (yeni) { a.kartta = true; let ok = false; try { ok = await onayKart({ baslik: a.onay.baslik, metin: a.onay.metin.replace("{SOZ}", eaSozOzet) + (omAcik() && !a.omYok ? "\n\n🤖 Otomatik mesajlar kapanır." : ""), onay: "Aç", vazgec: "Vazgeç" }); } finally { a.kartta = false; } if (!ok) return; } // 21.11: kart açıkken ikinci dokunma arkaya ikinci kart sıralamaz
   if (a.busy || !isSahip()) return; a.busy = true; a.d = { ...onceki, acik: yeni }; gsCiz(a);
   let r = null; try { r = await api(a.uc, { acik: yeni, ...(pin ? { pin } : {}) }); } catch (e) { r = { error: "Bağlantı yok" }; }
   a.busy = false; if (!isSahip()) { gsSil(); return; } if (r && r.pin === "wrong") pinCache = null;
-  if (r && !r.error && typeof r.acik === "boolean") { a.d = { acik: r.acik, golge_acik: typeof r.golge_acik === "boolean" ? r.golge_acik : onceki.golge_acik }; gsKaydet(a); gsCiz(a); GS_AN.filter((x) => x.gerek === a.k).forEach((x) => gsCiz(x)); if (!a.golgesiz) omGolgeDegisti(yeni && r.acik); else toast(r.acik ? "🪙 Gölge coin gönderimi açıldı" : "Gölge coin gönderimi kapandı"); }
+  if (r && !r.error && typeof r.acik === "boolean") { a.d = { acik: r.acik, golge_acik: typeof r.golge_acik === "boolean" ? r.golge_acik : onceki.golge_acik }; gsKaydet(a); gsCiz(a); GS_AN.filter((x) => x.gerek === a.k).forEach((x) => gsCiz(x)); if (!a.golgesiz) omGolgeDegisti(yeni && r.acik); else toast(a.k === "gc" ? (r.acik ? "🪙 Gölge coin gönderimi açıldı" : "Gölge coin gönderimi kapandı") : `${a.baslik}: ${r.acik ? "açıldı" : "kapandı"}`); } // 28.11: gb / gd / gn kendi adıyla (önceden hepsi "coin gönderimi" diyordu)
   else { a.d = onceki; gsCiz(a); onayKart({ baslik: "Ayar kaydedilemedi", metin: String((r && r.error) || "Ayar kaydedilemedi") + "\nAnahtar eski konumuna döndü.", onay: "Tamam", vazgec: "Kapat" }); } }
 /** 🔐 Gölge anahtarlarının üçünü bellekten, önbellekten ve açık pencereden siler (çıkış / rol sahip değil) */
 function gsSil() { try { ealSil(); } catch (e) {} GS_AN.forEach((a) => { a.d = null; a.busy = false; try { localStorage.removeItem(a.ls); } catch (e) {} const k = $(a.kok); if (k) k.remove(); }); }
@@ -2104,7 +2109,7 @@ function golgePage() { if (!me || !(isSahip() || can("oto_ayar"))) return; const
   sheet("golge", `<h3>🌘 Gölge</h3><div class="gsi">Gölge açıkken otomatik mesajlar kapalıdır; biri açılınca öteki kapanır.</div>
     <div id="hhKok">${hhHtml()}</div>
     <div class="seg ${sh ? "seg3 " : ""}gsek" role="tablist">${gpSekler().map((k) => `<button type="button" role="tab" data-gsek="${k}" aria-selected="${k === gpSek}"${k === gpSek ? ' class="on"' : ""} onclick="golgeSekSec('${k}')">${ad[k]}</button>`).join("")}</div>
-    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"), gsBul("gd"))}<div id="gsnKok"></div><div id="gmKok"></div><button type="button" class="fullbtn gmtbtn" onclick="gmtAc()">✏️ Gölge'nin müşteri metinleri ›</button></div>` : ""}
+    ${sh ? `<div class="gpn" id="gp_coin" role="tabpanel"${gz("coin")}>${kok(gsBul("gs"), gsBul("gk"), gsBul("gc"), gsBul("gb"), gsBul("gd"), gsBul("gn"))}<div id="gsnKok"></div><div id="gmKok"></div><button type="button" class="fullbtn gmtbtn" onclick="gmtAc()">✏️ Gölge'nin müşteri metinleri ›</button></div>` : ""}
     <div class="gpn" id="gp_elmas" role="tabpanel"${gz("elmas")}><div id="eaKok"><div id="eaDurum"></div>${sh ? kok(gsBul("ge"), gsBul("gz"), gsBul("gp"), gsBul("ga")) : ""}<div id="eaForm"></div>${sh ? `<div id="ealKok"></div>` : ""}</div></div>
     <div class="gpn" id="gp_oto" role="tabpanel"${gz("oto")}><div id="omKok"></div></div>`); if (!setOn()) golgeDolur(); } // ayarlarda: setRender doldurur (geri dönüşte de)
 // 👥 Gruplar (W19, 16.11): bayi hesabının Sugo grupları ("AZ Opera", aile grubu) — YALNIZ yönetici, SALT OKUNUR (yazma kutusu yok, okunmamış sayısı yok).
@@ -8321,11 +8326,11 @@ $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftK
 
 if (tok) start(); else { show("login"); pushDrop(); } // 🔕 girişsiz telefona bildirim gelmesin
 </script>
-<script src="profile.js?v=2.1.197"></script>
-<script src="durum.js?v=2.1.197"></script>
-<script src="odaemoji.js?v=2.1.197"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
-<script src="baskonus.js?v=2.1.197"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
-<script src="golge_kutu.js?v=2.1.197"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
-<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.197"></script><!-- </sugo-veri> -->
+<script src="profile.js?v=2.1.198"></script>
+<script src="durum.js?v=2.1.198"></script>
+<script src="odaemoji.js?v=2.1.198"></script><!-- 😊 koltuk emojileri: görme + atma (yalnız sahip atar) -->
+<script src="baskonus.js?v=2.1.198"></script><!-- 🎙️ bas-konuş aşama 2: panel mikrofonu (yalnız sahip; anahtar sunucuda, varsayılan KAPALI) -->
+<script src="golge_kutu.js?v=2.1.198"></script><!-- 🌘 gölge kutusu: sohbette silik gri gölge kararları (yalnız sahip) -->
+<!-- <sugo-veri> 🛰️ W20 Sugo verileri (yalnız yönetici) + mesaj kartı --><script src="sugoveri.js?v=2.1.198"></script><!-- </sugo-veri> -->
 </body>
 </html>
